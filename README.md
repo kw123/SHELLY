@@ -52,7 +52,8 @@ Shelly-RGBW dimmer:                4 led dimmer  for red, blue, green and white
 Shelly-Dimmer:                     110-222V dimmer  
 Shelly-1 Temp-Hum:                 battery / usb powered Temp. and Hum. sensor  
 Shelly-Flood-Temp:                 Flood alarm and Temperature sensor  
-
+Shelly- external temp addon:       extention for shell-1 -PM to allow connection   
+                                   of up to 3 onewire Temp sensors  
 Coming up: 
 Shelly Door Window                 Door/window open alarm  
 Shelly Button                      simple button   
