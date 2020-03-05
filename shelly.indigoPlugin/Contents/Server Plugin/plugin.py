@@ -90,14 +90,14 @@ _emptyProps ={	# switches
 				# sensors
 				"SHHT-1":{"props":{"SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
 						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
-						"ipNumber":"", "shellyMAC":"", "pollingFrequency":10, "expirationSeconds":403200,"displaySelect":"Temperature" },
+						"ipNumber":"", "shellyMAC":"", "pollingFrequency":10, "expirationSeconds":50400,"displaySelect":"Temperature" },
 						"tempLimits":[0,0],
 						"setPage":{}
 						}, 
 
 				"SHWT-1":{"props":{"SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
 						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
-						"ipNumber":"", "shellyMAC":"", "pollingFrequency":10, "expirationSeconds":403200,"displaySelect":"Flood"},
+						"ipNumber":"", "shellyMAC":"", "pollingFrequency":10, "expirationSeconds":50400,"displaySelect":"Flood"},
 						"tempLimits":[0,0],
 						"setPage":{}
 						}
@@ -115,7 +115,7 @@ _emptyShelly 					= { "ipNumber":"", "shellyMAC":"", "lastData":{}, "lastCheck":
 _colorSets 						= ["SupportsColor", "SupportsRGB", "SupportsWhite", "SupportsWhiteTemperature", "SupportsRGBandWhiteSimultaneously", "SupportsTwoWhiteLevels", "SupportsTwoWhiteLevelsSimultaneously"]
 
 _supportsBatteryLevel 			= ["SHHT-1","SHWT-1"]
-_GlobalConst_fillMinMaxStates 	= ["Temperature","Pressure","Humidity"]
+_GlobalConst_fillMinMaxStates 	= ["Temperature","Temperature_ext_0","Temperature_ext_1","Pressure","Humidity"]
 _defaultDateStampFormat			= "%Y-%m-%d %H:%M:%S"
 
 ################################################################################
@@ -1685,6 +1685,7 @@ class Plugin(indigo.PluginBase):
 					if "displaySelect" in props and props["displaySelect"] == "Temperature":
 						dev.updateStateImageOnServer(indigo.kStateImageSel.TemperatureSensorOn)
 					self.fillMinMaxSensors(dev,state,x,decimalPlaces=decimalPlaces)
+
 				elif state == "Humidity":
 					x , xui = self.convHum(x)
 					self.addToStatesUpdateDict(dev.id, state, x, uiValue=xui, decimalPlaces=decimalPlaces)
@@ -2301,8 +2302,8 @@ class Plugin(indigo.PluginBase):
 
 
 			elif dev.deviceTypeId in ["SHSW-1","SHSW-PM","SHSW-25","SHEM"]:
-				if True:							 channel = "0"
-				if dev.id in self.CHILDRENtoParents: channel = "1"
+				if True:							 mode = "0"
+				if dev.id in self.CHILDRENtoParents: mode = "1"
 				###### TURN ON ######
 				if action.deviceAction == indigo.kDimmerRelayAction.TurnOn:
 					actionValues["TurnOn"] 	= "on"
@@ -2323,7 +2324,7 @@ class Plugin(indigo.PluginBase):
 						for colorAction in IndigoStateMapToShellyDev:	
 							if colorAction in actionValues:
 									page += "{}={}&".format("turn", actionValues[colorAction])
-				if self.decideMyLog(u"Actions"): self.indiLOG.log(20,"dev {}  channel:{};  page:{} devType:{};  CHILDRENtoParents:{}".format(dev.name, channel, page, dev.deviceTypeId, self.CHILDRENtoParents))
+				if self.decideMyLog(u"Actions"): self.indiLOG.log(20,"dev {}  mode:{};  page:{} devType:{};  CHILDRENtoParents:{}".format(dev.name, mode, page, dev.deviceTypeId, self.CHILDRENtoParents))
 			else:
 				self.indiLOG.log(40,"action{}  for {}  not implemented".format(dev.name, actionControlDimmerRelay))
 
@@ -2334,7 +2335,7 @@ class Plugin(indigo.PluginBase):
 					time.sleep(0.2)
 
 				page = page.strip("&")
-				page = _emptyProps[dev.deviceTypeId]["setPage"][channel]+page			
+				page = _emptyProps[dev.deviceTypeId]["setPage"][mode]+page			
 				if self.decideMyLog(u"Actions"): self.indiLOG.log(20,"sending dev:{} ={}".format(dev.name, page))
 				self.addToShellyPollerQueue( devId, page)
 

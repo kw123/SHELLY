@@ -34,7 +34,7 @@
 
 
 			<Field id="pollingFrequency"   type="menu" defaultValue="10" >
-				<Label>Polling frequency[sec]:</Label>
+				<Label>Polling frequency, how often the plugin requests status from the device:</Label>
 				<List>
 					<Option value="1"    >every 1 sec</Option>
 					<Option value="2"    >every 2 sec</Option>
@@ -52,24 +52,18 @@
 				</List>
 			</Field>
 			<Field id="pollingFrequencyLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
-				<Label>can be hire/adaptive if actions are setup on the devices</Label>
+				<Label>can be higher/adaptive if actions are setup on the devices</Label>
 			</Field>
 
 
 			<Field id="expirationSeconds"   type="menu" defaultValue="3600" >
-				<Label>device goes to EXPRIED after xx sec w no message or answer:</Label>
+				<Label>Device goes to EXPIRED w no message or answer after:</Label>
 				<List>
 					<Option value="180"   >after 3 minutes</Option>
 					<Option value="300"   >after 5 minutes</Option>
 					<Option value="600"   >after 10 minutes</Option>
 					<Option value="1800"  >after 30 minutes</Option>
 					<Option value="3600"  >after 1 hour</Option>
-					<Option value="7200"  >after 2 hour</Option>
-					<Option value="14400" >after 4 hour</Option>
-					<Option value="21600" >after 6 hour</Option>
-					<Option value="36000" >after 10 hour</Option>
-					<Option value="43600" >after 12 hour</Option>
-					<Option value="50400" >after 14 hour</Option>
 				</List>
 			</Field>
 
@@ -222,7 +216,7 @@
 
 
 			<Field id="pollingFrequency"   type="menu" defaultValue="10" >
-				<Label>Polling frequency[sec]:</Label>
+				<Label>Polling frequency, how often the plugin requests status from the device:</Label>
 				<List>
 					<Option value="1"    >every 1 sec</Option>
 					<Option value="2"    >every 2 sec</Option>
@@ -240,24 +234,18 @@
 				</List>
 			</Field>
 			<Field id="pollingFrequencyLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
-				<Label>can be hire/adaptive if actions are setup on the devices</Label>
+				<Label>can be higher/adaptive if actions are setup on the devices</Label>
 			</Field>
 
 
 			<Field id="expirationSeconds"   type="menu" defaultValue="3600" >
-				<Label>device goes to EXPRIED after xx sec w no message or answer:</Label>
+				<Label>Device goes to EXPIRED w no message or answer after:</Label>
 				<List>
 					<Option value="180"   >after 3 minutes</Option>
 					<Option value="300"   >after 5 minutes</Option>
 					<Option value="600"   >after 10 minutes</Option>
 					<Option value="1800"  >after 30 minutes</Option>
 					<Option value="3600"  >after 1 hour</Option>
-					<Option value="7200"  >after 2 hour</Option>
-					<Option value="14400" >after 4 hour</Option>
-					<Option value="21600" >after 6 hour</Option>
-					<Option value="36000" >after 10 hour</Option>
-					<Option value="43600" >after 12 hour</Option>
-					<Option value="50400" >after 14 hour</Option>
 				</List>
 			</Field>
 
@@ -470,7 +458,7 @@
 
 
 			<Field id="pollingFrequency"   type="menu" defaultValue="10" >
-				<Label>Polling frequency[sec]:</Label>
+				<Label>Polling frequency, how often the plugin requests status from the device:</Label>
 				<List>
 					<Option value="1"    >every 1 sec</Option>
 					<Option value="2"    >every 2 sec</Option>
@@ -488,24 +476,18 @@
 				</List>
 			</Field>
 			<Field id="pollingFrequencyLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
-				<Label>can be hire/adaptive if actions are setup on the devices</Label>
+				<Label>can be higher/adaptive if actions are setup on the devices</Label>
 			</Field>
 
 
 			<Field id="expirationSeconds"   type="menu" defaultValue="3600" >
-				<Label>device goes to EXPRIED after xx sec w no message or answer:</Label>
+				<Label>Device goes to EXPIRED w no message or answer after:</Label>
 				<List>
 					<Option value="180"   >after 3 minutes</Option>
 					<Option value="300"   >after 5 minutes</Option>
 					<Option value="600"   >after 10 minutes</Option>
 					<Option value="1800"  >after 30 minutes</Option>
 					<Option value="3600"  >after 1 hour</Option>
-					<Option value="7200"  >after 2 hour</Option>
-					<Option value="14400" >after 4 hour</Option>
-					<Option value="21600" >after 6 hour</Option>
-					<Option value="36000" >after 10 hour</Option>
-					<Option value="43600" >after 12 hour</Option>
-					<Option value="50400" >after 14 hour</Option>
 				</List>
 			</Field>
 
@@ -691,8 +673,16 @@
  
 			<Field id="parentIndigoId" type="textfield" defaultValue ="0" readonly="true" hidden ="true"></Field>
 			<Field id="childIndigoId"  type="textfield" defaultValue ="0" readonly="true" hidden ="true"></Field>
+
+			<Field id="parentIndigoLabel" type="label" visibleBindingId="parentIndigoId" visibleBindingValue="0">
+				<Label>This is the device for relay #0 (parent), there is a second for relay#1 (Shelly-ip#-1)
+All parameters have to be set here, not in the child device
+Parent and child share the same connection, the plugin creates two devices to be able to switch relay 1 and relay 0 on/off independently through std indigo commands</Label>
+			</Field>
 			<Field id="childIndigoIdLabel" type="label" visibleBindingId="childIndigoId" visibleBindingValue="0">
-				<Label>This is a child device of the other Shelly-25. You can not set parameters here, edit the parent device</Label>
+				<Label>This is a device for relay#1 (child) of the other Shelly-25 for relay #1 name = Shelly-ip (-1) 
+You can not set parameters here, edit the parent device
+Parent and child share the same connection, the plugin creates two devices to be able to switch relay 1 and relay 0 on/off independently through std indigo commands</Label>
 			</Field>
 
 			<Field id="ipNumber" type="textfield" defaultValue ="192.168.1.x"  visibleBindingId="parentIndigoId" visibleBindingValue="0"> 
@@ -712,7 +702,7 @@
 
 
 			<Field id="pollingFrequency"   type="menu" defaultValue="10" visibleBindingId="parentIndigoId" visibleBindingValue="0" >
-				<Label>Polling frequency[sec]:</Label>
+				<Label>Polling frequency .. how often the plugin requests status from the device:</Label>
 				<List>
 					<Option value="1"    >every 1 sec</Option>
 					<Option value="2"    >every 2 sec</Option>
@@ -730,24 +720,18 @@
 				</List>
 			</Field>
 			<Field id="pollingFrequencyLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey" visibleBindingId="parentIndigoId" visibleBindingValue="0" >
-				<Label>can be hire/adaptive if actions are setup on the devices</Label>
+				<Label>can be higher/adaptive if actions are setup on the devices</Label>
 			</Field>
 
 
 			<Field id="expirationSeconds"   type="menu" defaultValue="3600" visibleBindingId="parentIndigoId" visibleBindingValue="0" >
-				<Label>device goes to EXPRIED after xx sec w no message or answer:</Label>
+				<Label>Device goes to EXPIRED w no message or answer after:</Label>
 				<List>
 					<Option value="180"   >after 3 minutes</Option>
 					<Option value="300"   >after 5 minutes</Option>
 					<Option value="600"   >after 10 minutes</Option>
 					<Option value="1800"  >after 30 minutes</Option>
 					<Option value="3600"  >after 1 hour</Option>
-					<Option value="7200"  >after 2 hour</Option>
-					<Option value="14400" >after 4 hour</Option>
-					<Option value="21600" >after 6 hour</Option>
-					<Option value="36000" >after 10 hour</Option>
-					<Option value="43600" >after 12 hour</Option>
-					<Option value="50400" >after 14 hour</Option>
 				</List>
 			</Field>
 
@@ -848,7 +832,7 @@
 	</Device>
 
 	<Device type="dimmer" id="SHBLB-1">
-	<Name>Shelly-1 RGBW Light Bulb</Name>
+	<Name>Shelly-RGBW Light Bulb</Name>
 
 		<ConfigUI>            
 			<Field id="isShellyDevice"     type="checkbox"     defaultValue="true" hidden="yes"> </Field>
@@ -888,7 +872,7 @@
 
 
 			<Field id="pollingFrequency"   type="menu" defaultValue="10" >
-				<Label>Polling frequency[sec]:</Label>
+				<Label>Polling frequency, how often the plugin requests status from the device:</Label>
 				<List>
 					<Option value="1"    >every 1 sec</Option>
 					<Option value="2"    >every 2 sec</Option>
@@ -906,24 +890,18 @@
 				</List>
 			</Field>
 			<Field id="pollingFrequencyLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
-				<Label>can be hire/adaptive if actions are setup on the devices</Label>
+				<Label>can be higher/adaptive if actions are setup on the devices</Label>
 			</Field>
 
 
 			<Field id="expirationSeconds"   type="menu" defaultValue="3600" >
-				<Label>device goes to EXPRIED after xx sec w no message or answer:</Label>
+				<Label>Device goes to EXPIRED w no message or answer after:</Label>
 				<List>
 					<Option value="180"   >after 3 minutes</Option>
 					<Option value="300"   >after 5 minutes</Option>
 					<Option value="600"   >after 10 minutes</Option>
 					<Option value="1800"  >after 30 minutes</Option>
 					<Option value="3600"  >after 1 hour</Option>
-					<Option value="7200"  >after 2 hour</Option>
-					<Option value="14400" >after 4 hour</Option>
-					<Option value="21600" >after 6 hour</Option>
-					<Option value="36000" >after 10 hour</Option>
-					<Option value="43600" >after 12 hour</Option>
-					<Option value="50400" >after 14 hour</Option>
 				</List>
 			</Field>
 
@@ -1063,7 +1041,7 @@
 
 
 			<Field id="pollingFrequency"   type="menu" defaultValue="10" >
-				<Label>Polling frequency[sec]:</Label>
+				<Label>Polling frequency, how often the plugin requests status from the device:</Label>
 				<List>
 					<Option value="1"    >every 1 sec</Option>
 					<Option value="2"    >every 2 sec</Option>
@@ -1081,24 +1059,18 @@
 				</List>
 			</Field>
 			<Field id="pollingFrequencyLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
-				<Label>can be hire/adaptive if actions are setup on the devices</Label>
+				<Label>can be higher/adaptive if actions are setup on the devices</Label>
 			</Field>
 
 
-			<Field id="expirationSeconds"   type="menu" defaultValue="3600" >
-				<Label>device goes to EXPRIED after xx sec w no message or answer:</Label>
+			<Field id="expirationSeconds"   type="menu" defaultValue="600" >
+				<Label>Device goes to EXPIRED w no message or answer after:</Label>
 				<List>
 					<Option value="180"   >after 3 minutes</Option>
 					<Option value="300"   >after 5 minutes</Option>
 					<Option value="600"   >after 10 minutes</Option>
 					<Option value="1800"  >after 30 minutes</Option>
 					<Option value="3600"  >after 1 hour</Option>
-					<Option value="7200"  >after 2 hour</Option>
-					<Option value="14400" >after 4 hour</Option>
-					<Option value="21600" >after 6 hour</Option>
-					<Option value="36000" >after 10 hour</Option>
-					<Option value="43600" >after 12 hour</Option>
-					<Option value="50400" >after 14 hour</Option>
 				</List>
 			</Field>
 
@@ -1238,7 +1210,7 @@
 
 
 			<Field id="pollingFrequency"   type="menu" defaultValue="10" >
-				<Label>Polling frequency[sec]:</Label>
+				<Label>Polling frequency, how often the plugin requests status from the device:</Label>
 				<List>
 					<Option value="1"    >every 1 sec</Option>
 					<Option value="2"    >every 2 sec</Option>
@@ -1256,24 +1228,18 @@
 				</List>
 			</Field>
 			<Field id="pollingFrequencyLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
-				<Label>can be hire/adaptive if actions are setup on the devices</Label>
+				<Label>can be higher/adaptive if actions are setup on the devices</Label>
 			</Field>
 
 
-			<Field id="expirationSeconds"   type="menu" defaultValue="3600" >
-				<Label>device goes to EXPRIED after xx sec w no message or answer:</Label>
+			<Field id="expirationSeconds"   type="menu" defaultValue="600" >
+				<Label>Device goes to EXPIRED w no message or answer after:</Label>
 				<List>
 					<Option value="180"   >after 3 minutes</Option>
 					<Option value="300"   >after 5 minutes</Option>
 					<Option value="600"   >after 10 minutes</Option>
 					<Option value="1800"  >after 30 minutes</Option>
 					<Option value="3600"  >after 1 hour</Option>
-					<Option value="7200"  >after 2 hour</Option>
-					<Option value="14400" >after 4 hour</Option>
-					<Option value="21600" >after 6 hour</Option>
-					<Option value="36000" >after 10 hour</Option>
-					<Option value="43600" >after 12 hour</Option>
-					<Option value="50400" >after 14 hour</Option>
 				</List>
 			</Field>
 
@@ -1391,7 +1357,7 @@
 
 
 	<Device type="sensor" id="SHHT-1">
-	<Name>Shelly-1 Temp-Hum</Name>
+	<Name>Shelly-Temp-Hum</Name>
 
 		<ConfigUI>            
 			<Field id="isShellyDevice"     type="checkbox"     defaultValue="true" hidden="yes"> </Field>
@@ -1423,7 +1389,7 @@
 
 
 			<Field id="pollingFrequency"   type="menu" defaultValue="10" >
-				<Label>Polling frequency[sec]:</Label>
+				<Label>Polling frequency, how often the plugin requests status from the device:</Label>
 				<List>
 					<Option value="10"   >every 10 sec</Option>
 					<Option value="15"   >every 15 sec</Option>
@@ -1435,24 +1401,19 @@
 				</List>
 			</Field>
 			<Field id="pollingFrequencyLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
-				<Label>can be hire/adaptive if actions are setup on the devices</Label>
+				<Label>can be higher/adaptive if actions are setup on the devices</Label>
 			</Field>
 
 
 			<Field id="expirationSeconds"   type="menu" defaultValue="43600" >
-				<Label>device goes to EXPRIED after xx sec w no message or answer:</Label>
+				<Label>Device goes to EXPIRED w no message or answer after:</Label>
 				<List>
-					<Option value="180"   >after 3 minutes</Option>
-					<Option value="300"   >after 5 minutes</Option>
-					<Option value="600"   >after 10 minutes</Option>
-					<Option value="1800"  >after 30 minutes</Option>
-					<Option value="3600"  >after 1 hour</Option>
-					<Option value="7200"  >after 2 hour</Option>
 					<Option value="14400" >after 4 hour</Option>
 					<Option value="21600" >after 6 hour</Option>
 					<Option value="36000" >after 10 hour</Option>
 					<Option value="43600" >after 12 hour</Option>
 					<Option value="50400" >after 14 hour</Option>
+					<Option value="57600" >after 16 hour</Option>
 				</List>
 			</Field>
 
@@ -1629,7 +1590,7 @@
 
 
 			<Field id="pollingFrequency"   type="menu" defaultValue="10" >
-				<Label>Polling frequency[sec]:</Label>
+				<Label>Polling frequency, how often the plugin requests status from the device:</Label>
 				<List>
 					<Option value="10"   >every 10 sec</Option>
 					<Option value="15"   >every 15 sec</Option>
@@ -1641,20 +1602,17 @@
 				</List>
 			</Field>
 			<Field id="pollingFrequencyLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
-				<Label>can be hire/adaptive if actions are setup on the devices</Label>
+				<Label>can be higher/adaptive if actions are setup on the devices</Label>
 			</Field>
 
 
-			<Field id="expirationSeconds"   type="menu" defaultValue="43600" >
-				<Label>device goes to EXPRIED after xx sec w no message or answer:</Label>
+			<Field id="expirationSeconds"   type="menu" defaultValue="50400" >
+				<Label>Device goes to EXPIRED w no message or answer after:</Label>
 				<List>
-					<Option value="3600"  >after 1 hour</Option>
-					<Option value="7200"  >after 2 hour</Option>
-					<Option value="14400" >after 4 hour</Option>
-					<Option value="21600" >after 6 hour</Option>
 					<Option value="36000" >after 10 hour</Option>
 					<Option value="43600" >after 12 hour</Option>
 					<Option value="50400" >after 14 hour</Option>
+					<Option value="57600" >after 16 hour</Option>
 				</List>
 			</Field>
 

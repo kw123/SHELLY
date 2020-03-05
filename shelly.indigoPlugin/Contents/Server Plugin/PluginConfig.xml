@@ -23,21 +23,21 @@
         </List>
    </Field>
    <Field id="indigoFolderName"   type="textfield" defaultValue="Shelly"  >
-        <Label>folder name for NEW shelly devcies:</Label> 
+        <Label>Folder name for NEW shelly devices:</Label> 
    </Field>
 
   
 
    <Field id="portOfIndigoServer"   type="textfield" defaultValue="7987"  >
-        <Label>set IP-PORT of http listener in plugin:</Label> 
+        <Label>Set IP-PORT of http listener in PLUGIN:</Label> 
    </Field>
 
    <Field id="IndigoServerIPNumber"   type="textfield" defaultValue="192.168.1.x"  >
-        <Label>set ip numebr of indigo server:</Label> 
+        <Label>Set ip number of indigo server:</Label> 
    </Field>
 
    <Field id="infoLabeluserID" type="label" fontSize="small" >
-        <Label>UserID and passwords are used to connect to the SHelly devices, keep empty if no userid / password setup</Label>
+        <Label>UserID and passwords are used to connect to the SHELLY devices, keep empty if no userid / password setup</Label>
    </Field>
    
    <Field id="userIDOfShellyDevices"   type="textfield" defaultValue=""  >
@@ -49,7 +49,7 @@
    </Field>
 
    <Field id="portOfShellyDevices"   type="textfield" defaultValue="80"  >
-        <Label>set IP-PORT of http  shelly devices:</Label> 
+        <Label>Set IP-PORT of http SHELLY devices:</Label> 
    </Field>
 
     <Field    id="unfiCurl"              type="menu" defaultValue="/usr/bin/curl"  tooltip="To support different SSL standards: for elCapitan and lower use curl, for higher OS-X you can try python requests"  > 
