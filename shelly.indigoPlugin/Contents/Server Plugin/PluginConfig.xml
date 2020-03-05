@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+<PluginConfig>
+
+    <Field id="infoLabel1" type="label">
+        <Label>Shelly plugin           Developed by Karl Wachs</Label>
+    </Field>
+
+
+   <Field    id="tempUnits"   type="menu" defaultValue="Celsius">
+        <Label>Temperature displayed in:</Label>
+        <List>
+            <Option value="Celsius"    >Celsius </Option>
+            <Option value="Fahrenheit" >Fahrenheit</Option>
+            <Option value="Kelvin"     >Kelvin</Option>
+        </List>
+   </Field>
+   <Field    id="tempDigits"   type="menu" defaultValue="1">
+        <Label>Temperature digits to show and store:</Label>
+        <List>
+            <Option value="0" >0 </Option>
+            <Option value="1" >1</Option>
+            <Option value="2" >2</Option>
+        </List>
+   </Field>
+   <Field id="indigoFolderName"   type="textfield" defaultValue="Shelly"  >
+        <Label>folder name for NEW shelly devcies:</Label> 
+   </Field>
+
+  
+
+   <Field id="portOfIndigoServer"   type="textfield" defaultValue="7987"  >
+        <Label>set IP-PORT of http listener in plugin:</Label> 
+   </Field>
+
+   <Field id="IndigoServerIPNumber"   type="textfield" defaultValue="192.168.1.x"  >
+        <Label>set ip numebr of indigo server:</Label> 
+   </Field>
+
+   <Field id="infoLabeluserID" type="label" fontSize="small" >
+        <Label>UserID and passwords are used to connect to the SHelly devices, keep empty if no userid / password setup</Label>
+   </Field>
+   
+   <Field id="userIDOfShellyDevices"   type="textfield" defaultValue=""  >
+        <Label>user id:</Label> 
+   </Field>
+   
+   <Field id="passwordOfShellyDevices"   type="textfield" defaultValue=""  >
+        <Label>password:</Label> 
+   </Field>
+
+   <Field id="portOfShellyDevices"   type="textfield" defaultValue="80"  >
+        <Label>set IP-PORT of http  shelly devices:</Label> 
+   </Field>
+
+    <Field    id="unfiCurl"              type="menu" defaultValue="/usr/bin/curl"  tooltip="To support different SSL standards: for elCapitan and lower use curl, for higher OS-X you can try python requests"  > 
+    <Label>Use curl or python-requests for web page access:</Label> 
+        <List>
+            <Option value="/usr/bin/curl"			>/usr/bin/curl  (std install)</Option>
+            <Option value="/usr/local/bin/curl"		>/usr/local/bin/curl (eg homebrew upgrade)</Option>
+            <Option value="requests"  				>python requests</Option>
+        </List>
+    </Field>
+
+
+   
+    <Field    id="SQLLoggingEnable"   type="menu" defaultValue="on-on" tooltip="">
+        <Label>Configure SQL logger for specific variables and devices (not) log</Label>
+        <List>
+            <Option value="on-on"   >log normal = log everything </Option>
+            <Option value="off-on"  >disable devices/states -  enable variables</Option>
+            <Option value="on-off"  >enable  devices/states - disable variables</Option>
+            <Option value="off-off"	>disable devices/states - disable variables</Option>
+        </List>    
+   </Field>
+   <Field id="SQLLoggingEnableLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">  
+        <Label>This is only for: dev/states = Pi_x_Time etc, variables: pi_IN_xx. This saves SQL logger cpu and disk-space. There is no (good) reason to write them to the SQL logger</Label>
+    </Field>
+
+    <Field id="infoLabel99" type="label"> <Label>Debug area for plugin:</Label>  </Field>
+       _debugAreas = [","","","Output","Ping","SetupShelly","Actions","SQLlogger","SQLSuppresslog","Output", "Special"]
+ 
+    <Field    id="debugSetupDevices"   type="checkbox"  defaultValue="false"       tooltip=""> <Label> Debug...                   ... (1)  SetupDevice:</Label>  </Field>
+    <Field    id="debugHTTPlistener"   type="checkbox"  defaultValue="false"       tooltip=""> <Label>     ... (2)  HTTP listener:</Label>  </Field>
+    <Field    id="debugPolling"        type="checkbox"  defaultValue="false"       tooltip=""> <Label>     ... (3)  polling of devices:</Label>  </Field>
+    <Field    id="debugPing"           type="checkbox"  defaultValue="false"       tooltip=""> <Label>     ... (4)  pinging:</Label>  </Field>
+    <Field    id="debugActions"        type="checkbox"  defaultValue="false"       tooltip=""> <Label>     ... (6)  Actions:</Label>  </Field>
+    <Field    id="debugSQLSuppresslog" type="checkbox"  defaultValue="false"       tooltip=""> <Label>     ..  (18) SQL-Suppress-logger:</Label>  </Field>
+
+    <Field    id="debugSpecial"        type="checkbox"  defaultValue="false"       tooltip=""> <Label>     ... (S) special debug (only for development):</Label>  </Field>
+    <Field    id="debugall"            type="checkbox"  defaultValue="false"       tooltip=""> <Label>     ... (99) all of the above .. everything:</Label>  </Field>
+
+    <Field    id="logFileActive2"      type="menu"      defaultValue="standard"      > <Label> send logs to ..:</Label>
+        <List>
+            <Option value="indigo"   > .. Perceptive Automation/Indigo x/Logs/com.karlwachs.shelly/plugin.log </Option>
+        </List>
+    </Field>
+    <Field id="infoLabel227" type="label"> <Label>.                     for DETAILED time tracking set indigo variable "enableTimeTracking_shelly"</Label>  </Field>
+    <Field    id="do_cProfile" type="textfield"  defaultValue="on/off/print"  readonly="yes"     > 
+        <Label>... enable or stop or  print intermediate results use on/off/print:</Label>  
+    </Field>
+
+</PluginConfig>

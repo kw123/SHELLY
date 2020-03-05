@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<Events>
+    <Event id="Family-allAway">	<Name>Family-allAway  .. ALL devices                in the group must be AWAY to trigger</Name> </Event>
+</Events>

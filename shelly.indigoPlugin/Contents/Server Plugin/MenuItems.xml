@@ -1,5 +1,10 @@
-# SHELLY
-This plugin integrates Shelly wifi devices into Indigo.
+<?xml version="1.0"?>
+<MenuItems>
+      <MenuItem id="d00"> 
+      <Name>BASIC setup HELP</Name>
+        <ConfigUI>
+        <Field   id="label0" type="label">
+            <Label> This plugin integrates Shelly wifi devices into Indigo.
 
 No other software is needed. The plugin can read the device status 
 and can send commands to them, like relay on/off, light up, red=50%..
@@ -50,7 +55,7 @@ Shelly-1:                          one basic relay
 Shelly-1PM:                        relay with temp sensor and overload protection
 Shelly-25 2-Relay:                 like two Shelly-1PM in one
 Shelly-Power 2 Channels - 1 Relay: measures Power, voltage and has 1 relay
-Shelly-RGBW Light Bulb:          110-220V light bulb with 4 led
+Shelly-1 RGBW Light Bulb:          110-220V light bulb with 4 led
 Shelly-RGBW dimmer:                4 led dimmer  for red, blue, green and white
 Shelly-Dimmer:                     110-222V dimmer
 Shelly-1 Temp-Hum:                 battery / usb powered Temp. and Hum. sensor
@@ -62,3 +67,51 @@ Shelly Button                      simple button
 Shelly Bulb                        110-220V LED
 Shelly Vintage A60                 110-220V LED
 Shelly Duo                         110-220V LED
+</Label>
+        </Field>
+        </ConfigUI>
+    </MenuItem>         
+
+    <MenuItem id="d03"> <Name>-------------setup Shelly device  ---------------------------</Name><CallbackMethod>inpDummy</CallbackMethod></MenuItem>
+
+    <MenuItem id="setipNumberToAdd">
+        <Name>Start Shelly device discovery Process for ONE device</Name>
+        <ConfigUI>
+            <Field id="infoLabel11" type="label">
+                <Label>Initial setup of device, give IP number and click confirm </Label>
+            </Field>
+            <Field id="ipNumber"   type="textfield" defaultValue="192.168.1.x"  >
+                <Label>ipNumber:</Label> 
+            </Field>
+            <Field   id="confirmIpNumberSetup" type="button"  >
+                <Label>Confirm </Label><Title>CONFIRM</Title> <CallbackMethod>buttonConfirmconfirmIpNumberSetupCALLBACK</CallbackMethod>
+            </Field>
+            <Field    id="MSG"   type="textfield" defaultValue="" >
+                <Label> message from Plugin:</Label>
+            </Field>
+        </ConfigUI>
+    </MenuItem>  
+
+    <MenuItem id="setipNumberRangeToAdd">
+        <Name>Start Shelly device discovery Process for an IP RANGE</Name>
+        <ConfigUI>
+            <Field id="infoLabel11" type="label">
+                <Label>Initial setup of device, give an ip number range IP  and the plugin will try to contact each. If it is a shelly device and does not exist yet, it will create one</Label>
+            </Field>
+            <Field id="ipNumberFrom"   type="textfield" defaultValue="192.168.1.x"  >
+                <Label>ipNumber from :</Label> 
+            </Field>
+            <Field id="ipNumberTo"   type="textfield" defaultValue="192.168.1.y"  >
+                <Label>ipNumber to:</Label> 
+            </Field>
+            <Field   id="confirmIpNumberSetup" type="button"  >
+                <Label>Confirm </Label><Title>CONFIRM</Title> <CallbackMethod>buttonConfirmconfirmIpNumberRangeSetupCALLBACK</CallbackMethod>
+            </Field>
+            <Field    id="MSG"   type="textfield" defaultValue="" >
+                <Label> message from Plugin:</Label>
+            </Field>
+        </ConfigUI>
+    </MenuItem>         
+      <MenuItem id="d04"> <Name>------------- INFO ---------------------------</Name><CallbackMethod>inpDummy</CallbackMethod></MenuItem>
+      <MenuItem id="printShellyDevs"> <Name>Print dev info to logfile</Name><CallbackMethod>buttonPrintShellyDevInfoCALLBACK</CallbackMethod></MenuItem>
+</MenuItems>
