@@ -75,4 +75,5 @@ Shelly- external temp add on:      For Shelly-1 -PM for up to 3 oneWire Temp sen
 == Coming up:   
 Shelly Door Window                 Door/window open alarm  
 Shelly other Bulbs                 110-220V LED  
-=========================================================================================
+
+
