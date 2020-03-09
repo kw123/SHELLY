@@ -10,8 +10,8 @@
 			<Field id="MSG" type="textfield"     defaultValue=""> <Label>message from plugin:</Label></Field>
 
 			<Field id="SupportsOnState" 					 type="checkbox" defaultValue="true"  hidden ="true"><Label>SupportsOnState</Label></Field>
-			<Field id="SupportsSensorValue" 				 type="checkbox" defaultValue="false" hidden ="true"><Label>SupportsSensorValue</Label></Field>
-			<Field id="SupportsStatusRequest" 				 type="checkbox" defaultValue="false" hidden ="true"><Label>SupportsStatusRequest</Label></Field>
+			<Field id="SupportsSensorValue" 				 type="checkbox" defaultValue="true"  hidden ="true"><Label>SupportsSensorValue</Label></Field>
+			<Field id="SupportsStatusRequest" 				 type="checkbox" defaultValue="true"  hidden ="true"><Label>SupportsStatusRequest</Label></Field>
 			<Field id="AllowOnStateChange" 					 type="checkbox" defaultValue="false" hidden ="true"><Label>AllowOnStateChange</Label></Field>
 			<Field id="AllowSensorValueChange" 				 type="checkbox" defaultValue="false" hidden ="true"><Label>AllowSensorValueChange</Label></Field>
 			<Field id="label1"  type="label" >
@@ -19,17 +19,19 @@
 			</Field>
  
 			<Field id="ipNumber" type="textfield" defaultValue ="192.168.1.x" > 
-				<Label>device IP Number</Label>
+				<Label>Shelly device IP Number</Label>
 			</Field>
 			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
-				<Label>overwrite exiting IP number if needed</Label>
+				<Label>Overwrite exiting IP number if needed</Label>
 			</Field>
 
 			<Field id="shellyMAC" type="textfield" defaultValue ="" > 
-				<Label>device shelly mac number</Label>
+				<Label>Shelly device mac number</Label>
 			</Field>
 			<Field id="shellyMACLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
-				<Label> eg &gt;98F4ABF3D3E5&lt; must be 12 hex digits </Label>
+				<Label> eg &gt;98F4ABF3D3E5&lt; must be 12 hex digits
+overwrite only when creating a device manually
+   - not recommended</Label>
 			</Field>
 
 
@@ -200,17 +202,19 @@
 			</Field>
  
 			<Field id="ipNumber" type="textfield" defaultValue ="192.168.1.x" > 
-				<Label>device IP Number</Label>
+				<Label>Shelly device IP Number</Label>
 			</Field>
 			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
-				<Label>overwrite exiting IP number if needed</Label>
+				<Label>Overwrite exiting IP number if needed</Label>
 			</Field>
 
 			<Field id="shellyMAC" type="textfield" defaultValue ="" > 
-				<Label>device shelly mac number</Label>
+				<Label>Shelly device mac number</Label>
 			</Field>
 			<Field id="shellyMACLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
-				<Label> eg &gt;98F4ABF3D3E5&lt; must be 12 hex digits </Label>
+				<Label> eg &gt;98F4ABF3D3E5&lt; must be 12 hex digits
+overwrite only when creating a device manually
+   - not recommended</Label>
 			</Field>
 
 
@@ -266,89 +270,90 @@
 				<TriggerLabel>input</TriggerLabel>
 				<ControlPageLabel>input</ControlPageLabel>
 			</State>
+			<State id="Temperature_internal">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Temperature_internal</TriggerLabel>
+				<ControlPageLabel>Temperature_internal</ControlPageLabel>
+			</State>
 			<State id="Temperature">
 				<ValueType>Number</ValueType>
 				<TriggerLabel>Temperature</TriggerLabel>
 				<ControlPageLabel>Temperature</ControlPageLabel>
 			</State>
-			<State id="Temperature_ext_0">
+			<State id="TemperatureMaxToday">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>Temperature_ext_0</TriggerLabel>
-				<ControlPageLabel>Temperature_ext_0</ControlPageLabel>
+				<TriggerLabel>TemperatureMaxToday</TriggerLabel>
+				<ControlPageLabel>TemperatureMaxToday</ControlPageLabel>
 			</State>
-			<State id="Temperature_ext_0MaxToday">
+			<State id="TemperatureMinToday">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>Temperature_ext_0MaxToday</TriggerLabel>
-				<ControlPageLabel>Temperature_ext_0MaxToday</ControlPageLabel>
+				<TriggerLabel>TemperatureMinToday</TriggerLabel>
+				<ControlPageLabel>TemperatureMinToday</ControlPageLabel>
 			</State>
-			<State id="Temperature_ext_0MinToday">
+			<State id="TemperatureMaxYesterday">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>Temperature_ext_0MinToday</TriggerLabel>
-				<ControlPageLabel>Temperature_ext_0MinToday</ControlPageLabel>
+				<TriggerLabel>TemperatureMaxYesterday</TriggerLabel>
+				<ControlPageLabel>TemperatureMaxYesterday</ControlPageLabel>
 			</State>
-			<State id="Temperature_ext_0MaxYesterday">
+			<State id="TemperatureMinYesterday">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>Temperature_ext_0MaxYesterday</TriggerLabel>
-				<ControlPageLabel>Temperature_ext_0MaxYesterday</ControlPageLabel>
-			</State>
-			<State id="Temperature_ext_0MinYesterday">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>Temperature_ext_0MinYesterday</TriggerLabel>
-				<ControlPageLabel>Temperature_ext_0MinYesterday</ControlPageLabel>
+				<TriggerLabel>TemperatureMinYesterday</TriggerLabel>
+				<ControlPageLabel>TemperatureMinYesterday</ControlPageLabel>
 			</State>
 
-			<State id="Temperature_ext_1">
+			<State id="Temperature_1">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>Temperature_ext_1</TriggerLabel>
-				<ControlPageLabel>Temperature_ext_1</ControlPageLabel>
+				<TriggerLabel>Temperature_1</TriggerLabel>
+				<ControlPageLabel>Temperature_1</ControlPageLabel>
 			</State>
-			<State id="Temperature_ext_1MaxToday">
+			<State id="Temperature_1MaxToday">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>Temperature_ext_1MaxToday</TriggerLabel>
-				<ControlPageLabel>Temperature_ext_1MaxToday</ControlPageLabel>
+				<TriggerLabel>Temperature_1MaxToday</TriggerLabel>
+				<ControlPageLabel>Temperature_1MaxToday</ControlPageLabel>
 			</State>
-			<State id="Temperature_ext_1MinToday">
+			<State id="Temperature_1MinToday">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>Temperature_ext_1MinToday</TriggerLabel>
-				<ControlPageLabel>Temperature_ext_1MinToday</ControlPageLabel>
+				<TriggerLabel>Temperature_1MinToday</TriggerLabel>
+				<ControlPageLabel>Temperature_1MinToday</ControlPageLabel>
 			</State>
-			<State id="Temperature_ext_1MaxYesterday">
+			<State id="Temperature_1MaxYesterday">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>Temperature_ext_1MaxYesterday</TriggerLabel>
-				<ControlPageLabel>Temperature_ext_1MaxYesterday</ControlPageLabel>
+				<TriggerLabel>Temperature_1MaxYesterday</TriggerLabel>
+				<ControlPageLabel>Temperature_1MaxYesterday</ControlPageLabel>
 			</State>
-			<State id="Temperature_ext_1MinYesterday">
+			<State id="Temperature_1MinYesterday">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>Temperature_ext_1MinYesterday</TriggerLabel>
-				<ControlPageLabel>Temperature_ext_1MinYesterday</ControlPageLabel>
+				<TriggerLabel>Temperature_1MinYesterday</TriggerLabel>
+				<ControlPageLabel>Temperature_1MinYesterday</ControlPageLabel>
 			</State>
 
+			<State id="Temperature_2">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Temperature_2</TriggerLabel>
+				<ControlPageLabel>Temperature_2</ControlPageLabel>
+			</State>
 
-			<State id="Temperature_ext_2">
+			<State id="Temperature_2MaxToday">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>Temperature_ext_2</TriggerLabel>
-				<ControlPageLabel>Temperature_ext_2</ControlPageLabel>
+				<TriggerLabel>Temperature_2MaxToday</TriggerLabel>
+				<ControlPageLabel>Temperature_2MaxToday</ControlPageLabel>
 			</State>
-			<State id="Temperature_ext_2MaxToday">
+			<State id="Temperature_2MinToday">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>Temperature_ext_2MaxToday</TriggerLabel>
-				<ControlPageLabel>Temperature_ext_2MaxToday</ControlPageLabel>
+				<TriggerLabel>Temperature_2MinToday</TriggerLabel>
+				<ControlPageLabel>Temperature_2MinToday</ControlPageLabel>
 			</State>
-			<State id="Temperature_ext_2MinToday">
+			<State id="Temperature_2MaxYesterday">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>Temperature_ext_2MinToday</TriggerLabel>
-				<ControlPageLabel>Temperature_ext_2MinToday</ControlPageLabel>
+				<TriggerLabel>Temperature_2MaxYesterday</TriggerLabel>
+				<ControlPageLabel>Temperature_2MaxYesterday</ControlPageLabel>
 			</State>
-			<State id="Temperature_ext_2MaxYesterday">
+			<State id="Temperature_2MinYesterday">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>Temperature_ext_2MaxYesterday</TriggerLabel>
-				<ControlPageLabel>Temperature_ext_2MaxYesterday</ControlPageLabel>
+				<TriggerLabel>Temperature_2MinYesterday</TriggerLabel>
+				<ControlPageLabel>Temperature_2MinYesterday</ControlPageLabel>
 			</State>
-			<State id="Temperature_ext_2MinYesterday">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>Temperature_ext_2MinYesterday</TriggerLabel>
-				<ControlPageLabel>Temperature_ext_2MinYesterday</ControlPageLabel>
-			</State>
+
 			<State id="overtemperature">
 				<ValueType>String</ValueType>
 				<TriggerLabel>overtemperature</TriggerLabel>
@@ -442,17 +447,19 @@
 			</Field>
  
 			<Field id="ipNumber" type="textfield" defaultValue ="192.168.1.x" > 
-				<Label>device IP Number</Label>
+				<Label>Shelly device IP Number</Label>
 			</Field>
 			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
-				<Label>overwrite exiting IP number if needed</Label>
+				<Label>Overwrite exiting IP number if needed</Label>
 			</Field>
 
 			<Field id="shellyMAC" type="textfield" defaultValue ="" > 
-				<Label>device shelly mac number</Label>
+				<Label>Shelly device mac number</Label>
 			</Field>
 			<Field id="shellyMACLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
-				<Label> eg &gt;98F4ABF3D3E5&lt; must be 12 hex digits </Label>
+				<Label> eg &gt;98F4ABF3D3E5&lt; must be 12 hex digits
+overwrite only when creating a device manually
+   - not recommended</Label>
 			</Field>
 
 
@@ -508,84 +515,85 @@
 				<TriggerLabel>input</TriggerLabel>
 				<ControlPageLabel>input</ControlPageLabel>
 			</State>
-			<State id="Temperature_ext_0">
+			<State id="Temperature">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>Temperature_ext_0</TriggerLabel>
-				<ControlPageLabel>Temperature_ext_0</ControlPageLabel>
+				<TriggerLabel>Temperature</TriggerLabel>
+				<ControlPageLabel>Temperature</ControlPageLabel>
 			</State>
-			<State id="Temperature_ext_0MaxToday">
+			<State id="TemperatureMaxToday">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>Temperature_ext_0MaxToday</TriggerLabel>
-				<ControlPageLabel>Temperature_ext_0MaxToday</ControlPageLabel>
+				<TriggerLabel>TemperatureMaxToday</TriggerLabel>
+				<ControlPageLabel>TemperatureMaxToday</ControlPageLabel>
 			</State>
-			<State id="Temperature_ext_0MinToday">
+			<State id="TemperatureMinToday">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>Temperature_ext_0MinToday</TriggerLabel>
-				<ControlPageLabel>Temperature_ext_0MinToday</ControlPageLabel>
+				<TriggerLabel>TemperatureMinToday</TriggerLabel>
+				<ControlPageLabel>TemperatureMinToday</ControlPageLabel>
 			</State>
-			<State id="Temperature_ext_0MaxYesterday">
+			<State id="TemperatureMaxYesterday">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>Temperature_ext_0MaxYesterday</TriggerLabel>
-				<ControlPageLabel>Temperature_ext_0MaxYesterday</ControlPageLabel>
+				<TriggerLabel>TemperatureMaxYesterday</TriggerLabel>
+				<ControlPageLabel>TemperatureMaxYesterday</ControlPageLabel>
 			</State>
-			<State id="Temperature_ext_0MinYesterday">
+			<State id="TemperatureMinYesterday">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>Temperature_ext_0MinYesterday</TriggerLabel>
-				<ControlPageLabel>Temperature_ext_0MinYesterday</ControlPageLabel>
-			</State>
-
-			<State id="Temperature_ext_1">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>Temperature_ext_1</TriggerLabel>
-				<ControlPageLabel>Temperature_ext_1</ControlPageLabel>
-			</State>
-			<State id="Temperature_ext_1MaxToday">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>Temperature_ext_1MaxToday</TriggerLabel>
-				<ControlPageLabel>Temperature_ext_1MaxToday</ControlPageLabel>
-			</State>
-			<State id="Temperature_ext_1MinToday">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>Temperature_ext_1MinToday</TriggerLabel>
-				<ControlPageLabel>Temperature_ext_1MinToday</ControlPageLabel>
-			</State>
-			<State id="Temperature_ext_1MaxYesterday">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>Temperature_ext_1MaxYesterday</TriggerLabel>
-				<ControlPageLabel>Temperature_ext_1MaxYesterday</ControlPageLabel>
-			</State>
-			<State id="Temperature_ext_1MinYesterday">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>Temperature_ext_1MinYesterday</TriggerLabel>
-				<ControlPageLabel>Temperature_ext_1MinYesterday</ControlPageLabel>
+				<TriggerLabel>TemperatureMinYesterday</TriggerLabel>
+				<ControlPageLabel>TemperatureMinYesterday</ControlPageLabel>
 			</State>
 
+			<State id="Temperature_1">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Temperature_1</TriggerLabel>
+				<ControlPageLabel>Temperature_1</ControlPageLabel>
+			</State>
+			<State id="Temperature_1MaxToday">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Temperature_1MaxToday</TriggerLabel>
+				<ControlPageLabel>Temperature_1MaxToday</ControlPageLabel>
+			</State>
+			<State id="Temperature_1MinToday">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Temperature_1MinToday</TriggerLabel>
+				<ControlPageLabel>Temperature_1MinToday</ControlPageLabel>
+			</State>
+			<State id="Temperature_1MaxYesterday">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Temperature_1MaxYesterday</TriggerLabel>
+				<ControlPageLabel>Temperature_1MaxYesterday</ControlPageLabel>
+			</State>
+			<State id="Temperature_1MinYesterday">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Temperature_1MinYesterday</TriggerLabel>
+				<ControlPageLabel>Temperature_1MinYesterday</ControlPageLabel>
+			</State>
 
-			<State id="Temperature_ext_2">
+			<State id="Temperature_2">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>Temperature_ext_2</TriggerLabel>
-				<ControlPageLabel>Temperature_ext_2</ControlPageLabel>
+				<TriggerLabel>Temperature_2</TriggerLabel>
+				<ControlPageLabel>Temperature_2</ControlPageLabel>
 			</State>
-			<State id="Temperature_ext_2MaxToday">
+
+			<State id="Temperature_2MaxToday">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>Temperature_ext_2MaxToday</TriggerLabel>
-				<ControlPageLabel>Temperature_ext_2MaxToday</ControlPageLabel>
+				<TriggerLabel>Temperature_2MaxToday</TriggerLabel>
+				<ControlPageLabel>Temperature_2MaxToday</ControlPageLabel>
 			</State>
-			<State id="Temperature_ext_2MinToday">
+			<State id="Temperature_2MinToday">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>Temperature_ext_2MinToday</TriggerLabel>
-				<ControlPageLabel>Temperature_ext_2MinToday</ControlPageLabel>
+				<TriggerLabel>Temperature_2MinToday</TriggerLabel>
+				<ControlPageLabel>Temperature_2MinToday</ControlPageLabel>
 			</State>
-			<State id="Temperature_ext_2MaxYesterday">
+			<State id="Temperature_2MaxYesterday">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>Temperature_ext_2MaxYesterday</TriggerLabel>
-				<ControlPageLabel>Temperature_ext_2MaxYesterday</ControlPageLabel>
+				<TriggerLabel>Temperature_2MaxYesterday</TriggerLabel>
+				<ControlPageLabel>Temperature_2MaxYesterday</ControlPageLabel>
 			</State>
-			<State id="Temperature_ext_2MinYesterday">
+			<State id="Temperature_2MinYesterday">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>Temperature_ext_2MinYesterday</TriggerLabel>
-				<ControlPageLabel>Temperature_ext_2MinYesterday</ControlPageLabel>
+				<TriggerLabel>Temperature_2MinYesterday</TriggerLabel>
+				<ControlPageLabel>Temperature_2MinYesterday</ControlPageLabel>
 			</State>
+
 
 <!--   this is same for all: -->
 			<State id="report_url">
@@ -686,17 +694,19 @@ Parent and child share the same connection, the plugin creates two devices to be
 			</Field>
 
 			<Field id="ipNumber" type="textfield" defaultValue ="192.168.1.x"  visibleBindingId="parentIndigoId" visibleBindingValue="0"> 
-				<Label>device IP Number</Label>
+				<Label>Shelly device IP Number</Label>
 			</Field>
 			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey"  visibleBindingId="parentIndigoId" visibleBindingValue="0">
-				<Label>overwrite exiting IP number if needed</Label>
+				<Label>Overwrite exiting IP number if needed</Label>
 			</Field>
 
-			<Field id="shellyMAC" type="textfield" defaultValue =""  visibleBindingId="parentIndigoId" visibleBindingValue="0" > 
-				<Label>device shelly mac number</Label>
+			<Field id="shellyMAC" type="textfield" defaultValue =""  visibleBindingId="parentIndigoId" visibleBindingValue="0" readonly="true"> 
+				<Label>Shelly device mac number</Label>
 			</Field>
 			<Field id="shellyMACLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey"  visibleBindingId="parentIndigoId" visibleBindingValue="0">
-				<Label> eg &gt;98F4ABF3D3E5&lt; must be 12 hex digits </Label>
+				<Label> eg &gt;98F4ABF3D3E5&lt; must be 12 hex digits
+overwrite only when creating a device manually
+   - not recommended</Label>
 			</Field>
 
 
@@ -758,10 +768,10 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<TriggerLabel>overtemperature</TriggerLabel>
 				<ControlPageLabel>overtemperature</ControlPageLabel>
 			</State>
-			<State id="Temperature">
+			<State id="Temperature_internal">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>Temperature</TriggerLabel>
-				<ControlPageLabel>Temperature</ControlPageLabel>
+				<TriggerLabel>Temperature_internal</TriggerLabel>
+				<ControlPageLabel>Temperature_internal</ControlPageLabel>
 			</State>
 
 <!--   this is same for all: -->
@@ -852,21 +862,24 @@ Parent and child share the same connection, the plugin creates two devices to be
 			<Field id="SupportsTwoWhiteLevels"			 	 type="checkbox" defaultValue="false" hidden ="true"><Label>SupportsTwoWhiteLevels</Label></Field>
 			<Field id="SupportsTwoWhiteLevelsSimultaneously" type="checkbox" defaultValue="false" hidden ="true"><Label>SupportsTwoWhiteLevelsSimultaneously</Label></Field>
 			<Field id="label1"  type="label" >
-			<Label>Parameters for Shelly-Bulb device</Label>
+			<Label>Parameters for Shelly-Bulb device, 
+- Note the Color Temperature values go from 3000...6000k</Label>
 			</Field>
  
 			<Field id="ipNumber" type="textfield" defaultValue ="192.168.1.x" > 
-				<Label>device IP Number</Label>
+				<Label>Shelly device IP Number</Label>
 			</Field>
 			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
-				<Label>overwrite exiting IP number if needed</Label>
+				<Label>Overwrite exiting IP number if needed</Label>
 			</Field>
 
 			<Field id="shellyMAC" type="textfield" defaultValue ="" > 
-				<Label>device shelly mac number</Label>
+				<Label>Shelly device mac number</Label>
 			</Field>
 			<Field id="shellyMACLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
-				<Label> eg &gt;98F4ABF3D3E5&lt; must be 12 hex digits </Label>
+				<Label> eg &gt;98F4ABF3D3E5&lt; must be 12 hex digits
+overwrite only when creating a device manually
+   - not recommended</Label>
 			</Field>
 
 
@@ -1021,21 +1034,24 @@ Parent and child share the same connection, the plugin creates two devices to be
 			<Field id="SupportsTwoWhiteLevels"			 	 type="checkbox" defaultValue="false" hidden ="true"><Label>SupportsTwoWhiteLevels</Label></Field>
 			<Field id="SupportsTwoWhiteLevelsSimultaneously" type="checkbox" defaultValue="false" hidden ="true"><Label>SupportsTwoWhiteLevelsSimultaneously</Label></Field>
 			<Field id="label1"  type="label" >
-			<Label>Parameters for Shelly-RGW2 device</Label>
+			<Label>Parameters for Shelly-RGW2 device, 
+--- Note the Color Temperature values goeses from 3000...6000k</Label>
 			</Field>
  
 			<Field id="ipNumber" type="textfield" defaultValue ="192.168.1.x" > 
-				<Label>device IP Number</Label>
+				<Label>Shelly device IP Number</Label>
 			</Field>
 			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
-				<Label>overwrite exiting IP number if needed</Label>
+				<Label>Overwrite exiting IP number if needed</Label>
 			</Field>
 
 			<Field id="shellyMAC" type="textfield" defaultValue ="" > 
-				<Label>device shelly mac number</Label>
+				<Label>Shelly device mac number</Label>
 			</Field>
 			<Field id="shellyMACLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
-				<Label> eg &gt;98F4ABF3D3E5&lt; must be 12 hex digits </Label>
+				<Label> eg &gt;98F4ABF3D3E5&lt; must be 12 hex digits
+overwrite only when creating a device manually
+   - not recommended</Label>
 			</Field>
 
 
@@ -1194,17 +1210,19 @@ Parent and child share the same connection, the plugin creates two devices to be
 			</Field>
  
 			<Field id="ipNumber" type="textfield" defaultValue ="192.168.1.x" > 
-				<Label>device IP Number</Label>
+				<Label>Shelly device IP Number</Label>
 			</Field>
 			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
-				<Label>overwrite exiting IP number if needed</Label>
+				<Label>Overwrite exiting IP number if needed</Label>
 			</Field>
 
 			<Field id="shellyMAC" type="textfield" defaultValue ="" > 
-				<Label>device shelly mac number</Label>
+				<Label>Shelly device mac number</Label>
 			</Field>
 			<Field id="shellyMACLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
-				<Label> eg &gt;98F4ABF3D3E5&lt; must be 12 hex digits </Label>
+				<Label> eg &gt;98F4ABF3D3E5&lt; must be 12 hex digits
+overwrite only when creating a device manually
+   - not recommended</Label>
 			</Field>
 
 
@@ -1267,10 +1285,10 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<TriggerLabel>overtemperature</TriggerLabel>
 				<ControlPageLabel>overtemperature</ControlPageLabel>
 			</State>
-			<State id="Temperature">
+			<State id="Temperature_internal">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>Temperature</TriggerLabel>
-				<ControlPageLabel>Temperature</ControlPageLabel>
+				<TriggerLabel>Temperature_internal</TriggerLabel>
+				<ControlPageLabel>Temperature_internal</ControlPageLabel>
 			</State>
 
 <!--   not for rgb light bulb 
@@ -1355,6 +1373,158 @@ Parent and child share the same connection, the plugin creates two devices to be
 	</Device>
 
 
+	<Device type="dimmer" id="SHBDUO-1">
+	<Name>Shelly-Bulb-2</Name>
+
+		<ConfigUI>            
+			<Field id="isShellyDevice"     type="checkbox"     defaultValue="true" hidden="yes"> </Field>
+			<Field id="MSG" type="textfield"     defaultValue=""> <Label>message from plugin:</Label></Field>
+
+			<Field id="SupportsOnState" 					 type="checkbox" defaultValue="true"  hidden ="true"><Label>SupportsOnState</Label></Field>
+			<Field id="SupportsSensorValue" 				 type="checkbox" defaultValue="true"  hidden ="true"><Label>SupportsSensorValue</Label></Field>
+			<Field id="SupportsStatusRequest" 				 type="checkbox" defaultValue="false" hidden ="true"><Label>SupportsStatusRequest</Label></Field>
+			<Field id="AllowOnStateChange" 					 type="checkbox" defaultValue="false" hidden ="true"><Label>AllowOnStateChange</Label></Field>
+			<Field id="AllowSensorValueChange" 				 type="checkbox" defaultValue="false" hidden ="true"><Label>AllowSensorValueChange</Label></Field>
+			<Field id="WhiteTemperatureMin" 				 type="textfield" defaultValue="2700" hidden ="true" />
+			<Field id="WhiteTemperatureMax" 				 type="textfield" defaultValue="6500" hidden ="true" />
+
+			<Field id="SupportsColor" 						 type="checkbox" defaultValue="false" hidden ="true"><Label>SupportsColor</Label></Field>
+			<Field id="SupportsRGB" 						 type="checkbox" defaultValue="false" hidden ="true"><Label>SupportsRGB</Label></Field>
+			<Field id="SupportsWhite" 						 type="checkbox" defaultValue="true"  hidden ="true"><Label>SupportsWhite</Label></Field>
+			<Field id="SupportsWhiteTemperature" 			 type="checkbox" defaultValue="true"  hidden ="true"><Label>SupportsWhiteTemperature</Label></Field>
+			<Field id="SupportsRGBandWhiteSimultaneously" 	 type="checkbox" defaultValue="false" hidden ="true"><Label>SupportsRGBandWhiteSimultaneously</Label></Field>
+			<Field id="SupportsTwoWhiteLevels"			 	 type="checkbox" defaultValue="false" hidden ="true"><Label>SupportsTwoWhiteLevels</Label></Field>
+			<Field id="SupportsTwoWhiteLevelsSimultaneously" type="checkbox" defaultValue="false" hidden ="true"><Label>SupportsTwoWhiteLevelsSimultaneously</Label></Field>
+			<Field id="label1"  type="label" >
+			<Label>Parameters for Shelly-Dimmer/SL device, 
+- Note the Color Temperature values go from 2700...6500k</Label>
+			</Field>
+ 
+			<Field id="ipNumber" type="textfield" defaultValue ="192.168.1.x" > 
+				<Label>Shelly device IP Number</Label>
+			</Field>
+			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
+				<Label>Overwrite exiting IP number if needed</Label>
+			</Field>
+
+			<Field id="shellyMAC" type="textfield" defaultValue ="" > 
+				<Label>Shelly device mac number</Label>
+			</Field>
+			<Field id="shellyMACLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
+				<Label> eg &gt;98F4ABF3D3E5&lt; must be 12 hex digits
+overwrite only when creating a device manually
+   - not recommended</Label>
+			</Field>
+
+
+
+			<Field id="pollingFrequency"   type="menu" defaultValue="10" >
+				<Label>Polling frequency, how often the plugin requests status from the device:</Label>
+				<List>
+					<Option value="1"    >every 1 sec</Option>
+					<Option value="2"    >every 2 sec</Option>
+					<Option value="3"    >every 3 sec</Option>
+					<Option value="4"    >every 4 sec</Option>
+					<Option value="5"    >every 5 sec</Option>
+					<Option value="7"    >every 7 sec</Option>
+					<Option value="10"   >every 10 sec</Option>
+					<Option value="15"   >every 15 sec</Option>
+					<Option value="20"   >every 20 sec</Option>
+					<Option value="30"   >every 30 sec</Option>
+					<Option value="40"   >every 40 sec</Option>
+					<Option value="80"   >every 80 sec</Option>
+					<Option value="-1"   >automatic adaptive</Option>
+				</List>
+			</Field>
+			<Field id="pollingFrequencyLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
+				<Label>can be higher/adaptive if actions are setup on the devices</Label>
+			</Field>
+
+
+			<Field id="expirationSeconds"   type="menu" defaultValue="600" >
+				<Label>Device goes to EXPIRED w no message or answer after:</Label>
+				<List>
+					<Option value="180"   >after 3 minutes</Option>
+					<Option value="300"   >after 5 minutes</Option>
+					<Option value="600"   >after 10 minutes</Option>
+					<Option value="1800"  >after 30 minutes</Option>
+					<Option value="3600"  >after 1 hour</Option>
+				</List>
+			</Field>
+
+
+	</ConfigUI>
+
+		<States>
+
+
+			<State id="power">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>power</TriggerLabel>
+				<ControlPageLabel>power</ControlPageLabel>
+			</State>
+
+			<State id="action_from_Device">
+				<ValueType>String</ValueType>
+				<TriggerLabel>action_from_Device</TriggerLabel>
+				<ControlPageLabel>action_from_Device</ControlPageLabel>
+			</State>
+
+			<State id="has_update">
+				<ValueType>bool</ValueType>
+				<TriggerLabel>has_update</TriggerLabel>
+				<ControlPageLabel>has_update</ControlPageLabel>
+			</State>
+
+			<State id="shellyMAC">
+				<ValueType>String</ValueType>
+				<TriggerLabel>ShellyMAC</TriggerLabel>
+				<ControlPageLabel>ShellyMAC</ControlPageLabel>
+			</State>
+
+			<State id="lastMessageFromDevice">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastMessageFromDevice</TriggerLabel>
+				<ControlPageLabel>lastMessageFromDevice</ControlPageLabel>
+			</State>
+
+			<State id="created">
+				<ValueType>String</ValueType>
+				<TriggerLabel>created</TriggerLabel>
+				<ControlPageLabel>created</ControlPageLabel>
+			</State>
+
+			<State id="lastStatusChange">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastStatusChange</TriggerLabel>
+				<ControlPageLabel>lastStatusChange</ControlPageLabel>
+			</State>
+
+
+			<State id="rssi">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>rssi</TriggerLabel>
+				<ControlPageLabel>rssi</ControlPageLabel>
+			</State>
+
+			<State id="needs_software_Update">
+				<ValueType>String</ValueType>
+				<TriggerLabel>needs_software_Update</TriggerLabel>
+				<ControlPageLabel>needs_software_Update</ControlPageLabel>
+			</State>
+
+			<State id="expired">
+				<ValueType>String</ValueType>
+				<TriggerLabel>expired</TriggerLabel>
+				<ControlPageLabel>expired</ControlPageLabel>
+			</State>
+
+
+
+		</States>
+	</Device>
+
+
 
 	<Device type="sensor" id="SHHT-1">
 	<Name>Shelly-Temp-Hum</Name>
@@ -1373,17 +1543,19 @@ Parent and child share the same connection, the plugin creates two devices to be
 			</Field>
  
 			<Field id="ipNumber" type="textfield" defaultValue ="192.168.1.x" > 
-				<Label>device IP Number</Label>
+				<Label>Shelly device IP Number</Label>
 			</Field>
 			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
-				<Label>overwrite exiting IP number if needed</Label>
+				<Label>Overwrite exiting IP number if needed</Label>
 			</Field>
 
 			<Field id="shellyMAC" type="textfield" defaultValue ="" > 
-				<Label>device shelly mac number</Label>
+				<Label>Shelly device mac number</Label>
 			</Field>
 			<Field id="shellyMACLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
-				<Label> eg &gt;98F4ABF3D3E5&lt; must be 12 hex digits </Label>
+				<Label> eg &gt;98F4ABF3D3E5&lt; must be 12 hex digits
+overwrite only when creating a device manually
+   - not recommended</Label>
 			</Field>
 
 
@@ -1565,7 +1737,7 @@ Parent and child share the same connection, the plugin creates two devices to be
 			<Field id="isShellyDevice"     type="checkbox"     defaultValue="true" hidden="yes"> </Field>
 			<Field id="MSG" type="textfield"     defaultValue=""> <Label>message from plugin:</Label></Field>
 			<Field id="SupportsOnState" 					 type="checkbox" defaultValue="true"  hidden ="true"><Label>SupportsOnState</Label></Field>
-			<Field id="SupportsSensorValue" 				 type="checkbox" defaultValue="true"  hidden ="true"><Label>SupportsSensorValue</Label></Field>
+			<Field id="SupportsSensorValue" 				 type="checkbox" defaultValue="false"  hidden ="true"><Label>SupportsSensorValue</Label></Field>
 			<Field id="SupportsStatusRequest" 				 type="checkbox" defaultValue="true"  hidden ="true"><Label>SupportsStatusRequest</Label></Field>
 			<Field id="AllowOnStateChange" 					 type="checkbox" defaultValue="false" hidden ="true"><Label>AllowOnStateChange</Label></Field>
 			<Field id="AllowSensorValueChange" 				 type="checkbox" defaultValue="false" hidden ="true"><Label>AllowSensorValueChange</Label></Field>
@@ -1574,17 +1746,19 @@ Parent and child share the same connection, the plugin creates two devices to be
 			</Field>
  
 			<Field id="ipNumber" type="textfield" defaultValue ="192.168.1.x" > 
-				<Label>device IP Number</Label>
+				<Label>Shelly device IP Number</Label>
 			</Field>
 			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
-				<Label>overwrite exiting IP number if needed</Label>
+				<Label>Overwrite exiting IP number if needed</Label>
 			</Field>
 
 			<Field id="shellyMAC" type="textfield" defaultValue ="" > 
-				<Label>device shelly mac number</Label>
+				<Label>Shelly device mac number</Label>
 			</Field>
 			<Field id="shellyMACLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
-				<Label> eg &gt;98F4ABF3D3E5&lt; must be 12 hex digits </Label>
+				<Label> eg &gt;98F4ABF3D3E5&lt; must be 12 hex digits
+overwrite only when creating a device manually
+   - not recommended</Label>
 			</Field>
 
 

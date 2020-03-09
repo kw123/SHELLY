@@ -6,6 +6,49 @@
     </Field>
 
 
+    <Field id="paramsLabel" type="label" >  
+        <Label>Indigo plugin params</Label>
+    </Field>
+  <Field id="indigoFolderName"   type="textfield" defaultValue="Shelly"  >
+        <Label>Folder name for NEW shelly devices:</Label> 
+   </Field>
+
+   <Field id="portOfIndigoServer"   type="textfield" defaultValue="7987"  >
+        <Label>Set IP-PORT of http listener in PLUGIN:</Label> 
+   </Field>
+
+   <Field id="IndigoServerIPNumber"   type="textfield" defaultValue="192.168.1.x"  >
+        <Label>Set ip number of indigo server:</Label> 
+   </Field>
+   <Field id="IndigoServerIPNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">  
+        <Label>this is the indigo IP# and port that will be used on Shelly devices to connect to the plugin
+In action field on Shelly device enter:
+http://indigoIP#:port/anytext  </Label>
+    </Field>
+
+   <Field id="infoLabeluserID" type="label" fontSize="small" >
+        <Label>UserID  password, port of SHELLY devices</Label>
+   </Field>
+   
+   <Field id="userIDOfShellyDevices"   type="textfield" defaultValue=""  >
+        <Label>user id:</Label> 
+   </Field>
+   
+   <Field id="passwordOfShellyDevices"   type="textfield" defaultValue=""  >
+        <Label>password:</Label> 
+   </Field>
+
+   <Field id="portOfShellyDevices"   type="textfield" defaultValue="80"  >
+        <Label>Set IP-PORT of http SHELLY devices:</Label> 
+   </Field>
+   <Field id="portOfShellyDevicesLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">  
+        <Label>if you have not setup anything, leave userid, passwd empty and set port to 80 - std http</Label>
+    </Field>
+
+  <Field id="otherLabel" type="label" fontSize="small" >
+        <Label>Other parameters</Label>
+   </Field>
+
    <Field    id="tempUnits"   type="menu" defaultValue="Celsius">
         <Label>Temperature displayed in:</Label>
         <List>
@@ -22,35 +65,6 @@
             <Option value="2" >2</Option>
         </List>
    </Field>
-   <Field id="indigoFolderName"   type="textfield" defaultValue="Shelly"  >
-        <Label>Folder name for NEW shelly devices:</Label> 
-   </Field>
-
-  
-
-   <Field id="portOfIndigoServer"   type="textfield" defaultValue="7987"  >
-        <Label>Set IP-PORT of http listener in PLUGIN:</Label> 
-   </Field>
-
-   <Field id="IndigoServerIPNumber"   type="textfield" defaultValue="192.168.1.x"  >
-        <Label>Set ip number of indigo server:</Label> 
-   </Field>
-
-   <Field id="infoLabeluserID" type="label" fontSize="small" >
-        <Label>UserID and passwords are used to connect to the SHELLY devices, keep empty if no userid / password setup</Label>
-   </Field>
-   
-   <Field id="userIDOfShellyDevices"   type="textfield" defaultValue=""  >
-        <Label>user id:</Label> 
-   </Field>
-   
-   <Field id="passwordOfShellyDevices"   type="textfield" defaultValue=""  >
-        <Label>password:</Label> 
-   </Field>
-
-   <Field id="portOfShellyDevices"   type="textfield" defaultValue="80"  >
-        <Label>Set IP-PORT of http SHELLY devices:</Label> 
-   </Field>
 
     <Field    id="unfiCurl"              type="menu" defaultValue="/usr/bin/curl"  tooltip="To support different SSL standards: for elCapitan and lower use curl, for higher OS-X you can try python requests"  > 
     <Label>Use curl or python-requests for web page access:</Label> 
@@ -60,24 +74,24 @@
             <Option value="requests"  				>python requests</Option>
         </List>
     </Field>
+   <Field id="unfiCurlLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">  
+        <Label>the plugin can use curl or python connect calls to connect to the shelly devices, if you have an older OSX use curl</Label>
+    </Field>
 
 
    
     <Field    id="SQLLoggingEnable"   type="menu" defaultValue="on-on" tooltip="">
-        <Label>Configure SQL logger for specific variables and devices (not) log</Label>
+        <Label>Configure SQL logger for device-States (not) to log</Label>
         <List>
             <Option value="on-on"   >log normal = log everything </Option>
-            <Option value="off-on"  >disable devices/states -  enable variables</Option>
-            <Option value="on-off"  >enable  devices/states - disable variables</Option>
-            <Option value="off-off"	>disable devices/states - disable variables</Option>
+            <Option value="off-off"	>disable loggin for specific dev-sates</Option>
         </List>    
    </Field>
    <Field id="SQLLoggingEnableLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">  
-        <Label>This is only for: dev/states = Pi_x_Time etc, variables: pi_IN_xx. This saves SQL logger cpu and disk-space. There is no (good) reason to write them to the SQL logger</Label>
+        <Label>This is only for: dev/states = lastMessage etc,  There is no (good) reason to write them to the SQL logger</Label>
     </Field>
 
-    <Field id="infoLabel99" type="label"> <Label>Debug area for plugin:</Label>  </Field>
-       _debugAreas = [","","","Output","Ping","SetupShelly","Actions","SQLlogger","SQLSuppresslog","Output", "Special"]
+    <Field id="infoLabel99" type="label"> <Label>Debug areas for plugin:</Label>  </Field>
  
     <Field    id="debugSetupDevices"   type="checkbox"  defaultValue="false"       tooltip=""> <Label> Debug...                   ... (1)  SetupDevice:</Label>  </Field>
     <Field    id="debugHTTPlistener"   type="checkbox"  defaultValue="false"       tooltip=""> <Label>     ... (2)  HTTP listener:</Label>  </Field>

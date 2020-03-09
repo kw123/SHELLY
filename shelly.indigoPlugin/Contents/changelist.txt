@@ -1,3 +1,27 @@
+Added features / changes in v7.1.3 @ 2020-03-05
+===================================================
+
+1. added support for shelly lightbulb DUO
+2. several smaller issues fixed (menus ...)
+3. changed Temerature schema:
+- internal now Temperature_internal
+- external temp: Temperature  / Temperature_1 / Temperature_2
+4. reload time now ~ 2secs, down from ~12secs
+5. when devices expire = no message for time > x:( set in device edit ) image in status column goes to grey
+6. added self test for HTTP listener (send message to 127.0.0.1:port#/test)
+7. the plugin now automatically recognizes the temp unit from each shelly device
+8. fixed the device states should NOT be logged
+9. added print help to logfile
+
+
+
+
+Added features / changes in v7.0.2 @ 2020-03-05
+===================================================
+
+1. fixed lastMessage was not updated for SHELLY-25 relay child device
+
+
 Added features / changes in v7.0.1 @ 2020-03-05
 ===================================================
 
