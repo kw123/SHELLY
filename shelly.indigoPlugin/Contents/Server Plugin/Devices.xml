@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <Devices>
 
-	<Device type="relay" id="SHEM">
-	<Name>Shelly-Power 2 Channels - 1 Relay</Name>
+	<Device type="relay" id="shellyem">
+	<Name>Shelly-EM - Relay (SHEM) </Name>
 	<UiDisplayStateId>status</UiDisplayStateId>
 
 		<ConfigUI>            
@@ -15,33 +15,24 @@
 			<Field id="AllowOnStateChange" 					 type="checkbox" defaultValue="false" hidden ="true"><Label>AllowOnStateChange</Label></Field>
 			<Field id="AllowSensorValueChange" 				 type="checkbox" defaultValue="false" hidden ="true"><Label>AllowSensorValueChange</Label></Field>
 			<Field id="label1"  type="label" >
-			<Label>Parameters for Shelly-EM device</Label>
+			<Label>Parameters for Shelly-EM device, thsi device hosts only the relay part, the EM part is hosted by the otehr 2 EM devices</Label>
 			</Field>
  
 			<Field id="ipNumber" type="textfield" defaultValue ="192.168.1.x" > 
 				<Label>Shelly device IP Number</Label>
 			</Field>
-			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
+			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey ">
 				<Label>Overwrite exiting IP number if needed</Label>
 			</Field>
 
-			<Field id="shellyMAC" type="textfield" defaultValue ="" > 
+			<Field id="MAC" type="textfield" defaultValue =""  readonly="yes"> 
 				<Label>Shelly device mac number</Label>
 			</Field>
-			<Field id="shellyMACLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
-				<Label> eg &gt;98F4ABF3D3E5&lt; must be 12 hex digits
-overwrite only when creating a device manually
-   - not recommended</Label>
-			</Field>
 
 
-			<Field id="pollingFrequency"   type="menu" defaultValue="10" >
+			<Field id="pollingFrequency"   type="menu" defaultValue="-1" >
 				<Label>Polling frequency, how often the plugin requests status from the device:</Label>
 				<List>
-					<Option value="1"    >every 1 sec</Option>
-					<Option value="2"    >every 2 sec</Option>
-					<Option value="3"    >every 3 sec</Option>
-					<Option value="4"    >every 4 sec</Option>
 					<Option value="5"    >every 5 sec</Option>
 					<Option value="7"    >every 7 sec</Option>
 					<Option value="10"   >every 10 sec</Option>
@@ -50,6 +41,8 @@ overwrite only when creating a device manually
 					<Option value="30"   >every 30 sec</Option>
 					<Option value="40"   >every 40 sec</Option>
 					<Option value="80"   >every 80 sec</Option>
+					<Option value="120"   >every 2 minutes</Option>
+					<Option value="180"   >every 3 minutes</Option>
 					<Option value="-1"   >automatic adaptive</Option>
 				</List>
 			</Field>
@@ -69,59 +62,24 @@ overwrite only when creating a device manually
 				</List>
 			</Field>
 
+
 	</ConfigUI>
 
 		<States>
 
 <!--   this is dev specific -->
 
-			<State id="power_0">
-				<ValueType>Integer</ValueType>
-				<TriggerLabel>power_0</TriggerLabel>
-				<ControlPageLabel>power_0</ControlPageLabel>
-			</State>
-
-			<State id="voltage_0">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>voltage_0</TriggerLabel>
-				<ControlPageLabel>voltage_0</ControlPageLabel>
-			</State>
-
-			<State id="reactive_0">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>reactive_0</TriggerLabel>
-				<ControlPageLabel>reactive_0</ControlPageLabel>
-			</State>
-
-			<State id="power_1">
-				<ValueType>Integer</ValueType>
-				<TriggerLabel>power_1</TriggerLabel>
-				<ControlPageLabel>power_1</ControlPageLabel>
-			</State>
-
-			<State id="voltage_1">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>voltage_1</TriggerLabel>
-				<ControlPageLabel>voltage_1</ControlPageLabel>
-			</State>
-
-			<State id="reactive_1">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>reactive_1</TriggerLabel>
-				<ControlPageLabel>reactive_1</ControlPageLabel>
-			</State>
 			<State id="overpower">
 				<ValueType>String</ValueType>
 				<TriggerLabel>overpower</TriggerLabel>
 				<ControlPageLabel>overpower</ControlPageLabel>
 			</State>
 
-
 <!--   this is same for all: -->
-			<State id="report_url">
+			<State id="lastSuccessfullConfigPush">
 				<ValueType>String</ValueType>
-				<TriggerLabel>report_url</TriggerLabel>
-				<ControlPageLabel>report_url</ControlPageLabel>
+				<TriggerLabel>lastSuccessfullConfigPush</TriggerLabel>
+				<ControlPageLabel>lastSuccessfullConfigPush</ControlPageLabel>
 			</State>
 
 			<State id="action_from_Device">
@@ -136,10 +94,168 @@ overwrite only when creating a device manually
 				<ControlPageLabel>has_update</ControlPageLabel>
 			</State>
 
-			<State id="shellyMAC">
+			<State id="MAC">
 				<ValueType>String</ValueType>
-				<TriggerLabel>ShellyMAC</TriggerLabel>
-				<ControlPageLabel>ShellyMAC</ControlPageLabel>
+				<TriggerLabel>MAC</TriggerLabel>
+				<ControlPageLabel>MAC</ControlPageLabel>
+			</State>
+
+			<State id="lastMessageFromDevice">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastMessageFromDevice</TriggerLabel>
+				<ControlPageLabel>lastMessageFromDevice</ControlPageLabel>
+			</State>
+
+			<State id="created">
+				<ValueType>String</ValueType>
+				<TriggerLabel>created</TriggerLabel>
+				<ControlPageLabel>created</ControlPageLabel>
+			</State>
+
+			<State id="lastStatusChange">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastStatusChange</TriggerLabel>
+				<ControlPageLabel>lastStatusChange</ControlPageLabel>
+			</State>
+
+
+			<State id="rssi">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>rssi</TriggerLabel>
+				<ControlPageLabel>rssi</ControlPageLabel>
+			</State>
+
+			<State id="needs_software_Update">
+				<ValueType>String</ValueType>
+				<TriggerLabel>needs_software_Update</TriggerLabel>
+				<ControlPageLabel>needs_software_Update</ControlPageLabel>
+			</State>
+
+			<State id="expired">
+				<ValueType>String</ValueType>
+				<TriggerLabel>expired</TriggerLabel>
+				<ControlPageLabel>expired</ControlPageLabel>
+			</State>
+
+
+		</States>
+	</Device>
+
+	<Device type="sensor" id="shellyem-child">
+	<Name>Shelly-EM (SHEM) child</Name>
+	<UiDisplayStateId>status</UiDisplayStateId>
+
+		<ConfigUI>            
+			<Field id="isShellyDevice"     type="checkbox"     defaultValue="true" hidden="yes"> </Field>
+			<Field id="MSG" type="textfield"     defaultValue=""> <Label>message from plugin:</Label></Field>
+
+			<Field id="SupportsOnState" 					 type="checkbox" defaultValue="true"  hidden ="true"><Label>SupportsOnState</Label></Field>
+			<Field id="SupportsSensorValue" 				 type="checkbox" defaultValue="true"  hidden ="true"><Label>SupportsSensorValue</Label></Field>
+			<Field id="SupportsStatusRequest" 				 type="checkbox" defaultValue="true"  hidden ="true"><Label>SupportsStatusRequest</Label></Field>
+			<Field id="AllowOnStateChange" 					 type="checkbox" defaultValue="false" hidden ="true"><Label>AllowOnStateChange</Label></Field>
+			<Field id="AllowSensorValueChange" 				 type="checkbox" defaultValue="false" hidden ="true"><Label>AllowSensorValueChange</Label></Field>
+			<Field id="label1"  type="label" >
+			<Label>Parameters for Shelly-EM device, this device hosts ONE set of the energy sensors</Label>
+			</Field>
+ 
+ 
+			<Field id="parentIndigoId" type="textfield" defaultValue ="0"  readonly="yes"> 
+				<Label>The indigo Id of the hosting device</Label>
+			</Field>
+
+			<Field id="ipNumber" type="textfield" defaultValue ="192.168.1.x" readonly="yes"> 
+				<Label>Shelly device IP Number</Label>
+			</Field>
+
+			<Field id="MAC" type="textfield" defaultValue ="" readonly="yes" > 
+				<Label>Shelly device mac number</Label>
+			</Field>
+
+			<Field id="pollingFrequency"   type="textfield" defaultValue="-1" readonly="yes">
+				<Label>Polling frequency, how often the plugin requests status from the device:</Label>
+			</Field>
+
+
+			<Field id="expirationSeconds"   type="textfield" defaultValue="3600"  readonly="yes">
+			</Field>
+			<Field id="displaySelect" type="menu"     defaultValue="power"> <Label>Property to display in the State Column:</Label>
+			<List>
+				<Option value="power"  		>power</Option>
+				<Option value="voltage"  	>voltage</Option>
+				<Option value="reactive"  	>reactive</Option>
+				<Option value="energy"  	>energy</Option>
+				<Option value="energyReturned"	>energyReturned</Option>
+			</List>
+			</Field>
+
+
+	</ConfigUI>
+
+		<States>
+
+<!--   this is dev specific -->
+
+
+			<State id="power">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>power</TriggerLabel>
+				<ControlPageLabel>power</ControlPageLabel>
+			</State>
+
+			<State id="voltage">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>voltage</TriggerLabel>
+				<ControlPageLabel>voltage</ControlPageLabel>
+			</State>
+
+			<State id="reactive">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>reactive</TriggerLabel>
+				<ControlPageLabel>reactive</ControlPageLabel>
+			</State>
+
+			<State id="energy">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>energy</TriggerLabel>
+				<ControlPageLabel>energy</ControlPageLabel>
+			</State>
+
+			<State id="energyReturned">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>energyReturned</TriggerLabel>
+				<ControlPageLabel>energyReturned</ControlPageLabel>
+			</State>
+
+			<State id="childNo">
+				<ValueType>String</ValueType>
+				<TriggerLabel>childNo</TriggerLabel>
+				<ControlPageLabel>childNo</ControlPageLabel>
+			</State>
+
+
+<!--   this is same for all: -->
+			<State id="lastSuccessfullConfigPush">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastSuccessfullConfigPush</TriggerLabel>
+				<ControlPageLabel>lastSuccessfullConfigPush</ControlPageLabel>
+			</State>
+
+			<State id="action_from_Device">
+				<ValueType>String</ValueType>
+				<TriggerLabel>action_from_Device</TriggerLabel>
+				<ControlPageLabel>action_from_Device</ControlPageLabel>
+			</State>
+
+			<State id="has_update">
+				<ValueType>bool</ValueType>
+				<TriggerLabel>has_update</TriggerLabel>
+				<ControlPageLabel>has_update</ControlPageLabel>
+			</State>
+
+			<State id="MAC">
+				<ValueType>String</ValueType>
+				<TriggerLabel>MAC</TriggerLabel>
+				<ControlPageLabel>MAC</ControlPageLabel>
 			</State>
 
 			<State id="lastMessageFromDevice">
@@ -184,8 +300,316 @@ overwrite only when creating a device manually
 	</Device>
 
 
-	<Device type="relay" id="SHSW-PM">
-	<Name>Shelly-1PM Relay</Name>
+	<Device type="relay" id="shellyem3">
+	<Name>Shelly-EM3 - Relay (SHEM3) </Name>
+	<UiDisplayStateId>status</UiDisplayStateId>
+
+		<ConfigUI>            
+			<Field id="isShellyDevice"     type="checkbox"     defaultValue="true" hidden="yes"> </Field>
+			<Field id="MSG" type="textfield"     defaultValue=""> <Label>message from plugin:</Label></Field>
+
+			<Field id="SupportsOnState" 					 type="checkbox" defaultValue="true"  hidden ="true"><Label>SupportsOnState</Label></Field>
+			<Field id="SupportsSensorValue" 				 type="checkbox" defaultValue="true"  hidden ="true"><Label>SupportsSensorValue</Label></Field>
+			<Field id="SupportsStatusRequest" 				 type="checkbox" defaultValue="true"  hidden ="true"><Label>SupportsStatusRequest</Label></Field>
+			<Field id="AllowOnStateChange" 					 type="checkbox" defaultValue="false" hidden ="true"><Label>AllowOnStateChange</Label></Field>
+			<Field id="AllowSensorValueChange" 				 type="checkbox" defaultValue="false" hidden ="true"><Label>AllowSensorValueChange</Label></Field>
+			<Field id="label1"  type="label" >
+			<Label>Parameters for Shelly-EM3 device, thsi device hosts only the relay part, the EM part is hosted by the other 3 EM devices</Label>
+			</Field>
+ 
+			<Field id="ipNumber" type="textfield" defaultValue ="192.168.1.x" > 
+				<Label>Shelly device IP Number</Label>
+			</Field>
+			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey ">
+				<Label>Overwrite exiting IP number if needed</Label>
+			</Field>
+
+			<Field id="MAC" type="textfield" defaultValue =""  readonly="yes"> 
+				<Label>Shelly device mac number</Label>
+			</Field>
+
+
+			<Field id="pollingFrequency"   type="menu" defaultValue="-1" >
+				<Label>Polling frequency, how often the plugin requests status from the device:</Label>
+				<List>
+					<Option value="5"    >every 5 sec</Option>
+					<Option value="7"    >every 7 sec</Option>
+					<Option value="10"   >every 10 sec</Option>
+					<Option value="15"   >every 15 sec</Option>
+					<Option value="20"   >every 20 sec</Option>
+					<Option value="30"   >every 30 sec</Option>
+					<Option value="40"   >every 40 sec</Option>
+					<Option value="80"   >every 80 sec</Option>
+					<Option value="120"   >every 2 minutes</Option>
+					<Option value="180"   >every 3 minutes</Option>
+					<Option value="-1"   >automatic adaptive</Option>
+				</List>
+			</Field>
+			<Field id="pollingFrequencyLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
+				<Label>can be higher/adaptive if actions are setup on the devices</Label>
+			</Field>
+
+
+			<Field id="expirationSeconds"   type="menu" defaultValue="3600" >
+				<Label>Device goes to EXPIRED w no message or answer after:</Label>
+				<List>
+					<Option value="180"   >after 3 minutes</Option>
+					<Option value="300"   >after 5 minutes</Option>
+					<Option value="600"   >after 10 minutes</Option>
+					<Option value="1800"  >after 30 minutes</Option>
+					<Option value="3600"  >after 1 hour</Option>
+				</List>
+			</Field>
+
+
+	</ConfigUI>
+
+		<States>
+
+<!--   this is dev specific -->
+
+			<State id="overpower">
+				<ValueType>String</ValueType>
+				<TriggerLabel>overpower</TriggerLabel>
+				<ControlPageLabel>overpower</ControlPageLabel>
+			</State>
+
+<!--   this is same for all: -->
+			<State id="lastSuccessfullConfigPush">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastSuccessfullConfigPush</TriggerLabel>
+				<ControlPageLabel>lastSuccessfullConfigPush</ControlPageLabel>
+			</State>
+
+			<State id="action_from_Device">
+				<ValueType>String</ValueType>
+				<TriggerLabel>action_from_Device</TriggerLabel>
+				<ControlPageLabel>action_from_Device</ControlPageLabel>
+			</State>
+
+			<State id="has_update">
+				<ValueType>bool</ValueType>
+				<TriggerLabel>has_update</TriggerLabel>
+				<ControlPageLabel>has_update</ControlPageLabel>
+			</State>
+
+			<State id="MAC">
+				<ValueType>String</ValueType>
+				<TriggerLabel>MAC</TriggerLabel>
+				<ControlPageLabel>MAC</ControlPageLabel>
+			</State>
+
+			<State id="lastMessageFromDevice">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastMessageFromDevice</TriggerLabel>
+				<ControlPageLabel>lastMessageFromDevice</ControlPageLabel>
+			</State>
+
+			<State id="created">
+				<ValueType>String</ValueType>
+				<TriggerLabel>created</TriggerLabel>
+				<ControlPageLabel>created</ControlPageLabel>
+			</State>
+
+			<State id="lastStatusChange">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastStatusChange</TriggerLabel>
+				<ControlPageLabel>lastStatusChange</ControlPageLabel>
+			</State>
+
+
+			<State id="rssi">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>rssi</TriggerLabel>
+				<ControlPageLabel>rssi</ControlPageLabel>
+			</State>
+
+			<State id="needs_software_Update">
+				<ValueType>String</ValueType>
+				<TriggerLabel>needs_software_Update</TriggerLabel>
+				<ControlPageLabel>needs_software_Update</ControlPageLabel>
+			</State>
+
+			<State id="expired">
+				<ValueType>String</ValueType>
+				<TriggerLabel>expired</TriggerLabel>
+				<ControlPageLabel>expired</ControlPageLabel>
+			</State>
+
+
+		</States>
+	</Device>
+
+	<Device type="sensor" id="shellyem3-child">
+	<Name>Shelly-EM3 (SHEM3) child</Name>
+	<UiDisplayStateId>status</UiDisplayStateId>
+
+		<ConfigUI>            
+			<Field id="isShellyDevice"     type="checkbox"     defaultValue="true" hidden="yes"> </Field>
+			<Field id="MSG" type="textfield"     defaultValue=""> <Label>message from plugin:</Label></Field>
+
+			<Field id="SupportsOnState" 					 type="checkbox" defaultValue="true"  hidden ="true"><Label>SupportsOnState</Label></Field>
+			<Field id="SupportsSensorValue" 				 type="checkbox" defaultValue="true"  hidden ="true"><Label>SupportsSensorValue</Label></Field>
+			<Field id="SupportsStatusRequest" 				 type="checkbox" defaultValue="true"  hidden ="true"><Label>SupportsStatusRequest</Label></Field>
+			<Field id="AllowOnStateChange" 					 type="checkbox" defaultValue="false" hidden ="true"><Label>AllowOnStateChange</Label></Field>
+			<Field id="AllowSensorValueChange" 				 type="checkbox" defaultValue="false" hidden ="true"><Label>AllowSensorValueChange</Label></Field>
+			<Field id="label1"  type="label" >
+			<Label>Parameters for Shelly-EM3 device, this device hosts ONE set of the energy sensors</Label>
+			</Field>
+ 
+ 
+			<Field id="parentIndigoId" type="textfield" defaultValue ="0"  readonly="yes"> 
+				<Label>The indigo Id of the hosting device</Label>
+			</Field>
+
+			<Field id="ipNumber" type="textfield" defaultValue ="192.168.1.x" readonly="yes"> 
+				<Label>Shelly device IP Number</Label>
+			</Field>
+
+			<Field id="MAC" type="textfield" defaultValue ="" readonly="yes" > 
+				<Label>Shelly device mac number</Label>
+			</Field>
+
+			<Field id="pollingFrequency"   type="textfield" defaultValue="-1" readonly="yes">
+				<Label>Polling frequency, how often the plugin requests status from the device:</Label>
+			</Field>
+
+
+			<Field id="expirationSeconds"   type="textfield" defaultValue="3600"  readonly="yes">
+			</Field>
+			<Field id="displaySelect" type="menu"     defaultValue="power"> <Label>Property to display in the State Column:</Label>
+			<List>
+				<Option value="power"  		>power</Option>
+				<Option value="voltage"  	>voltage</Option>
+				<Option value="current"  	>current</Option>
+				<Option value="reactive"  	>reactive</Option>
+				<Option value="energy"  	>energy</Option>
+				<Option value="energyReturned"	>energyReturned</Option>
+			</List>
+			</Field>
+
+
+	</ConfigUI>
+
+		<States>
+
+<!--   this is dev specific -->
+
+
+
+			<State id="power">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>power</TriggerLabel>
+				<ControlPageLabel>power</ControlPageLabel>
+			</State>
+
+			<State id="voltage">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>voltage</TriggerLabel>
+				<ControlPageLabel>voltage</ControlPageLabel>
+			</State>
+
+
+			<State id="current">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>current</TriggerLabel>
+				<ControlPageLabel>current</ControlPageLabel>
+			</State>
+
+			<State id="reactive">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>reactive</TriggerLabel>
+				<ControlPageLabel>reactive</ControlPageLabel>
+			</State>
+
+			<State id="energy">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>energy</TriggerLabel>
+				<ControlPageLabel>energy</ControlPageLabel>
+			</State>
+
+			<State id="energyReturned">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>energyReturned</TriggerLabel>
+				<ControlPageLabel>energyReturned</ControlPageLabel>
+			</State>
+
+			<State id="childNo">
+				<ValueType>String</ValueType>
+				<TriggerLabel>childNo</TriggerLabel>
+				<ControlPageLabel>childNo</ControlPageLabel>
+			</State>
+
+
+<!--   this is same for all: -->
+			<State id="lastSuccessfullConfigPush">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastSuccessfullConfigPush</TriggerLabel>
+				<ControlPageLabel>lastSuccessfullConfigPush</ControlPageLabel>
+			</State>
+
+			<State id="action_from_Device">
+				<ValueType>String</ValueType>
+				<TriggerLabel>action_from_Device</TriggerLabel>
+				<ControlPageLabel>action_from_Device</ControlPageLabel>
+			</State>
+
+			<State id="has_update">
+				<ValueType>bool</ValueType>
+				<TriggerLabel>has_update</TriggerLabel>
+				<ControlPageLabel>has_update</ControlPageLabel>
+			</State>
+
+			<State id="MAC">
+				<ValueType>String</ValueType>
+				<TriggerLabel>MAC</TriggerLabel>
+				<ControlPageLabel>MAC</ControlPageLabel>
+			</State>
+
+			<State id="lastMessageFromDevice">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastMessageFromDevice</TriggerLabel>
+				<ControlPageLabel>lastMessageFromDevice</ControlPageLabel>
+			</State>
+
+			<State id="created">
+				<ValueType>String</ValueType>
+				<TriggerLabel>created</TriggerLabel>
+				<ControlPageLabel>created</ControlPageLabel>
+			</State>
+
+			<State id="lastStatusChange">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastStatusChange</TriggerLabel>
+				<ControlPageLabel>lastStatusChange</ControlPageLabel>
+			</State>
+
+
+			<State id="rssi">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>rssi</TriggerLabel>
+				<ControlPageLabel>rssi</ControlPageLabel>
+			</State>
+
+			<State id="needs_software_Update">
+				<ValueType>String</ValueType>
+				<TriggerLabel>needs_software_Update</TriggerLabel>
+				<ControlPageLabel>needs_software_Update</ControlPageLabel>
+			</State>
+
+			<State id="expired">
+				<ValueType>String</ValueType>
+				<TriggerLabel>expired</TriggerLabel>
+				<ControlPageLabel>expired</ControlPageLabel>
+			</State>
+
+
+		</States>
+	</Device>
+
+
+	<Device type="relay" id="shelly1pm">
+	<Name>Shelly-Relay (PM)</Name>
 	<UiDisplayStateId>status</UiDisplayStateId>
 
 		<ConfigUI>            
@@ -208,24 +632,15 @@ overwrite only when creating a device manually
 				<Label>Overwrite exiting IP number if needed</Label>
 			</Field>
 
-			<Field id="shellyMAC" type="textfield" defaultValue ="" > 
+			<Field id="MAC" type="textfield" defaultValue =""  readonly="yes"> 
 				<Label>Shelly device mac number</Label>
 			</Field>
-			<Field id="shellyMACLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
-				<Label> eg &gt;98F4ABF3D3E5&lt; must be 12 hex digits
-overwrite only when creating a device manually
-   - not recommended</Label>
-			</Field>
 
 
 
-			<Field id="pollingFrequency"   type="menu" defaultValue="10" >
+			<Field id="pollingFrequency"   type="menu" defaultValue="-1" >
 				<Label>Polling frequency, how often the plugin requests status from the device:</Label>
 				<List>
-					<Option value="1"    >every 1 sec</Option>
-					<Option value="2"    >every 2 sec</Option>
-					<Option value="3"    >every 3 sec</Option>
-					<Option value="4"    >every 4 sec</Option>
 					<Option value="5"    >every 5 sec</Option>
 					<Option value="7"    >every 7 sec</Option>
 					<Option value="10"   >every 10 sec</Option>
@@ -234,6 +649,8 @@ overwrite only when creating a device manually
 					<Option value="30"   >every 30 sec</Option>
 					<Option value="40"   >every 40 sec</Option>
 					<Option value="80"   >every 80 sec</Option>
+					<Option value="120"   >every 2 minutes</Option>
+					<Option value="180"   >every 3 minutes</Option>
 					<Option value="-1"   >automatic adaptive</Option>
 				</List>
 			</Field>
@@ -253,6 +670,47 @@ overwrite only when creating a device manually
 				</List>
 			</Field>
 
+
+<!--     / and ? not good in xml tags, replace w -.- and QqQ, then  reverse in plugin .replace("-.-","/").replace("QqQ","?") 
+
+-->
+			<Field id="SENDTOSHELLYDEVICE-settings-.-relay-.-0QqQdefault_state"   type="menu" defaultValue="none" >
+				<Label>Set relay state at power on:</Label>
+				<List>
+					<Option value="none"      >do not set</Option>
+					<Option value="on"        >on</Option>
+					<Option value="off"       >off</Option>
+					<Option value="last"      >last</Option>
+					<Option value="switch"    >switch</Option>
+				</List>
+			</Field>
+
+
+			<Field id="SENDTOSHELLYDEVICE-settings-.-relay-.-0QqQbtn_type"   type="menu" defaultValue="none" >
+				<Label>Set button type :</Label>
+				<List>
+					<Option value="none"      >do not set</Option>
+					<Option value="toggle"    >toggle</Option>
+					<Option value="edge"      >edge</Option>
+					<Option value="momentary" >momentary</Option>
+					<Option value="detached"  >detached</Option>
+					<Option value="action"    >action</Option>
+					<Option value="momentary_on_release"    >momentary_on_release</Option>
+				</List>
+			</Field>
+
+
+			<Field id="SENDTOSHELLYDEVICE-settings-.-relay-.-0QqQbtn_reverse"   type="menu" defaultValue="none" >
+				<Label>Set button reverse / normal :</Label>
+				<List>
+					<Option value="none"      >do not set</Option>
+					<Option value="0"         >normal</Option>
+					<Option value="1"         >reverse</Option>
+				</List>
+			</Field>
+
+
+
 	</ConfigUI>
 
 		<States>
@@ -265,93 +723,30 @@ overwrite only when creating a device manually
 				<ControlPageLabel>power</ControlPageLabel>
 			</State>
 
+
+			<State id="energy">
+				<ValueType>Integer</ValueType>
+				<TriggerLabel>energy</TriggerLabel>
+				<ControlPageLabel>energy</ControlPageLabel>
+			</State>
+
+
+
 			<State id="input">
-				<ValueType>Number</ValueType>
+				<ValueType>String</ValueType>
 				<TriggerLabel>input</TriggerLabel>
 				<ControlPageLabel>input</ControlPageLabel>
+			</State>
+
+			<State id="input_long">
+				<ValueType>String</ValueType>
+				<TriggerLabel>input_long</TriggerLabel>
+				<ControlPageLabel>input_long</ControlPageLabel>
 			</State>
 			<State id="Temperature_internal">
 				<ValueType>Number</ValueType>
 				<TriggerLabel>Temperature_internal</TriggerLabel>
 				<ControlPageLabel>Temperature_internal</ControlPageLabel>
-			</State>
-			<State id="Temperature">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>Temperature</TriggerLabel>
-				<ControlPageLabel>Temperature</ControlPageLabel>
-			</State>
-			<State id="TemperatureMaxToday">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>TemperatureMaxToday</TriggerLabel>
-				<ControlPageLabel>TemperatureMaxToday</ControlPageLabel>
-			</State>
-			<State id="TemperatureMinToday">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>TemperatureMinToday</TriggerLabel>
-				<ControlPageLabel>TemperatureMinToday</ControlPageLabel>
-			</State>
-			<State id="TemperatureMaxYesterday">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>TemperatureMaxYesterday</TriggerLabel>
-				<ControlPageLabel>TemperatureMaxYesterday</ControlPageLabel>
-			</State>
-			<State id="TemperatureMinYesterday">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>TemperatureMinYesterday</TriggerLabel>
-				<ControlPageLabel>TemperatureMinYesterday</ControlPageLabel>
-			</State>
-
-			<State id="Temperature_1">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>Temperature_1</TriggerLabel>
-				<ControlPageLabel>Temperature_1</ControlPageLabel>
-			</State>
-			<State id="Temperature_1MaxToday">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>Temperature_1MaxToday</TriggerLabel>
-				<ControlPageLabel>Temperature_1MaxToday</ControlPageLabel>
-			</State>
-			<State id="Temperature_1MinToday">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>Temperature_1MinToday</TriggerLabel>
-				<ControlPageLabel>Temperature_1MinToday</ControlPageLabel>
-			</State>
-			<State id="Temperature_1MaxYesterday">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>Temperature_1MaxYesterday</TriggerLabel>
-				<ControlPageLabel>Temperature_1MaxYesterday</ControlPageLabel>
-			</State>
-			<State id="Temperature_1MinYesterday">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>Temperature_1MinYesterday</TriggerLabel>
-				<ControlPageLabel>Temperature_1MinYesterday</ControlPageLabel>
-			</State>
-
-			<State id="Temperature_2">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>Temperature_2</TriggerLabel>
-				<ControlPageLabel>Temperature_2</ControlPageLabel>
-			</State>
-
-			<State id="Temperature_2MaxToday">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>Temperature_2MaxToday</TriggerLabel>
-				<ControlPageLabel>Temperature_2MaxToday</ControlPageLabel>
-			</State>
-			<State id="Temperature_2MinToday">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>Temperature_2MinToday</TriggerLabel>
-				<ControlPageLabel>Temperature_2MinToday</ControlPageLabel>
-			</State>
-			<State id="Temperature_2MaxYesterday">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>Temperature_2MaxYesterday</TriggerLabel>
-				<ControlPageLabel>Temperature_2MaxYesterday</ControlPageLabel>
-			</State>
-			<State id="Temperature_2MinYesterday">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>Temperature_2MinYesterday</TriggerLabel>
-				<ControlPageLabel>Temperature_2MinYesterday</ControlPageLabel>
 			</State>
 
 			<State id="overtemperature">
@@ -366,10 +761,10 @@ overwrite only when creating a device manually
 			</State>
 
 <!--   this is same for all: -->
-			<State id="report_url">
+			<State id="lastSuccessfullConfigPush">
 				<ValueType>String</ValueType>
-				<TriggerLabel>report_url</TriggerLabel>
-				<ControlPageLabel>report_url</ControlPageLabel>
+				<TriggerLabel>lastSuccessfullConfigPush</TriggerLabel>
+				<ControlPageLabel>lastSuccessfullConfigPush</ControlPageLabel>
 			</State>
 
 			<State id="action_from_Device">
@@ -384,10 +779,10 @@ overwrite only when creating a device manually
 				<ControlPageLabel>has_update</ControlPageLabel>
 			</State>
 
-			<State id="shellyMAC">
+			<State id="MAC">
 				<ValueType>String</ValueType>
-				<TriggerLabel>ShellyMAC</TriggerLabel>
-				<ControlPageLabel>ShellyMAC</ControlPageLabel>
+				<TriggerLabel>MAC</TriggerLabel>
+				<ControlPageLabel>MAC</ControlPageLabel>
 			</State>
 
 			<State id="lastMessageFromDevice">
@@ -429,8 +824,8 @@ overwrite only when creating a device manually
 		</States>
 	</Device>
 
-	<Device type="relay" id="SHSW-1">
-	<Name>Shelly-1 Relay</Name>
+	<Device type="relay" id="shelly1">
+	<Name>Shelly-Relay (SHSW-1)</Name>
 	<UiDisplayStateId>status</UiDisplayStateId>
 
 		<ConfigUI>            
@@ -453,24 +848,15 @@ overwrite only when creating a device manually
 				<Label>Overwrite exiting IP number if needed</Label>
 			</Field>
 
-			<Field id="shellyMAC" type="textfield" defaultValue ="" > 
+			<Field id="MAC" type="textfield" defaultValue =""  readonly="yes"> 
 				<Label>Shelly device mac number</Label>
 			</Field>
-			<Field id="shellyMACLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
-				<Label> eg &gt;98F4ABF3D3E5&lt; must be 12 hex digits
-overwrite only when creating a device manually
-   - not recommended</Label>
-			</Field>
 
 
 
-			<Field id="pollingFrequency"   type="menu" defaultValue="10" >
+			<Field id="pollingFrequency"   type="menu" defaultValue="-1" >
 				<Label>Polling frequency, how often the plugin requests status from the device:</Label>
 				<List>
-					<Option value="1"    >every 1 sec</Option>
-					<Option value="2"    >every 2 sec</Option>
-					<Option value="3"    >every 3 sec</Option>
-					<Option value="4"    >every 4 sec</Option>
 					<Option value="5"    >every 5 sec</Option>
 					<Option value="7"    >every 7 sec</Option>
 					<Option value="10"   >every 10 sec</Option>
@@ -479,6 +865,8 @@ overwrite only when creating a device manually
 					<Option value="30"   >every 30 sec</Option>
 					<Option value="40"   >every 40 sec</Option>
 					<Option value="80"   >every 80 sec</Option>
+					<Option value="120"   >every 2 minutes</Option>
+					<Option value="180"   >every 3 minutes</Option>
 					<Option value="-1"   >automatic adaptive</Option>
 				</List>
 			</Field>
@@ -498,6 +886,42 @@ overwrite only when creating a device manually
 				</List>
 			</Field>
 
+			<Field id="SENDTOSHELLYDEVICE-settings-.-relay-.-0QqQdefault_state"   type="menu" defaultValue="none" >
+				<Label>Set relay state at power on:</Label>
+				<List>
+					<Option value="none"      >do not set</Option>
+					<Option value="on"        >on</Option>
+					<Option value="off"       >off</Option>
+					<Option value="last"      >last</Option>
+					<Option value="switch"    >switch</Option>
+				</List>
+			</Field>
+
+
+			<Field id="SENDTOSHELLYDEVICE-settings-.-relay-.-0QqQbtn_type"   type="menu" defaultValue="none" >
+				<Label>Set button type :</Label>
+				<List>
+					<Option value="none"      >do not set</Option>
+					<Option value="toggle"    >toggle</Option>
+					<Option value="edge"      >edge</Option>
+					<Option value="momentary" >momentary</Option>
+					<Option value="detached"  >detached</Option>
+					<Option value="action"    >action</Option>
+					<Option value="momentary_on_release"    >momentary_on_release</Option>
+				</List>
+			</Field>
+
+
+			<Field id="SENDTOSHELLYDEVICE-settings-.-relay-.-0QqQbtn_reverse"   type="menu" defaultValue="none" >
+				<Label>Set button reverse / normal :</Label>
+				<List>
+					<Option value="none"      >do not set</Option>
+					<Option value="0"         >normal</Option>
+					<Option value="1"         >reverse</Option>
+				</List>
+			</Field>
+
+
 	</ConfigUI>
 
 		<States>
@@ -511,95 +935,22 @@ overwrite only when creating a device manually
 			</State>
 
 			<State id="input">
-				<ValueType>Number</ValueType>
+				<ValueType>String</ValueType>
 				<TriggerLabel>input</TriggerLabel>
 				<ControlPageLabel>input</ControlPageLabel>
 			</State>
-			<State id="Temperature">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>Temperature</TriggerLabel>
-				<ControlPageLabel>Temperature</ControlPageLabel>
-			</State>
-			<State id="TemperatureMaxToday">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>TemperatureMaxToday</TriggerLabel>
-				<ControlPageLabel>TemperatureMaxToday</ControlPageLabel>
-			</State>
-			<State id="TemperatureMinToday">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>TemperatureMinToday</TriggerLabel>
-				<ControlPageLabel>TemperatureMinToday</ControlPageLabel>
-			</State>
-			<State id="TemperatureMaxYesterday">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>TemperatureMaxYesterday</TriggerLabel>
-				<ControlPageLabel>TemperatureMaxYesterday</ControlPageLabel>
-			</State>
-			<State id="TemperatureMinYesterday">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>TemperatureMinYesterday</TriggerLabel>
-				<ControlPageLabel>TemperatureMinYesterday</ControlPageLabel>
-			</State>
 
-			<State id="Temperature_1">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>Temperature_1</TriggerLabel>
-				<ControlPageLabel>Temperature_1</ControlPageLabel>
+			<State id="input_long">
+				<ValueType>String</ValueType>
+				<TriggerLabel>input_long</TriggerLabel>
+				<ControlPageLabel>input_long</ControlPageLabel>
 			</State>
-			<State id="Temperature_1MaxToday">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>Temperature_1MaxToday</TriggerLabel>
-				<ControlPageLabel>Temperature_1MaxToday</ControlPageLabel>
-			</State>
-			<State id="Temperature_1MinToday">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>Temperature_1MinToday</TriggerLabel>
-				<ControlPageLabel>Temperature_1MinToday</ControlPageLabel>
-			</State>
-			<State id="Temperature_1MaxYesterday">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>Temperature_1MaxYesterday</TriggerLabel>
-				<ControlPageLabel>Temperature_1MaxYesterday</ControlPageLabel>
-			</State>
-			<State id="Temperature_1MinYesterday">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>Temperature_1MinYesterday</TriggerLabel>
-				<ControlPageLabel>Temperature_1MinYesterday</ControlPageLabel>
-			</State>
-
-			<State id="Temperature_2">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>Temperature_2</TriggerLabel>
-				<ControlPageLabel>Temperature_2</ControlPageLabel>
-			</State>
-
-			<State id="Temperature_2MaxToday">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>Temperature_2MaxToday</TriggerLabel>
-				<ControlPageLabel>Temperature_2MaxToday</ControlPageLabel>
-			</State>
-			<State id="Temperature_2MinToday">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>Temperature_2MinToday</TriggerLabel>
-				<ControlPageLabel>Temperature_2MinToday</ControlPageLabel>
-			</State>
-			<State id="Temperature_2MaxYesterday">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>Temperature_2MaxYesterday</TriggerLabel>
-				<ControlPageLabel>Temperature_2MaxYesterday</ControlPageLabel>
-			</State>
-			<State id="Temperature_2MinYesterday">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>Temperature_2MinYesterday</TriggerLabel>
-				<ControlPageLabel>Temperature_2MinYesterday</ControlPageLabel>
-			</State>
-
 
 <!--   this is same for all: -->
-			<State id="report_url">
+			<State id="lastSuccessfullConfigPush">
 				<ValueType>String</ValueType>
-				<TriggerLabel>report_url</TriggerLabel>
-				<ControlPageLabel>report_url</ControlPageLabel>
+				<TriggerLabel>lastSuccessfullConfigPush</TriggerLabel>
+				<ControlPageLabel>lastSuccessfullConfigPush</ControlPageLabel>
 			</State>
 
 			<State id="action_from_Device">
@@ -614,10 +965,10 @@ overwrite only when creating a device manually
 				<ControlPageLabel>has_update</ControlPageLabel>
 			</State>
 
-			<State id="shellyMAC">
+			<State id="MAC">
 				<ValueType>String</ValueType>
-				<TriggerLabel>ShellyMAC</TriggerLabel>
-				<ControlPageLabel>ShellyMAC</ControlPageLabel>
+				<TriggerLabel>MAC</TriggerLabel>
+				<ControlPageLabel>MAC</ControlPageLabel>
 			</State>
 
 			<State id="lastMessageFromDevice">
@@ -662,8 +1013,350 @@ overwrite only when creating a device manually
 	</Device>
 
 
-	<Device type="relay" id="SHSW-25">
-	<Name>Shelly-25 2-Relay</Name>
+	<Device type="relay" id="shellyplug">
+	<Name>Shelly-Plug (SHPL)</Name>
+	<UiDisplayStateId>status</UiDisplayStateId>
+
+		<ConfigUI>            
+			<Field id="isShellyDevice"     type="checkbox"     defaultValue="true" hidden="yes"> </Field>
+			<Field id="MSG" type="textfield"     defaultValue=""> <Label>message from plugin:</Label></Field>
+
+			<Field id="SupportsOnState" 		type="checkbox" defaultValue="true"  hidden ="true"></Field>
+			<Field id="SupportsSensorValue" 	type="checkbox" defaultValue="true"  hidden ="true"></Field>
+			<Field id="SupportsStatusRequest" 	type="checkbox" defaultValue="true"  hidden ="true"></Field>
+			<Field id="AllowOnStateChange" 		type="checkbox" defaultValue="false" hidden ="true"></Field>
+			<Field id="AllowSensorValueChange" 	type="checkbox" defaultValue="false" hidden ="true"></Field>
+			<Field id="label1"  type="label" >
+			<Label>Parameters for Shelly-1 device</Label>
+			</Field>
+ 
+			<Field id="ipNumber" type="textfield" defaultValue ="192.168.1.x" > 
+				<Label>Shelly device IP Number</Label>
+			</Field>
+			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
+				<Label>Overwrite exiting IP number if needed</Label>
+			</Field>
+
+			<Field id="MAC" type="textfield" defaultValue =""  readonly="yes"> 
+				<Label>Shelly device mac number</Label>
+			</Field>
+
+
+
+			<Field id="pollingFrequency"   type="menu" defaultValue="-1" >
+				<Label>Polling frequency, how often the plugin requests status from the device:</Label>
+				<List>
+					<Option value="5"    >every 5 sec</Option>
+					<Option value="7"    >every 7 sec</Option>
+					<Option value="10"   >every 10 sec</Option>
+					<Option value="15"   >every 15 sec</Option>
+					<Option value="20"   >every 20 sec</Option>
+					<Option value="30"   >every 30 sec</Option>
+					<Option value="40"   >every 40 sec</Option>
+					<Option value="80"   >every 80 sec</Option>
+					<Option value="120"   >every 2 minutes</Option>
+					<Option value="180"   >every 3 minutes</Option>
+					<Option value="-1"   >automatic adaptive</Option>
+				</List>
+			</Field>
+			<Field id="pollingFrequencyLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
+				<Label>can be higher/adaptive if actions are setup on the devices</Label>
+			</Field>
+
+
+			<Field id="expirationSeconds"   type="menu" defaultValue="3600" >
+				<Label>Device goes to EXPIRED w no message or answer after:</Label>
+				<List>
+					<Option value="180"   >after 3 minutes</Option>
+					<Option value="300"   >after 5 minutes</Option>
+					<Option value="600"   >after 10 minutes</Option>
+					<Option value="1800"  >after 30 minutes</Option>
+					<Option value="3600"  >after 1 hour</Option>
+				</List>
+			</Field>
+
+			<Field id="SENDTOSHELLYDEVICE-settings-.-relay-.-0QqQdefault_state"   type="menu" defaultValue="none" >
+				<Label>Set relay state at power on:</Label>
+				<List>
+					<Option value="none"      >do not set</Option>
+					<Option value="on"        >on</Option>
+					<Option value="off"       >off</Option>
+					<Option value="last"      >last</Option>
+				</List>
+			</Field>
+
+
+
+	</ConfigUI>
+
+		<States>
+
+<!--   this is dev specific -->
+
+
+			<State id="power">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>power</TriggerLabel>
+				<ControlPageLabel>power</ControlPageLabel>
+			</State>
+
+			<State id="energy">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>energy</TriggerLabel>
+				<ControlPageLabel>energy</ControlPageLabel>
+			</State>
+
+			<State id="input">
+				<ValueType>String</ValueType>
+				<TriggerLabel>input</TriggerLabel>
+				<ControlPageLabel>input</ControlPageLabel>
+			</State>
+
+<!--   this is same for all: -->
+			<State id="lastSuccessfullConfigPush">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastSuccessfullConfigPush</TriggerLabel>
+				<ControlPageLabel>lastSuccessfullConfigPush</ControlPageLabel>
+			</State>
+
+			<State id="action_from_Device">
+				<ValueType>String</ValueType>
+				<TriggerLabel>action_from_Device</TriggerLabel>
+				<ControlPageLabel>action_from_Device</ControlPageLabel>
+			</State>
+
+			<State id="has_update">
+				<ValueType>bool</ValueType>
+				<TriggerLabel>has_update</TriggerLabel>
+				<ControlPageLabel>has_update</ControlPageLabel>
+			</State>
+
+			<State id="MAC">
+				<ValueType>String</ValueType>
+				<TriggerLabel>MAC</TriggerLabel>
+				<ControlPageLabel>MAC</ControlPageLabel>
+			</State>
+
+			<State id="lastMessageFromDevice">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastMessageFromDevice</TriggerLabel>
+				<ControlPageLabel>lastMessageFromDevice</ControlPageLabel>
+			</State>
+
+			<State id="created">
+				<ValueType>String</ValueType>
+				<TriggerLabel>created</TriggerLabel>
+				<ControlPageLabel>created</ControlPageLabel>
+			</State>
+
+			<State id="lastStatusChange">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastStatusChange</TriggerLabel>
+				<ControlPageLabel>lastStatusChange</ControlPageLabel>
+			</State>
+
+
+			<State id="rssi">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>rssi</TriggerLabel>
+				<ControlPageLabel>rssi</ControlPageLabel>
+			</State>
+
+			<State id="needs_software_Update">
+				<ValueType>String</ValueType>
+				<TriggerLabel>needs_software_Update</TriggerLabel>
+				<ControlPageLabel>needs_software_Update</ControlPageLabel>
+			</State>
+
+			<State id="expired">
+				<ValueType>String</ValueType>
+				<TriggerLabel>expired</TriggerLabel>
+				<ControlPageLabel>expired</ControlPageLabel>
+			</State>
+
+
+		</States>
+	</Device>
+
+
+	<Device type="relay" id="shellyplug-s">
+	<Name>Shelly-Plug-s (SHSW-1)</Name>
+	<UiDisplayStateId>status</UiDisplayStateId>
+
+		<ConfigUI>            
+			<Field id="isShellyDevice"     type="checkbox"     defaultValue="true" hidden="yes"> </Field>
+			<Field id="MSG" type="textfield"     defaultValue=""> <Label>message from plugin:</Label></Field>
+
+			<Field id="SupportsOnState" 		type="checkbox" defaultValue="true"  hidden ="true"></Field>
+			<Field id="SupportsSensorValue" 	type="checkbox" defaultValue="true"  hidden ="true"></Field>
+			<Field id="SupportsStatusRequest" 	type="checkbox" defaultValue="true"  hidden ="true"></Field>
+			<Field id="AllowOnStateChange" 		type="checkbox" defaultValue="false" hidden ="true"></Field>
+			<Field id="AllowSensorValueChange" 	type="checkbox" defaultValue="false" hidden ="true"></Field>
+			<Field id="label1"  type="label" >
+			<Label>Parameters for Shelly-1 device</Label>
+			</Field>
+ 
+			<Field id="ipNumber" type="textfield" defaultValue ="192.168.1.x" > 
+				<Label>Shelly device IP Number</Label>
+			</Field>
+			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
+				<Label>Overwrite exiting IP number if needed</Label>
+			</Field>
+
+			<Field id="MAC" type="textfield" defaultValue =""  readonly="yes"> 
+				<Label>Shelly device mac number</Label>
+			</Field>
+
+
+
+			<Field id="pollingFrequency"   type="menu" defaultValue="-1" >
+				<Label>Polling frequency, how often the plugin requests status from the device:</Label>
+				<List>
+					<Option value="5"    >every 5 sec</Option>
+					<Option value="7"    >every 7 sec</Option>
+					<Option value="10"   >every 10 sec</Option>
+					<Option value="15"   >every 15 sec</Option>
+					<Option value="20"   >every 20 sec</Option>
+					<Option value="30"   >every 30 sec</Option>
+					<Option value="40"   >every 40 sec</Option>
+					<Option value="80"   >every 80 sec</Option>
+					<Option value="120"   >every 2 minutes</Option>
+					<Option value="180"   >every 3 minutes</Option>
+					<Option value="-1"   >automatic adaptive</Option>
+				</List>
+			</Field>
+			<Field id="pollingFrequencyLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
+				<Label>can be higher/adaptive if actions are setup on the devices</Label>
+			</Field>
+
+
+			<Field id="expirationSeconds"   type="menu" defaultValue="3600" >
+				<Label>Device goes to EXPIRED w no message or answer after:</Label>
+				<List>
+					<Option value="180"   >after 3 minutes</Option>
+					<Option value="300"   >after 5 minutes</Option>
+					<Option value="600"   >after 10 minutes</Option>
+					<Option value="1800"  >after 30 minutes</Option>
+					<Option value="3600"  >after 1 hour</Option>
+				</List>
+			</Field>
+
+			<Field id="SENDTOSHELLYDEVICE-settings-.-relay-.-0QqQdefault_state"   type="menu" defaultValue="none" >
+				<Label>Set relay state at power on:</Label>
+				<List>
+					<Option value="none"      >do not set</Option>
+					<Option value="on"        >on</Option>
+					<Option value="off"       >off</Option>
+					<Option value="last"      >last</Option>
+				</List>
+			</Field>
+
+
+	</ConfigUI>
+
+		<States>
+
+<!--   this is dev specific -->
+
+			<State id="power">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>power</TriggerLabel>
+				<ControlPageLabel>power</ControlPageLabel>
+			</State>
+
+			<State id="energy">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>energy</TriggerLabel>
+				<ControlPageLabel>energy</ControlPageLabel>
+			</State>
+
+			<State id="Temperature">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Temperature</TriggerLabel>
+				<ControlPageLabel>Temperature</ControlPageLabel>
+			</State>
+
+			<State id="overtemperature">
+				<ValueType>String</ValueType>
+				<TriggerLabel>overtemperature</TriggerLabel>
+				<ControlPageLabel>overtemperature</ControlPageLabel>
+			</State>
+
+			<State id="input">
+				<ValueType>String</ValueType>
+				<TriggerLabel>input</TriggerLabel>
+				<ControlPageLabel>input</ControlPageLabel>
+			</State>
+
+<!--   this is same for all: -->
+			<State id="lastSuccessfullConfigPush">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastSuccessfullConfigPush</TriggerLabel>
+				<ControlPageLabel>lastSuccessfullConfigPush</ControlPageLabel>
+			</State>
+
+			<State id="action_from_Device">
+				<ValueType>String</ValueType>
+				<TriggerLabel>action_from_Device</TriggerLabel>
+				<ControlPageLabel>action_from_Device</ControlPageLabel>
+			</State>
+
+			<State id="has_update">
+				<ValueType>bool</ValueType>
+				<TriggerLabel>has_update</TriggerLabel>
+				<ControlPageLabel>has_update</ControlPageLabel>
+			</State>
+
+			<State id="MAC">
+				<ValueType>String</ValueType>
+				<TriggerLabel>MAC</TriggerLabel>
+				<ControlPageLabel>MAC</ControlPageLabel>
+			</State>
+
+			<State id="lastMessageFromDevice">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastMessageFromDevice</TriggerLabel>
+				<ControlPageLabel>lastMessageFromDevice</ControlPageLabel>
+			</State>
+
+			<State id="created">
+				<ValueType>String</ValueType>
+				<TriggerLabel>created</TriggerLabel>
+				<ControlPageLabel>created</ControlPageLabel>
+			</State>
+
+			<State id="lastStatusChange">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastStatusChange</TriggerLabel>
+				<ControlPageLabel>lastStatusChange</ControlPageLabel>
+			</State>
+
+
+			<State id="rssi">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>rssi</TriggerLabel>
+				<ControlPageLabel>rssi</ControlPageLabel>
+			</State>
+
+			<State id="needs_software_Update">
+				<ValueType>String</ValueType>
+				<TriggerLabel>needs_software_Update</TriggerLabel>
+				<ControlPageLabel>needs_software_Update</ControlPageLabel>
+			</State>
+
+			<State id="expired">
+				<ValueType>String</ValueType>
+				<TriggerLabel>expired</TriggerLabel>
+				<ControlPageLabel>expired</ControlPageLabel>
+			</State>
+
+
+		</States>
+	</Device>
+
+
+	<Device type="relay" id="shellyswitch25">
+	<Name>Shelly-Relay (SHSW-25)-1</Name>
 	<UiDisplayStateId>status</UiDisplayStateId>
 
 		<ConfigUI>            
@@ -679,45 +1372,30 @@ overwrite only when creating a device manually
 			<Label>Parameters for Shelly-2.5 device</Label>
 			</Field>
  
-			<Field id="parentIndigoId" type="textfield" defaultValue ="0" readonly="true" hidden ="true"></Field>
-			<Field id="childIndigoId"  type="textfield" defaultValue ="0" readonly="true" hidden ="true"></Field>
-
-			<Field id="parentIndigoLabel" type="label" visibleBindingId="parentIndigoId" visibleBindingValue="0">
+			<Field id="parentIndigoLabel" type="label" >
 				<Label>This is the device for relay #0 (parent), there is a second for relay#1 (Shelly-ip#-1)
 All parameters have to be set here, not in the child device
 Parent and child share the same connection, the plugin creates two devices to be able to switch relay 1 and relay 0 on/off independently through std indigo commands</Label>
 			</Field>
-			<Field id="childIndigoIdLabel" type="label" visibleBindingId="childIndigoId" visibleBindingValue="0">
-				<Label>This is a device for relay#1 (child) of the other Shelly-25 for relay #1 name = Shelly-ip (-1) 
-You can not set parameters here, edit the parent device
-Parent and child share the same connection, the plugin creates two devices to be able to switch relay 1 and relay 0 on/off independently through std indigo commands</Label>
-			</Field>
 
-			<Field id="ipNumber" type="textfield" defaultValue ="192.168.1.x"  visibleBindingId="parentIndigoId" visibleBindingValue="0"> 
+
+
+			<Field id="ipNumber" type="textfield" defaultValue ="192.168.1.x"  > 
 				<Label>Shelly device IP Number</Label>
 			</Field>
-			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey"  visibleBindingId="parentIndigoId" visibleBindingValue="0">
+			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey"  >
 				<Label>Overwrite exiting IP number if needed</Label>
 			</Field>
 
-			<Field id="shellyMAC" type="textfield" defaultValue =""  visibleBindingId="parentIndigoId" visibleBindingValue="0" readonly="true"> 
+			<Field id="MAC" type="textfield" defaultValue =""   readonly="yes"> 
 				<Label>Shelly device mac number</Label>
 			</Field>
-			<Field id="shellyMACLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey"  visibleBindingId="parentIndigoId" visibleBindingValue="0">
-				<Label> eg &gt;98F4ABF3D3E5&lt; must be 12 hex digits
-overwrite only when creating a device manually
-   - not recommended</Label>
-			</Field>
 
 
 
-			<Field id="pollingFrequency"   type="menu" defaultValue="10" visibleBindingId="parentIndigoId" visibleBindingValue="0" >
+			<Field id="pollingFrequency"   type="menu" defaultValue="-1"  >
 				<Label>Polling frequency .. how often the plugin requests status from the device:</Label>
 				<List>
-					<Option value="1"    >every 1 sec</Option>
-					<Option value="2"    >every 2 sec</Option>
-					<Option value="3"    >every 3 sec</Option>
-					<Option value="4"    >every 4 sec</Option>
 					<Option value="5"    >every 5 sec</Option>
 					<Option value="7"    >every 7 sec</Option>
 					<Option value="10"   >every 10 sec</Option>
@@ -726,15 +1404,17 @@ overwrite only when creating a device manually
 					<Option value="30"   >every 30 sec</Option>
 					<Option value="40"   >every 40 sec</Option>
 					<Option value="80"   >every 80 sec</Option>
+					<Option value="120"   >every 2 minutes</Option>
+					<Option value="180"   >every 3 minutes</Option>
 					<Option value="-1"   >automatic adaptive</Option>
 				</List>
 			</Field>
-			<Field id="pollingFrequencyLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey" visibleBindingId="parentIndigoId" visibleBindingValue="0" >
+			<Field id="pollingFrequencyLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey"  >
 				<Label>can be higher/adaptive if actions are setup on the devices</Label>
 			</Field>
 
 
-			<Field id="expirationSeconds"   type="menu" defaultValue="3600" visibleBindingId="parentIndigoId" visibleBindingValue="0" >
+			<Field id="expirationSeconds"   type="menu" defaultValue="3600"  >
 				<Label>Device goes to EXPIRED w no message or answer after:</Label>
 				<List>
 					<Option value="180"   >after 3 minutes</Option>
@@ -744,6 +1424,41 @@ overwrite only when creating a device manually
 					<Option value="3600"  >after 1 hour</Option>
 				</List>
 			</Field>
+
+			<Field id="SENDTOSHELLYDEVICE-settings-.-relay-.-0QqQdefault_state"   type="menu" defaultValue="none"  >
+				<Label>Set relay state at power on:</Label>
+				<List>
+					<Option value="none"      >do not set</Option>
+					<Option value="on"        >on</Option>
+					<Option value="off"       >off</Option>
+					<Option value="last"      >last</Option>
+				</List>
+			</Field>
+
+
+			<Field id="SENDTOSHELLYDEVICE-settings-.-relay-.-0QqQbtn_type"   type="menu" defaultValue="none"  >
+				<Label>Set button type :</Label>
+				<List>
+					<Option value="none"      >do not set</Option>
+					<Option value="toggle"    >toggle</Option>
+					<Option value="edge"      >edge</Option>
+					<Option value="momentary" >momentary</Option>
+					<Option value="detached"  >detached</Option>
+					<Option value="action"    >action</Option>
+					<Option value="momentary_on_release"    >momentary_on_release</Option>
+				</List>
+			</Field>
+
+			<Field id="SENDTOSHELLYDEVICE-settings-.-relay-.-0QqQbtn_reverse"   type="menu" defaultValue="none"  >
+				<Label>Set button reverse / normal :</Label>
+				<List>
+					<Option value="none"      >do not set</Option>
+					<Option value="0"         >normal</Option>
+					<Option value="1"         >reverse</Option>
+				</List>
+			</Field>
+
+
 
 	</ConfigUI>
 
@@ -756,11 +1471,22 @@ overwrite only when creating a device manually
 				<TriggerLabel>power</TriggerLabel>
 				<ControlPageLabel>power</ControlPageLabel>
 			</State>
+			<State id="energy">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>energy</TriggerLabel>
+				<ControlPageLabel>energy</ControlPageLabel>
+			</State>
 
 			<State id="input">
-				<ValueType>Integer</ValueType>
+				<ValueType>String</ValueType>
 				<TriggerLabel>input</TriggerLabel>
 				<ControlPageLabel>input</ControlPageLabel>
+			</State>
+
+			<State id="input_long">
+				<ValueType>String</ValueType>
+				<TriggerLabel>input_long</TriggerLabel>
+				<ControlPageLabel>input_long</ControlPageLabel>
 			</State>
 
 			<State id="overtemperature">
@@ -774,11 +1500,12 @@ overwrite only when creating a device manually
 				<ControlPageLabel>Temperature_internal</ControlPageLabel>
 			</State>
 
+
 <!--   this is same for all: -->
-			<State id="report_url">
+			<State id="lastSuccessfullConfigPush">
 				<ValueType>String</ValueType>
-				<TriggerLabel>report_url</TriggerLabel>
-				<ControlPageLabel>report_url</ControlPageLabel>
+				<TriggerLabel>lastSuccessfullConfigPush</TriggerLabel>
+				<ControlPageLabel>lastSuccessfullConfigPush</ControlPageLabel>
 			</State>
 
 			<State id="action_from_Device">
@@ -793,10 +1520,10 @@ overwrite only when creating a device manually
 				<ControlPageLabel>has_update</ControlPageLabel>
 			</State>
 
-			<State id="shellyMAC">
+			<State id="MAC">
 				<ValueType>String</ValueType>
-				<TriggerLabel>ShellyMAC</TriggerLabel>
-				<ControlPageLabel>ShellyMAC</ControlPageLabel>
+				<TriggerLabel>MAC</TriggerLabel>
+				<ControlPageLabel>MAC</ControlPageLabel>
 			</State>
 
 			<State id="lastMessageFromDevice">
@@ -841,8 +1568,199 @@ overwrite only when creating a device manually
 		</States>
 	</Device>
 
-	<Device type="dimmer" id="SHBLB-1">
-	<Name>Shelly-RGBW Light Bulb</Name>
+
+	<Device type="relay" id="shellyswitch25-child">
+	<Name>Shelly-Relay (SHSW-25)-2 - child</Name>
+	<UiDisplayStateId>status</UiDisplayStateId>
+
+		<ConfigUI>            
+			<Field id="isShellyDevice"     type="checkbox"     defaultValue="true" hidden="yes"> </Field>
+			<Field id="MSG" type="textfield"     defaultValue=""> <Label>message from plugin:</Label></Field>
+
+			<Field id="SupportsOnState" 		type="checkbox" defaultValue="true"  hidden ="true"></Field>
+			<Field id="SupportsSensorValue" 	type="checkbox" defaultValue="true"  hidden ="true"></Field>
+			<Field id="SupportsStatusRequest" 	type="checkbox" defaultValue="true"  hidden ="true"></Field>
+			<Field id="AllowOnStateChange" 		type="checkbox" defaultValue="false" hidden ="true"></Field>
+			<Field id="AllowSensorValueChange" 	type="checkbox" defaultValue="false" hidden ="true"></Field>
+
+			<Field id="label1"  type="label" >
+				<Label>Parameters for Shelly-2.5 device</Label>
+			</Field>
+ 
+			<Field id="parentIndigoId" type="textfield" defaultValue ="0"  readonly="yes"> 
+				<Label>The indigo Id of the hosting device</Label>
+			</Field>
+
+			<Field id="ipNumber" type="textfield" defaultValue ="192.168.1.x" readonly="yes"> 
+				<Label>Shelly device IP Number</Label>
+			</Field>
+
+			<Field id="MAC" type="textfield" defaultValue =""   readonly="yes"> 
+				<Label>Shelly device mac number</Label>
+			</Field>
+
+
+			<Field id="pollingFrequency"   type="textfield" defaultValue="-1" readonly="yes">
+				<Label>Polling frequency .. how often the plugin requests status from the device:</Label>
+			</Field>
+
+
+			<Field id="expirationSeconds"   type="textfield" defaultValue="3600"  readonly="yes">
+				<Label>Device goes to EXPIRED w no message or answer after:</Label>
+			</Field>
+
+
+			<Field id="SENDTOSHELLYDEVICE-settings-.-relay-.-1QqQdefault_state"   type="menu" defaultValue="none"  >
+				<Label>Set relay state at power on:</Label>
+				<List>
+					<Option value="none"      >do not set</Option>
+					<Option value="on"        >on</Option>
+					<Option value="off"       >off</Option>
+					<Option value="last"      >last</Option>
+				</List>
+			</Field>
+
+
+			<Field id="SENDTOSHELLYDEVICE-settings-.-relay-.-1QqQbtn_type"   type="menu" defaultValue="none" >
+				<Label>Set button type :</Label>
+				<List>
+					<Option value="none"      >do not set</Option>
+					<Option value="toggle"    >toggle</Option>
+					<Option value="edge"      >edge</Option>
+					<Option value="momentary" >momentary</Option>
+					<Option value="detached"  >detached</Option>
+					<Option value="action"    >action</Option>
+					<Option value="momentary_on_release"    >momentary_on_release</Option>
+				</List>
+			</Field>
+
+			<Field id="SENDTOSHELLYDEVICE-settings-.-relay-.-1QqQbtn_reverse"   type="menu" defaultValue="none"  >
+				<Label>Set button reverse / normal :</Label>
+				<List>
+					<Option value="none"      >do not set</Option>
+					<Option value="0"         >normal</Option>
+					<Option value="1"         >reverse</Option>
+				</List>
+			</Field>
+
+
+
+	</ConfigUI>
+
+		<States>
+
+<!--   this is dev specific -->
+
+			<State id="power">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>power</TriggerLabel>
+				<ControlPageLabel>power</ControlPageLabel>
+			</State>
+			<State id="energy">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>energy</TriggerLabel>
+				<ControlPageLabel>energy</ControlPageLabel>
+			</State>
+
+			<State id="input">
+				<ValueType>String</ValueType>
+				<TriggerLabel>input</TriggerLabel>
+				<ControlPageLabel>input</ControlPageLabel>
+			</State>
+
+			<State id="input_long">
+				<ValueType>String</ValueType>
+				<TriggerLabel>input_long</TriggerLabel>
+				<ControlPageLabel>input_long</ControlPageLabel>
+			</State>
+
+			<State id="childNo">
+				<ValueType>String</ValueType>
+				<TriggerLabel>childNo</TriggerLabel>
+				<ControlPageLabel>childNo</ControlPageLabel>
+			</State>
+
+			<State id="overtemperature">
+				<ValueType>String</ValueType>
+				<TriggerLabel>overtemperature</TriggerLabel>
+				<ControlPageLabel>overtemperature</ControlPageLabel>
+			</State>
+			<State id="Temperature_internal">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Temperature_internal</TriggerLabel>
+				<ControlPageLabel>Temperature_internal</ControlPageLabel>
+			</State>
+
+<!--   this is same for all: -->
+			<State id="lastSuccessfullConfigPush">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastSuccessfullConfigPush</TriggerLabel>
+				<ControlPageLabel>lastSuccessfullConfigPush</ControlPageLabel>
+			</State>
+
+			<State id="action_from_Device">
+				<ValueType>String</ValueType>
+				<TriggerLabel>action_from_Device</TriggerLabel>
+				<ControlPageLabel>action_from_Device</ControlPageLabel>
+			</State>
+
+			<State id="has_update">
+				<ValueType>bool</ValueType>
+				<TriggerLabel>has_update</TriggerLabel>
+				<ControlPageLabel>has_update</ControlPageLabel>
+			</State>
+
+			<State id="MAC">
+				<ValueType>String</ValueType>
+				<TriggerLabel>MAC</TriggerLabel>
+				<ControlPageLabel>MAC</ControlPageLabel>
+			</State>
+
+			<State id="lastMessageFromDevice">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastMessageFromDevice</TriggerLabel>
+				<ControlPageLabel>lastMessageFromDevice</ControlPageLabel>
+			</State>
+
+			<State id="created">
+				<ValueType>String</ValueType>
+				<TriggerLabel>created</TriggerLabel>
+				<ControlPageLabel>created</ControlPageLabel>
+			</State>
+
+			<State id="lastStatusChange">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastStatusChange</TriggerLabel>
+				<ControlPageLabel>lastStatusChange</ControlPageLabel>
+			</State>
+
+
+			<State id="rssi">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>rssi</TriggerLabel>
+				<ControlPageLabel>rssi</ControlPageLabel>
+			</State>
+
+			<State id="needs_software_Update">
+				<ValueType>String</ValueType>
+				<TriggerLabel>needs_software_Update</TriggerLabel>
+				<ControlPageLabel>needs_software_Update</ControlPageLabel>
+			</State>
+
+			<State id="expired">
+				<ValueType>String</ValueType>
+				<TriggerLabel>expired</TriggerLabel>
+				<ControlPageLabel>expired</ControlPageLabel>
+			</State>
+
+
+
+		</States>
+	</Device>
+
+
+	<Device type="dimmer" id="shellybulb">
+	<Name>Shelly-RGBW Light Bulb (SHBLB-1)</Name>
 
 		<ConfigUI>            
 			<Field id="isShellyDevice"     type="checkbox"     defaultValue="true" hidden="yes"> </Field>
@@ -850,7 +1768,7 @@ overwrite only when creating a device manually
 
 			<Field id="SupportsOnState" 					 type="checkbox" defaultValue="true"  hidden ="true"><Label>SupportsOnState</Label></Field>
 			<Field id="SupportsSensorValue" 				 type="checkbox" defaultValue="true"  hidden ="true"><Label>SupportsSensorValue</Label></Field>
-			<Field id="SupportsStatusRequest" 				 type="checkbox" defaultValue="false" hidden ="true"><Label>SupportsStatusRequest</Label></Field>
+			<Field id="SupportsStatusRequest" 				 type="checkbox" defaultValue="true"  hidden ="true"><Label>SupportsStatusRequest</Label></Field>
 			<Field id="AllowOnStateChange" 					 type="checkbox" defaultValue="false" hidden ="true"><Label>AllowOnStateChange</Label></Field>
 			<Field id="AllowSensorValueChange" 				 type="checkbox" defaultValue="false" hidden ="true"><Label>AllowSensorValueChange</Label></Field>
 
@@ -862,8 +1780,7 @@ overwrite only when creating a device manually
 			<Field id="SupportsTwoWhiteLevels"			 	 type="checkbox" defaultValue="false" hidden ="true"><Label>SupportsTwoWhiteLevels</Label></Field>
 			<Field id="SupportsTwoWhiteLevelsSimultaneously" type="checkbox" defaultValue="false" hidden ="true"><Label>SupportsTwoWhiteLevelsSimultaneously</Label></Field>
 			<Field id="label1"  type="label" >
-			<Label>Parameters for Shelly-Bulb device, 
-- Note the Color Temperature values go from 3000...6000k</Label>
+			<Label>Parameters for Shelly-Bulb device</Label>
 			</Field>
  
 			<Field id="ipNumber" type="textfield" defaultValue ="192.168.1.x" > 
@@ -873,24 +1790,14 @@ overwrite only when creating a device manually
 				<Label>Overwrite exiting IP number if needed</Label>
 			</Field>
 
-			<Field id="shellyMAC" type="textfield" defaultValue ="" > 
+			<Field id="MAC" type="textfield" defaultValue =""  readonly="yes"> 
 				<Label>Shelly device mac number</Label>
 			</Field>
-			<Field id="shellyMACLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
-				<Label> eg &gt;98F4ABF3D3E5&lt; must be 12 hex digits
-overwrite only when creating a device manually
-   - not recommended</Label>
-			</Field>
 
 
-
-			<Field id="pollingFrequency"   type="menu" defaultValue="10" >
+			<Field id="pollingFrequency"   type="menu" defaultValue="-1" >
 				<Label>Polling frequency, how often the plugin requests status from the device:</Label>
 				<List>
-					<Option value="1"    >every 1 sec</Option>
-					<Option value="2"    >every 2 sec</Option>
-					<Option value="3"    >every 3 sec</Option>
-					<Option value="4"    >every 4 sec</Option>
 					<Option value="5"    >every 5 sec</Option>
 					<Option value="7"    >every 7 sec</Option>
 					<Option value="10"   >every 10 sec</Option>
@@ -899,6 +1806,8 @@ overwrite only when creating a device manually
 					<Option value="30"   >every 30 sec</Option>
 					<Option value="40"   >every 40 sec</Option>
 					<Option value="80"   >every 80 sec</Option>
+					<Option value="120"   >every 2 minutes</Option>
+					<Option value="180"   >every 3 minutes</Option>
 					<Option value="-1"   >automatic adaptive</Option>
 				</List>
 			</Field>
@@ -943,11 +1852,17 @@ overwrite only when creating a device manually
 				<ControlPageLabel>mode</ControlPageLabel>
 			</State>
 
+			<State id="power">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>power</TriggerLabel>
+				<ControlPageLabel>power</ControlPageLabel>
+			</State>
+
 <!--   not for rgb light bulb 
-			<State id="report_url">
+			<State id="lastSuccessfullConfigPush">
 				<ValueType>String</ValueType>
-				<TriggerLabel>report_url</TriggerLabel>
-				<ControlPageLabel>report_url</ControlPageLabel>
+				<TriggerLabel>lastSuccessfullConfigPush</TriggerLabel>
+				<ControlPageLabel>lastSuccessfullConfigPush</ControlPageLabel>
 			</State>
  -->
 <!--   this is same for all: -->
@@ -964,10 +1879,10 @@ overwrite only when creating a device manually
 				<ControlPageLabel>has_update</ControlPageLabel>
 			</State>
 
-			<State id="shellyMAC">
+			<State id="MAC">
 				<ValueType>String</ValueType>
-				<TriggerLabel>ShellyMAC</TriggerLabel>
-				<ControlPageLabel>ShellyMAC</ControlPageLabel>
+				<TriggerLabel>MAC</TriggerLabel>
+				<ControlPageLabel>MAC</ControlPageLabel>
 			</State>
 
 			<State id="lastMessageFromDevice">
@@ -1013,8 +1928,8 @@ overwrite only when creating a device manually
 	</Device>
 
 
-	<Device type="dimmer" id="SHRGBW2">
-	<Name>Shelly-RGBW dimmer</Name>
+	<Device type="dimmer" id="shellyrgbw2">
+	<Name>Shelly-RGBW dimmer (SHRGBW2)</Name>
 
 		<ConfigUI>            
 			<Field id="isShellyDevice"     type="checkbox"     defaultValue="true" hidden="yes"> </Field>
@@ -1022,7 +1937,7 @@ overwrite only when creating a device manually
 
 			<Field id="SupportsOnState" 					 type="checkbox" defaultValue="true"  hidden ="true"><Label>SupportsOnState</Label></Field>
 			<Field id="SupportsSensorValue" 				 type="checkbox" defaultValue="true"  hidden ="true"><Label>SupportsSensorValue</Label></Field>
-			<Field id="SupportsStatusRequest" 				 type="checkbox" defaultValue="false" hidden ="true"><Label>SupportsStatusRequest</Label></Field>
+			<Field id="SupportsStatusRequest" 				 type="checkbox" defaultValue="true"  hidden ="true"><Label>SupportsStatusRequest</Label></Field>
 			<Field id="AllowOnStateChange" 					 type="checkbox" defaultValue="false" hidden ="true"><Label>AllowOnStateChange</Label></Field>
 			<Field id="AllowSensorValueChange" 				 type="checkbox" defaultValue="false" hidden ="true"><Label>AllowSensorValueChange</Label></Field>
 
@@ -1034,8 +1949,7 @@ overwrite only when creating a device manually
 			<Field id="SupportsTwoWhiteLevels"			 	 type="checkbox" defaultValue="false" hidden ="true"><Label>SupportsTwoWhiteLevels</Label></Field>
 			<Field id="SupportsTwoWhiteLevelsSimultaneously" type="checkbox" defaultValue="false" hidden ="true"><Label>SupportsTwoWhiteLevelsSimultaneously</Label></Field>
 			<Field id="label1"  type="label" >
-			<Label>Parameters for Shelly-RGW2 device, 
---- Note the Color Temperature values goeses from 3000...6000k</Label>
+			<Label>Parameters for Shelly-RGW2 device</Label>
 			</Field>
  
 			<Field id="ipNumber" type="textfield" defaultValue ="192.168.1.x" > 
@@ -1045,24 +1959,15 @@ overwrite only when creating a device manually
 				<Label>Overwrite exiting IP number if needed</Label>
 			</Field>
 
-			<Field id="shellyMAC" type="textfield" defaultValue ="" > 
+			<Field id="MAC" type="textfield" defaultValue =""  readonly="yes"> 
 				<Label>Shelly device mac number</Label>
 			</Field>
-			<Field id="shellyMACLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
-				<Label> eg &gt;98F4ABF3D3E5&lt; must be 12 hex digits
-overwrite only when creating a device manually
-   - not recommended</Label>
-			</Field>
 
 
 
-			<Field id="pollingFrequency"   type="menu" defaultValue="10" >
+			<Field id="pollingFrequency"   type="menu" defaultValue="-1" >
 				<Label>Polling frequency, how often the plugin requests status from the device:</Label>
 				<List>
-					<Option value="1"    >every 1 sec</Option>
-					<Option value="2"    >every 2 sec</Option>
-					<Option value="3"    >every 3 sec</Option>
-					<Option value="4"    >every 4 sec</Option>
 					<Option value="5"    >every 5 sec</Option>
 					<Option value="7"    >every 7 sec</Option>
 					<Option value="10"   >every 10 sec</Option>
@@ -1071,6 +1976,8 @@ overwrite only when creating a device manually
 					<Option value="30"   >every 30 sec</Option>
 					<Option value="40"   >every 40 sec</Option>
 					<Option value="80"   >every 80 sec</Option>
+					<Option value="120"   >every 2 minutes</Option>
+					<Option value="180"   >every 3 minutes</Option>
 					<Option value="-1"   >automatic adaptive</Option>
 				</List>
 			</Field>
@@ -1116,10 +2023,10 @@ overwrite only when creating a device manually
 			</State>
 
 <!--   not for rgb light bulb 
-			<State id="report_url">
+			<State id="lastSuccessfullConfigPush">
 				<ValueType>String</ValueType>
-				<TriggerLabel>report_url</TriggerLabel>
-				<ControlPageLabel>report_url</ControlPageLabel>
+				<TriggerLabel>lastSuccessfullConfigPush</TriggerLabel>
+				<ControlPageLabel>lastSuccessfullConfigPush</ControlPageLabel>
 			</State>
  -->
 <!--   this is same for all: -->
@@ -1136,10 +2043,10 @@ overwrite only when creating a device manually
 				<ControlPageLabel>has_update</ControlPageLabel>
 			</State>
 
-			<State id="shellyMAC">
+			<State id="MAC">
 				<ValueType>String</ValueType>
-				<TriggerLabel>ShellyMAC</TriggerLabel>
-				<ControlPageLabel>ShellyMAC</ControlPageLabel>
+				<TriggerLabel>MAC</TriggerLabel>
+				<ControlPageLabel>MAC</ControlPageLabel>
 			</State>
 
 			<State id="lastMessageFromDevice">
@@ -1185,8 +2092,8 @@ overwrite only when creating a device manually
 	</Device>
 
 
-	<Device type="dimmer" id="SHDM-1">
-	<Name>Shelly-Dimmer</Name>
+	<Device type="dimmer" id="shellydimmer">
+	<Name>Shelly-Dimmer (DM1)</Name>
 
 		<ConfigUI>            
 			<Field id="isShellyDevice"     type="checkbox"     defaultValue="true" hidden="yes"> </Field>
@@ -1194,7 +2101,7 @@ overwrite only when creating a device manually
 
 			<Field id="SupportsOnState" 					 type="checkbox" defaultValue="true"  hidden ="true"><Label>SupportsOnState</Label></Field>
 			<Field id="SupportsSensorValue" 				 type="checkbox" defaultValue="true"  hidden ="true"><Label>SupportsSensorValue</Label></Field>
-			<Field id="SupportsStatusRequest" 				 type="checkbox" defaultValue="false" hidden ="true"><Label>SupportsStatusRequest</Label></Field>
+			<Field id="SupportsStatusRequest" 				 type="checkbox" defaultValue="true" hidden ="true"><Label>SupportsStatusRequest</Label></Field>
 			<Field id="AllowOnStateChange" 					 type="checkbox" defaultValue="false" hidden ="true"><Label>AllowOnStateChange</Label></Field>
 			<Field id="AllowSensorValueChange" 				 type="checkbox" defaultValue="false" hidden ="true"><Label>AllowSensorValueChange</Label></Field>
 
@@ -1216,24 +2123,15 @@ overwrite only when creating a device manually
 				<Label>Overwrite exiting IP number if needed</Label>
 			</Field>
 
-			<Field id="shellyMAC" type="textfield" defaultValue ="" > 
+			<Field id="MAC" type="textfield" defaultValue =""  readonly="yes"> 
 				<Label>Shelly device mac number</Label>
 			</Field>
-			<Field id="shellyMACLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
-				<Label> eg &gt;98F4ABF3D3E5&lt; must be 12 hex digits
-overwrite only when creating a device manually
-   - not recommended</Label>
-			</Field>
 
 
 
-			<Field id="pollingFrequency"   type="menu" defaultValue="10" >
+			<Field id="pollingFrequency"   type="menu" defaultValue="-1" >
 				<Label>Polling frequency, how often the plugin requests status from the device:</Label>
 				<List>
-					<Option value="1"    >every 1 sec</Option>
-					<Option value="2"    >every 2 sec</Option>
-					<Option value="3"    >every 3 sec</Option>
-					<Option value="4"    >every 4 sec</Option>
 					<Option value="5"    >every 5 sec</Option>
 					<Option value="7"    >every 7 sec</Option>
 					<Option value="10"   >every 10 sec</Option>
@@ -1242,6 +2140,8 @@ overwrite only when creating a device manually
 					<Option value="30"   >every 30 sec</Option>
 					<Option value="40"   >every 40 sec</Option>
 					<Option value="80"   >every 80 sec</Option>
+					<Option value="120"   >every 2 minutes</Option>
+					<Option value="180"   >every 3 minutes</Option>
 					<Option value="-1"   >automatic adaptive</Option>
 				</List>
 			</Field>
@@ -1262,6 +2162,52 @@ overwrite only when creating a device manually
 			</Field>
 
 
+			<Field id="SENDTOSHELLYDEVICE-settings-.-light-.-0QqQdefault_state"   type="menu" defaultValue="none" >
+				<Label>Set relay state at power on:</Label>
+				<List>
+					<Option value="none"      >do not set</Option>
+					<Option value="on"        >on</Option>
+					<Option value="off"       >off</Option>
+					<Option value="last"      >last</Option>
+					<Option value="switch"    >switch</Option>
+				</List>
+			</Field>
+
+
+			<Field id="SENDTOSHELLYDEVICE-settings-.-light-.-0QqQbtn_type"   type="menu" defaultValue="none" >
+				<Label>Set button type :</Label>
+				<List>
+					<Option value="none"      >do not set</Option>
+					<Option value="toggle"    >toggle</Option>
+					<Option value="edge"      >edge</Option>
+					<Option value="detached"  >detached</Option>
+					<Option value="action"    >action</Option>
+					<Option value="one_button"    >one_button</Option>
+					<Option value="dual_button"    >dual_button</Option>
+				</List>
+			</Field>
+
+
+			<Field id="SENDTOSHELLYDEVICE-settings-.-light-.-0QqQbtn_reverse"   type="menu" defaultValue="none" >
+				<Label>Set button reverse / normal :</Label>
+				<List>
+					<Option value="none"      >do not set</Option>
+					<Option value="0"         >normal</Option>
+					<Option value="1"         >reverse</Option>
+				</List>
+			</Field>
+
+
+			<Field id="SENDTOSHELLYDEVICE-settings-.-light-.-0QqQswap_inputs"   type="menu" defaultValue="none" >
+				<Label>Set button swap / normal :</Label>
+				<List>
+					<Option value="none"      >do not set</Option>
+					<Option value="0"         >normal</Option>
+					<Option value="1"         >swapped</Option>
+				</List>
+			</Field>
+
+
 	</ConfigUI>
 
 		<States>
@@ -1273,32 +2219,59 @@ overwrite only when creating a device manually
 				<TriggerLabel>mode</TriggerLabel>
 				<ControlPageLabel>mode</ControlPageLabel>
 			</State>
-
-			<State id="overpower">
-				<ValueType>String</ValueType>
-				<TriggerLabel>overpower</TriggerLabel>
-				<ControlPageLabel>overpower</ControlPageLabel>
-			</State>
-
-			<State id="overtemperature">
-				<ValueType>String</ValueType>
-				<TriggerLabel>overtemperature</TriggerLabel>
-				<ControlPageLabel>overtemperature</ControlPageLabel>
-			</State>
 			<State id="Temperature_internal">
 				<ValueType>Number</ValueType>
 				<TriggerLabel>Temperature_internal</TriggerLabel>
 				<ControlPageLabel>Temperature_internal</ControlPageLabel>
 			</State>
 
-<!--   not for rgb light bulb 
-			<State id="report_url">
+			<State id="power">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>power</TriggerLabel>
+				<ControlPageLabel>power</ControlPageLabel>
+			</State>
+
+			<State id="input_1">
 				<ValueType>String</ValueType>
-				<TriggerLabel>report_url</TriggerLabel>
-				<ControlPageLabel>report_url</ControlPageLabel>
+				<TriggerLabel>input_1</TriggerLabel>
+				<ControlPageLabel>input_1</ControlPageLabel>
+			</State>
+
+
+			<State id="input_2">
+				<ValueType>String</ValueType>
+				<TriggerLabel>input_2</TriggerLabel>
+				<ControlPageLabel>input_2</ControlPageLabel>
+			</State>
+
+
+			<State id="input_1_long">
+				<ValueType>String</ValueType>
+				<TriggerLabel>input_1_long</TriggerLabel>
+				<ControlPageLabel>input_1_long</ControlPageLabel>
+			</State>
+
+
+			<State id="input_2_long">
+				<ValueType>String</ValueType>
+				<TriggerLabel>input_2_long</TriggerLabel>
+				<ControlPageLabel>input_2_long</ControlPageLabel>
+			</State>
+
+
+<!--   not for rgb light bulb 
+			<State id="lastSuccessfullConfigPush">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastSuccessfullConfigPush</TriggerLabel>
+				<ControlPageLabel>lastSuccessfullConfigPush</ControlPageLabel>
 			</State>
  -->
 <!--   this is same for all: -->
+			<State id="lastSuccessfullConfigPush">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastSuccessfullConfigPush</TriggerLabel>
+				<ControlPageLabel>lastSuccessfullConfigPush</ControlPageLabel>
+			</State>
 
 			<State id="action_from_Device">
 				<ValueType>String</ValueType>
@@ -1312,10 +2285,10 @@ overwrite only when creating a device manually
 				<ControlPageLabel>has_update</ControlPageLabel>
 			</State>
 
-			<State id="shellyMAC">
+			<State id="MAC">
 				<ValueType>String</ValueType>
-				<TriggerLabel>ShellyMAC</TriggerLabel>
-				<ControlPageLabel>ShellyMAC</ControlPageLabel>
+				<TriggerLabel>MAC</TriggerLabel>
+				<ControlPageLabel>MAC</ControlPageLabel>
 			</State>
 
 			<State id="lastMessageFromDevice">
@@ -1373,8 +2346,8 @@ overwrite only when creating a device manually
 	</Device>
 
 
-	<Device type="dimmer" id="SHBDUO-1">
-	<Name>Shelly-Bulb-2</Name>
+	<Device type="dimmer" id="ShellyBulbDuo">
+	<Name>Shelly-Bulb-2 (SHBDUO-1)</Name>
 
 		<ConfigUI>            
 			<Field id="isShellyDevice"     type="checkbox"     defaultValue="true" hidden="yes"> </Field>
@@ -1382,13 +2355,13 @@ overwrite only when creating a device manually
 
 			<Field id="SupportsOnState" 					 type="checkbox" defaultValue="true"  hidden ="true"><Label>SupportsOnState</Label></Field>
 			<Field id="SupportsSensorValue" 				 type="checkbox" defaultValue="true"  hidden ="true"><Label>SupportsSensorValue</Label></Field>
-			<Field id="SupportsStatusRequest" 				 type="checkbox" defaultValue="false" hidden ="true"><Label>SupportsStatusRequest</Label></Field>
+			<Field id="SupportsStatusRequest" 				 type="checkbox" defaultValue="true"  hidden ="true"><Label>SupportsStatusRequest</Label></Field>
 			<Field id="AllowOnStateChange" 					 type="checkbox" defaultValue="false" hidden ="true"><Label>AllowOnStateChange</Label></Field>
 			<Field id="AllowSensorValueChange" 				 type="checkbox" defaultValue="false" hidden ="true"><Label>AllowSensorValueChange</Label></Field>
 			<Field id="WhiteTemperatureMin" 				 type="textfield" defaultValue="2700" hidden ="true" />
 			<Field id="WhiteTemperatureMax" 				 type="textfield" defaultValue="6500" hidden ="true" />
 
-			<Field id="SupportsColor" 						 type="checkbox" defaultValue="false" hidden ="true"><Label>SupportsColor</Label></Field>
+			<Field id="SupportsColor" 						 type="checkbox" defaultValue="true"  hidden ="true"><Label>SupportsColor</Label></Field>
 			<Field id="SupportsRGB" 						 type="checkbox" defaultValue="false" hidden ="true"><Label>SupportsRGB</Label></Field>
 			<Field id="SupportsWhite" 						 type="checkbox" defaultValue="true"  hidden ="true"><Label>SupportsWhite</Label></Field>
 			<Field id="SupportsWhiteTemperature" 			 type="checkbox" defaultValue="true"  hidden ="true"><Label>SupportsWhiteTemperature</Label></Field>
@@ -1396,8 +2369,7 @@ overwrite only when creating a device manually
 			<Field id="SupportsTwoWhiteLevels"			 	 type="checkbox" defaultValue="false" hidden ="true"><Label>SupportsTwoWhiteLevels</Label></Field>
 			<Field id="SupportsTwoWhiteLevelsSimultaneously" type="checkbox" defaultValue="false" hidden ="true"><Label>SupportsTwoWhiteLevelsSimultaneously</Label></Field>
 			<Field id="label1"  type="label" >
-			<Label>Parameters for Shelly-Dimmer/SL device, 
-- Note the Color Temperature values go from 2700...6500k</Label>
+			<Label>Parameters for Shelly-Dimmer/SL device</Label>
 			</Field>
  
 			<Field id="ipNumber" type="textfield" defaultValue ="192.168.1.x" > 
@@ -1407,24 +2379,14 @@ overwrite only when creating a device manually
 				<Label>Overwrite exiting IP number if needed</Label>
 			</Field>
 
-			<Field id="shellyMAC" type="textfield" defaultValue ="" > 
+			<Field id="MAC" type="textfield" defaultValue =""  readonly="yes"> 
 				<Label>Shelly device mac number</Label>
 			</Field>
-			<Field id="shellyMACLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
-				<Label> eg &gt;98F4ABF3D3E5&lt; must be 12 hex digits
-overwrite only when creating a device manually
-   - not recommended</Label>
-			</Field>
 
 
-
-			<Field id="pollingFrequency"   type="menu" defaultValue="10" >
+			<Field id="pollingFrequency"   type="menu" defaultValue="-1" >
 				<Label>Polling frequency, how often the plugin requests status from the device:</Label>
 				<List>
-					<Option value="1"    >every 1 sec</Option>
-					<Option value="2"    >every 2 sec</Option>
-					<Option value="3"    >every 3 sec</Option>
-					<Option value="4"    >every 4 sec</Option>
 					<Option value="5"    >every 5 sec</Option>
 					<Option value="7"    >every 7 sec</Option>
 					<Option value="10"   >every 10 sec</Option>
@@ -1433,6 +2395,8 @@ overwrite only when creating a device manually
 					<Option value="30"   >every 30 sec</Option>
 					<Option value="40"   >every 40 sec</Option>
 					<Option value="80"   >every 80 sec</Option>
+					<Option value="120"   >every 2 minutes</Option>
+					<Option value="180"   >every 3 minutes</Option>
 					<Option value="-1"   >automatic adaptive</Option>
 				</List>
 			</Field>
@@ -1476,10 +2440,15 @@ overwrite only when creating a device manually
 				<ControlPageLabel>has_update</ControlPageLabel>
 			</State>
 
-			<State id="shellyMAC">
+			<State id="MAC">
 				<ValueType>String</ValueType>
-				<TriggerLabel>ShellyMAC</TriggerLabel>
-				<ControlPageLabel>ShellyMAC</ControlPageLabel>
+				<TriggerLabel>MAC</TriggerLabel>
+				<ControlPageLabel>MAC</ControlPageLabel>
+			</State>
+			<State id="lastSuccessfullConfigPush">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastSuccessfullConfigPush</TriggerLabel>
+				<ControlPageLabel>lastSuccessfullConfigPush</ControlPageLabel>
 			</State>
 
 			<State id="lastMessageFromDevice">
@@ -1526,14 +2495,156 @@ overwrite only when creating a device manually
 
 
 
-	<Device type="sensor" id="SHHT-1">
-	<Name>Shelly-Temp-Hum</Name>
+	<Device type="dimmer" id="ShellyVintage">
+	<Name>Shelly-Vintage (SHVIN-1)</Name>
 
 		<ConfigUI>            
 			<Field id="isShellyDevice"     type="checkbox"     defaultValue="true" hidden="yes"> </Field>
 			<Field id="MSG" type="textfield"     defaultValue=""> <Label>message from plugin:</Label></Field>
 
-			<Field id="SupportsOnState" 		type="checkbox" defaultValue="true"  hidden ="true"></Field>
+			<Field id="SupportsOnState" 					 type="checkbox" defaultValue="true"  hidden ="true"><Label>SupportsOnState</Label></Field>
+			<Field id="SupportsSensorValue" 				 type="checkbox" defaultValue="true"  hidden ="true"><Label>SupportsSensorValue</Label></Field>
+			<Field id="SupportsStatusRequest" 				 type="checkbox" defaultValue="true"  hidden ="true"><Label>SupportsStatusRequest</Label></Field>
+			<Field id="AllowOnStateChange" 					 type="checkbox" defaultValue="false" hidden ="true"><Label>AllowOnStateChange</Label></Field>
+			<Field id="AllowSensorValueChange" 				 type="checkbox" defaultValue="false" hidden ="true"><Label>AllowSensorValueChange</Label></Field>
+
+			<Field id="SupportsColor" 						 type="checkbox" defaultValue="false"  hidden ="true"><Label>SupportsColor</Label></Field>
+			<Field id="SupportsRGB" 						 type="checkbox" defaultValue="false" hidden ="true"><Label>SupportsRGB</Label></Field>
+			<Field id="SupportsWhite" 						 type="checkbox" defaultValue="false"  hidden ="true"><Label>SupportsWhite</Label></Field>
+			<Field id="SupportsWhiteTemperature" 			 type="checkbox" defaultValue="false"  hidden ="true"><Label>SupportsWhiteTemperature</Label></Field>
+			<Field id="SupportsRGBandWhiteSimultaneously" 	 type="checkbox" defaultValue="false" hidden ="true"><Label>SupportsRGBandWhiteSimultaneously</Label></Field>
+			<Field id="SupportsTwoWhiteLevels"			 	 type="checkbox" defaultValue="false" hidden ="true"><Label>SupportsTwoWhiteLevels</Label></Field>
+			<Field id="SupportsTwoWhiteLevelsSimultaneously" type="checkbox" defaultValue="false" hidden ="true"><Label>SupportsTwoWhiteLevelsSimultaneously</Label></Field>
+			<Field id="label1"  type="label" >
+			<Label>Parameters for Shelly-Vintage Blub device</Label>
+			</Field>
+ 
+			<Field id="ipNumber" type="textfield" defaultValue ="192.168.1.x" > 
+				<Label>Shelly device IP Number</Label>
+			</Field>
+			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
+				<Label>Overwrite exiting IP number if needed</Label>
+			</Field>
+
+			<Field id="MAC" type="textfield" defaultValue =""  readonly="yes"> 
+				<Label>Shelly device mac number</Label>
+			</Field>
+
+
+			<Field id="pollingFrequency"   type="menu" defaultValue="-1" >
+				<Label>Polling frequency, how often the plugin requests status from the device:</Label>
+				<List>
+					<Option value="5"    >every 5 sec</Option>
+					<Option value="7"    >every 7 sec</Option>
+					<Option value="10"   >every 10 sec</Option>
+					<Option value="15"   >every 15 sec</Option>
+					<Option value="20"   >every 20 sec</Option>
+					<Option value="30"   >every 30 sec</Option>
+					<Option value="40"   >every 40 sec</Option>
+					<Option value="80"   >every 80 sec</Option>
+					<Option value="120"   >every 2 minutes</Option>
+					<Option value="180"   >every 3 minutes</Option>
+					<Option value="-1"   >automatic adaptive</Option>
+				</List>
+			</Field>
+			<Field id="pollingFrequencyLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
+				<Label>can be higher/adaptive if actions are setup on the devices</Label>
+			</Field>
+
+
+			<Field id="expirationSeconds"   type="menu" defaultValue="600" >
+				<Label>Device goes to EXPIRED w no message or answer after:</Label>
+				<List>
+					<Option value="180"   >after 3 minutes</Option>
+					<Option value="300"   >after 5 minutes</Option>
+					<Option value="600"   >after 10 minutes</Option>
+					<Option value="1800"  >after 30 minutes</Option>
+					<Option value="3600"  >after 1 hour</Option>
+				</List>
+			</Field>
+
+
+	</ConfigUI>
+
+		<States>
+
+
+			<State id="power">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>power</TriggerLabel>
+				<ControlPageLabel>power</ControlPageLabel>
+			</State>
+
+			<State id="action_from_Device">
+				<ValueType>String</ValueType>
+				<TriggerLabel>action_from_Device</TriggerLabel>
+				<ControlPageLabel>action_from_Device</ControlPageLabel>
+			</State>
+
+			<State id="has_update">
+				<ValueType>bool</ValueType>
+				<TriggerLabel>has_update</TriggerLabel>
+				<ControlPageLabel>has_update</ControlPageLabel>
+			</State>
+
+			<State id="MAC">
+				<ValueType>String</ValueType>
+				<TriggerLabel>MAC</TriggerLabel>
+				<ControlPageLabel>MAC</ControlPageLabel>
+			</State>
+
+			<State id="lastMessageFromDevice">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastMessageFromDevice</TriggerLabel>
+				<ControlPageLabel>lastMessageFromDevice</ControlPageLabel>
+			</State>
+
+			<State id="created">
+				<ValueType>String</ValueType>
+				<TriggerLabel>created</TriggerLabel>
+				<ControlPageLabel>created</ControlPageLabel>
+			</State>
+
+			<State id="lastStatusChange">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastStatusChange</TriggerLabel>
+				<ControlPageLabel>lastStatusChange</ControlPageLabel>
+			</State>
+
+
+			<State id="rssi">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>rssi</TriggerLabel>
+				<ControlPageLabel>rssi</ControlPageLabel>
+			</State>
+
+			<State id="needs_software_Update">
+				<ValueType>String</ValueType>
+				<TriggerLabel>needs_software_Update</TriggerLabel>
+				<ControlPageLabel>needs_software_Update</ControlPageLabel>
+			</State>
+
+			<State id="expired">
+				<ValueType>String</ValueType>
+				<TriggerLabel>expired</TriggerLabel>
+				<ControlPageLabel>expired</ControlPageLabel>
+			</State>
+
+
+
+		</States>
+	</Device>
+
+
+
+	<Device type="sensor" id="shellyht">
+	<Name>Shelly-Temp-Hum (SHHT-1)</Name>
+
+		<ConfigUI>            
+			<Field id="isShellyDevice"     type="checkbox"     defaultValue="true" hidden="yes"> </Field>
+			<Field id="MSG" type="textfield"     defaultValue=""> <Label>message from plugin:</Label></Field>
+
+			<Field id="SupportsOnState" 		type="checkbox" defaultValue="false"  hidden ="true"></Field>
 			<Field id="SupportsSensorValue" 	type="checkbox" defaultValue="true"  hidden ="true"></Field>
 			<Field id="SupportsStatusRequest" 	type="checkbox" defaultValue="true"  hidden ="true"></Field>
 			<Field id="AllowOnStateChange" 		type="checkbox" defaultValue="false" hidden ="true"></Field>
@@ -1549,18 +2660,13 @@ overwrite only when creating a device manually
 				<Label>Overwrite exiting IP number if needed</Label>
 			</Field>
 
-			<Field id="shellyMAC" type="textfield" defaultValue ="" > 
+			<Field id="MAC" type="textfield" defaultValue =""  readonly="yes"> 
 				<Label>Shelly device mac number</Label>
 			</Field>
-			<Field id="shellyMACLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
-				<Label> eg &gt;98F4ABF3D3E5&lt; must be 12 hex digits
-overwrite only when creating a device manually
-   - not recommended</Label>
-			</Field>
 
 
 
-			<Field id="pollingFrequency"   type="menu" defaultValue="10" >
+			<Field id="pollingFrequency"   type="menu" defaultValue="-1" >
 				<Label>Polling frequency, how often the plugin requests status from the device:</Label>
 				<List>
 					<Option value="10"   >every 10 sec</Option>
@@ -1569,6 +2675,8 @@ overwrite only when creating a device manually
 					<Option value="30"   >every 30 sec</Option>
 					<Option value="40"   >every 40 sec</Option>
 					<Option value="80"   >every 80 sec</Option>
+					<Option value="120"   >every 2 minutes</Option>
+					<Option value="180"   >every 3 minutes</Option>
 					<Option value="-1"   >automatic adaptive</Option>
 				</List>
 			</Field>
@@ -1662,10 +2770,10 @@ overwrite only when creating a device manually
 			</State>
 
 <!--   this is same for all: -->
-			<State id="report_url">
+			<State id="lastSuccessfullConfigPush">
 				<ValueType>String</ValueType>
-				<TriggerLabel>report_url</TriggerLabel>
-				<ControlPageLabel>report_url</ControlPageLabel>
+				<TriggerLabel>lastSuccessfullConfigPush</TriggerLabel>
+				<ControlPageLabel>lastSuccessfullConfigPush</ControlPageLabel>
 			</State>
 
 			<State id="action_from_Device">
@@ -1680,10 +2788,10 @@ overwrite only when creating a device manually
 				<ControlPageLabel>has_update</ControlPageLabel>
 			</State>
 
-			<State id="shellyMAC">
+			<State id="MAC">
 				<ValueType>String</ValueType>
-				<TriggerLabel>ShellyMAC</TriggerLabel>
-				<ControlPageLabel>ShellyMAC</ControlPageLabel>
+				<TriggerLabel>MAC</TriggerLabel>
+				<ControlPageLabel>MAC</ControlPageLabel>
 			</State>
 
 			<State id="lastMessageFromDevice">
@@ -1730,14 +2838,230 @@ overwrite only when creating a device manually
 	</Device>
 
 
-	<Device type="sensor" id="SHWT-1">
-	<Name>Shelly-Flood-Temp</Name>
+	<Device type="sensor" id="ext_temperature">
+	<Name>Shelly-external temp</Name>
+
+		<ConfigUI>            
+			<Field id="isShellyDevice"     type="checkbox"     defaultValue="true" hidden="yes"> </Field>
+			<Field id="MSG" type="textfield"     defaultValue=""> <Label>message from plugin:</Label></Field>
+
+			<Field id="SupportsOnState" 		type="checkbox" defaultValue="false"  hidden ="true"></Field>
+			<Field id="SupportsSensorValue" 	type="checkbox" defaultValue="true"  hidden ="true"></Field>
+			<Field id="SupportsStatusRequest" 	type="checkbox" defaultValue="true"  hidden ="true"></Field>
+			<Field id="AllowOnStateChange" 		type="checkbox" defaultValue="false" hidden ="true"></Field>
+			<Field id="AllowSensorValueChange" 	type="checkbox" defaultValue="false" hidden ="true"></Field>
+			<Field id="label1"  type="label" >
+			<Label>Parameters for Shelly - external Temperature device, 
+for connection parameters check the parent (SHELLY host device)</Label>
+			</Field>
+			<Field id="parentIndigoId" type="textfield" defaultValue ="0"  readonly="yes"> 
+				<Label>The indigo Id of the hosting device</Label>
+			</Field>
+
+			<Field id="ipNumber" type="textfield" defaultValue ="192.168.1.x" readonly="yes"> 
+				<Label>Shelly device IP Number</Label>
+			</Field>
+
+			<Field id="MAC" type="textfield" defaultValue ="" readonly="yes" > 
+				<Label>Shelly device mac number</Label>
+			</Field>
+			<Field id="displaySelect" type="menu"     defaultValue="Temperature"> <Label>Property to display in the State Column:</Label>
+			<List>
+				<Option value="Temperature"  >Temperature</Option>
+			</List>
+			</Field>
+
+	</ConfigUI>
+
+		<States>
+
+<!--   this is dev specific -->
+			<State id="Temperature">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Temperature</TriggerLabel>
+				<ControlPageLabel>Temperature</ControlPageLabel>
+			</State>
+			<State id="TemperatureMaxToday">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>TemperatureMaxToday</TriggerLabel>
+				<ControlPageLabel>TemperatureMaxToday</ControlPageLabel>
+			</State>
+			<State id="TemperatureMinToday">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>TemperatureMinToday</TriggerLabel>
+				<ControlPageLabel>TemperatureMinToday</ControlPageLabel>
+			</State>
+			<State id="TemperatureMaxYesterday">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>TemperatureMaxYesterday</TriggerLabel>
+				<ControlPageLabel>TemperatureMaxYesterday</ControlPageLabel>
+			</State>
+			<State id="TemperatureMinYesterday">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>TemperatureMinYesterday</TriggerLabel>
+				<ControlPageLabel>TemperatureMinYesterday</ControlPageLabel>
+			</State>
+			<State id="sensorNo">
+				<ValueType>String</ValueType>
+				<TriggerLabel>sensorNo</TriggerLabel>
+				<ControlPageLabel>sensorNo</ControlPageLabel>
+			</State>
+
+<!--   this is same for all: -->
+
+			<State id="MAC">
+				<ValueType>String</ValueType>
+				<TriggerLabel>MAC</TriggerLabel>
+				<ControlPageLabel>MAC</ControlPageLabel>
+			</State>
+
+			<State id="lastMessageFromDevice">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastMessageFromDevice</TriggerLabel>
+				<ControlPageLabel>lastMessageFromDevice</ControlPageLabel>
+			</State>
+
+			<State id="created">
+				<ValueType>String</ValueType>
+				<TriggerLabel>created</TriggerLabel>
+				<ControlPageLabel>created</ControlPageLabel>
+			</State>
+
+			<State id="lastStatusChange">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastStatusChange</TriggerLabel>
+				<ControlPageLabel>lastStatusChange</ControlPageLabel>
+			</State>
+
+			<State id="expired">
+				<ValueType>String</ValueType>
+				<TriggerLabel>expired</TriggerLabel>
+				<ControlPageLabel>expired</ControlPageLabel>
+			</State>
+
+
+
+
+		</States>
+	</Device>
+
+
+	<Device type="sensor" id="ext_humidity">
+	<Name>Shelly-external temp</Name>
+
+		<ConfigUI>            
+			<Field id="isShellyDevice"     type="checkbox"     defaultValue="true" hidden="yes"> </Field>
+			<Field id="MSG" type="textfield"     defaultValue=""> <Label>message from plugin:</Label></Field>
+
+			<Field id="SupportsOnState" 		type="checkbox" defaultValue="false"  hidden ="true"></Field>
+			<Field id="SupportsSensorValue" 	type="checkbox" defaultValue="true"  hidden ="true"></Field>
+			<Field id="SupportsStatusRequest" 	type="checkbox" defaultValue="true"  hidden ="true"></Field>
+			<Field id="AllowOnStateChange" 		type="checkbox" defaultValue="false" hidden ="true"></Field>
+			<Field id="AllowSensorValueChange" 	type="checkbox" defaultValue="false" hidden ="true"></Field>
+			<Field id="label1"  type="label" >
+			<Label>Parameters for Shelly - external Temperature device, 
+for connection parameters check the parent (SHELLY host device)</Label>
+			</Field>
+			<Field id="parentIndigoId" type="textfield" defaultValue ="0"  readonly="yes"> 
+				<Label>The indigo Id of the hosting device</Label>
+			</Field>
+
+			<Field id="ipNumber" type="textfield" defaultValue ="192.168.1.x" readonly="yes"> 
+				<Label>Shelly device IP Number</Label>
+			</Field>
+
+			<Field id="MAC" type="textfield" defaultValue ="" readonly="yes" > 
+				<Label>Shelly device mac number</Label>
+			</Field>
+			<Field id="displaySelect" type="menu"     defaultValue="Humidity"> <Label>Property to display in the State Column:</Label>
+			<List>
+				<Option value="Humidity"  >Humidity</Option>
+			</List>
+			</Field>
+
+	</ConfigUI>
+
+		<States>
+
+<!--   this is dev specific -->
+			<State id="Humidity">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Humidity</TriggerLabel>
+				<ControlPageLabel>Humidity</ControlPageLabel>
+			</State>
+			<State id="HumidityMaxToday">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>HumidityMaxToday</TriggerLabel>
+				<ControlPageLabel>HumidityMaxToday</ControlPageLabel>
+			</State>
+			<State id="HumidityMinToday">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>HumidityMinToday</TriggerLabel>
+				<ControlPageLabel>HumidityMinToday</ControlPageLabel>
+			</State>
+			<State id="HumidityMaxYesterday">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>HumidityMaxYesterday</TriggerLabel>
+				<ControlPageLabel>HumidityMaxYesterday</ControlPageLabel>
+			</State>
+			<State id="HumidityMinYesterday">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>HumidityMinYesterday</TriggerLabel>
+				<ControlPageLabel>HumidityMinYesterday</ControlPageLabel>
+			</State>
+			<State id="sensorNo">
+				<ValueType>String</ValueType>
+				<TriggerLabel>sensorNo</TriggerLabel>
+				<ControlPageLabel>sensorNo</ControlPageLabel>
+			</State>
+
+<!--   this is same for all: -->
+
+			<State id="MAC">
+				<ValueType>String</ValueType>
+				<TriggerLabel>MAC</TriggerLabel>
+				<ControlPageLabel>MAC</ControlPageLabel>
+			</State>
+
+			<State id="lastMessageFromDevice">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastMessageFromDevice</TriggerLabel>
+				<ControlPageLabel>lastMessageFromDevice</ControlPageLabel>
+			</State>
+
+			<State id="created">
+				<ValueType>String</ValueType>
+				<TriggerLabel>created</TriggerLabel>
+				<ControlPageLabel>created</ControlPageLabel>
+			</State>
+
+			<State id="lastStatusChange">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastStatusChange</TriggerLabel>
+				<ControlPageLabel>lastStatusChange</ControlPageLabel>
+			</State>
+
+			<State id="expired">
+				<ValueType>String</ValueType>
+				<TriggerLabel>expired</TriggerLabel>
+				<ControlPageLabel>expired</ControlPageLabel>
+			</State>
+
+
+
+
+		</States>
+	</Device>
+
+
+	<Device type="sensor" id="shellyflood">
+	<Name>Shelly-Flood-Temp (SHWT-1)</Name>
 
 		<ConfigUI>            
 			<Field id="isShellyDevice"     type="checkbox"     defaultValue="true" hidden="yes"> </Field>
 			<Field id="MSG" type="textfield"     defaultValue=""> <Label>message from plugin:</Label></Field>
 			<Field id="SupportsOnState" 					 type="checkbox" defaultValue="true"  hidden ="true"><Label>SupportsOnState</Label></Field>
-			<Field id="SupportsSensorValue" 				 type="checkbox" defaultValue="false"  hidden ="true"><Label>SupportsSensorValue</Label></Field>
+			<Field id="SupportsSensorValue" 				 type="checkbox" defaultValue="true" hidden ="true"><Label>SupportsSensorValue</Label></Field>
 			<Field id="SupportsStatusRequest" 				 type="checkbox" defaultValue="true"  hidden ="true"><Label>SupportsStatusRequest</Label></Field>
 			<Field id="AllowOnStateChange" 					 type="checkbox" defaultValue="false" hidden ="true"><Label>AllowOnStateChange</Label></Field>
 			<Field id="AllowSensorValueChange" 				 type="checkbox" defaultValue="false" hidden ="true"><Label>AllowSensorValueChange</Label></Field>
@@ -1752,18 +3076,13 @@ overwrite only when creating a device manually
 				<Label>Overwrite exiting IP number if needed</Label>
 			</Field>
 
-			<Field id="shellyMAC" type="textfield" defaultValue ="" > 
+			<Field id="MAC" type="textfield" defaultValue =""  readonly="yes"> 
 				<Label>Shelly device mac number</Label>
 			</Field>
-			<Field id="shellyMACLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
-				<Label> eg &gt;98F4ABF3D3E5&lt; must be 12 hex digits
-overwrite only when creating a device manually
-   - not recommended</Label>
-			</Field>
 
 
 
-			<Field id="pollingFrequency"   type="menu" defaultValue="10" >
+			<Field id="pollingFrequency"   type="menu" defaultValue="-1" >
 				<Label>Polling frequency, how often the plugin requests status from the device:</Label>
 				<List>
 					<Option value="10"   >every 10 sec</Option>
@@ -1772,6 +3091,8 @@ overwrite only when creating a device manually
 					<Option value="30"   >every 30 sec</Option>
 					<Option value="40"   >every 40 sec</Option>
 					<Option value="80"   >every 80 sec</Option>
+					<Option value="120"   >every 2 minutes</Option>
+					<Option value="180"   >every 3 minutes</Option>
 					<Option value="-1"   >automatic adaptive</Option>
 				</List>
 			</Field>
@@ -1793,7 +3114,6 @@ overwrite only when creating a device manually
 			<Field id="displaySelect" type="menu"     defaultValue="Temperature"> <Label>Property to display in the State Column:</Label>
 			<List>
 				<Option value="Temperature"  >Temperature</Option>
-				<Option value="Flood"        >Flood</Option>
 			</List>
 			</Field>
 
@@ -1839,12 +3159,17 @@ overwrite only when creating a device manually
 				<TriggerLabel>lastAlarm</TriggerLabel>
 				<ControlPageLabel>lastAlarm</ControlPageLabel>
 			</State>
+			<State id="lastAlarm">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastAlarm</TriggerLabel>
+				<ControlPageLabel>lastAlarm</ControlPageLabel>
+			</State>
 
 <!--   this is same for all: -->
-			<State id="report_url">
-				<ValueType>String</ValueType>
-				<TriggerLabel>report_url</TriggerLabel>
-				<ControlPageLabel>report_url</ControlPageLabel>
+			<State id="batteryVoltage">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>batteryVoltage</TriggerLabel>
+				<ControlPageLabel>batteryVoltage</ControlPageLabel>
 			</State>
 
 			<State id="action_from_Device">
@@ -1859,10 +3184,10 @@ overwrite only when creating a device manually
 				<ControlPageLabel>has_update</ControlPageLabel>
 			</State>
 
-			<State id="shellyMAC">
+			<State id="MAC">
 				<ValueType>String</ValueType>
-				<TriggerLabel>ShellyMAC</TriggerLabel>
-				<ControlPageLabel>ShellyMAC</ControlPageLabel>
+				<TriggerLabel>MAC</TriggerLabel>
+				<ControlPageLabel>MAC</ControlPageLabel>
 			</State>
 
 			<State id="lastMessageFromDevice">
@@ -1880,6 +3205,185 @@ overwrite only when creating a device manually
 				<ValueType>String</ValueType>
 				<TriggerLabel>lastStatusChange</TriggerLabel>
 				<ControlPageLabel>lastStatusChange</ControlPageLabel>
+			</State>
+
+			<State id="lastSuccessfullConfigPush">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastSuccessfullConfigPush</TriggerLabel>
+				<ControlPageLabel>lastSuccessfullConfigPush</ControlPageLabel>
+			</State>
+
+
+			<State id="rssi">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>rssi</TriggerLabel>
+				<ControlPageLabel>rssi</ControlPageLabel>
+			</State>
+
+			<State id="needs_software_Update">
+				<ValueType>String</ValueType>
+				<TriggerLabel>needs_software_Update</TriggerLabel>
+				<ControlPageLabel>needs_software_Update</ControlPageLabel>
+			</State>
+
+			<State id="expired">
+				<ValueType>String</ValueType>
+				<TriggerLabel>expired</TriggerLabel>
+				<ControlPageLabel>expired</ControlPageLabel>
+			</State>
+
+
+
+		</States>
+	</Device>
+
+	<Device type="sensor" id="shellydw">
+	<Name>Shelly-Door-Window (SDW)</Name>
+
+		<ConfigUI>            
+			<Field id="isShellyDevice"     					type="checkbox"     defaultValue="true" hidden="yes"> </Field>
+			<Field id="MSG" type="textfield"     defaultValue=""> <Label>message from plugin:</Label></Field>
+			<Field id="SupportsOnState" 					 type="checkbox" defaultValue="true"  hidden ="true"><Label>SupportsOnState</Label></Field>
+			<Field id="SupportsSensorValue" 				 type="checkbox" defaultValue="true" hidden ="true"><Label>SupportsSensorValue</Label></Field>
+			<Field id="SupportsStatusRequest" 				 type="checkbox" defaultValue="true"  hidden ="true"><Label>SupportsStatusRequest</Label></Field>
+			<Field id="AllowOnStateChange" 					 type="checkbox" defaultValue="false" hidden ="true"><Label>AllowOnStateChange</Label></Field>
+			<Field id="AllowSensorValueChange" 				 type="checkbox" defaultValue="false" hidden ="true"><Label>AllowSensorValueChange</Label></Field>
+			<Field id="label1"  type="label" >
+			<Label>Parameters for Shelly-Door Window device</Label>
+			</Field>
+ 
+			<Field id="ipNumber" type="textfield" defaultValue ="192.168.1.x" > 
+				<Label>Shelly device IP Number</Label>
+			</Field>
+			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
+				<Label>Overwrite exiting IP number if needed</Label>
+			</Field>
+
+			<Field id="MAC" type="textfield" defaultValue =""  readonly="yes"> 
+				<Label>Shelly device mac number</Label>
+			</Field>
+
+
+
+			<Field id="pollingFrequency"   type="menu" defaultValue="-1" >
+				<Label>Polling frequency, how often the plugin requests status from the device:</Label>
+				<List>
+					<Option value="10"   >every 10 sec</Option>
+					<Option value="15"   >every 15 sec</Option>
+					<Option value="20"   >every 20 sec</Option>
+					<Option value="30"   >every 30 sec</Option>
+					<Option value="40"   >every 40 sec</Option>
+					<Option value="80"   >every 80 sec</Option>
+					<Option value="120"   >every 2 minutes</Option>
+					<Option value="180"   >every 3 minutes</Option>
+					<Option value="-1"   >automatic adaptive</Option>
+				</List>
+			</Field>
+			<Field id="pollingFrequencyLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
+				<Label>can be higher/adaptive if actions are setup on the devices</Label>
+			</Field>
+
+
+			<Field id="expirationSeconds"   type="menu" defaultValue="50400" >
+				<Label>Device goes to EXPIRED w no message or answer after:</Label>
+				<List>
+					<Option value="36000" >after 10 hour</Option>
+					<Option value="43600" >after 12 hour</Option>
+					<Option value="50400" >after 14 hour</Option>
+					<Option value="57600" >after 16 hour</Option>
+				</List>
+			</Field>
+
+			<Field id="displaySelect" type="menu"     defaultValue="lux"> <Label>Property to display as Sensor Value:</Label>
+			<List>
+				<Option value="lux"    >lux value</Option>
+				<Option value="tilt"   >tilt degrees </Option>
+			</List>
+			</Field>
+
+
+
+	</ConfigUI>
+
+		<States>
+
+<!--   this is dev specific -->
+			<State id="state">
+				<ValueType>String</ValueType>
+				<TriggerLabel>state</TriggerLabel>
+				<ControlPageLabel>state</ControlPageLabel>
+			</State>
+			<State id="tilt">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>tilt</TriggerLabel>
+				<ControlPageLabel>tilt</ControlPageLabel>
+			</State>
+			<State id="vibration">
+				<ValueType>String</ValueType>
+				<TriggerLabel>vibration</TriggerLabel>
+				<ControlPageLabel>vibration</ControlPageLabel>
+			</State>
+			<State id="lux">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>lux</TriggerLabel>
+				<ControlPageLabel>lux</ControlPageLabel>
+			</State>
+			<State id="illumination">
+				<ValueType>String</ValueType>
+				<TriggerLabel>illumination</TriggerLabel>
+				<ControlPageLabel>illumination</ControlPageLabel>
+			</State>
+
+			<State id="batteryLevel">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>batteryLevel</TriggerLabel>
+				<ControlPageLabel>batteryLevel</ControlPageLabel>
+			</State>
+			<State id="batteryVoltage">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>batteryVoltage</TriggerLabel>
+				<ControlPageLabel>batteryVoltage</ControlPageLabel>
+			</State>
+
+			<State id="action_from_Device">
+				<ValueType>String</ValueType>
+				<TriggerLabel>action_from_Device</TriggerLabel>
+				<ControlPageLabel>action_from_Device</ControlPageLabel>
+			</State>
+
+			<State id="has_update">
+				<ValueType>bool</ValueType>
+				<TriggerLabel>has_update</TriggerLabel>
+				<ControlPageLabel>has_update</ControlPageLabel>
+			</State>
+
+			<State id="MAC">
+				<ValueType>String</ValueType>
+				<TriggerLabel>MAC</TriggerLabel>
+				<ControlPageLabel>MAC</ControlPageLabel>
+			</State>
+
+			<State id="lastMessageFromDevice">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastMessageFromDevice</TriggerLabel>
+				<ControlPageLabel>lastMessageFromDevice</ControlPageLabel>
+			</State>
+
+			<State id="created">
+				<ValueType>String</ValueType>
+				<TriggerLabel>created</TriggerLabel>
+				<ControlPageLabel>created</ControlPageLabel>
+			</State>
+			<State id="lastStatusChange">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastStatusChange</TriggerLabel>
+				<ControlPageLabel>lastStatusChange</ControlPageLabel>
+			</State>
+
+			<State id="lastSuccessfullConfigPush">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastSuccessfullConfigPush</TriggerLabel>
+				<ControlPageLabel>lastSuccessfullConfigPush</ControlPageLabel>
 			</State>
 
 

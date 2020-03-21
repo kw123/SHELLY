@@ -14,7 +14,7 @@
                 <Label>ipNumber:</Label> 
             </Field>
             <Field   id="confirmIpNumberSetup" type="button"  >
-                <Label>EXECUTE </Label><Title>EXECUTE</Title> <CallbackMethod>buttonConfirmconfirmIpNumberSetupCALLBACK</CallbackMethod>
+                <Label>CLICK to</Label><Title>EXECUTE</Title> <CallbackMethod>buttonConfirmconfirmIpNumberSetupCALLBACK</CallbackMethod>
             </Field>
             <Field    id="MSG"   type="textfield" defaultValue="" >
                 <Label> message from Plugin:</Label>
@@ -35,7 +35,78 @@
                 <Label>ipNumber to:</Label> 
             </Field>
             <Field   id="confirmIpNumberSetup" type="button"  >
-                <Label>EXECUTE </Label><Title>EXECUTE</Title> <CallbackMethod>buttonConfirmconfirmIpNumberRangeSetupCALLBACK</CallbackMethod>
+                <Label>CLICK to</Label><Title>EXECUTE</Title> <CallbackMethod>buttonConfirmconfirmIpNumberRangeSetupCALLBACK</CallbackMethod>
+            </Field>
+            <Field    id="MSG"   type="textfield" defaultValue="" >
+                <Label> message from Plugin:</Label>
+            </Field>
+        </ConfigUI>
+    </MenuItem>         
+    <MenuItem id="requestStatus">
+        <Name>Request Status from Shelly Device</Name>
+        <ConfigUI>
+            <Field id="infoLabel11" type="label">
+                <Label>send the "settings" command to SHELLY device</Label>
+            </Field>
+            <Field id="devId" type="menu" >
+                <Label>Select SHELLY device:</Label>
+                <List class="self" filter="" method="filterActiveShellyDevices" dynamicReload="true"/>
+            </Field>
+            <Field   id="confirmPush" type="button"  >
+                <Label>CLICK to</Label><Title>EXECUTE</Title> <CallbackMethod>buttonConfirmconfirmpRequestStatusCALLBACK</CallbackMethod>
+            </Field>
+            <Field    id="MSG"   type="textfield" defaultValue="" >
+                <Label> message from Plugin:</Label>
+            </Field>
+        </ConfigUI>
+    </MenuItem>         
+    <MenuItem id="pushAction">
+        <Name>Push settings to Shelly Device</Name>
+        <ConfigUI>
+            <Field id="infoLabel11" type="label">
+                <Label>Force an sending an update of the action and button settngs to the SHELLY device</Label>
+            </Field>
+            <Field id="devId" type="menu" >
+                <Label>Select SHELLY device:</Label>
+                <List class="self" filter="" method="filterActiveShellyDevicesNotChild" dynamicReload="true"/>
+            </Field>
+            <Field   id="confirmPush" type="button"  >
+                <Label>CLICK to</Label><Title>EXECUTE</Title> <CallbackMethod>buttonConfirmconfirmpPuschActionCALLBACK</CallbackMethod>
+            </Field>
+            <Field    id="MSG"   type="textfield" defaultValue="" >
+                <Label> message from Plugin:</Label>
+            </Field>
+        </ConfigUI>
+    </MenuItem>         
+    <MenuItem id="ignoreIPNumber">
+        <Name>Ignore messsages from certain IP numbers</Name>
+        <ConfigUI>
+            <Field id="infoLabel11" type="label">
+                <Label>add an IP numebr to be ignored</Label>
+            </Field>
+            <Field id="ipNumber"   type="textfield" defaultValue="192.168.1.x"  >
+                <Label>ipNumber to be ignored:</Label> 
+            </Field>
+            <Field   id="confirmPush" type="button"  >
+                <Label>CLICK to</Label><Title>IGNORE</Title> <CallbackMethod>buttonConfirmconfirmpIgnoreIPNumberCALLBACK</CallbackMethod>
+            </Field>
+            <Field    id="MSG"   type="textfield" defaultValue="" >
+                <Label> message from Plugin:</Label>
+            </Field>
+        </ConfigUI>
+    </MenuItem>         
+    <MenuItem id="unIgnoreIPNumber">
+        <Name>Accept again messsages from certain IP numbers</Name>
+        <ConfigUI>
+            <Field id="infoLabel11" type="label">
+                <Label>add an IP numebr to be ignored</Label>
+            </Field>
+            <Field id="ipNumber" type="menu" >
+                <Label>Select IP numebr to be used again:</Label>
+                <List class="self" filter="" method="filterignoredIPNumbers" dynamicReload="true"/>
+            </Field>
+            <Field   id="confirmUnIgnore" type="button"  >
+                <Label>CLICK to</Label><Title>ADD BACK</Title> <CallbackMethod>buttonConfirmconfirmpUnIgnoreIPNumberCALLBACK</CallbackMethod>
             </Field>
             <Field    id="MSG"   type="textfield" defaultValue="" >
                 <Label> message from Plugin:</Label>
@@ -43,6 +114,23 @@
         </ConfigUI>
     </MenuItem>         
       <MenuItem id="d04"> <Name>------------- INFO -----------------------------------</Name><CallbackMethod>inpDummy</CallbackMethod></MenuItem>
+    <MenuItem id="printShellyDevs">
+        <Name>Print Shelly dev info to logfilee</Name>
+        <ConfigUI>
+            <Field id="infoLabel11" type="label">
+                <Label>print dev  info for one or all SHELLY devices</Label>
+            </Field>
+            <Field id="devId" type="menu" >
+                <Label>Select SHELLY device:</Label>
+                <List class="self" filter="" method="filterActiveShellyDevices" dynamicReload="true"/>
+            </Field>
+            <Field   id="confirmPush" type="button"  >
+                <Label>CLICK to</Label><Title>PRINT</Title> <CallbackMethod>buttonPrintShellyDevInfoCALLBACK</CallbackMethod>
+            </Field>
+            <Field    id="MSG"   type="textfield" defaultValue="" >
+                <Label> message from Plugin:</Label>
+            </Field>
+        </ConfigUI>
+    </MenuItem>         
       <MenuItem id="buttonPrintHelpToLogCALLBACK"> <Name>Print help to logfile</Name><CallbackMethod>buttonPrintHelpToLogCALLBACK</CallbackMethod></MenuItem>
-      <MenuItem id="printShellyDevs"> <Name>Print Shelly dev info to logfile</Name><CallbackMethod>buttonPrintShellyDevInfoCALLBACK</CallbackMethod></MenuItem>
 </MenuItems>
