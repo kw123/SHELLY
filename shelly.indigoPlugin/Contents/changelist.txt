@@ -1,10 +1,15 @@
+Added features / changes in v7.3.7 @ 2020-03-29
+===================================================
+
+1. added last and previous flood time states for shelly-WT sensor
+
 Added features / changes in v7.3.6 @ 2020-03-29
 ===================================================
 
 1. displays DHT22 external attachment sensors properly now, as 2 indigo devuices T & H
 2. supports SHELLY-PRO4 now, programmed, not tested
 3. various little device state display improvemnts 
-4. temp and humidity from the shell-TH device are now 2 indigo devcies 
+4. temp and humidity from the shelly-TH device are now 2 indigo devcies 
 
 
 Added features / changes in v7.3.4 @ 2020-03-21

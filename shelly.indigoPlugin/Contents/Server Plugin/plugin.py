@@ -2471,20 +2471,16 @@ class Plugin(indigo.PluginBase):
 				#self.indiLOG.log(20,"flood: regular data:{}".format(data) )
 				devID = str(dev.id)		
 				flood = True if data["flood"]  else False
-				if not flood and time.time() - self.SHELLY[dev.id]["lastAlarm"] < 30 and dev.states["onOffState"]:				
-					self.indiLOG.log(20,"flood: regular skipp update, too short a time after alarm")
-					pass
-				else:
-					#self.indiLOG.log(40,"flood: setting trip to green" )
-					self.addToStatesUpdateDict(devID, "Flood", "FLOOD" if data["flood"]  else "dry", decimalPlaces="")
-					self.addToStatesUpdateDict(devID, "onOffState",flood, decimalPlaces="")
-					#self.addToStatesUpdateDict(devID, "sensorValue",flood, decimalPlaces="")
-					if flood == "FLOOD":
-						if "previousAlarm" in dev.states and "lastAlarm" in dev.states:
-								self.addToStatesUpdateDict(dev.id, "previousAlarm", dev.states["lastAlarm"])
+				if flood and not dev.states["onOffState"]:
+						#self.indiLOG.log(40,"flood: setting trip to green" )
+						self.addToStatesUpdateDict(devID, "Flood", "FLOOD" , decimalPlaces="")
+						self.addToStatesUpdateDict(devID, "onOffState",True, decimalPlaces="")
+						self.addToStatesUpdateDict(devID, "previousAlarm", dev.states["lastAlarm"])
 						self.addToStatesUpdateDict(devID, "lastAlarm", datetime.datetime.now().strftime(_defaultDateStampFormat))
 						dev.updateStateImageOnServer(indigo.kStateImageSel.SensorTripped)
-					else:
+				if not flood and dev.states["onOffState"]:
+						self.addToStatesUpdateDict(devID, "Flood", "dry" , decimalPlaces="")
+						self.addToStatesUpdateDict(devID, "onOffState",False, decimalPlaces="")
 						dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOn)
 
 		except Exception, e:
@@ -2708,7 +2704,7 @@ class Plugin(indigo.PluginBase):
 				# data:= {'path': >>> '/data?temp=32.62&flood=1&batV=2.83'}<<< 
 				for trigger in TRIGGERS:
 					if trigger[0] == "flood":
-						if trigger[1] == "1": 
+						if trigger[1] == "1" and dev.states["Flood"] != "FLOOD": 
 							if self.decideMyLog(u"HTTPlistener"): self.indiLOG.log(20,"doHTTPactionData setting flood state to ON" )
 							self.addToStatesUpdateDict(devID, "Flood", "FLOOD" )
 							self.addToStatesUpdateDict(devID, "onOffState", True)

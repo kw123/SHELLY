@@ -4008,11 +4008,6 @@ for connection parameters check the parent (SHELLY host device)</Label>
 		<States>
 
 <!--   this is dev specific -->
-			<State id="lastOnOffChange">
-				<ValueType>String</ValueType>
-				<TriggerLabel>lastOnOffChange</TriggerLabel>
-				<ControlPageLabel>lastOnOffChange</ControlPageLabel>
-			</State>
 
 			<State id="Temperature">
 				<ValueType>Number</ValueType>
