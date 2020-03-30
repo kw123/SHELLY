@@ -1,3 +1,8 @@
+Added features / changes in v7.3.8 @ 2020-03-30
+===================================================
+
+1. added loggging in deviceStartComm for error in dev type 
+
 Added features / changes in v7.3.7 @ 2020-03-29
 ===================================================
 

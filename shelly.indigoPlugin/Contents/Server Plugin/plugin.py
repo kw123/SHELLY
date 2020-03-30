@@ -229,8 +229,6 @@ _emptyProps ={	# switches
 						"action_url":{},
 						"childTypes_Sensors":[],
 						"childTypes_SplitDevices":[],
-						"isRelay":False,
-						"devNo":0,
 						"tempUnits":"C"
 						},
 
@@ -293,8 +291,6 @@ _emptyProps ={	# switches
 						"setPageActionPageOnShellyDev":{"white":"light/0?","color":"light/0?"},
 						"childTypes_Sensors":[],
 						"childTypes_SplitDevices":[],
-						"isRelay":False,
-						"devNo":0,
 						"tempUnits":"C"
 						},
 
@@ -1116,6 +1112,7 @@ class Plugin(indigo.PluginBase):
 			self.doNotrestartDev = ""
 		except Exception, e:
 			self.indiLOG.log(40,"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+			self.indiLOG.log(40,"for dev: {}".format(dev.name.encode("utf8")))
 		return 
 
 
