@@ -69,18 +69,27 @@ The plugin is:
 Shelly-1:                          12V 110-220V one basic relay  
 Shelly-1PM:                        12V 110-220Vrelay with internal temp sensor ...  
 Shelly-25 2-Relays:                like two Shelly-1PM in one - the plugin creates 2 devices: R1, R2 
-Shelly-EM  Power 2 Ch. - 1 Relay:  110-220V measures Power, volt, has 1 relay - the plugin creates 3 devices: R + EM1 + EM2   
+                                   the second relay will be added as device: hostName-shellyswitch25-child-1
+Shelly-EM Power 2 Ch. - 1 Relay:   110-220V measures Power, volt, has 1 relay - the plugin creates 3 devices: R + EM1 + EM2   
+                                   the EM devices  will be added as device: hostName-shellyem-child-1/2
 Shelly Duo                         110-220V LED light bulb w color temperature  
 Shelly-RGBW Light Bulb:            110-220V LED light bulb with 4 led (RGBW)  
 Shelly-RGBW dimmer:                110-220V 4 led dimmer (PWM) for RGBW  
 Shelly-Dimmer:                     110-220V dimmer  
 Shelly-1 Temp-Hum:                 battery / usb powered Temp. and Hum. sensor  
 Shelly-Flood-Temp:                 Flood alarm and Temperature sensor  
-Shelly- external temp add on:      For Shelly-1 -PM for up to 3 oneWire Temp and DHT22 T&H sensors, the plugin will create a device for each property  
+Shelly- ext. oneWire Temp sensor:  External addon for Shelly-1 -1PM for up to 3 oneWire Temp sensors 
+                                   the sensors will be added as devices: hostName-ext_temperature-# (1,2,3) 
+Shelly- ext. DHT22  sensor:        External addon for Shelly-1 -1PM for 1 DHT22 T&H sensor 
+                                   the sensor will be added as devices: hostName-ext_temperature-1 and  hostName-ext_humidity-1
   programmed, but not tested:   
 Shelly-EM3 Power 3 Ch. - 1 Relay:  110-220V measures Power, volt, has 1 relay - the plugin creates 4 devices: R + EM1 + EM2 + EM3  
+                                   the 3 EM  will be added as device: hostName-sheleeyEM3-child-1/2
+Shelly-PRO4, 4 relay:              220V measures Power, volt, the plugin creates 4 relay devices 
+                                   the 2-4 relays will be added as device: hostName-shellypro-child-# (1/2/3)
 Shelly-Vintage Bulb:               110-220V LED light bulb vintage style  
 Shelly Door Window                 Door/window open alarm  partially supported  
 Shelly Plug PlugS                  power outlets w relay and power measurement  
    
-=========================================================================================  
+=========================================================================================   
+   

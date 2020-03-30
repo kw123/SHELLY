@@ -57,14 +57,56 @@ http://indigoIP#:port/anytext  </Label>
             <Option value="Kelvin"     >Kelvin</Option>
         </List>
    </Field>
+
+
    <Field    id="tempDigits"   type="menu" defaultValue="1">
-        <Label>Temperature digits to show and store:</Label>
+        <Label>Temperature digits to show:</Label>
         <List>
             <Option value="0" >0 </Option>
             <Option value="1" >1</Option>
             <Option value="2" >2</Option>
         </List>
    </Field>
+
+   <Field    id="energyDigits"   type="menu" defaultValue="1">
+        <Label>Energy digits to show:</Label>
+        <List>
+            <Option value="0" >0 </Option>
+            <Option value="1" >1</Option>
+            <Option value="2" >2</Option>
+        </List>
+   </Field>
+
+
+   <Field    id="powerDigits"   type="menu" defaultValue="1">
+        <Label>Power digits to show:</Label>
+        <List>
+            <Option value="0" >0 </Option>
+            <Option value="1" >1</Option>
+            <Option value="2" >2</Option>
+        </List>
+   </Field>
+
+
+   <Field    id="voltageDigits"   type="menu" defaultValue="1">
+        <Label>Voltage digits to show:</Label>
+        <List>
+            <Option value="0" >0 </Option>
+            <Option value="1" >1</Option>
+            <Option value="2" >2</Option>
+        </List>
+   </Field>
+
+
+   <Field    id="currentDigits"   type="menu" defaultValue="1">
+        <Label>Current digits to show:</Label>
+        <List>
+            <Option value="0" >0 </Option>
+            <Option value="1" >1</Option>
+            <Option value="2" >2</Option>
+        </List>
+   </Field>
+
 
     <Field    id="unfiCurl"              type="menu" defaultValue="/usr/bin/curl"  tooltip="To support different SSL standards: for elCapitan and lower use curl, for higher OS-X you can try python requests"  > 
     <Label>Use curl or python-requests for web page access:</Label> 
