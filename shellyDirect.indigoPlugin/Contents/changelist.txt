@@ -1,4 +1,4 @@
-Added features / changes in v7.5.8 @ 2020-04-01
+Added features / changes in v7.5.10 @ 2020-04-01
 ===================================================
 
 1. added input_short state in addition to input_long (press)
@@ -6,7 +6,7 @@ Added features / changes in v7.5.8 @ 2020-04-01
    eg shelly-1 -pm1 -25 -...
 2. added check if name of to be created device exist 
      if already exists: and add a random number to the name to be able to create dev
-2. added state energy_counter (watt minutes for the last minutes) for relay and dimmers
+3. added state energy_counter (watt minutes for the last minutes) for relay and dimmers
 4. added option to print shelly device emeter time series data to logfile, looks like:
      Date/time UTC,Active energy Wh,Returned energy Wh,Min V,Max V
      2020-03-18 00:00,0.0,0.9,119.5,121.0

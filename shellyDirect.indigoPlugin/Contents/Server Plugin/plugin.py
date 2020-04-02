@@ -2652,7 +2652,7 @@ class Plugin(indigo.PluginBase):
 				if "power" 	in meter and	"power"				in devs[devNo].states:	self.fillSensor(devs[devNo], meter, "power",	"power",			decimalPlaces=self.powerDigits)
 				if "energy" in meter and	"energy" 			in devs[devNo].states:	self.fillSensor(devs[devNo], meter, "energy",	"energy",			decimalPlaces=self.energyDigits)
 				if "total" 	in meter and	"energy" 			in devs[devNo].states:	self.fillSensor(devs[devNo], meter, "total",	"energy",			decimalPlaces=self.powerDigits)
-				if "counter" in meter and	"energy_counter" 	in devs[devNo].states:	self.fillSensor(devs[devNo], meter, "counter",	"energy_counter",	decimalPlaces="")
+				if "counters" in meter and	"energy_counters" 	in devs[devNo].states:	self.addToStatesUpdateDict(devs[devNo].id, "energy_counters",str(meter["counters"]).strip("[]"),decimalPlaces="")					
 				devNo+=1
 
 		except Exception, e:

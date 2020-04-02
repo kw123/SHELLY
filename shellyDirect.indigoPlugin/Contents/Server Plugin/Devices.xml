@@ -236,10 +236,10 @@
 				<TriggerLabel>energy</TriggerLabel>
 				<ControlPageLabel>energy</ControlPageLabel>
 			</State>
-			<State id="energy_counter">
+			<State id="energy_counters">
 				<ValueType>string</ValueType>
-				<TriggerLabel>energy_counter</TriggerLabel>
-				<ControlPageLabel>energy_counter</ControlPageLabel>
+				<TriggerLabel>energy_counters</TriggerLabel>
+				<ControlPageLabel>energy_counters</ControlPageLabel>
 			</State>
 
 			<State id="energyReturned">
@@ -580,10 +580,10 @@
 				<TriggerLabel>energy</TriggerLabel>
 				<ControlPageLabel>energy</ControlPageLabel>
 			</State>
-			<State id="energy_counter">
+			<State id="energy_counters">
 				<ValueType>string</ValueType>
-				<TriggerLabel>energy_counter</TriggerLabel>
-				<ControlPageLabel>energy_counter</ControlPageLabel>
+				<TriggerLabel>energy_counters</TriggerLabel>
+				<ControlPageLabel>energy_counters</ControlPageLabel>
 			</State>
 
 			<State id="energyReturned">
@@ -794,6 +794,11 @@
 				<ValueType>Integer</ValueType>
 				<TriggerLabel>energy</TriggerLabel>
 				<ControlPageLabel>energy</ControlPageLabel>
+			</State>
+			<State id="energy_counters">
+				<ValueType>string</ValueType>
+				<TriggerLabel>energy_counters</TriggerLabel>
+				<ControlPageLabel>energy_counters</ControlPageLabel>
 			</State>
 
 
@@ -1226,10 +1231,10 @@
 				<TriggerLabel>energy</TriggerLabel>
 				<ControlPageLabel>energy</ControlPageLabel>
 			</State>
-			<State id="energy_counter">
+			<State id="energy_counters">
 				<ValueType>string</ValueType>
-				<TriggerLabel>energy_counter</TriggerLabel>
-				<ControlPageLabel>energy_counter</ControlPageLabel>
+				<TriggerLabel>energy_counters</TriggerLabel>
+				<ControlPageLabel>energy_counters</ControlPageLabel>
 			</State>
 
 			<State id="input">
@@ -1419,10 +1424,10 @@
 				<TriggerLabel>energy</TriggerLabel>
 				<ControlPageLabel>energy</ControlPageLabel>
 			</State>
-			<State id="energy_counter">
+			<State id="energy_counters">
 				<ValueType>string</ValueType>
-				<TriggerLabel>energy_counter</TriggerLabel>
-				<ControlPageLabel>energy_counter</ControlPageLabel>
+				<TriggerLabel>energy_counters</TriggerLabel>
+				<ControlPageLabel>energy_counters</ControlPageLabel>
 			</State>
 
 			<State id="Temperature_internal">
@@ -1660,10 +1665,10 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<TriggerLabel>energy</TriggerLabel>
 				<ControlPageLabel>energy</ControlPageLabel>
 			</State>
-			<State id="energy_counter">
+			<State id="energy_counters">
 				<ValueType>string</ValueType>
-				<TriggerLabel>energy_counter</TriggerLabel>
-				<ControlPageLabel>energy_counter</ControlPageLabel>
+				<TriggerLabel>energy_counters</TriggerLabel>
+				<ControlPageLabel>energy_counters</ControlPageLabel>
 			</State>
 
 			<State id="input">
@@ -1872,10 +1877,10 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<TriggerLabel>energy</TriggerLabel>
 				<ControlPageLabel>energy</ControlPageLabel>
 			</State>
-			<State id="energy_counter">
+			<State id="energy_counters">
 				<ValueType>string</ValueType>
-				<TriggerLabel>energy_counter</TriggerLabel>
-				<ControlPageLabel>energy_counter</ControlPageLabel>
+				<TriggerLabel>energy_counters</TriggerLabel>
+				<ControlPageLabel>energy_counters</ControlPageLabel>
 			</State>
 
 			<State id="input">
@@ -2109,10 +2114,10 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<TriggerLabel>energy</TriggerLabel>
 				<ControlPageLabel>energy</ControlPageLabel>
 			</State>
-			<State id="energy_counter">
+			<State id="energy_counters">
 				<ValueType>string</ValueType>
-				<TriggerLabel>energy_counter</TriggerLabel>
-				<ControlPageLabel>energy_counter</ControlPageLabel>
+				<TriggerLabel>energy_counters</TriggerLabel>
+				<ControlPageLabel>energy_counters</ControlPageLabel>
 			</State>
 
 			<State id="input">
@@ -2303,10 +2308,10 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<TriggerLabel>energy</TriggerLabel>
 				<ControlPageLabel>energy</ControlPageLabel>
 			</State>
-			<State id="energy_counter">
+			<State id="energy_counters">
 				<ValueType>string</ValueType>
-				<TriggerLabel>energy_counter</TriggerLabel>
-				<ControlPageLabel>energy_counter</ControlPageLabel>
+				<TriggerLabel>energy_counters</TriggerLabel>
+				<ControlPageLabel>energy_counters</ControlPageLabel>
 			</State>
 
 			<State id="input">
@@ -2895,10 +2900,10 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<TriggerLabel>energy</TriggerLabel>
 				<ControlPageLabel>energy</ControlPageLabel>
 			</State>
-			<State id="energy_counter">
+			<State id="energy_counters">
 				<ValueType>string</ValueType>
-				<TriggerLabel>energy_counter</TriggerLabel>
-				<ControlPageLabel>energy_counter</ControlPageLabel>
+				<TriggerLabel>energy_counters</TriggerLabel>
+				<ControlPageLabel>energy_counters</ControlPageLabel>
 			</State>
 
 			<State id="input_1">
