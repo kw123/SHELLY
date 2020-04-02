@@ -56,7 +56,8 @@ The plugin is:
 (D) can set parameters on shelly devices (set in indigo device edit), with:  
      - http://ip#/settings/relay/0?btn_type=toggle     set input button to toggle/momentary/.. 
      - http://ip#/settings/light/0?default_state=last  set the power-on state to last/on/off  
-    etc.  
+     and many other parameters (night mode ...) 
+(E) Menu option to get and print shelly-EM(3) emeter time series data to logfile  
 == REMARKS:   
 (A) The plugin will detect IP# changes for relay or temp devices automatically, 
       but not for light bulbs, as they do not send out any updates 
@@ -93,4 +94,3 @@ Shelly Plug PlugS                  power outlets w relay and power measurement
    
 =========================================================================================   
    
-

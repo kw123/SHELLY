@@ -78,7 +78,26 @@
             </Field>
         </ConfigUI>
     </MenuItem>         
-    <MenuItem id="ignoreIPNumber">
+    <MenuItem id="getEmeterCvsFile">
+        <Name>Print emeter data to logfile</Name>
+        <ConfigUI>
+            <Field id="infoLabel11" type="label">
+                <Label> get emeter data from specific device w emeter props, 
+     data is printed to ..../Logs/com.karlwachs.shellyDirect/plugin.log</Label>
+            </Field>
+            <Field id="devId" type="menu" >
+                <Label>Select SHELLY device:</Label>
+                <List class="self" filter="" method="filterEmeterDevices" dynamicReload="true"/>
+            </Field>
+            <Field   id="confirmPush" type="button"  >
+                <Label>CLICK to</Label><Title>get Data</Title> <CallbackMethod>buttonConfirmconfirmpgetEmeterCvsFileCALLBACK</CallbackMethod>
+            </Field>
+            <Field    id="MSG"   type="textfield" defaultValue="" >
+                <Label> message from Plugin:</Label>
+            </Field>
+        </ConfigUI>
+    </MenuItem>         
+     <MenuItem id="ignoreIPNumber">
         <Name>Ignore messsages from certain IP numbers</Name>
         <ConfigUI>
             <Field id="infoLabel11" type="label">

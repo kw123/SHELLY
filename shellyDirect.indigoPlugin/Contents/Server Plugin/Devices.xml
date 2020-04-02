@@ -236,6 +236,11 @@
 				<TriggerLabel>energy</TriggerLabel>
 				<ControlPageLabel>energy</ControlPageLabel>
 			</State>
+			<State id="energy_counter">
+				<ValueType>string</ValueType>
+				<TriggerLabel>energy_counter</TriggerLabel>
+				<ControlPageLabel>energy_counter</ControlPageLabel>
+			</State>
 
 			<State id="energyReturned">
 				<ValueType>Number</ValueType>
@@ -575,6 +580,11 @@
 				<TriggerLabel>energy</TriggerLabel>
 				<ControlPageLabel>energy</ControlPageLabel>
 			</State>
+			<State id="energy_counter">
+				<ValueType>string</ValueType>
+				<TriggerLabel>energy_counter</TriggerLabel>
+				<ControlPageLabel>energy_counter</ControlPageLabel>
+			</State>
 
 			<State id="energyReturned">
 				<ValueType>Number</ValueType>
@@ -792,6 +802,12 @@
 				<ValueType>String</ValueType>
 				<TriggerLabel>input</TriggerLabel>
 				<ControlPageLabel>input</ControlPageLabel>
+			</State>
+
+			<State id="input_short">
+				<ValueType>String</ValueType>
+				<TriggerLabel>input_short</TriggerLabel>
+				<ControlPageLabel>input_short</ControlPageLabel>
 			</State>
 
 			<State id="input_long">
@@ -1014,6 +1030,12 @@
 				<ControlPageLabel>input</ControlPageLabel>
 			</State>
 
+			<State id="input_short">
+				<ValueType>String</ValueType>
+				<TriggerLabel>input_short</TriggerLabel>
+				<ControlPageLabel>input_short</ControlPageLabel>
+			</State>
+
 			<State id="input_long">
 				<ValueType>String</ValueType>
 				<TriggerLabel>input_long</TriggerLabel>
@@ -1204,6 +1226,11 @@
 				<TriggerLabel>energy</TriggerLabel>
 				<ControlPageLabel>energy</ControlPageLabel>
 			</State>
+			<State id="energy_counter">
+				<ValueType>string</ValueType>
+				<TriggerLabel>energy_counter</TriggerLabel>
+				<ControlPageLabel>energy_counter</ControlPageLabel>
+			</State>
 
 			<State id="input">
 				<ValueType>String</ValueType>
@@ -1391,6 +1418,11 @@
 				<ValueType>Number</ValueType>
 				<TriggerLabel>energy</TriggerLabel>
 				<ControlPageLabel>energy</ControlPageLabel>
+			</State>
+			<State id="energy_counter">
+				<ValueType>string</ValueType>
+				<TriggerLabel>energy_counter</TriggerLabel>
+				<ControlPageLabel>energy_counter</ControlPageLabel>
 			</State>
 
 			<State id="Temperature_internal">
@@ -1628,11 +1660,22 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<TriggerLabel>energy</TriggerLabel>
 				<ControlPageLabel>energy</ControlPageLabel>
 			</State>
+			<State id="energy_counter">
+				<ValueType>string</ValueType>
+				<TriggerLabel>energy_counter</TriggerLabel>
+				<ControlPageLabel>energy_counter</ControlPageLabel>
+			</State>
 
 			<State id="input">
 				<ValueType>String</ValueType>
 				<TriggerLabel>input</TriggerLabel>
 				<ControlPageLabel>input</ControlPageLabel>
+			</State>
+
+			<State id="input_short">
+				<ValueType>String</ValueType>
+				<TriggerLabel>input_short</TriggerLabel>
+				<ControlPageLabel>input_short</ControlPageLabel>
 			</State>
 
 			<State id="input_long">
@@ -1829,11 +1872,22 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<TriggerLabel>energy</TriggerLabel>
 				<ControlPageLabel>energy</ControlPageLabel>
 			</State>
+			<State id="energy_counter">
+				<ValueType>string</ValueType>
+				<TriggerLabel>energy_counter</TriggerLabel>
+				<ControlPageLabel>energy_counter</ControlPageLabel>
+			</State>
 
 			<State id="input">
 				<ValueType>String</ValueType>
 				<TriggerLabel>input</TriggerLabel>
 				<ControlPageLabel>input</ControlPageLabel>
+			</State>
+
+			<State id="input_short">
+				<ValueType>String</ValueType>
+				<TriggerLabel>input_short</TriggerLabel>
+				<ControlPageLabel>input_short</ControlPageLabel>
 			</State>
 
 			<State id="input_long">
@@ -2055,6 +2109,11 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<TriggerLabel>energy</TriggerLabel>
 				<ControlPageLabel>energy</ControlPageLabel>
 			</State>
+			<State id="energy_counter">
+				<ValueType>string</ValueType>
+				<TriggerLabel>energy_counter</TriggerLabel>
+				<ControlPageLabel>energy_counter</ControlPageLabel>
+			</State>
 
 			<State id="input">
 				<ValueType>String</ValueType>
@@ -2243,6 +2302,11 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<ValueType>Number</ValueType>
 				<TriggerLabel>energy</TriggerLabel>
 				<ControlPageLabel>energy</ControlPageLabel>
+			</State>
+			<State id="energy_counter">
+				<ValueType>string</ValueType>
+				<TriggerLabel>energy_counter</TriggerLabel>
+				<ControlPageLabel>energy_counter</ControlPageLabel>
 			</State>
 
 			<State id="input">
@@ -2757,28 +2821,51 @@ Parent and child share the same connection, the plugin creates two devices to be
 			</Field>
 
 			<Field id="SENDTOSHELLYDEVICE-min_brightness"   type="textfield" defaultValue="none" >
-				<Label>Set min brightness:</Label>
+				<Label>Set min brightness (0-50):</Label>
 			</Field>
 
 			<Field id="SENDTOSHELLYDEVICE-transition"   type="textfield" defaultValue="none" >
-				<Label>Set transition(0-5000) :</Label>
+				<Label>Set transition on/off 0-5000[mSec] :</Label>
 			</Field>
 
 			<Field id="SENDTOSHELLYDEVICE-fade_rate"   type="menu" defaultValue="none" >
-				<Label>Set fade rate(0-5000) :</Label>
+				<Label>Set fade rate (brightness change when button pressed):</Label>
 				<List>
 					<Option value="none"      >do not set</Option>
-					<Option value="1"         >1</Option>
+					<Option value="1"         >1 - slow </Option>
 					<Option value="2"         >2</Option>
 					<Option value="3"         >3</Option>
 					<Option value="4"         >4</Option>
-					<Option value="5"         >5</Option>
+					<Option value="5"         >5 - fast</Option>
 				</List>
 			</Field>
 
 			<Field id="SENDTOSHELLYDEVICE-lights_1_name"   type="textfield" defaultValue="none" >
 				<Label>Set name of light:</Label>
 			</Field>
+
+			<Field id="labelnightmode"  type="label" ><Label>Parameters for night mode (none= do not change):</Label> </Field>
+			<Field id="SENDTOSHELLYDEVICE-nightMode_enable"   type="menu" defaultValue="none" >
+				<Label>Set night mode on/off:</Label>
+				<List>
+					<Option value="none"  >do not set</Option>
+					<Option value="1"   >ON</Option>
+					<Option value="0"   >off</Option>
+				</List>
+			</Field>
+
+			<Field id="SENDTOSHELLYDEVICE-nightMode_start_time"   type="textfield" defaultValue="none" >
+				<Label>Set night mode start time (HH:MM):</Label>
+			</Field>
+
+			<Field id="SENDTOSHELLYDEVICE-nightMode_end_time"   type="textfield" defaultValue="none" >
+				<Label>Set night end time (HH:MM):</Label>
+			</Field>
+
+			<Field id="SENDTOSHELLYDEVICE-brightness"   type="textfield" defaultValue="none" >
+				<Label>Set night mode brightness(0-100):</Label>
+			</Field>
+
 
 
 	</ConfigUI>
@@ -2802,6 +2889,16 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<ValueType>Number</ValueType>
 				<TriggerLabel>power</TriggerLabel>
 				<ControlPageLabel>power</ControlPageLabel>
+			</State>
+			<State id="energy">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>energy</TriggerLabel>
+				<ControlPageLabel>energy</ControlPageLabel>
+			</State>
+			<State id="energy_counter">
+				<ValueType>string</ValueType>
+				<TriggerLabel>energy_counter</TriggerLabel>
+				<ControlPageLabel>energy_counter</ControlPageLabel>
 			</State>
 
 			<State id="input_1">
@@ -2829,6 +2926,21 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<ValueType>String</ValueType>
 				<TriggerLabel>input_2_long</TriggerLabel>
 				<ControlPageLabel>input_2_long</ControlPageLabel>
+			</State>
+
+
+
+			<State id="input_1_short">
+				<ValueType>String</ValueType>
+				<TriggerLabel>input_1_short</TriggerLabel>
+				<ControlPageLabel>input_1_short</ControlPageLabel>
+			</State>
+
+
+			<State id="input_2_short">
+				<ValueType>String</ValueType>
+				<TriggerLabel>input_2_short</TriggerLabel>
+				<ControlPageLabel>input_2_short</ControlPageLabel>
 			</State>
 
 
@@ -2984,6 +3096,32 @@ Parent and child share the same connection, the plugin creates two devices to be
 			</Field>
 
 
+			<Field id="SENDTOSHELLYDEVICE-transition"   type="textfield" defaultValue="none" >
+				<Label>Set transition on/off 0-5000[mSec] :</Label>
+			</Field>
+
+			<Field id="labelnightmode"  type="label" ><Label>Parameters for night mode (none= do not change):</Label> </Field>
+			<Field id="SENDTOSHELLYDEVICE-nightMode_enable"   type="menu" defaultValue="none" >
+				<Label>Set night mode on/off:</Label>
+				<List>
+					<Option value="none"  >do not set</Option>
+					<Option value="1"   >ON</Option>
+					<Option value="0"   >off</Option>
+				</List>
+			</Field>
+
+			<Field id="SENDTOSHELLYDEVICE-nightMode_start_time"   type="textfield" defaultValue="none" >
+				<Label>Set night mode start time (HH:MM):</Label>
+			</Field>
+
+			<Field id="SENDTOSHELLYDEVICE-nightMode_end_time"   type="textfield" defaultValue="none" >
+				<Label>Set night end time (HH:MM):</Label>
+			</Field>
+
+			<Field id="SENDTOSHELLYDEVICE-brightness"   type="textfield" defaultValue="none" >
+				<Label>Set night mode brightness(0-100):</Label>
+			</Field>
+
 	</ConfigUI>
 
 		<States>
@@ -3112,7 +3250,6 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<Label>can be higher/adaptive if actions are setup on the devices</Label>
 			</Field>
 
-
 			<Field id="expirationSeconds"   type="menu" defaultValue="600" >
 				<Label>Device goes to EXPIRED w no message or answer after:</Label>
 				<List>
@@ -3122,6 +3259,32 @@ Parent and child share the same connection, the plugin creates two devices to be
 					<Option value="1800"  >after 30 minutes</Option>
 					<Option value="3600"  >after 1 hour</Option>
 				</List>
+			</Field>
+
+			<Field id="SENDTOSHELLYDEVICE-transition"   type="textfield" defaultValue="none" >
+				<Label>Set transition on/off 0-5000[mSec] :</Label>
+			</Field>
+
+			<Field id="labelnightmode"  type="label" ><Label>Parameters for night mode (none= do not change):</Label> </Field>
+			<Field id="SENDTOSHELLYDEVICE-nightMode_enable"   type="menu" defaultValue="none" >
+				<Label>Set night mode on/off:</Label>
+				<List>
+					<Option value="none"  >do not set</Option>
+					<Option value="1"   >ON</Option>
+					<Option value="0"   >off</Option>
+				</List>
+			</Field>
+
+			<Field id="SENDTOSHELLYDEVICE-nightMode_start_time"   type="textfield" defaultValue="none" >
+				<Label>Set night mode start time (HH:MM):</Label>
+			</Field>
+
+			<Field id="SENDTOSHELLYDEVICE-nightMode_end_time"   type="textfield" defaultValue="none" >
+				<Label>Set night end time (HH:MM):</Label>
+			</Field>
+
+			<Field id="SENDTOSHELLYDEVICE-brightness"   type="textfield" defaultValue="none" >
+				<Label>Set night mode brightness(0-100):</Label>
 			</Field>
 
 
@@ -3645,7 +3808,7 @@ for connection parameters check the parent (SHELLY host device)</Label>
 				<Label>The indigo Id of the hosting device</Label>
 			</Field>
 
-			<Field id="devNo" type="menu" defaultValue ="1" > 
+			<Field id="devNo" type="menu" defaultValue ="1" readonly="yes"> 
 				<Label>Channel #</Label>
 				<List>
 					<Option value="1"  	>1</Option>
@@ -3753,7 +3916,7 @@ for connection parameters check the parent (SHELLY host device)</Label>
 
 
 	<Device type="sensor" id="ext_humidity">
-	<Name>Shelly-external temp</Name>
+	<Name>Shelly-external Humidity</Name>
 
 		<ConfigUI>            
 			<Field id="isShellyDevice"     type="checkbox"     defaultValue="true" hidden="yes"> </Field>
@@ -3773,7 +3936,7 @@ for connection parameters check the parent (SHELLY host device)</Label>
 			</Field>
  
 
-			<Field id="devNo" type="menu" defaultValue ="1" > 
+			<Field id="devNo" type="menu" defaultValue ="2" readonly="yes"> 
 				<Label>Channel #</Label>
 				<List>
 					<Option value="1"  	>1</Option>
