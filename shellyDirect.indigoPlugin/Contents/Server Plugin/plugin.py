@@ -33,15 +33,9 @@ except ImportError:
 ##########  Static parameters, not changed in pgm
 ################################################################################
 
-## list of dev type, not used right now
-_definedShellyDevicesAll		= ["shelly1","shelly1pm","shellyswitch25","shellyem","shellydimmer","ShellyBulbDuo","shellybulb","SHRGBW2","ShellyVintage","shellyflood","shellyht","shellydw","shellyem3","shellyplug","shellyplug-s","shelly4pro"]
-
-
 ##
 _definedShellyDeviceswAction	= ["shelly1","shelly1pm","shellyswitch25","shellyem","shellydimmer","shellyflood","shellyht", "shellyem3","shellyplug","shellyplug-s","shelly4pro"]
 
-## which types support battery status
-_supportsBatteryLevel 			= ["shellyflood","shellyht","shellydw"]
 
 ## which child type 
 _externalSensorDevTypes			= ["ext_temperature","ext_humidity"]
@@ -325,7 +319,7 @@ _emptyProps ={	# switches
 				# sensors
 				"shellydw":{"props":{"isRelay":False, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
 						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
-						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":60,  "expirationSeconds":50400,"displaySelect":"lux" },
+						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":60,  "expirationSeconds":50400,"displaySelect":"lux","SupportsBatteryLevel":True  },
 						"WhiteTemperatureMin":3000, "WhiteTemperatureMax":6500,
 						"rgbLimits":[1,255],
 						"setPageActionPageOnShellyDev":{},
@@ -337,7 +331,7 @@ _emptyProps ={	# switches
 
 				"shellyflood":{"props":{"isRelay":False, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
 						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
-						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":60,  "expirationSeconds":50400,"displaySelect":"Temperature" },
+						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":60,  "expirationSeconds":50400,"displaySelect":"Temperature","SupportsBatteryLevel":True },
 						"setPageActionPageOnShellyDev":{},
 						"actionReturns":{"flood":["0","1"]},
 						"childTypes_Sensors":[],
@@ -347,7 +341,7 @@ _emptyProps ={	# switches
 
 				"shellyht":{"props":{"isRelay":False, "devNo":0, "SupportsOnState":False, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
 						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
-						"parentIndigoId":0,"children":"{}","isParent":True,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":60,  "expirationSeconds":50400,"displaySelect":"Temperature"},
+						"parentIndigoId":0,"children":"{}","isParent":True,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":60,  "expirationSeconds":50400,"displaySelect":"Temperature","SupportsBatteryLevel":True},
 						"setPageActionPageOnShellyDev":{},
 						"action_url":{"settings/?report_url=":{"none":"data?"}},
 						"actionReturns":{},
@@ -358,7 +352,7 @@ _emptyProps ={	# switches
 
 				"shellyht-child":{"props":{"isRelay":False, "devNo":0, "SupportsOnState":False, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
 						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
-						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":True,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":60,  "expirationSeconds":50400,"displaySelect":"Humidity"},
+						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":True,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":60,  "expirationSeconds":50400,"displaySelect":"Humidity","SupportsBatteryLevel":True},
 						"setPageActionPageOnShellyDev":{},
 						"action_url":{"settings/?report_url=":{"none":"data?"}},
 						"actionReturns":{},
@@ -2220,7 +2214,6 @@ class Plugin(indigo.PluginBase):
 			props		   					= copy.copy(_emptyProps[deviceTypeId]["props"])
 			props["MAC"] 					= MAC
 			props["ipNumber"] 				= ipNumber
-			props["SupportsBatteryLevel"] 	= deviceTypeId in _supportsBatteryLevel
 				
 		except Exception, e:
 			self.indiLOG.log(40,"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
@@ -2458,18 +2451,18 @@ class Plugin(indigo.PluginBase):
 					if "red" in light and "white" in light:
 						rgb = (red + green + blue)/3
 						if rgb > 2:  # cut off 1 values, need at least 4 to shine 
-							if "whiteLevel" 	 in dev.states: self.addToStatesUpdateDict(devID, "whiteLevel", 	int(rgb*100./255.)*isOn)
-							if "brightnessLevel" in dev.states: self.addToStatesUpdateDict(devID, "brightnessLevel",int(rgb*100./255.)*isOn)
+							if "whiteLevel" 	 in dev.states: self.addToStatesUpdateDict(devID, "whiteLevel", 	int(rgb*100./255.)*isOn, uiValue="{:d}%".format(int(rgb*100./255.)*isOn ))
+							if "brightnessLevel" in dev.states: self.addToStatesUpdateDict(devID, "brightnessLevel",int(rgb*100./255.)*isOn, uiValue="{:d}%".format(int(rgb*100./255.)*isOn ))
 						if rgb <=2 and "white" not in light:  # is it off and no white data present?
-							if "whiteLevel" 	 in dev.states: self.addToStatesUpdateDict(devID, "whiteLevel", 	0)
-							if "brightnessLevel" in dev.states: self.addToStatesUpdateDict(devID, "brightnessLevel",0)
+							if "whiteLevel" 	 in dev.states: self.addToStatesUpdateDict(devID, "whiteLevel", 	0, uiValue="0%")
+							if "brightnessLevel" in dev.states: self.addToStatesUpdateDict(devID, "brightnessLevel",0, uiValue="0%")
 						elif "white" in light and rgb <= 2:
-							if "whiteLevel" 	 in dev.states: self.addToStatesUpdateDict(devID, "whiteLevel", 	int(white*100./255.)*isOn)
-							if "brightnessLevel" in dev.states: self.addToStatesUpdateDict(devID, "brightnessLevel",int(white*100./255.)*isOn)
+							if "whiteLevel" 	 in dev.states: self.addToStatesUpdateDict(devID, "whiteLevel", 	int(white*100./255.)*isOn, uiValue="{:d}%".format(int(white*100./255.)*isOn ))
+							if "brightnessLevel" in dev.states: self.addToStatesUpdateDict(devID, "brightnessLevel",int(white*100./255.)*isOn, uiValue="{:d}%".format(int(white*100./255.)*isOn ))
 				elif mode  == "white" and "brightness" in light:
 					#if self.decideMyLog(u"Special"): self.indiLOG.log(20,"fillShellyDeviceStates setting mode=white, using brigthness, white to {} and bright to :{}".format( int(brightness)*isOn, int(brightness)*isOn ) )
-					if "brightnessLevel" in dev.states: self.addToStatesUpdateDict(devID, "brightnessLevel", int(brightness)*isOn)
-					if "whiteLevel" 	 in dev.states: self.addToStatesUpdateDict(devID, "whiteLevel",      int(brightness)*isOn)
+					if "brightnessLevel" in dev.states: self.addToStatesUpdateDict(devID, "brightnessLevel", int(brightness)*isOn, uiValue="{:d}%".format(int(brightness)*isOn ))
+					if "whiteLevel" 	 in dev.states: self.addToStatesUpdateDict(devID, "whiteLevel",      int(brightness)*isOn, uiValue="{:d}%".format(int(brightness)*isOn ))
 
 				if "temp" in light and "whiteTemperature" in dev.states: self.addToStatesUpdateDict(devID, "whiteTemperature", 	light["temp"])
 
@@ -2649,10 +2642,10 @@ class Plugin(indigo.PluginBase):
 			devNo = 0
 			for meter in data["meters"]:
 				if devNo > len(devs)-1: continue
-				if "power" 	in meter and	"power"				in devs[devNo].states:	self.fillSensor(devs[devNo], meter, "power",	"power",			decimalPlaces=self.powerDigits)
-				if "energy" in meter and	"energy" 			in devs[devNo].states:	self.fillSensor(devs[devNo], meter, "energy",	"energy",			decimalPlaces=self.energyDigits)
-				if "total" 	in meter and	"energy" 			in devs[devNo].states:	self.fillSensor(devs[devNo], meter, "total",	"energy",			decimalPlaces=self.powerDigits)
-				if "counters" in meter and	"energy_counters" 	in devs[devNo].states:	self.addToStatesUpdateDict(devs[devNo].id, "energy_counters",str(meter["counters"]).strip("[]"),decimalPlaces="")					
+				if "power" 	in meter and	"power"				in devs[devNo].states:	self.addToStatesUpdateDict(devs[devNo].id, "power", 		 round(meter["power"],self.powerDigits), 	 uiValue="{:.{}f}[W]".format(meter["power"],self.powerDigits), 		decimalPlaces=self.powerDigits)
+				if "total"	in meter and	"energy" 			in devs[devNo].states:	self.addToStatesUpdateDict(devs[devNo].id, "energy", 		 round(meter["total"],self.energyDigits), 	 uiValue="{:.{}f}[Wmin]".format(meter["total"],self.energyDigits), 	decimalPlaces=self.energyDigits)
+				if "energy" in meter and 	"energy" 			in devs[devNo].states:	self.addToStatesUpdateDict(devs[devNo].id, "energy", 		 round(meter["energy"],self.energyDigits), 	 uiValue="{:.{}f}[Wmin]".format(meter["total"],self.energyDigits), 	decimalPlaces=self.energyDigits)
+				if "counters" in meter and	"energy_counters" 	in devs[devNo].states:	self.addToStatesUpdateDict(devs[devNo].id, "energy_counters",str(meter["counters"]).strip("[]"),																			decimalPlaces="")					
 				devNo+=1
 
 		except Exception, e:
@@ -2669,21 +2662,19 @@ class Plugin(indigo.PluginBase):
 			for emeter in data["emeters"]:
 				if devNo > len(devs)-1: break
 				##self.indiLOG.log(20,"devNo {} , ndevs(:{};  dev:{}; emeter:{}".format(devNo, len(devs), devs[devNo].name, emeter))
-				if "power" in emeter:
-					if "power" 					in devs[devNo].states:	self.fillSensor(devs[devNo], emeter, "power", 			"power", 			decimalPlaces=self.powerDigits)
-					if "voltage" 				in devs[devNo].states:	self.fillSensor(devs[devNo], emeter, "voltage", 		"voltage", 			decimalPlaces=self.voltageDigits)
-					if "reactive" 				in devs[devNo].states:	self.fillSensor(devs[devNo], emeter, "reactive", 		"reactive", 		decimalPlaces=self.powerDigits)
-					if "current" 				in devs[devNo].states:	self.fillSensor(devs[devNo], emeter, "current", 		"current", 			decimalPlaces=self.currentDigits)
-					if "energy" 				in devs[devNo].states:	self.fillSensor(devs[devNo], emeter, "total", 			"energy", 			decimalPlaces=self.energyDigits)
-					if "energyTotal" 			in devs[devNo].states:	self.fillSensor(devs[devNo], emeter, "total_returned",	"energyReturned", 	decimalPlaces=self.energyDigits)
-					# set setae and icon power onoff w power !=0
-					if "is_valid" in emeter: 
-						if emeter["is_valid"] and emeter["power"] != 0:
-							self.addToStatesUpdateDict(devs[devNo].id, "onOffState", True)
-							devs[devNo].updateStateImageOnServer(indigo.kStateImageSel.PowerOn)
-						if not emeter["is_valid"] or emeter["power"] == 0:
-							self.addToStatesUpdateDict(devs[devNo].id, "onOffState", False)
-							devs[devNo].updateStateImageOnServer(indigo.kStateImageSel.PowerOff)
+				if "power" 	in emeter and "power" 			in devs[devNo].states:	self.addToStatesUpdateDict(devs[devNo].id, "power", 		 round(emeter["power"],self.powerDigits), 		uiValue="{:.{}f}[W]".format(emeter["power"],self.powerDigits), 					decimalPlaces=self.powerDigits)
+				if "power" 	in emeter and "voltage" 		in devs[devNo].states:	self.addToStatesUpdateDict(devs[devNo].id, "voltage", 		 round(emeter["voltage"],self.voltageDigits), 	uiValue="{:.{}f}[V]".format(emeter["voltage"],self.voltageDigits), 				decimalPlaces=self.voltageDigits)
+				if "power" 	in emeter and "current" 		in devs[devNo].states:	self.addToStatesUpdateDict(devs[devNo].id, "current", 		 round(emeter["current"],self.currentDigits), 	uiValue="{:.{}f}[A]".format(emeter["current"],self.currentDigits), 				decimalPlaces=self.currentDigits)
+				if "reactive" in emeter and "reactive" 		in devs[devNo].states:	self.addToStatesUpdateDict(devs[devNo].id, "reactive", 		 round(emeter["reactive"],self.energyDigits), 	uiValue="{:.{}f}[Wmin]".format(emeter["reactive"],self.energyDigits), 			decimalPlaces=self.energyDigits)
+				if "total" 	in emeter and "energy" 			in devs[devNo].states:	self.addToStatesUpdateDict(devs[devNo].id, "energy", 		 round(emeter["total"],self.energyDigits), 		uiValue="{:.{}f}[Wmin]".format(emeter["total"],self.energyDigits), 				decimalPlaces=self.energyDigits)
+				if "total_returned" in emeter and "energyReturned" in devs[devNo].states:	
+																					self.addToStatesUpdateDict(devs[devNo].id, "energyReturned", round(emeter["total_returned"],self.energyDigits), uiValue="{:.{}f}[Wmin]".format(emeter["total_returned"],self.energyDigits),	decimalPlaces=self.energyDigits)
+				if emeter["is_valid"] and emeter["power"] != 0:
+																					self.addToStatesUpdateDict(devs[devNo].id, "onOffState", True)
+																					devs[devNo].updateStateImageOnServer(indigo.kStateImageSel.PowerOn)
+				if not emeter["is_valid"] or emeter["power"] == 0:
+																					self.addToStatesUpdateDict(devs[devNo].id, "onOffState", False)
+																					devs[devNo].updateStateImageOnServer(indigo.kStateImageSel.PowerOff)
 				devNo += 1
 
 		except Exception, e:
@@ -2763,7 +2754,7 @@ class Plugin(indigo.PluginBase):
 							useDev.updateStateImageOnServer(indigo.kStateImageSel.SensorTripped)
 							self.SHELLY[useDev.id]["lastAlarm"] = time.time()
 
-			elif useDev.deviceTypeId == "shellyht":
+			elif useDev.deviceTypeId.find("shellyht") >-1:
 				# data:= /data?&hum=49&temp=29.00 
 				for trigger in TRIGGERS:
 					if trigger[0] == "Temperature":

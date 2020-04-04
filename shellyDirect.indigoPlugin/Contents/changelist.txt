@@ -1,3 +1,9 @@
+Added features / changes in v7.5.11 @ 2020-04-04
+===================================================
+
+1. various small fixes and improvements
+
+
 Added features / changes in v7.5.10 @ 2020-04-01
 ===================================================
 

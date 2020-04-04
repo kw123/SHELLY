@@ -48,8 +48,8 @@
 					<Option value="30"   >every 30 sec</Option>
 					<Option value="40"   >every 40 sec</Option>
 					<Option value="80"   >every 80 sec</Option>
-					<Option value="120"   >every 2 minutes</Option>
-					<Option value="180"   >every 3 minutes</Option>
+					<Option value="120"  >every 2 minutes</Option>
+					<Option value="180"  >every 3 minutes</Option>
 					<Option value="-1"   >automatic adaptive</Option>
 				</List>
 			</Field>
@@ -344,7 +344,7 @@
 				<Label>Shelly device mac number</Label>
 			</Field>
 
-			<Field id="devNo" type="menu" defaultValue ="0" > 
+			<Field id="devNo" type="menu" defaultValue ="0" hidden ="true"> 
 				<Label>Channel #</Label>
 				<List>
 					<Option value="0"  	>0</Option>
@@ -364,8 +364,8 @@
 					<Option value="30"   >every 30 sec</Option>
 					<Option value="40"   >every 40 sec</Option>
 					<Option value="80"   >every 80 sec</Option>
-					<Option value="120"   >every 2 minutes</Option>
-					<Option value="180"   >every 3 minutes</Option>
+					<Option value="120"  >every 2 minutes</Option>
+					<Option value="180"  >every 3 minutes</Option>
 					<Option value="-1"   >automatic adaptive</Option>
 				</List>
 			</Field>
@@ -701,8 +701,8 @@
 					<Option value="30"   >every 30 sec</Option>
 					<Option value="40"   >every 40 sec</Option>
 					<Option value="80"   >every 80 sec</Option>
-					<Option value="120"   >every 2 minutes</Option>
-					<Option value="180"   >every 3 minutes</Option>
+					<Option value="120"  >every 2 minutes</Option>
+					<Option value="180"  >every 3 minutes</Option>
 					<Option value="-1"   >automatic adaptive</Option>
 				</List>
 			</Field>
@@ -936,8 +936,8 @@
 					<Option value="30"   >every 30 sec</Option>
 					<Option value="40"   >every 40 sec</Option>
 					<Option value="80"   >every 80 sec</Option>
-					<Option value="120"   >every 2 minutes</Option>
-					<Option value="180"   >every 3 minutes</Option>
+					<Option value="120"  >every 2 minutes</Option>
+					<Option value="180"  >every 3 minutes</Option>
 					<Option value="-1"   >automatic adaptive</Option>
 				</List>
 			</Field>
@@ -1149,8 +1149,8 @@
 					<Option value="30"   >every 30 sec</Option>
 					<Option value="40"   >every 40 sec</Option>
 					<Option value="80"   >every 80 sec</Option>
-					<Option value="120"   >every 2 minutes</Option>
-					<Option value="180"   >every 3 minutes</Option>
+					<Option value="120"  >every 2 minutes</Option>
+					<Option value="180"  >every 3 minutes</Option>
 					<Option value="-1"   >automatic adaptive</Option>
 				</List>
 			</Field>
@@ -1345,8 +1345,8 @@
 					<Option value="30"   >every 30 sec</Option>
 					<Option value="40"   >every 40 sec</Option>
 					<Option value="80"   >every 80 sec</Option>
-					<Option value="120"   >every 2 minutes</Option>
-					<Option value="180"   >every 3 minutes</Option>
+					<Option value="120"  >every 2 minutes</Option>
+					<Option value="180"  >every 3 minutes</Option>
 					<Option value="-1"   >automatic adaptive</Option>
 				</List>
 			</Field>
@@ -1565,8 +1565,8 @@ Parent and child share the same connection, the plugin creates two devices to be
 					<Option value="30"   >every 30 sec</Option>
 					<Option value="40"   >every 40 sec</Option>
 					<Option value="80"   >every 80 sec</Option>
-					<Option value="120"   >every 2 minutes</Option>
-					<Option value="180"   >every 3 minutes</Option>
+					<Option value="120"  >every 2 minutes</Option>
+					<Option value="180"  >every 3 minutes</Option>
 					<Option value="-1"   >automatic adaptive</Option>
 				</List>
 			</Field>
@@ -1786,7 +1786,7 @@ Parent and child share the same connection, the plugin creates two devices to be
 			</Field>
  
 
-			<Field id="devNo" type="menu" defaultValue ="1" > 
+			<Field id="devNo" type="menu" defaultValue ="1" hidden ="true"> 
 				<Label>Channel #</Label>
 				<List>
 					<Option value="1"  	>1</Option>
@@ -2036,8 +2036,8 @@ Parent and child share the same connection, the plugin creates two devices to be
 					<Option value="30"   >every 30 sec</Option>
 					<Option value="40"   >every 40 sec</Option>
 					<Option value="80"   >every 80 sec</Option>
-					<Option value="120"   >every 2 minutes</Option>
-					<Option value="180"   >every 3 minutes</Option>
+					<Option value="120"  >every 2 minutes</Option>
+					<Option value="180"  >every 3 minutes</Option>
 					<Option value="-1"   >automatic adaptive</Option>
 				</List>
 			</Field>
@@ -2441,8 +2441,8 @@ Parent and child share the same connection, the plugin creates two devices to be
 					<Option value="30"   >every 30 sec</Option>
 					<Option value="40"   >every 40 sec</Option>
 					<Option value="80"   >every 80 sec</Option>
-					<Option value="120"   >every 2 minutes</Option>
-					<Option value="180"   >every 3 minutes</Option>
+					<Option value="120"  >every 2 minutes</Option>
+					<Option value="180"  >every 3 minutes</Option>
 					<Option value="-1"   >automatic adaptive</Option>
 				</List>
 			</Field>
@@ -2602,8 +2602,8 @@ Parent and child share the same connection, the plugin creates two devices to be
 					<Option value="30"   >every 30 sec</Option>
 					<Option value="40"   >every 40 sec</Option>
 					<Option value="80"   >every 80 sec</Option>
-					<Option value="120"   >every 2 minutes</Option>
-					<Option value="180"   >every 3 minutes</Option>
+					<Option value="120"  >every 2 minutes</Option>
+					<Option value="180"  >every 3 minutes</Option>
 					<Option value="-1"   >automatic adaptive</Option>
 				</List>
 			</Field>
@@ -2760,8 +2760,8 @@ Parent and child share the same connection, the plugin creates two devices to be
 					<Option value="30"   >every 30 sec</Option>
 					<Option value="40"   >every 40 sec</Option>
 					<Option value="80"   >every 80 sec</Option>
-					<Option value="120"   >every 2 minutes</Option>
-					<Option value="180"   >every 3 minutes</Option>
+					<Option value="120"  >every 2 minutes</Option>
+					<Option value="180"  >every 3 minutes</Option>
 					<Option value="-1"   >automatic adaptive</Option>
 				</List>
 			</Field>
@@ -3079,8 +3079,8 @@ Parent and child share the same connection, the plugin creates two devices to be
 					<Option value="30"   >every 30 sec</Option>
 					<Option value="40"   >every 40 sec</Option>
 					<Option value="80"   >every 80 sec</Option>
-					<Option value="120"   >every 2 minutes</Option>
-					<Option value="180"   >every 3 minutes</Option>
+					<Option value="120"  >every 2 minutes</Option>
+					<Option value="180"  >every 3 minutes</Option>
 					<Option value="-1"   >automatic adaptive</Option>
 				</List>
 			</Field>
@@ -3246,8 +3246,8 @@ Parent and child share the same connection, the plugin creates two devices to be
 					<Option value="30"   >every 30 sec</Option>
 					<Option value="40"   >every 40 sec</Option>
 					<Option value="80"   >every 80 sec</Option>
-					<Option value="120"   >every 2 minutes</Option>
-					<Option value="180"   >every 3 minutes</Option>
+					<Option value="120"  >every 2 minutes</Option>
+					<Option value="180"  >every 3 minutes</Option>
 					<Option value="-1"   >automatic adaptive</Option>
 				</List>
 			</Field>
@@ -3367,11 +3367,12 @@ Parent and child share the same connection, the plugin creates two devices to be
 			<Field id="isShellyDevice"     type="checkbox"     defaultValue="true" hidden="yes"> </Field>
 			<Field id="MSG" type="textfield"     defaultValue=""> <Label>message from plugin:</Label></Field>
 
-			<Field id="SupportsOnState" 		type="checkbox" defaultValue="false"  hidden ="true"></Field>
+			<Field id="SupportsOnState" 		type="checkbox" defaultValue="false" hidden ="true"></Field>
 			<Field id="SupportsSensorValue" 	type="checkbox" defaultValue="true"  hidden ="true"></Field>
 			<Field id="SupportsStatusRequest" 	type="checkbox" defaultValue="true"  hidden ="true"></Field>
 			<Field id="AllowOnStateChange" 		type="checkbox" defaultValue="false" hidden ="true"></Field>
 			<Field id="AllowSensorValueChange" 	type="checkbox" defaultValue="false" hidden ="true"></Field>
+			<Field id="SupportsBatteryLevel" 	type="checkbox" defaultValue="true"  hidden ="true"></Field>
 			<Field id="label1"  type="label" >
 			<Label>Parameters for Shelly-H&amp;T device</Label>
 			</Field>
@@ -3383,11 +3384,11 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<Label>Overwrite exiting IP number if needed</Label>
 			</Field>
 
-			<Field id="MAC" type="textfield" defaultValue =""  readonly="yes"> 
+			<Field id="MAC" type="textfield" defaultValue =""  readonly="yes" > 
 				<Label>Shelly device mac number</Label>
 			</Field>
 
-			<Field id="devNo" type="textfield" defaultValue ="0"> 
+			<Field id="devNo" type="textfield" defaultValue ="0" hidden ="true"> 
 				<Label>devNo</Label>
 			</Field>
 
@@ -3402,8 +3403,8 @@ Parent and child share the same connection, the plugin creates two devices to be
 					<Option value="30"   >every 30 sec</Option>
 					<Option value="40"   >every 40 sec</Option>
 					<Option value="80"   >every 80 sec</Option>
-					<Option value="120"   >every 2 minutes</Option>
-					<Option value="180"   >every 3 minutes</Option>
+					<Option value="120"  >every 2 minutes</Option>
+					<Option value="180"  >every 3 minutes</Option>
 					<Option value="-1"   >automatic adaptive</Option>
 				</List>
 			</Field>
@@ -3593,6 +3594,8 @@ Parent and child share the same connection, the plugin creates two devices to be
 			<Field id="SupportsStatusRequest" 	type="checkbox" defaultValue="true"  hidden ="true"></Field>
 			<Field id="AllowOnStateChange" 		type="checkbox" defaultValue="false" hidden ="true"></Field>
 			<Field id="AllowSensorValueChange" 	type="checkbox" defaultValue="false" hidden ="true"></Field>
+			<Field id="SupportsBatteryLevel" 	type="checkbox" defaultValue="true"  hidden ="true"></Field>
+
 			<Field id="label1"  type="label" >
 			<Label>Parameters for Shelly-H&amp;T device</Label>
 			</Field>
@@ -3608,7 +3611,7 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<Label>Shelly device mac number</Label>
 			</Field>
 
-			<Field id="devNo" type="textfield" defaultValue ="0"> 
+			<Field id="devNo" type="textfield" defaultValue ="0" hidden ="true"> 
 				<Label>devNo</Label>
 			</Field>
 
@@ -3623,8 +3626,8 @@ Parent and child share the same connection, the plugin creates two devices to be
 					<Option value="30"   >every 30 sec</Option>
 					<Option value="40"   >every 40 sec</Option>
 					<Option value="80"   >every 80 sec</Option>
-					<Option value="120"   >every 2 minutes</Option>
-					<Option value="180"   >every 3 minutes</Option>
+					<Option value="120"  >every 2 minutes</Option>
+					<Option value="180"  >every 3 minutes</Option>
 					<Option value="-1"   >automatic adaptive</Option>
 				</List>
 			</Field>
@@ -4082,8 +4085,8 @@ for connection parameters check the parent (SHELLY host device)</Label>
 					<Option value="30"   >every 30 sec</Option>
 					<Option value="40"   >every 40 sec</Option>
 					<Option value="80"   >every 80 sec</Option>
-					<Option value="120"   >every 2 minutes</Option>
-					<Option value="180"   >every 3 minutes</Option>
+					<Option value="120"  >every 2 minutes</Option>
+					<Option value="180"  >every 3 minutes</Option>
 					<Option value="-1"   >automatic adaptive</Option>
 				</List>
 			</Field>
@@ -4321,8 +4324,8 @@ for connection parameters check the parent (SHELLY host device)</Label>
 					<Option value="30"   >every 30 sec</Option>
 					<Option value="40"   >every 40 sec</Option>
 					<Option value="80"   >every 80 sec</Option>
-					<Option value="120"   >every 2 minutes</Option>
-					<Option value="180"   >every 3 minutes</Option>
+					<Option value="120"  >every 2 minutes</Option>
+					<Option value="180"  >every 3 minutes</Option>
 					<Option value="-1"   >automatic adaptive</Option>
 				</List>
 			</Field>
