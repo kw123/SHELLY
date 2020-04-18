@@ -2567,9 +2567,6 @@ Parent and child share the same connection, the plugin creates two devices to be
 			<Field id="AllowOnStateChange" 					 type="checkbox" defaultValue="false" hidden ="true"><Label>AllowOnStateChange</Label></Field>
 			<Field id="AllowSensorValueChange" 				 type="checkbox" defaultValue="false" hidden ="true"><Label>AllowSensorValueChange</Label></Field>
 
-			<Field id="SupportsColor" 						 type="checkbox" defaultValue="true"  hidden ="true"><Label>SupportsColor</Label></Field>
-			<Field id="SupportsRGB" 						 type="checkbox" defaultValue="true"  hidden ="true"><Label>SupportsRGB</Label></Field>
-			<Field id="SupportsWhite" 						 type="checkbox" defaultValue="true"  hidden ="true"><Label>SupportsWhite</Label></Field>
 			<Field id="SupportsWhiteTemperature" 			 type="checkbox" defaultValue="false" hidden ="true"><Label>SupportsWhiteTemperature</Label></Field>
 			<Field id="SupportsRGBandWhiteSimultaneously" 	 type="checkbox" defaultValue="true"  hidden ="true"><Label>SupportsRGBandWhiteSimultaneously</Label></Field>
 			<Field id="SupportsTwoWhiteLevels"			 	 type="checkbox" defaultValue="false" hidden ="true"><Label>SupportsTwoWhiteLevels</Label></Field>
@@ -2589,6 +2586,17 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<Label>Shelly device mac number</Label>
 			</Field>
 
+			<Field id="modelA" type="label" >
+				<Label>Select device type ..</Label>
+			</Field>
+			<Field id="SupportsColor" 						 type="checkbox" defaultValue="true"  hidden ="false"><Label>.. supports Color, select together w RGB</Label></Field>
+			<Field id="SupportsRGB" 						 type="checkbox" defaultValue="true"  hidden ="false"><Label>.. supports RGB </Label></Field>
+			<Field id="SupportsWhite" 						 type="checkbox" defaultValue="true"  hidden ="false"><Label>.. supports White channel</Label></Field>
+			<Field id="modelB" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
+				<Label>A) RGB+Color and White
+B) RGB+Color only
+C) White Only </Label>
+			</Field>
 
 
 			<Field id="pollingFrequency"   type="menu" defaultValue="-1" >

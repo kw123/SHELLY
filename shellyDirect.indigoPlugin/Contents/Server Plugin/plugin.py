@@ -51,12 +51,35 @@ _childDevTypes					= {	"ext_temperature":{			"state":"Temperature",	"dataKey":"t
 #eg: http//ip:port/settings/?external_power=1000
 			   # key from props									comand to be send				looking for string to come back
 settingCmds ={
+			### emeter settings
 			 "SENDTOSHELLYDEVICE-emeter_0_ctraf_type":			["settings/meter/0?ctraf_type",				"ctraf_type"],
 			 "SENDTOSHELLYDEVICE-emeter_1_ctraf_type":			["settings/meter/1?ctraf_type",				"ctraf_type"],
 			 "SENDTOSHELLYDEVICE-emeter_2_ctraf_type":			["settings/meter/2?ctraf_type",				"ctraf_type"],
 			 "SENDTOSHELLYDEVICE-emeter_3_ctraf_type":			["settings/meter/3?ctraf_type",				"ctraf_type"],
 			 "SENDTOSHELLYDEVICE-emeter_4_ctraf_type":			["settings/meter/4?ctraf_type",				"ctraf_type"],
 			 "SENDTOSHELLYDEVICE-emeter_5_ctraf_type":			["settings/meter/5?ctraf_type",				"ctraf_type"],
+### roller settings
+			 "SENDTOSHELLYDEVICE-roller_mode":					["settings?mode=",							"mode"],
+			 "SENDTOSHELLYDEVICE-roller_0_calibrate":			["/roller/0/calibrate",						"none"],
+			 "SENDTOSHELLYDEVICE-roller_0_maxtime":				["roller/0?maxtime=",						"maxtime"],
+			 "SENDTOSHELLYDEVICE-roller_0_maxtime_open":		["roller/0?maxtime_open=",					"maxtime_open"],
+			 "SENDTOSHELLYDEVICE-roller_0_maxtime_close":		["roller/0?maxtime_close=",					"maxtime_close"],
+			 "SENDTOSHELLYDEVICE-roller_0_default_state":		["roller/0?default_state=",					"default_state"],
+			 "SENDTOSHELLYDEVICE-roller_0_swap":				["roller/0?swap=",							"swap"],
+			 "SENDTOSHELLYDEVICE-roller_0_swap_inputs":			["roller/0?swap_inputs=",					"swap_inputs"],
+			 "SENDTOSHELLYDEVICE-roller_0_input_mode":			["roller/0?input_modee=",					"input_mode"],
+			 "SENDTOSHELLYDEVICE-roller_0_btn_type":			["roller/0?btn_typee=",						"btn_type"],
+			 "SENDTOSHELLYDEVICE-roller_0_btn_reverse":			["roller/0?btn_reverse=",					"btn_reverse"],
+			 "SENDTOSHELLYDEVICE-roller_0_obstacle_mode":		["roller/0?obstacle_mode=",					"obstacle_mode"],
+			 "SENDTOSHELLYDEVICE-roller_0_obstacle_action":		["roller/0?obstacle_action=",				"obstacle_action"],
+			 "SENDTOSHELLYDEVICE-roller_0_off_power":			["roller/0?off_power=",						"off_power"],
+			 "SENDTOSHELLYDEVICE-roller_0_positioning":			["roller/0?positioning=",					"positioning"],
+			 "SENDTOSHELLYDEVICE-roller_0_obstacle_power":		["roller/0?obstacle_powere=",				"obstacle_power"],
+			 "SENDTOSHELLYDEVICE-roller_0_obstacle_delay":		["roller/0?obstacle_delay=",				"obstacle_delay"],
+			 "SENDTOSHELLYDEVICE-roller_0_safety_mode":			["roller/0?safety_mode=",					"safety_mode"],
+			 "SENDTOSHELLYDEVICE-roller_0_safety_action":		["roller/0?safety_action=",					"safety_action"],
+			 "SENDTOSHELLYDEVICE-roller_0_safety_allowed_on_trigger": ["roller/0?safety_allowed_on_trigger=","safety_allowed_on_trigger"],
+			### relay settings
 			 "SENDTOSHELLYDEVICE-relay_0_max_power":			["settings/relay/0?max_power=",				"max_power"],
 			 "SENDTOSHELLYDEVICE-relay_1_max_power":			["settings/relay/1?max_power=",				"max_power"],
 			 "SENDTOSHELLYDEVICE-relay_2_max_power":			["settings/relay/2?max_power=",				"max_power"],
@@ -87,6 +110,7 @@ settingCmds ={
 			 "SENDTOSHELLYDEVICE-relay_3_name":					["settings/relay/3?name=",					"name"],
 			 "SENDTOSHELLYDEVICE-relay_4_name":					["settings/relay/4?name=",					"name"],
 			 "SENDTOSHELLYDEVICE-relay_5_name":					["settings/relay/5?name=",					"name"],
+			### light settings
 			 "SENDTOSHELLYDEVICE-light_0_swap_inputs":			["settings/light/0?swap_inputs=",			"swap_inputs"],
 			 "SENDTOSHELLYDEVICE-light_0_btn_reverse":			["settings/light/0?btn_reverse=",			"btn_reverse"],
 			 "SENDTOSHELLYDEVICE-light_0_default_state":		["settings/light/0?default_state=",			"default_state"],
@@ -95,6 +119,7 @@ settingCmds ={
 			 "SENDTOSHELLYDEVICE-light_1_btn_reverse":			["settings/light/1?btn_reverse=",			"btn_reverse"],
 			 "SENDTOSHELLYDEVICE-light_1_default_state":		["settings/light/1?default_state=",			"default_state"],
 			 "SENDTOSHELLYDEVICE-light_1_name":					["settings/light/1?name=",					"name"],
+			### misc settings
 			 "SENDTOSHELLYDEVICE-external_power":				["settings?external_power=",				"external_power"],
 			 "SENDTOSHELLYDEVICE-temperature_offset":			["settings?temperature_offset=",			"temperature_offset"],
 			 "SENDTOSHELLYDEVICE-humidity_offset":				["settings?humidity_offset=",				"humidity_offset"],
@@ -168,9 +193,11 @@ _emptyProps ={	# switches
 			 	"shellyswitch25":{"props":{"isRelay":True, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
 						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
 						"parentIndigoId":0,"children":"{}","isParent":True,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":100,  "expirationSeconds":180 },
-						"setPageActionPageOnShellyDev":{"0":"relay/0?","1":"relay/1?"},
+						"setPageActionPageOnShellyDev":{"0":"relay/0?","1":"relay/1?","roller":{"0":"roller/0?","1":"roller/1?"}},
+																					  ### roller actions  "roller/0?go=" / "roller/0?roller_pos=" / "roller/0?duration=" / "roller/0?offset="
 						"action_url":   {"settings/relay/0?":{"btn_on_url":"input=on", "btn_off_url":"input=off", "out_on_url":"onOffState=1", "out_off_url":"onOffState=0", "longpush_url":"input=long", "shortpush_url":"input=short"},
-									     "settings/relay/1?":{"btn_on_url":"input=on", "btn_off_url":"input=off", "out_on_url":"onOffState=1", "out_off_url":"onOffState=0", "longpush_url":"input=long", "shortpush_url":"input=short"}
+									     "settings/relay/1?":{"btn_on_url":"input=on", "btn_off_url":"input=off", "out_on_url":"onOffState=1", "out_off_url":"onOffState=0", "longpush_url":"input=long", "shortpush_url":"input=short"},
+										 "settings/roller/0?":{"roller_open_url":"roller=open", "roller_close_url":"roller=close", "roller_stop_url":"roller=stop"}
 									},
 						"childTypes_Sensors":[],
 						"childTypes_SplitDevices":["shellyswitch25-child"],
@@ -180,9 +207,10 @@ _emptyProps ={	# switches
 			 	"shellyswitch25-child":{"props":{"isRelay":True, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
 						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
 						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":True,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":100,  "expirationSeconds":180 },
-						"setPageActionPageOnShellyDev":{"0":"relay/0?","1":"relay/1?"},
+						"setPageActionPageOnShellyDev":{"0":"relay/0?","1":"relay/1?","roller":{"0":"roller/0?","1":"roller/1?"}},
 						"action_url":   {"settings/relay/0?":{"btn_on_url":"input=on", "btn_off_url":"input=off", "out_on_url":"onOffState=1", "out_off_url":"onOffState=0", "longpush_url":"input=long", "shortpush_url":"input=short"},
-									     "settings/relay/1?":{"btn_on_url":"input=on", "btn_off_url":"input=off", "out_on_url":"onOffState=1", "out_off_url":"onOffState=0", "longpush_url":"input=long", "shortpush_url":"input=short"}
+									     "settings/relay/1?":{"btn_on_url":"input=on", "btn_off_url":"input=off", "out_on_url":"onOffState=1", "out_off_url":"onOffState=0", "longpush_url":"input=long", "shortpush_url":"input=short"},
+										 "settings/roller/0?":{"roller_open_url":"roller=open", "roller_close_url":"roller=close", "roller_stop_url":"roller=stop"}
 									},
 						"childTypes_Sensors":[],
 						"childTypes_SplitDevices":[],
@@ -1316,6 +1344,9 @@ class Plugin(indigo.PluginBase):
 	def getDeviceConfigUiValues(self, pluginProps, typeId="", devId=""):
 		try:
 			theDictList =  super(Plugin, self).getDeviceConfigUiValues(pluginProps, typeId, devId)
+			if devId not in self.SHELLY:
+				self.indiLOG.log(40,"the shelly device is new, use menu / scan to create new shelly devices !!")
+				theDictList[0]["MSG"] = "ERROR: use menu/scan to create new shelly devices"
 			try: ##Only if it exists already
 				if "isParent" in pluginProps:
 					if "sensorNo" in pluginProps and "sensorNo" in dev.states:
@@ -1334,7 +1365,7 @@ class Plugin(indigo.PluginBase):
 
 		except Exception, e:
 			self.indiLOG.log(40,"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
-			self.indiLOG.log(40,"theDictList {}".format(unicode(theDictList[0])))
+			self.indiLOG.log(40,"theDictList {}".format(theDictList[0]))
 		return theDictList
 
 ####-------------------------------------------------------------------------####
@@ -1349,6 +1380,14 @@ class Plugin(indigo.PluginBase):
 			devNo = "0"
 			newParameters = False
 			#self.indiLOG.log(20,"valuesDict {}".format(valuesDict))
+
+
+			if devId not in self.SHELLY:
+				valuesDict["MSG"] = "ERROR: use menu/scan to create new shelly devices"
+				valuesDict[u"MSG"] = "ERROR: use menu/scan to create new shelly devices"
+				errorDict[u"MSG"] = "use menu/scan to create new shelly devices"
+				return ( False, valuesDict, errorDict )
+
 
 			for pp in["ipNumber", "pollingFrequency", "expirationSeconds"]:
 				self.SHELLY[devId][pp] = copy.copy(valuesDict[pp])

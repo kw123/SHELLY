@@ -1,3 +1,12 @@
+Added features / changes in v7.5.12 @ 2020-04-17
+===================================================
+
+1. added option for RGBW2 device setup as
+   - RGB and White CHannle
+   - RGB only
+   - White only channel
+
+
 Added features / changes in v7.5.11 @ 2020-04-04
 ===================================================
 
