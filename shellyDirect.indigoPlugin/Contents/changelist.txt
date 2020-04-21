@@ -1,3 +1,10 @@
+Added features / changes in v7.6.12 @ 2020-04-20
+===================================================
+
+1. added device edit option to set shelly-2.5 as 2 relay devices or one roller device
+   w open/ close functions as an indigo dimmer
+
+
 Added features / changes in v7.5.12 @ 2020-04-17
 ===================================================
 

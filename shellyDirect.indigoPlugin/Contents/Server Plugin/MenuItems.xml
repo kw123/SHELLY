@@ -78,6 +78,91 @@
             </Field>
         </ConfigUI>
     </MenuItem>         
+    <MenuItem id="calibrateShell25Roller">
+        <Name>Start CALIBRATION process on shelly-25 ROLLER device</Name>
+        <ConfigUI>
+            <Field id="infoLabel11" type="label">
+                <Label>Start calibration process on shelly-25 roller device</Label>
+            </Field>
+            <Field id="devId" type="menu" >
+                <Label>Select ROLLER device:</Label>
+                <List class="self" filter="shellyswitch25" method="filterActiveShellyDevicesNotChild" dynamicReload="true"/>
+            </Field>
+            <Field   id="confirm" type="button"  >
+                <Label>CLICK to</Label><Title>EXECUTE</Title> <CallbackMethod>startShelly25CalibrationCALLBACKmenu</CallbackMethod>
+            </Field>
+            <Field    id="MSG"   type="textfield" defaultValue="" >
+                <Label> message from Plugin:</Label>
+            </Field>
+        </ConfigUI>
+    </MenuItem>         
+    <MenuItem id="stopShell25Roller">
+        <Name>STOP shelly-25 ROLLER device</Name>
+        <ConfigUI>
+            <Field id="infoLabel11" type="label">
+                <Label>STOP shelly-25 ROLLER device</Label>
+            </Field>
+            <Field id="devId" type="menu" >
+                <Label>Select ROLLER device:</Label>
+                <List class="self" filter="shellyswitch25" method="filterActiveShellyDevicesNotChild" dynamicReload="true"/>
+            </Field>
+            <Field   id="confirm" type="button"  >
+                <Label>CLICK to</Label><Title>EXECUTE</Title> <CallbackMethod>startShelly25StopCALLBACKmenu</CallbackMethod>
+            </Field>
+            <Field    id="MSG"   type="textfield" defaultValue="" >
+                <Label> message from Plugin:</Label>
+            </Field>
+        </ConfigUI>
+    </MenuItem>         
+    <MenuItem id="positionShell25Roller">
+        <Name>GOTO position shelly-25 ROLLER device</Name>
+        <ConfigUI>
+            <Field id="infoLabel11" type="label">
+                <Label>GOTO positionshelly-25 roller device</Label>
+            </Field>
+            <Field id="devId" type="menu" >
+                <Label>Select roller device:</Label>
+                <List class="self" filter="shellyswitch25" method="filterActiveShellyDevicesNotChild" dynamicReload="true"/>
+            </Field>
+            <Field id="roller_pos" type="textfield" default="100">
+                <Label>set position (0..100):</Label>
+            </Field>
+            <Field   id="confirm" type="button"  >
+                <Label>CLICK to</Label><Title>EXECUTE</Title> <CallbackMethod>startShelly25roller_posCALLBACKmenu</CallbackMethod>
+            </Field>
+            <Field    id="MSG"   type="textfield" defaultValue="" >
+                <Label> message from Plugin:</Label>
+            </Field>
+        </ConfigUI>
+    </MenuItem>         
+    <MenuItem id="positionwTimerShell25Roller">
+        <Name>Move for xx secs shelly-25 ROLLER device</Name>
+        <ConfigUI>
+            <Field id="infoLabel11" type="label">
+                <Label>Move for xx secs roller device</Label>
+            </Field>
+            <Field id="devId" type="menu" >
+                <Label>Select roller device:</Label>
+                <List class="self" filter="shellyswitch25" method="filterActiveShellyDevicesNotChild" dynamicReload="true"/>
+            </Field>
+            <Field id="duration" type="textfield" default="5">
+                <Label>move for xx secs:</Label>
+            </Field>
+            <Field id="direction" type="menu" default="open">
+                <Label>direction:</Label>
+ 				<List>
+					<Option value="open"    >open</Option>
+					<Option value="close"    >close</Option>
+				</List>
+           </Field>
+            <Field   id="confirm" type="button"  >
+                <Label>CLICK to</Label><Title>EXECUTE</Title> <CallbackMethod>startShelly25roller_poswTimerCALLBACKmenu</CallbackMethod>
+            </Field>
+            <Field    id="MSG"   type="textfield" defaultValue="" >
+                <Label> message from Plugin:</Label>
+            </Field>
+        </ConfigUI>
+    </MenuItem>         
     <MenuItem id="getEmeterCvsFile">
         <Name>Print emeter data to logfile</Name>
         <ConfigUI>

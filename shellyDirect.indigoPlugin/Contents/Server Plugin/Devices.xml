@@ -1509,8 +1509,8 @@
 	</Device>
 
 
-	<Device type="relay" id="shellyswitch25">
-	<Name>Shelly-Relay (SHSW-25)-1</Name>
+	<Device type="dimmer" id="shellyswitch25-roller">
+	<Name>Shelly-Roller (SHSW-25)</Name>
 	<UiDisplayStateId>status</UiDisplayStateId>
 
 		<ConfigUI>            
@@ -1527,9 +1527,7 @@
 			</Field>
  
 			<Field id="parentIndigoLabel" type="label" >
-				<Label>This is the device for relay #0 (parent), there is a second for relay#1 (Shelly-ip#-1)
-All parameters have to be set here, not in the child device
-Parent and child share the same connection, the plugin creates two devices to be able to switch relay 1 and relay 0 on/off independently through std indigo commands</Label>
+				<Label>This is the device for the roller setting of the shelly-25 </Label>
 			</Field>
 
 
@@ -1542,7 +1540,7 @@ Parent and child share the same connection, the plugin creates two devices to be
 			</Field>
 
 			<Field id="devNo" type="menu" defaultValue ="0" readonly="yes"   hidden ="true" > 
-				<Label>relay #</Label>
+				<Label>devNo#</Label>
 				<List>
 					<Option value="0"  	>0</Option>
 				</List>
@@ -1552,6 +1550,18 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<Label>Shelly device mac number</Label>
 			</Field>
 
+
+			<Field id="SENDTOSHELLYDEVICE-mode"   type="menu" defaultValue="roller"  >
+				<Label>Mode of device:</Label>
+				<List>
+					<Option value="relay"     >relay, will have child device for 2 relay</Option>
+					<Option value="roller"    >roller, child device is not used</Option>
+				</List>
+			</Field>
+			<Field id="modeLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey"  >
+				<Label>By selecting RELAY the device will be converted to 2 devices relay 1 and 2. You will need to save and edit it again to set the proper information
+you can change the device type to 2 relays below</Label>
+			</Field>
 
 
 			<Field id="pollingFrequency"   type="menu" defaultValue="-1"  >
@@ -1586,7 +1596,386 @@ Parent and child share the same connection, the plugin creates two devices to be
 				</List>
 			</Field>
 
-			<Field id="SENDTOSHELLYDEVICE-relay_0_default_state"   type="menu" defaultValue="none"  >
+
+			<Field id="SENDTOSHELLYDEVICE-roller_0_maxtime"   type="textfield" defaultValue="none"  visibleBindingId="SENDTOSHELLYDEVICE-mode" visibleBindingValue="roller">
+				<Label>max time for any action[sec]:</Label>
+			</Field>
+
+
+			<Field id="SENDTOSHELLYDEVICE-roller_0_maxtime_open"   type="textfield" defaultValue="none"  visibleBindingId="SENDTOSHELLYDEVICE-mode" visibleBindingValue="roller">
+				<Label>max time for open[sec]:</Label>
+			</Field>
+
+
+			<Field id="SENDTOSHELLYDEVICE-roller_0_maxtime_close"   type="textfield" defaultValue="none"  visibleBindingId="SENDTOSHELLYDEVICE-mode" visibleBindingValue="roller">
+				<Label>max time for close[sec]:</Label>
+			</Field>
+
+			<Field id="SENDTOSHELLYDEVICE-roller_0_default_state"   type="menu" defaultValue="none"  visibleBindingId="SENDTOSHELLYDEVICE-mode" visibleBindingValue="roller">
+				<Label>default state:</Label>
+				<List>
+					<Option value="none"      >do not set</Option>
+					<Option value="stop"      >stop</Option>
+					<Option value="open"      >open</Option>
+					<Option value="close"     >close</Option>
+				</List>
+			</Field>
+
+			<Field id="SENDTOSHELLYDEVICE-roller_0_swap"   type="menu" defaultValue="none"  visibleBindingId="SENDTOSHELLYDEVICE-mode" visibleBindingValue="roller">
+				<Label>swap roller:</Label>
+				<List>
+					<Option value="none"      >do not set</Option>
+					<Option value="0"         >normal</Option>
+					<Option value="1"         >reverse</Option>
+				</List>
+			</Field>
+
+			<Field id="SENDTOSHELLYDEVICE-roller_0_swap_inputs"   type="menu" defaultValue="none"  visibleBindingId="SENDTOSHELLYDEVICE-mode" visibleBindingValue="roller">
+				<Label>swap inputs:</Label>
+				<List>
+					<Option value="none"      >do not set</Option>
+					<Option value="0"         >normal</Option>
+					<Option value="1"         >reverse</Option>
+				</List>
+			</Field>
+
+			<Field id="SENDTOSHELLYDEVICE-roller_0_input_mode"   type="menu" defaultValue="none"  visibleBindingId="SENDTOSHELLYDEVICE-mode" visibleBindingValue="roller">
+				<Label>input mode:</Label>
+				<List>
+					<Option value="none"      >do not set</Option>
+					<Option value="openclose" >buttons: open / close</Option>
+					<Option value="onebutton" >single button: open/stop/close/stop/open</Option>
+				</List>
+			</Field>
+
+			<Field id="SENDTOSHELLYDEVICE-roller_0_btn_type"   type="menu" defaultValue="none"  visibleBindingId="SENDTOSHELLYDEVICE-mode" visibleBindingValue="roller">
+				<Label>button type:</Label>
+				<List>
+					<Option value="none"      >do not set</Option>
+					<Option value="momentary" >momentary</Option>
+					<Option value="toggle"    >toggle</Option>
+					<Option value="detached"  >detached</Option>
+					<Option value="action"    >action</Option>
+				</List>
+			</Field>
+
+			<Field id="SENDTOSHELLYDEVICE-roller_0_btn_reverse"   type="menu" defaultValue="none"  visibleBindingId="SENDTOSHELLYDEVICE-mode" visibleBindingValue="roller">
+				<Label>button reverse:</Label>
+				<List>
+					<Option value="none"      >do not set</Option>
+					<Option value="0"         >normal</Option>
+					<Option value="1"         >reverse</Option>
+				</List>
+			</Field>
+
+			<Field id="SENDTOSHELLYDEVICE-roller_0_obstacle_mode"   type="menu" defaultValue="none"  visibleBindingId="SENDTOSHELLYDEVICE-mode" visibleBindingValue="roller">
+				<Label>obstacle mode:</Label>
+				<List>
+					<Option value="none"          >do not set</Option>
+					<Option value="disabled"      >disabled</Option>
+					<Option value="while_opening" >while_opening</Option>
+					<Option value="while_closing" >while_closing</Option>
+					<Option value="while_opening" >while_opening</Option>
+					<Option value="while_moving"  >while_moving</Option>
+				</List>
+			</Field>
+
+			<Field id="SENDTOSHELLYDEVICE-roller_0_obstacle_action"   type="menu" defaultValue="none"  visibleBindingId="SENDTOSHELLYDEVICE-mode" visibleBindingValue="roller">
+				<Label>obstacle action:</Label>
+				<List>
+					<Option value="none"      >do not set</Option>
+					<Option value="stop"      >stop</Option>
+					<Option value="reverse"   >reverse</Option>
+				</List>
+			</Field>
+
+			<Field id="SENDTOSHELLYDEVICE-roller_0_off_power"   type="textfield" defaultValue="none"  visibleBindingId="SENDTOSHELLYDEVICE-mode" visibleBindingValue="roller">
+				<Label>off power:</Label>
+			</Field>
+
+			<Field id="SENDTOSHELLYDEVICE-roller_0_positioning"   type="textfield" defaultValue="none"  visibleBindingId="SENDTOSHELLYDEVICE-mode" visibleBindingValue="roller">
+				<Label>positioning:</Label>
+			</Field>
+
+			<Field id="SENDTOSHELLYDEVICE-roller_0_obstacle_power"   type="textfield" defaultValue="none"  visibleBindingId="SENDTOSHELLYDEVICE-mode" visibleBindingValue="roller">
+				<Label>obstacle power threshold[watt]:</Label>
+			</Field>
+
+			<Field id="SENDTOSHELLYDEVICE-roller_0_obstacle_delay"   type="textfield" defaultValue="none"  visibleBindingId="SENDTOSHELLYDEVICE-mode" visibleBindingValue="roller">
+				<Label>obstacle delay[sec]:</Label>
+			</Field>
+
+			<Field id="SENDTOSHELLYDEVICE-roller_0_safety_mode"   type="menu" defaultValue="none"  visibleBindingId="SENDTOSHELLYDEVICE-mode" visibleBindingValue="roller">
+				<Label>safety mode:</Label>
+				<List>
+					<Option value="none"          >do not set</Option>
+					<Option value="disabled"      >disabled</Option>
+					<Option value="while_opening" >while_opening</Option>
+					<Option value="while_closing" >while_closing</Option>
+					<Option value="while_moving"  >while_moving</Option>
+				</List>
+			</Field>
+
+			<Field id="SENDTOSHELLYDEVICE-roller_0_safety_action"   type="menu" defaultValue="none"  visibleBindingId="SENDTOSHELLYDEVICE-mode" visibleBindingValue="roller">
+				<Label>safety action:</Label>
+				<List>
+					<Option value="none"      >do not set</Option>
+					<Option value="stop"      >stop</Option>
+					<Option value="pause"     >pause</Option>
+					<Option value="reverse"   >reverse</Option>
+				</List>
+			</Field>
+
+			<Field id="SENDTOSHELLYDEVICE-roller_0_safety_allowed_on_trigger"   type="menu" defaultValue="none"  visibleBindingId="SENDTOSHELLYDEVICE-mode" visibleBindingValue="roller">
+				<Label>safety allowed on trigger:</Label>
+				<List>
+					<Option value="none"      >do not set</Option>
+					<Option value="open"      >open</Option>
+					<Option value="close"     >close</Option>
+					<Option value="all"       >all</Option>
+				</List>
+			</Field>
+
+	</ConfigUI>
+
+		<States>
+
+<!--   this is dev specific -->
+
+			<State id="power">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>power</TriggerLabel>
+				<ControlPageLabel>power</ControlPageLabel>
+			</State>
+
+			<State id="lastOnOffChange">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastOnOffChange</TriggerLabel>
+				<ControlPageLabel>lastOnOffChange</ControlPageLabel>
+			</State>
+
+			<State id="energy">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>energy</TriggerLabel>
+				<ControlPageLabel>energy</ControlPageLabel>
+			</State>
+			<State id="energy_counters">
+				<ValueType>string</ValueType>
+				<TriggerLabel>energy_counters</TriggerLabel>
+				<ControlPageLabel>energy_counters</ControlPageLabel>
+			</State>
+
+			<State id="input">
+				<ValueType>String</ValueType>
+				<TriggerLabel>input</TriggerLabel>
+				<ControlPageLabel>input</ControlPageLabel>
+			</State>
+
+			<State id="overtemperature">
+				<ValueType>String</ValueType>
+				<TriggerLabel>overtemperature</TriggerLabel>
+				<ControlPageLabel>overtemperature</ControlPageLabel>
+			</State>
+			<State id="Temperature_internal">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Temperature_internal</TriggerLabel>
+				<ControlPageLabel>Temperature_internal</ControlPageLabel>
+			</State>
+<!--   roller: -->
+			<State id="state">
+				<ValueType>String</ValueType>
+				<TriggerLabel>state</TriggerLabel>
+				<ControlPageLabel>state</ControlPageLabel>
+			</State>
+
+			<State id="positioning">
+				<ValueType>String</ValueType>
+				<TriggerLabel>positioning</TriggerLabel>
+				<ControlPageLabel>positioning</ControlPageLabel>
+			</State>
+
+			<State id="safety_switch">
+				<ValueType>String</ValueType>
+				<TriggerLabel>safety_switch</TriggerLabel>
+				<ControlPageLabel>safety_switch</ControlPageLabel>
+			</State>
+
+			<State id="current_pos">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>current_pos</TriggerLabel>
+				<ControlPageLabel>current_pos</ControlPageLabel>
+			</State>
+
+			<State id="last_direction">
+				<ValueType>String</ValueType>
+				<TriggerLabel>last_direction</TriggerLabel>
+				<ControlPageLabel>last_direction</ControlPageLabel>
+			</State>
+
+			<State id="stop_reason">
+				<ValueType>String</ValueType>
+				<TriggerLabel>stop_reason</TriggerLabel>
+				<ControlPageLabel>stop_reason</ControlPageLabel>
+			</State>
+
+			<State id="calibrating">
+				<ValueType>String</ValueType>
+				<TriggerLabel>calibrating</TriggerLabel>
+				<ControlPageLabel>calibrating</ControlPageLabel>
+			</State>
+
+<!--   this is same for all: -->
+			<State id="lastSuccessfullConfigPush">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastSuccessfullConfigPush</TriggerLabel>
+				<ControlPageLabel>lastSuccessfullConfigPush</ControlPageLabel>
+			</State>
+
+			<State id="action_from_Device">
+				<ValueType>String</ValueType>
+				<TriggerLabel>action_from_Device</TriggerLabel>
+				<ControlPageLabel>action_from_Device</ControlPageLabel>
+			</State>
+
+			<State id="MAC">
+				<ValueType>String</ValueType>
+				<TriggerLabel>MAC</TriggerLabel>
+				<ControlPageLabel>MAC</ControlPageLabel>
+			</State>
+
+			<State id="lastMessageFromDevice">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastMessageFromDevice</TriggerLabel>
+				<ControlPageLabel>lastMessageFromDevice</ControlPageLabel>
+			</State>
+
+			<State id="created">
+				<ValueType>String</ValueType>
+				<TriggerLabel>created</TriggerLabel>
+				<ControlPageLabel>created</ControlPageLabel>
+			</State>
+
+			<State id="lastStatusChange">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastStatusChange</TriggerLabel>
+				<ControlPageLabel>lastStatusChange</ControlPageLabel>
+			</State>
+
+
+			<State id="rssi">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>rssi</TriggerLabel>
+				<ControlPageLabel>rssi</ControlPageLabel>
+			</State>
+
+			<State id="software_update_available">
+				<ValueType>String</ValueType>
+				<TriggerLabel>software_update_available</TriggerLabel>
+				<ControlPageLabel>software_update_available</ControlPageLabel>
+			</State>
+
+			<State id="expired">
+				<ValueType>String</ValueType>
+				<TriggerLabel>expired</TriggerLabel>
+				<ControlPageLabel>expired</ControlPageLabel>
+			</State>
+
+
+
+		</States>
+	</Device>
+
+
+	<Device type="relay" id="shellyswitch25">
+	<Name>Shelly-Relay (SHSW-25)-1</Name>
+	<UiDisplayStateId>status</UiDisplayStateId>
+
+		<ConfigUI>            
+			<Field id="isShellyDevice"     type="checkbox"     defaultValue="true" hidden="yes"> </Field>
+			<Field id="MSG" type="textfield"     defaultValue=""> <Label>message from plugin:</Label></Field>
+
+			<Field id="SupportsOnState" 		type="checkbox" defaultValue="true"  hidden ="true"></Field>
+			<Field id="SupportsSensorValue" 	type="checkbox" defaultValue="true"  hidden ="true"></Field>
+			<Field id="SupportsStatusRequest" 	type="checkbox" defaultValue="true"  hidden ="true"></Field>
+			<Field id="AllowOnStateChange" 		type="checkbox" defaultValue="false" hidden ="true"></Field>
+			<Field id="AllowSensorValueChange" 	type="checkbox" defaultValue="false" hidden ="true"></Field>
+			<Field id="label1"  type="label" >
+			<Label>Parameters for Shelly-2.5 device</Label>
+			</Field>
+ 
+			<Field id="parentIndigoLabel" type="label" >
+				<Label>This is the device for relay #0 (parent), there is a second for relay#1 (Shelly-ip#-1)
+All parameters have to be set here, not in the child device
+Parent and child share the same connection, the plugin creates two devices to be able to switch relay 1 and relay 0 on/off independently through std indigo commands
+you can change the device type to roller below</Label>
+			</Field>
+
+
+
+			<Field id="ipNumber" type="textfield" defaultValue ="192.168.1.x"  > 
+				<Label>Shelly device IP Number</Label>
+			</Field>
+			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey"  >
+				<Label>Overwrite exiting IP number if needed</Label>
+			</Field>
+
+			<Field id="devNo" type="menu" defaultValue ="0" readonly="yes"   hidden ="true" > 
+				<Label>relay #</Label>
+				<List>
+					<Option value="0"  	>0</Option>
+				</List>
+			</Field>
+
+			<Field id="MAC" type="textfield" defaultValue =""   readonly="yes"> 
+				<Label>Shelly device mac number</Label>
+			</Field>
+
+
+			<Field id="SENDTOSHELLYDEVICE-mode"   type="menu" defaultValue="relay"  >
+				<Label>Mode of device:</Label>
+				<List>
+					<Option value="relay"     >relay, will have child device for 2 relay</Option>
+					<Option value="roller"    >roller, child device is not used</Option>
+				</List>
+			</Field>
+			<Field id="modeLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey"  >
+				<Label>By selecting ROLLER the device will be converted to a roller device type. You will need to save and edit it again to set the proper information</Label>
+			</Field>
+
+
+			<Field id="pollingFrequency"   type="menu" defaultValue="-1"  >
+				<Label>Polling frequency .. how often the plugin requests status from the device:</Label>
+				<List>
+					<Option value="5"    >every 5 sec</Option>
+					<Option value="7"    >every 7 sec</Option>
+					<Option value="10"   >every 10 sec</Option>
+					<Option value="15"   >every 15 sec</Option>
+					<Option value="20"   >every 20 sec</Option>
+					<Option value="30"   >every 30 sec</Option>
+					<Option value="40"   >every 40 sec</Option>
+					<Option value="80"   >every 80 sec</Option>
+					<Option value="120"  >every 2 minutes</Option>
+					<Option value="180"  >every 3 minutes</Option>
+					<Option value="-1"   >automatic adaptive</Option>
+				</List>
+			</Field>
+			<Field id="pollingFrequencyLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey"  >
+				<Label>can be higher/adaptive if actions are setup on the devices</Label>
+			</Field>
+
+
+			<Field id="expirationSeconds"   type="menu" defaultValue="3600"  >
+				<Label>Device goes to EXPIRED w no message or answer after:</Label>
+				<List>
+					<Option value="180"   >after 3 minutes</Option>
+					<Option value="300"   >after 5 minutes</Option>
+					<Option value="600"   >after 10 minutes</Option>
+					<Option value="1800"  >after 30 minutes</Option>
+					<Option value="3600"  >after 1 hour</Option>
+				</List>
+			</Field>
+
+			<Field id="SENDTOSHELLYDEVICE-relay_0_default_state"   type="menu" defaultValue="none"  visibleBindingId="SENDTOSHELLYDEVICE-mode" visibleBindingValue="none,relay">
 				<Label>Set relay state at power on:</Label>
 				<List>
 					<Option value="none"      >do not set</Option>
@@ -1597,7 +1986,7 @@ Parent and child share the same connection, the plugin creates two devices to be
 			</Field>
 
 
-			<Field id="SENDTOSHELLYDEVICE-relay_0_btn_type"   type="menu" defaultValue="none"  >
+			<Field id="SENDTOSHELLYDEVICE-relay_0_btn_type"   type="menu" defaultValue="none"   visibleBindingId="SENDTOSHELLYDEVICE-mode" visibleBindingValue="none,relay">
 				<Label>Set button type :</Label>
 				<List>
 					<Option value="none"      >do not set</Option>
@@ -1610,7 +1999,7 @@ Parent and child share the same connection, the plugin creates two devices to be
 				</List>
 			</Field>
 
-			<Field id="SENDTOSHELLYDEVICE-relay_0_btn_reverse"   type="menu" defaultValue="none"  >
+			<Field id="SENDTOSHELLYDEVICE-relay_0_btn_reverse"   type="menu" defaultValue="none"   visibleBindingId="SENDTOSHELLYDEVICE-mode" visibleBindingValue="none,relay">
 				<Label>Set button reverse / normal :</Label>
 				<List>
 					<Option value="none"      >do not set</Option>
@@ -1619,25 +2008,15 @@ Parent and child share the same connection, the plugin creates two devices to be
 				</List>
 			</Field>
 
-			<Field id="SENDTOSHELLYDEVICE-relay_0_longpush_time"   type="textfield" defaultValue="none"  >
+			<Field id="SENDTOSHELLYDEVICE-relay_0_longpush_time"   type="textfield" defaultValue="none"   visibleBindingId="SENDTOSHELLYDEVICE-mode" visibleBindingValue="none,relay">
 				<Label>Set long push time:</Label>
 			</Field>
 
-			<Field id="SENDTOSHELLYDEVICE-relay_0_max_power"   type="textfield" defaultValue="none"  >
+			<Field id="SENDTOSHELLYDEVICE-relay_0_max_power"   type="textfield" defaultValue="none"  visibleBindingId="SENDTOSHELLYDEVICE-mode" visibleBindingValue="none,relay" >
 				<Label>Set max power(switch off if larger):</Label>
 			</Field>
 
-			<Field id="SENDTOSHELLYDEVICE-mode"   type="menu" defaultValue="none"  >
-				<Label>Set mode:</Label>
-				<List>
-					<Option value="none"      >do not set</Option>
-					<Option value="relay"     >relay</Option>
-					<Option value="roller"    >roller</Option>
-				</List>
-			</Field>
-
-
-			<Field id="SENDTOSHELLYDEVICE-relay_0_name"   type="textfield" defaultValue="none" >
+			<Field id="SENDTOSHELLYDEVICE-relay_0_name"   type="textfield" defaultValue="none"  visibleBindingId="SENDTOSHELLYDEVICE-mode" visibleBindingValue="none,relay">
 				<Label>Set name of relay:</Label>
 			</Field>
 
@@ -1699,8 +2078,6 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<TriggerLabel>Temperature_internal</TriggerLabel>
 				<ControlPageLabel>Temperature_internal</ControlPageLabel>
 			</State>
-
-
 <!--   this is same for all: -->
 			<State id="lastSuccessfullConfigPush">
 				<ValueType>String</ValueType>

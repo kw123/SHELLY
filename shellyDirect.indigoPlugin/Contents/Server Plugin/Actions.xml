@@ -1,16 +1,67 @@
 <Actions>
 
 
-    <Action id="relayOn">
-        <Name>Switch Relay ON</Name>
-        <CallbackMethod>setRelayOnCALLBACKaction</CallbackMethod>
+    <Action id="calibrateShelly25Roller">
+        <Name>CALIBRATe shelly-25 roller</Name>
+        <CallbackMethod>startShelly25CalibrationCALLBACKaction</CallbackMethod>
         <ConfigUI>
              <Label>select Device</Label>
-            <Field id="deviceNameOrId"   type="menu" defaultValue="0" >
-                        <List class="indigo.devices" filter="self" />
-                <Label>select the device:</Label> 
+            <Field id="devId" type="menu" >
+                <Label>Select SHELLY device:</Label>
+                <List class="self" filter="shellyswitch25" method="filterActiveShellyDevicesNotChild" dynamicReload="true"/>
             </Field>
         </ConfigUI>
     </Action>
+    <Action id="stopShell25Roller">
+        <Name>STOP shelly-25 ROLLER device</Name>
+			<CallbackMethod>startShelly25StopCALLBACKaction</CallbackMethod>        <ConfigUI>
+            <Field id="infoLabel11" type="label">
+                <Label>STOP shelly-25 ROLLER device</Label>
+            </Field>
+            <Field id="devId" type="menu" >
+                <Label>Select SHELLY-roller device:</Label>
+                <List class="self" filter="shellyswitch25" method="filterActiveShellyDevicesNotChild" dynamicReload="true"/>
+            </Field>
+        </ConfigUI>
+    </Action>         
+    <Action id="positionShell25Roller">
+        <Name>GOTO position shelly-25 ROLLER device</Name>
+			<CallbackMethod>startShelly25roller_posCALLBACKaction</CallbackMethod>
+        <ConfigUI>
+            <Field id="infoLabel11" type="label">
+                <Label>GOTO position shelly-25 ROLLER device</Label>
+            </Field>
+            <Field id="devId" type="menu" >
+                <Label>Select ROLLER device:</Label>
+                <List class="self" filter="shellyswitch25" method="filterActiveShellyDevicesNotChild" dynamicReload="true"/>
+            </Field>
+            <Field id="roller_pos" type="textfield" default="100">
+                <Label>set position (0..100):</Label>
+            </Field>
+        </ConfigUI>
+    </Action>         
+    <Action id="positionwTimerShell25Roller">
+        <Name>Move for xx secs shelly-25 ROLLER device</Name>
+			<CallbackMethod>startShelly25roller_poswTimerCALLBACKaction</CallbackMethod>
+        <ConfigUI>
+            <Field id="infoLabel11" type="label">
+                <Label>Move for xx secs shelly-25 ROLLER device</Label>
+            </Field>
+            <Field id="devId" type="menu" >
+                <Label>Select ROLLER device:</Label>
+                <List class="self" filter="shellyswitch25" method="filterActiveShellyDevicesNotChild" dynamicReload="true"/>
+            </Field>
+            <Field id="duration" type="textfield" default="5">
+                <Label>move for xx secs:</Label>
+            </Field>
+            <Field id="direction" type="menu" default="open">
+                <Label>direction:</Label>
+ 				<List>
+					<Option value="open"    >open</Option>
+					<Option value="close"   >close</Option>
+				</List>
+           </Field>
+        </ConfigUI>
+    </Action>         
 
 </Actions>
