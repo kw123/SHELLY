@@ -34,7 +34,7 @@ except ImportError:
 ################################################################################
 
 ##
-_definedShellyDeviceswAction	= ["shelly1","shelly1pm","shellyswitch25","shellyswitch25-roller","shellyem","shellydimmer","shellyflood","shellyht", "shellyem3","shellyplug","shellyplug-s","shelly4pro"]
+_definedShellyDeviceswAction	= ["shelly1","shelly1pm","shellyswitch25","shellyswitch25-roller","shellyem","shellydimmer","shellyflood","shellyht", "shellyem3","shellyplug","shellyplug-s","shelly4pro","shellydw"]
 
 
 ## which child type 
@@ -46,10 +46,11 @@ _childDevTypes					= {	"ext_temperature":{			"state":"Temperature",	"dataKey":"t
 									"shelly4pro-child":{		"state":"",				"dataKey":"",	"nameExt":"_relay-2"},
 									"shellyem-child":{			"state":"",				"dataKey":"",	"nameExt":"_EM"}
 								}
+_relayDevices					= ["shelly1","shelly1pm","shellyswitch25","shellyswitch25-child","shellyem","shelly4pro","shelly4pro-child","shellyplug","shellyplug-s"]
 
 #http//ip:port/settings/?commands=
 #eg: http//ip:port/settings/?external_power=1000
-			   # key from props									comand to be send				looking for string to come back
+			   # key from props									comand to be send							looking for string to come back
 settingCmds ={
 			### emeter settings
 			 "SENDTOSHELLYDEVICE-emeter_0_ctraf_type":			["settings/meter/0?ctraf_type",				"ctraf_type"],
@@ -129,6 +130,7 @@ settingCmds ={
 			 "SENDTOSHELLYDEVICE-dark_threshold":				["settings?dark_threshold=",				"dark_threshold"],
 			 "SENDTOSHELLYDEVICE-twilight_threshold":			["settings?twilight_threshold=",			"twilight_threshold"],
 			 "SENDTOSHELLYDEVICE-tilt_enabled":					["settings?tilt_enabled=",					"tilt_enabled"],
+			 "SENDTOSHELLYDEVICE-led_status_disable":			["settings?led_status_disable=",			"led_status_disable"],
 			 "SENDTOSHELLYDEVICE-vibration_enabled":			["settings?vibration_enabled=",				"vibration_enabled"],
 			 "SENDTOSHELLYDEVICE-max_power":					["settings?max_power=",						"max_power"],
 			 "SENDTOSHELLYDEVICE-longpush_time":				["settings?longpush_time=",					"longpush_time"],
@@ -154,7 +156,7 @@ _emptyProps ={	# switches
 						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
 						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":False,"ipNumber":"", "MAC":"", "pollingFrequency":-1, "automaticPollingFrequency":100, "expirationSeconds":180 },
 						"setPageActionPageOnShellyDev":{"0":"relay/0?","1":"relay/1?"},
-						"action_url":   {"settings/relay/0?":{"btn_on_url":"input=on", "out_on_url":"onOffState=1", "out_off_url":"onOffState=0"}},
+						"action_url":   {"settings/relay/0?":{"btn_on_url":"action=button", "out_on_url":"onOffState=1", "out_off_url":"onOffState=0"}},
 						"childTypes_Sensors":["ext_temperature","ext_humidity"],
 						"childTypes_SplitDevices":[],
 						"tempUnits":"C"
@@ -163,7 +165,7 @@ _emptyProps ={	# switches
 						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
 						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":False,"ipNumber":"", "MAC":"", "pollingFrequency":-1, "automaticPollingFrequency":100, "expirationSeconds":180 },
 						"setPageActionPageOnShellyDev":{"0":"relay/0?","1":"relay/1?"},
-						"action_url":   {"settings/relay/0?":{"btn_on_url":"input=on",  "out_on_url":"onOffState=1", "out_off_url":"onOffState=0"}},
+						"action_url":   {"settings/relay/0?":{"btn_on_url":"action=button",  "out_on_url":"onOffState=1", "out_off_url":"onOffState=0"}},
 						"childTypes_Sensors":["ext_temperature","ext_humidity"],
 						"childTypes_SplitDevices":[],
 						"tempUnits":"C"
@@ -362,7 +364,7 @@ _emptyProps ={	# switches
 						"WhiteTemperatureMin":3000, "WhiteTemperatureMax":6500,
 						"rgbLimits":[1,255],
 						"setPageActionPageOnShellyDev":{},
-						"action_url":{"settings/?twilight_url=":{"none":"data?"},"settings/?dark_url=":{"none":"data?"}},
+						"action_url":{"settings/?twilight_url=":{"none":"data?action=twilightOpen"},"settings/?dark_url=":{"none":"data?action=darkOpen"},"settings/?close_url=":{"none":"data?action=close"},"settings/?vibration_url=":{"none":"data?action=vibration"}},
 						"childTypes_Sensors":[],
 						"childTypes_SplitDevices":[],
 						"tempUnits":"C"
@@ -831,51 +833,51 @@ class Plugin(indigo.PluginBase):
 		helpText +='    - shelly device userid/passwd if enabled  \n'
 		helpText +='    - some other parameter if needed .. use curl or python connect for some older OSX versions use curl  \n'
 		helpText +='   \n'
-		helpText +='(1) ONTHE SHELLY DEVICE \n'
-		helpText +='    Setup shelly device as defned by the shelly manual: \n'
+		helpText +='(1) ON THE SHELLY DEVICE  \n'
+		helpText +='    Setup shelly device as defned by the shelly manual:  \n'
 		helpText +='    Using your phone, connect wifi to shellyxxx AP wifi SSID in phone setup   \n'
 		helpText +='    - use browser to connect to 192.168.33.1 (that is a fixed ip#)   \n'
 		helpText +='    - setup your home wifi network parameter (SSID, PWD, IP). I prefer using a fixed IP#   \n'
 		helpText +='    - Restart.    \n'
-		helpText +='   Optional: On regular browser, connect to http://ip# you set with phone   \n'
-		helpText +='     upgrade device if available, set device parameters as needed  \n'
+		helpText +='   Optional: On regular browser, connect to http://ip# you just set with the phone   \n'
+		helpText +='     upgrade device if available, set device parameters as needed, etc  \n'
 		helpText +='   \n'
 		helpText +='(2) IN THE PLUGIN:  \n'
 		helpText +='    To add devices or do a refresh  \n'
 		helpText +='    enter IP# / range in menu   \n'
 		helpText +='        "Start Shelly device discovery Process for ONE device" or .. "an IP RANGE"  \n'
 		helpText +='    It will query the IP# (or range) and check for a propper shelly response    \n'
-		helpText +='    When a proper resonse is received, the plugin will try to add a new Shelly device  \n'
+		helpText +='    When a proper resonse is received, the plugin will add a new Shelly device  \n'
 		helpText +='     if does not already exist   \n'
 		helpText +='   \n'
 		helpText +='(3) OPTIONAL if needed:  \n'
-		helpText +='   Edit indigo Shelly device to tune parameters eg:  \n'
+		helpText +='    Edit indigo Shelly device to tune parameters eg:  \n'
 		helpText +='    expiration time:  after what time w/o message the device goes to "EXPIRED"  \n'
 		helpText +='    polling time: how often should the plugiquerry the device  \n'
 		helpText +='    status column: what to show in the status column (only for sensors)  \n'
 		helpText +='    set relay and input settings eg default at power on, input button behavior etc  \n'
-		helpText +='    IP number: here you can change the IP number of the device  \n'
+		helpText +='    IP number: here you can change the IP number of the device  if / when it was changed \n'
 		helpText +='   \n'
 		helpText +='== How it works:  \n'
 		helpText +='   \n'
 		helpText +='The plugin is:  \n'
-		helpText +='(A) listening to any messages from the devices a tcp port (set in config, default 7987)  \n'
+		helpText +='(A) listening to any messages from the devices on a tcp port (set in config, default 7987)  \n'
 		helpText +='    the plugin will push action url settings to each shelly device  \n'
 		helpText +='    that causes the shelly device to SEND info to the plugin when anything changes  \n'
 		helpText +='(B) polling the devices on a regular schedule (1/s .. min., set in dev edit)  \n'
 		helpText +='     - http://ip#/settings         gets basic config parameters (dev type, rssi, etc)  \n'
 		helpText +='     - http://ip#/status           gets live info eg temp, on/off, RGB, Power ...  \n'
-		helpText +='(C) switching shelly devices, on/off set light eg:  \n'
+		helpText +='(C) switching shelly devices, on/off set light  using eg:  \n'
 		helpText +='     - http://ip#/relay/0?turn=on/off  sets relay 0 on/off  \n'
 		helpText +='     - http://ip#/color/0?red=200&green=50&blue=30  sets RGB values  \n'
 		helpText +='    etc.  \n'
 		helpText +='(D) can set parameters on shelly devices (set in indigo device edit), with:  \n'
 		helpText +='     - http://ip#/settings/relay/0?btn_type=toggle     set input button to toggle/momentary/.. \n'
 		helpText +='     - http://ip#/settings/light/0?default_state=last  set the power-on state to last/on/off  \n'
-		helpText +='     and many other parameters (night mode ...) \n'
+		helpText +='     and many other parameters like night mode ... \n'
 		helpText +='(E) Menu option to get and print shelly-EM(3) emeter time series data to logfile  \n'
 		helpText +='== REMARKS:   \n'
-		helpText +='(A) The plugin will detect IP# changes for relay or temp devices automatically, \n'
+		helpText +='(A) The plugin will detect IP# changes for relay or temp devices automatically,  \n'
 		helpText +='      but not for light bulbs, as they do not send out any updates  \n'
 		helpText +='      you can change the IP# of the device in indigo device edit  \n'
 		helpText +='(B) You can set a shelly IP# to be ignored, then the plugin will not be updating anything for that device  \n'
@@ -902,14 +904,15 @@ class Plugin(indigo.PluginBase):
 		helpText +='                                   the sensors will be added as devices: hostName-ext_temperature-# (1,2,3)  \n'
 		helpText +='Shelly- ext. DHT22  sensor:        External addon for Shelly-1 -1PM for 1 DHT22 T&H sensor  \n'
 		helpText +='                                   the sensor will be added as devices: hostName-ext_temperature-1 and  hostName-ext_humidity-1  \n'
+		helpText +='Shelly Door Window                 Door/window open(when dark or light) / close alarm. Lux and vibration measuremnt  \n'
+		helpText +='Shelly Plug                        power outlets w relay and power measurement   \n'
+		helpText +='Shelly PlugS                       power outlets w relay and power and energy measurement  \n'
 		helpText +='  programmed, but not tested:   \n'
 		helpText +='Shelly-EM3 Power 3 Ch. - 1 Relay:  110-220V measures Power, volt, has 1 relay - the plugin creates 4 devices: R + EM1 + EM2 + EM3  \n'
 		helpText +='                                   the 3 EM  will be added as device: hostName-sheleeyEM3-child-1/2  \n'
 		helpText +='Shelly-PRO4, 4 relay:              220V measures Power, volt, the plugin creates 4 relay devices  \n'
 		helpText +='                                   the 2-4 relays will be added as device: hostName-shellypro-child-# (1/2/3)  \n'
 		helpText +='Shelly-Vintage Bulb:               110-220V LED light bulb vintage style  \n'
-		helpText +='Shelly Door Window                 Door/window open alarm  partially supported  \n'
-		helpText +='Shelly Plug PlugS                  power outlets w relay and power measurement  \n'
 		helpText +='   \n'
 		helpText +='=========================================================================================   \n'
 		helpText +='   \n'
@@ -1657,7 +1660,7 @@ class Plugin(indigo.PluginBase):
 		try:
 			while self.quitNow == "":
 				self.countLoop += 1
-				self.sleep(5.)
+				self.sleep(3)
 
 				if self.countLoop > 2: 
 					anyChange = self.periodCheck()
@@ -1723,29 +1726,50 @@ class Plugin(indigo.PluginBase):
 					dev = indigo.devices[action["devId"]]
 					if action["action"] == "changeDeviceTypeId":
 						dev = indigo.device.changeDeviceTypeId(dev, action["value"])
-						#recreate child device if not present
+
 						if action["value"] == "shellyswitch25":
-							if len(self.SHELLY[dev.id]["children"]) ==0:
+							#recreate child device if not present
+							props = dev.pluginProps
+							props["isParent"] = True
+							dev.replacePluginPropsOnServer(props)
+							dev = indigo.devices[dev.id]
+							if len(self.SHELLY[dev.id]["children"]) == 0:
 								self.createShellyChildDevice( dev, "shellyswitch25", self.SHELLY[dev.id]["MAC"], self.SHELLY[dev.id]["ipNumber"], dev.name)
 							dev.description ="Host of ..."
 							dev.replaceOnServer()
-						elif action["value"] == "shellyswitch25-roller":
-							dev.description ="On=close=100%"
-							dev.replaceOnServer()
 
+						elif action["value"] == "shellyswitch25-roller":
+							dev.description = "On=close=100%"
+							dev.replaceOnServer()
+							children = self.SHELLY[dev.id]["children"]
+							devs, devNos = self.getChildDevices(children)
+							for dd in devs:
+								indigo.device.delete(dd.id)	
+								del self.SHELLY[dd.id]
+							dev = indigo.devices[dev.id]
+							props = dev.pluginProps
+							self.SHELLY[dev.id]["children"] = {}
+							self.SHELLY[dev.id]["isParent"] = False
+							props["children"] = {}
+							props["isParent"] = False
+							dev.replacePluginPropsOnServer(props)
 						self.indiLOG.log(30,"{} changed devtype to {}, need to edit device again and save".format(dev.name.encode("utf8"), action["value"]))
-						delAction.append(ii)
-					if action["action"] == "checkStatus" and time.time() - action["value"] > 0:
-						self.addToShellyPollerQueue( action["devId"], "status", now=True)
-						self.indiLOG.log(20,"{} checking status after roller open/close action".format(dev.name.encode("utf8")))
-						delAction.append(ii)
+						delAction.insert(0,ii)
+
+					if action["action"] == "checkStatus" and time.time() - action["value"] < 0:
+						if time.time() - action["value"] > -5: # not in the first 5 secs
+							self.addToShellyPollerQueue( action["devId"], "status", now=True)
+							self.indiLOG.log(20,"{} checking status after roller open/close action".format(dev.name.encode("utf8")))
+						else:
+							delAction.insert(0,ii)
 				else:
-						delAction.append(ii)
-				ii +=1
-			ll = len(delAction)
-			if ll > 0:
-				for jj in range(ll):
-					del self.deviceActionList[ll - jj -1]	
+						delAction.insert(0,ii)
+				ii += 1
+
+			#remove action from the end
+			for jj in range(len(delAction)):
+				del self.deviceActionList[delAction[jj]]
+
 			return 
 		except Exception, e:
 			if len(unicode(e)) > 5 :
@@ -2052,6 +2076,7 @@ class Plugin(indigo.PluginBase):
 				self.fillShellyDeviceStates( items["data"]["path"], dev, items["page"], ipNumber )
 				self.SHELLY[devIdFound]["now"] = True
 				self.addToShellyPollerQueue(devIdFound, "settings")
+				self.addToShellyPollerQueue(devIdFound, "status")
 				# check if we should push settings, good for battery devices, as thye only wake up every x hours
 				if time.time() - self.SHELLY[devId]["lastSuccessfullConfigPush"] > self.repeatConfigPush:
 					self.pushConfigToShellyDevice(devId)
@@ -2338,7 +2363,6 @@ class Plugin(indigo.PluginBase):
 
 		except Exception, e:
 			self.indiLOG.log(40,"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
-			self.indiLOG.log(40,"data:{}".format(data))
 		return 
 
 
@@ -2490,12 +2514,17 @@ class Plugin(indigo.PluginBase):
 		try:
 			if ("enabled" in data["wifi_sta"] and data["wifi_sta"]["enabled"])  or ("u'connected" in data["wifi_sta"] and data["wifi_sta"]["u'connected"]):
 				ipNumber = data["wifi_sta"]["ip"]
-				if dev.address != ipNumber:
-					if self.decideMyLog(u"SetupDevices"): self.indiLOG.log(40,"ip number changed for devID{}; old:{} new:{}".format(dev.id, dev.address, ipNumber) )
-					props = dev.pluginProps
-					props["address"] = ipNumber
-					dev.replacePluginPropsOnServer(props)
-					return dev
+				if self.isValidIP(ipNumber):
+					if dev.address != ipNumber:
+						if self.decideMyLog(u"SetupDevices"): self.indiLOG.log(30,"ip number changed for devID{}; old:{} new:{}".format(dev.id, dev.address, ipNumber) )
+						props = dev.pluginProps
+						props["address"] = ipNumber
+						dev.replacePluginPropsOnServer(props)
+						return dev
+				else: 
+					pass					
+					#self.indiLOG.log(20,"{} ip number not valid:{}, data:{}".format(dev.id, ipNumber, data) )
+				
 		except Exception, e:
 			self.indiLOG.log(40,"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
 			self.indiLOG.log(40,"data {} ".format(data))
@@ -2628,14 +2657,18 @@ class Plugin(indigo.PluginBase):
 		try:
 			if dev.deviceTypeId != "shellydw": return 
 			devID = str(dev.id)		
-			self.addToStatesUpdateDict(devID, "lux", 			data["lux"]["value"], str(data["lux"]["value"])+"[lux]", decimalPlaces=1)
-			self.addToStatesUpdateDict(devID, "illumination", 	data["lux"]["illumination"])
-			self.addToStatesUpdateDict(devID, "tilt", 			data["accel"]["tilt"], str(data["accel"]["tilt"])+"º",decimalPlaces=0)
-			self.addToStatesUpdateDict(devID, "vibration", 		"no" if data["accel"]["vibration"] else "YES")
-			self.addToStatesUpdateDict(devID, "batteryLevel", 	data["bat"]["value"], decimalPlaces=0)
-			self.addToStatesUpdateDict(devID, "batteryVoltage", data["bat"]["voltage"], decimalPlaces=2)
-			self.addToStatesUpdateDict(devID, "state", 			data["sensor"]["state"])
-			self.addToStatesUpdateDict(devID, "onOffState",		data["sensor"]["state"] !="close", decimalPlaces="")
+			if "lux" in data:
+				self.addToStatesUpdateDict(devID, "lux", 			data["lux"]["value"], str(data["lux"]["value"])+"[lux]", decimalPlaces=1)
+				self.addToStatesUpdateDict(devID, "illumination", 	data["lux"]["illumination"])
+			if "accel" in data:
+				self.addToStatesUpdateDict(devID, "tilt", 			data["accel"]["tilt"], str(data["accel"]["tilt"])+"º",decimalPlaces=0)
+				self.addToStatesUpdateDict(devID, "vibration", 		"no" if data["accel"]["vibration"]==0 else "YES")
+			if "bat" in data:
+				self.addToStatesUpdateDict(devID, "batteryLevel", 	data["bat"]["value"], decimalPlaces=0)
+				self.addToStatesUpdateDict(devID, "batteryVoltage", data["bat"]["voltage"], decimalPlaces=2)
+			if "sensor" in data:
+				self.addToStatesUpdateDict(devID, "state", 			data["sensor"]["state"])
+				self.addToStatesUpdateDict(devID, "onOffState",		data["sensor"]["state"] !="close", decimalPlaces="")
 
 		except Exception, e:
 			self.indiLOG.log(40,"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
@@ -2862,7 +2895,7 @@ class Plugin(indigo.PluginBase):
 	def doHTTPactionData(self, data, dev):
 		try:
 			self.SHELLY[dev.id]["lastMessage-Http"] = data
-			if self.decideMyLog(u"HTTPlistener"):self.indiLOG.log(20,"doHTTPactionData {}   data:{}".format(self.SHELLY[dev.id]["ipNumber"], data) )
+			if self.decideMyLog(u"HTTPlistener"):self.indiLOG.log(20,"doHTTPactionData {}   data: {}".format(self.SHELLY[dev.id]["ipNumber"], data) )
 			if dev.deviceTypeId not in _definedShellyDeviceswAction: return
 
 			children = self.SHELLY[dev.id]["children"]
@@ -2890,8 +2923,15 @@ class Plugin(indigo.PluginBase):
 								useDev = devs[0]
 							x[0] = "onOffState"
 
+						if x[0].find("action") == 0:
+							x[2] = True
 
-						if x[0].find("input") == 0:
+						if x[0].find("action") == 0:
+							if  x[1] == "button": 
+								x[2] = "date"
+
+
+						elif x[0].find("input") == 0:
 							if   x[1] == "1": x[1] = "on"
 							elif x[1] == "0": x[1] = "off"
 							elif x[1] == "long": 
@@ -2909,7 +2949,7 @@ class Plugin(indigo.PluginBase):
 						TRIGGERS.append([x[0],x[1],x[2]])
 					else:
 						TRIGGERS.append({"cmd":item})
-				if self.decideMyLog(u"HTTPlistener"):self.indiLOG.log(20,"doHTTPactionData {}   TRIGGERS:{}".format(self.SHELLY[dev.id]["ipNumber"], TRIGGERS) )
+				if self.decideMyLog(u"HTTPlistener"):self.indiLOG.log(20,"doHTTPactionData {}  devType:{}  TRIGGERS:{}".format(self.SHELLY[dev.id]["ipNumber"], useDev.deviceTypeId , TRIGGERS) )
 			else:
 				return
 			devID = str(useDev.id)
@@ -2937,17 +2977,32 @@ class Plugin(indigo.PluginBase):
 						self.fillSensor(devs[0], {"Humidity": trigger[1]},    "Humidity",    "Humidity", unit="", decimalPlaces=0)
 
 			elif useDev.deviceTypeId == "shellydw":
-				self.indiLOG.log(20,"doHTTPactionData {};  shellydw not implemented yet message:{}".format(self.SHELLY[dev.id]["ipNumber"], data) )
+				for trigger in TRIGGERS:
+					if trigger[0] == "action" and trigger[1] == "close":
+						self.addToStatesUpdateDict(devID, "closedTriggered", datetime.datetime.now().strftime(_defaultDateStampFormat))
+						self.addToStatesUpdateDict(devID, "state", "close")
+						self.fillSwitch( useDev, {"onOffState":False}, "onOffState")
+					if trigger[0] == "action" and trigger[1] == "darkOpen":
+						self.addToStatesUpdateDict(devID, "darkOpen", datetime.datetime.now().strftime(_defaultDateStampFormat))
+						self.addToStatesUpdateDict(devID, "state", "open")
+						self.fillSwitch( useDev, {"onOffState":True}, "onOffState")
+					if trigger[0] == "action" and trigger[1] == "twilightOpen":
+						self.addToStatesUpdateDict(devID, "state", "open")
+						self.fillSwitch( useDev, {"onOffState":True}, "onOffState")
+						self.addToStatesUpdateDict(devID, "twilightOpen", datetime.datetime.now().strftime(_defaultDateStampFormat))
 				
 			## cover the rest of the defined devices w actions reporting
 			elif useDev.deviceTypeId in _definedShellyDeviceswAction:
 				for trigger in TRIGGERS:
-					if self.decideMyLog(u"HTTPlistener"):self.indiLOG.log(20,"doHTTPactionData   trigger:{}".format(trigger) )
+					if self.decideMyLog(u"HTTPlistener"):						self.indiLOG.log(20,"doHTTPactionData   trigger:{}".format(trigger) )
 
-					if trigger[0].find("onOffState") == 0:	self.fillSwitch( useDev, {trigger[0]:trigger[1]}, trigger[0])
-					else: 									self.fillSwitch( useDev, {trigger[0]:trigger[1]}, trigger[0], onOffState=False)
-					if   trigger[0].find("state") == 0 and trigger[1]=="open":self.fillSwitch( useDev, {"onOffState":True}, "onOffState")
-					elif trigger[0].find("state") == 0 and trigger[1]=="close":self.fillSwitch( useDev, {"onOffState":False}, "onOffState")
+					if trigger[0].find("onOffState") == 0:						self.fillSwitch( useDev, {trigger[0]:trigger[1]}, trigger[0])
+					else: 														self.fillSwitch( useDev, {trigger[0]:trigger[1]}, trigger[0], onOffState=False)
+					if   trigger[0].find("state") == 0 and trigger[1]=="open":	self.fillSwitch( useDev, {"onOffState":True}, "onOffState")
+					elif trigger[0].find("state") == 0 and trigger[1]=="close"	:self.fillSwitch( useDev, {"onOffState":False}, "onOffState")
+					if   trigger[0].find("action") == 0 and trigger[1]=="button" and trigger[2]=="date": 
+																				self.addToStatesUpdateDict(devID, "input", datetime.datetime.now().strftime(_defaultDateStampFormat))
+
 
 
 
@@ -2966,18 +3021,19 @@ class Plugin(indigo.PluginBase):
 	def fillSwitch(self, dev, data, token, onOffState=True):
 		try:
 			if onOffState and "onOffState" in dev.states:
-				#self.indiLOG.log(20,"{}:  {};  data[token]:{};  state:{}".format(dev.name, onOffState, data[token], dev.states["onOffState"]))
 				if data[token]: 
 					self.addToStatesUpdateDict(dev.id, "onOffState",True)
-					dev.updateStateImageOnServer(indigo.kStateImageSel.PowerOn)
 					if not dev.states["onOffState"]:
 						if "lastOnOffChange" in dev.states and "lastStatusChange" in dev.states:
 							self.addToStatesUpdateDict(dev.id, "lastOnOffChange",dev.states["lastStatusChange"])
+						self.addToStatesUpdateDict(dev.id, "lastStatusChange",datetime.datetime.now().strftime(_defaultDateStampFormat))
+					dev.updateStateImageOnServer(indigo.kStateImageSel.PowerOn)
 				else:
 					self.addToStatesUpdateDict(dev.id, "onOffState",False)
 					if dev.states["onOffState"]:
 						if "lastOnOffChange" in dev.states and "lastStatusChange" in dev.states:
 							self.addToStatesUpdateDict(dev.id, "lastOnOffChange",dev.states["lastStatusChange"])
+						self.addToStatesUpdateDict(dev.id, "lastStatusChange",datetime.datetime.now().strftime(_defaultDateStampFormat))
 					dev.updateStateImageOnServer(indigo.kStateImageSel.PowerOff)
 			else:
 					self.addToStatesUpdateDict(dev.id, token, data[token])
@@ -3836,7 +3892,7 @@ class Plugin(indigo.PluginBase):
 				elif action.deviceAction == indigo.kDimmerRelayAction.SetBrightness:
 					page 	= "go=to_pos&roller_pos="+str(max(0,min(100,int(action.actionValue))))
 
-			elif dev.deviceTypeId in ["shelly1","shelly1pm","shellyswitch25","shellyswitch25-child","shellyem","shelly4pro","shelly4pro-child"]:
+			elif dev.deviceTypeId in _relayDevices:
 				if self.SHELLY[dev.id]["isChild"]:	channel = str(dev.states["childNo"])
 				else: 								channel	= "0"
 				###### TURN ON ######

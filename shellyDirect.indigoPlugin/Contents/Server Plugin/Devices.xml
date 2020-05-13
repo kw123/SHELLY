@@ -22,7 +22,7 @@
 				<Label>Shelly device IP Number</Label>
 			</Field>
 			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey ">
-				<Label>Overwrite exiting IP number if needed</Label>
+				<Label>Overwrite existing IP number</Label>
 			</Field>
 
 			<Field id="MAC" type="textfield" defaultValue =""  readonly="yes"> 
@@ -337,7 +337,7 @@
 				<Label>Shelly device IP Number</Label>
 			</Field>
 			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey ">
-				<Label>Overwrite exiting IP number if needed</Label>
+				<Label>Overwrite existing IP number</Label>
 			</Field>
 
 			<Field id="MAC" type="textfield" defaultValue =""  readonly="yes"> 
@@ -681,7 +681,7 @@
 				<Label>Shelly device IP Number</Label>
 			</Field>
 			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
-				<Label>Overwrite exiting IP number if needed</Label>
+				<Label>Overwrite existing IP number</Label>
 			</Field>
 
 			<Field id="MAC" type="textfield" defaultValue =""  readonly="yes"> 
@@ -916,7 +916,7 @@
 				<Label>Shelly device IP Number</Label>
 			</Field>
 			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
-				<Label>Overwrite exiting IP number if needed</Label>
+				<Label>Overwrite existing IP number</Label>
 			</Field>
 
 			<Field id="MAC" type="textfield" defaultValue =""  readonly="yes"> 
@@ -1109,7 +1109,7 @@
 
 
 	<Device type="relay" id="shellyplug">
-	<Name>Shelly-Plug (SHPL)</Name>
+	<Name>Shelly-Plug (SHPLG2-1)</Name>
 	<UiDisplayStateId>status</UiDisplayStateId>
 
 		<ConfigUI>            
@@ -1129,7 +1129,7 @@
 				<Label>Shelly device IP Number</Label>
 			</Field>
 			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
-				<Label>Overwrite exiting IP number if needed</Label>
+				<Label>Overwrite existing IP number</Label>
 			</Field>
 
 			<Field id="MAC" type="textfield" defaultValue =""  readonly="yes"> 
@@ -1305,7 +1305,7 @@
 
 
 	<Device type="relay" id="shellyplug-s">
-	<Name>Shelly-Plug-s (SHSW-1)</Name>
+	<Name>Shelly-Plug-s (SHPLG-S)</Name>
 	<UiDisplayStateId>status</UiDisplayStateId>
 
 		<ConfigUI>            
@@ -1325,7 +1325,7 @@
 				<Label>Shelly device IP Number</Label>
 			</Field>
 			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
-				<Label>Overwrite exiting IP number if needed</Label>
+				<Label>Overwrite existing IP number</Label>
 			</Field>
 
 			<Field id="MAC" type="textfield" defaultValue =""  readonly="yes"> 
@@ -1536,7 +1536,7 @@
 				<Label>Shelly device IP Number</Label>
 			</Field>
 			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey"  >
-				<Label>Overwrite exiting IP number if needed</Label>
+				<Label>Overwrite existing IP number</Label>
 			</Field>
 
 			<Field id="devNo" type="menu" defaultValue ="0" readonly="yes"   hidden ="true" > 
@@ -1558,13 +1558,21 @@
 					<Option value="roller"    >roller, child device is not used</Option>
 				</List>
 			</Field>
-			<Field id="modeLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey"  >
+
+			<Field id="modeLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey" visibleBindingId="SENDTOSHELLYDEVICE-mode" visibleBindingValue="roller" >
 				<Label>By selecting RELAY the device will be converted to 2 devices relay 1 and 2. You will need to save and edit it again to set the proper information
 you can change the device type to 2 relays below</Label>
 			</Field>
 
+			<Field id="modeLabelswitch " type="label" fontColor="red" visibleBindingId="SENDTOSHELLYDEVICE-mode" visibleBindingValue="relay" >
+				<Label>!! ......... To finish chaninging to "relay" please ............... !!
+!! .........    click save, ....................................................... !! 
+!! .........    wait 10 secs and then ..................................... !!
+!! .........    edit device again to set the relay parameters.. !!</Label>
+			</Field>
 
-			<Field id="pollingFrequency"   type="menu" defaultValue="-1"  >
+
+			<Field id="pollingFrequency"   type="menu" defaultValue="-1" visibleBindingId="SENDTOSHELLYDEVICE-mode" visibleBindingValue="roller" >
 				<Label>Polling frequency .. how often the plugin requests status from the device:</Label>
 				<List>
 					<Option value="5"    >every 5 sec</Option>
@@ -1580,12 +1588,12 @@ you can change the device type to 2 relays below</Label>
 					<Option value="-1"   >automatic adaptive</Option>
 				</List>
 			</Field>
-			<Field id="pollingFrequencyLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey"  >
+			<Field id="pollingFrequencyLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey"   visibleBindingId="SENDTOSHELLYDEVICE-mode" visibleBindingValue="roller">
 				<Label>can be higher/adaptive if actions are setup on the devices</Label>
 			</Field>
 
 
-			<Field id="expirationSeconds"   type="menu" defaultValue="3600"  >
+			<Field id="expirationSeconds"   type="menu" defaultValue="3600"   visibleBindingId="SENDTOSHELLYDEVICE-mode" visibleBindingValue="roller">
 				<Label>Device goes to EXPIRED w no message or answer after:</Label>
 				<List>
 					<Option value="180"   >after 3 minutes</Option>
@@ -1916,7 +1924,7 @@ you can change the device type to roller below</Label>
 				<Label>Shelly device IP Number</Label>
 			</Field>
 			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey"  >
-				<Label>Overwrite exiting IP number if needed</Label>
+				<Label>Overwrite existing IP number</Label>
 			</Field>
 
 			<Field id="devNo" type="menu" defaultValue ="0" readonly="yes"   hidden ="true" > 
@@ -1938,12 +1946,18 @@ you can change the device type to roller below</Label>
 					<Option value="roller"    >roller, child device is not used</Option>
 				</List>
 			</Field>
-			<Field id="modeLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey"  >
+			<Field id="modeLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey"  visibleBindingId="SENDTOSHELLYDEVICE-mode" visibleBindingValue="relay" >
 				<Label>By selecting ROLLER the device will be converted to a roller device type. You will need to save and edit it again to set the proper information</Label>
+			</Field>
+			<Field id="modeLabelswitch " type="label"  fontColor="red" visibleBindingId="SENDTOSHELLYDEVICE-mode" visibleBindingValue="roller" >
+				<Label>!! ......... To finish chaninging to "roller" please ................ !!
+!! .........    click save, ........................................................ !! 
+!! .........    wait 10 secs and then ...................................... !!
+!! .........    edit device again to set the roller parameters.. !!</Label>
 			</Field>
 
 
-			<Field id="pollingFrequency"   type="menu" defaultValue="-1"  >
+			<Field id="pollingFrequency"   type="menu" defaultValue="-1"  visibleBindingId="SENDTOSHELLYDEVICE-mode" visibleBindingValue="relay">
 				<Label>Polling frequency .. how often the plugin requests status from the device:</Label>
 				<List>
 					<Option value="5"    >every 5 sec</Option>
@@ -1959,12 +1973,12 @@ you can change the device type to roller below</Label>
 					<Option value="-1"   >automatic adaptive</Option>
 				</List>
 			</Field>
-			<Field id="pollingFrequencyLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey"  >
+			<Field id="pollingFrequencyLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey" visibleBindingId="SENDTOSHELLYDEVICE-mode" visibleBindingValue="relay" >
 				<Label>can be higher/adaptive if actions are setup on the devices</Label>
 			</Field>
 
 
-			<Field id="expirationSeconds"   type="menu" defaultValue="3600"  >
+			<Field id="expirationSeconds"   type="menu" defaultValue="3600"  visibleBindingId="SENDTOSHELLYDEVICE-mode" visibleBindingValue="relay">
 				<Label>Device goes to EXPIRED w no message or answer after:</Label>
 				<List>
 					<Option value="180"   >after 3 minutes</Option>
@@ -1975,7 +1989,7 @@ you can change the device type to roller below</Label>
 				</List>
 			</Field>
 
-			<Field id="SENDTOSHELLYDEVICE-relay_0_default_state"   type="menu" defaultValue="none"  visibleBindingId="SENDTOSHELLYDEVICE-mode" visibleBindingValue="none,relay">
+			<Field id="SENDTOSHELLYDEVICE-relay_0_default_state"   type="menu" defaultValue="none"  visibleBindingId="SENDTOSHELLYDEVICE-mode" visibleBindingValue="relay">
 				<Label>Set relay state at power on:</Label>
 				<List>
 					<Option value="none"      >do not set</Option>
@@ -1986,7 +2000,7 @@ you can change the device type to roller below</Label>
 			</Field>
 
 
-			<Field id="SENDTOSHELLYDEVICE-relay_0_btn_type"   type="menu" defaultValue="none"   visibleBindingId="SENDTOSHELLYDEVICE-mode" visibleBindingValue="none,relay">
+			<Field id="SENDTOSHELLYDEVICE-relay_0_btn_type"   type="menu" defaultValue="none"   visibleBindingId="SENDTOSHELLYDEVICE-mode" visibleBindingValue="relay">
 				<Label>Set button type :</Label>
 				<List>
 					<Option value="none"      >do not set</Option>
@@ -1999,7 +2013,7 @@ you can change the device type to roller below</Label>
 				</List>
 			</Field>
 
-			<Field id="SENDTOSHELLYDEVICE-relay_0_btn_reverse"   type="menu" defaultValue="none"   visibleBindingId="SENDTOSHELLYDEVICE-mode" visibleBindingValue="none,relay">
+			<Field id="SENDTOSHELLYDEVICE-relay_0_btn_reverse"   type="menu" defaultValue="none"   visibleBindingId="SENDTOSHELLYDEVICE-mode" visibleBindingValue="relay">
 				<Label>Set button reverse / normal :</Label>
 				<List>
 					<Option value="none"      >do not set</Option>
@@ -2008,15 +2022,15 @@ you can change the device type to roller below</Label>
 				</List>
 			</Field>
 
-			<Field id="SENDTOSHELLYDEVICE-relay_0_longpush_time"   type="textfield" defaultValue="none"   visibleBindingId="SENDTOSHELLYDEVICE-mode" visibleBindingValue="none,relay">
+			<Field id="SENDTOSHELLYDEVICE-relay_0_longpush_time"   type="textfield" defaultValue="none"   visibleBindingId="SENDTOSHELLYDEVICE-mode" visibleBindingValue="relay">
 				<Label>Set long push time:</Label>
 			</Field>
 
-			<Field id="SENDTOSHELLYDEVICE-relay_0_max_power"   type="textfield" defaultValue="none"  visibleBindingId="SENDTOSHELLYDEVICE-mode" visibleBindingValue="none,relay" >
+			<Field id="SENDTOSHELLYDEVICE-relay_0_max_power"   type="textfield" defaultValue="none"  visibleBindingId="SENDTOSHELLYDEVICE-mode" visibleBindingValue="relay" >
 				<Label>Set max power(switch off if larger):</Label>
 			</Field>
 
-			<Field id="SENDTOSHELLYDEVICE-relay_0_name"   type="textfield" defaultValue="none"  visibleBindingId="SENDTOSHELLYDEVICE-mode" visibleBindingValue="none,relay">
+			<Field id="SENDTOSHELLYDEVICE-relay_0_name"   type="textfield" defaultValue="none"  visibleBindingId="SENDTOSHELLYDEVICE-mode" visibleBindingValue="relay">
 				<Label>Set name of relay:</Label>
 			</Field>
 
@@ -2386,7 +2400,7 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<Label>Shelly device IP Number</Label>
 			</Field>
 			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey"  >
-				<Label>Overwrite exiting IP number if needed</Label>
+				<Label>Overwrite existing IP number</Label>
 			</Field>
 
 			<Field id="devNo" type="menu" defaultValue ="0" readonly="yes"   hidden ="true" > 
@@ -2799,7 +2813,7 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<Label>Shelly device IP Number</Label>
 			</Field>
 			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
-				<Label>Overwrite exiting IP number if needed</Label>
+				<Label>Overwrite existing IP number</Label>
 			</Field>
 
 			<Field id="MAC" type="textfield" defaultValue =""  readonly="yes"> 
@@ -2956,7 +2970,7 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<Label>Shelly device IP Number</Label>
 			</Field>
 			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
-				<Label>Overwrite exiting IP number if needed</Label>
+				<Label>Overwrite existing IP number</Label>
 			</Field>
 
 			<Field id="MAC" type="textfield" defaultValue =""  readonly="yes"> 
@@ -3125,7 +3139,7 @@ C) White Only </Label>
 				<Label>Shelly device IP Number</Label>
 			</Field>
 			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
-				<Label>Overwrite exiting IP number if needed</Label>
+				<Label>Overwrite existing IP number</Label>
 			</Field>
 
 			<Field id="MAC" type="textfield" defaultValue =""  readonly="yes"> 
@@ -3445,7 +3459,7 @@ C) White Only </Label>
 				<Label>Shelly device IP Number</Label>
 			</Field>
 			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
-				<Label>Overwrite exiting IP number if needed</Label>
+				<Label>Overwrite existing IP number</Label>
 			</Field>
 
 			<Field id="MAC" type="textfield" defaultValue =""  readonly="yes"> 
@@ -3612,7 +3626,7 @@ C) White Only </Label>
 				<Label>Shelly device IP Number</Label>
 			</Field>
 			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
-				<Label>Overwrite exiting IP number if needed</Label>
+				<Label>Overwrite existing IP number</Label>
 			</Field>
 
 			<Field id="MAC" type="textfield" defaultValue =""  readonly="yes"> 
@@ -3766,7 +3780,7 @@ C) White Only </Label>
 				<Label>Shelly device IP Number</Label>
 			</Field>
 			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
-				<Label>Overwrite exiting IP number if needed</Label>
+				<Label>Overwrite existing IP number</Label>
 			</Field>
 
 			<Field id="MAC" type="textfield" defaultValue =""  readonly="yes" > 
@@ -3989,7 +4003,7 @@ C) White Only </Label>
 				<Label>Shelly device IP Number</Label>
 			</Field>
 			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
-				<Label>Overwrite exiting IP number if needed</Label>
+				<Label>Overwrite existing IP number</Label>
 			</Field>
 
 			<Field id="MAC" type="textfield" defaultValue =""  readonly="yes"> 
@@ -4446,7 +4460,7 @@ for connection parameters check the parent (SHELLY host device)</Label>
 				<Label>Shelly device IP Number</Label>
 			</Field>
 			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
-				<Label>Overwrite exiting IP number if needed</Label>
+				<Label>Overwrite existing IP number</Label>
 			</Field>
 
 			<Field id="MAC" type="textfield" defaultValue =""  readonly="yes"> 
@@ -4503,12 +4517,14 @@ for connection parameters check the parent (SHELLY host device)</Label>
 			<Field id="SENDTOSHELLYDEVICE-sleep_mode_period"   type="menu" defaultValue="none" >
 				<Label>sleep mode period:</Label>
 				<List>
-					<Option value="21600" >6 hour</Option>
-					<Option value="28800" >8 hour</Option>
-					<Option value="36000" >10 hour</Option>
-					<Option value="43600" >12 hour</Option>
-					<Option value="50400" >14 hour</Option>
-					<Option value="57600" >16 hour</Option>
+					<Option value="4" >4 hour</Option>
+					<Option value="5" >5 hour</Option>
+					<Option value="6" >6 hour</Option>
+					<Option value="8" >8 hour</Option>
+					<Option value="10" >10 hour</Option>
+					<Option value="12" >12 hour</Option>
+					<Option value="14" >14 hour</Option>
+					<Option value="16" >16 hour</Option>
 				</List>
 			</Field>
 
@@ -4691,7 +4707,7 @@ for connection parameters check the parent (SHELLY host device)</Label>
 				<Label>Shelly device IP Number</Label>
 			</Field>
 			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
-				<Label>Overwrite exiting IP number if needed</Label>
+				<Label>Overwrite existing IP number</Label>
 			</Field>
 
 			<Field id="MAC" type="textfield" defaultValue =""  readonly="yes"> 
@@ -4737,6 +4753,60 @@ for connection parameters check the parent (SHELLY host device)</Label>
 			</Field>
 
 
+			<Field id="SENDTOSHELLYDEVICE-led_status_disable"   type="menu" defaultValue="none" >
+				<Label>En-disable LED:</Label>
+				<List>
+					<Option value="none"    >do not set</Option>
+					<Option value="1"       >disable LED</Option> <!-- this is set disable lED  not enable LED-->
+					<Option value="0"       >enable LED</Option>
+				</List>
+			</Field>
+
+			<Field id="SENDTOSHELLYDEVICE-vibration_enabled"   type="menu" defaultValue="none" >
+				<Label>Enable vibration mode:</Label>
+				<List>
+					<Option value="none"    >do not set</Option>
+					<Option value="0"       >disable</Option>
+					<Option value="1"       >enable</Option>
+				</List>
+			</Field>
+
+			<Field id="SENDTOSHELLYDEVICE-tilt_enabled"   type="menu" defaultValue="none" >
+				<Label>En-disable tilt mode:</Label>
+				<List>
+					<Option value="none"    >do not set</Option>
+					<Option value="0"       >disable</Option>
+					<Option value="1"       >enable</Option>
+				</List>
+			</Field>
+
+
+			<Field id="SENDTOSHELLYDEVICE-sleep_mode_period"   type="menu" defaultValue="none" >
+				<Label>sleep mode period:</Label>
+				<List>
+					<Option value="none" >do not set</Option>
+					<Option value="1" >1 hour</Option>
+					<Option value="2" >2 hour</Option>
+					<Option value="3" >3 hour</Option>
+					<Option value="4" >4 hour</Option>
+					<Option value="5" >5 hour</Option>
+					<Option value="6" >6 hour</Option>
+					<Option value="8" >8 hour</Option>
+					<Option value="10" >10 hour</Option>
+					<Option value="12" >12 hour</Option>
+					<Option value="14" >14 hour</Option>
+					<Option value="16" >16 hour</Option>
+				</List>
+			</Field>
+
+			<Field id="SENDTOSHELLYDEVICE-dark_threshold"   type="textfield" defaultValue="none" >
+				<Label>dark threshold trigger(do not set=none):</Label>
+			</Field>
+
+			<Field id="SENDTOSHELLYDEVICE-twilight_threshold"   type="textfield" defaultValue="none" >
+				<Label>light threshold trigger(do not set=none), set to 70000 to be always on:</Label>
+			</Field>
+
 
 	</ConfigUI>
 
@@ -4752,6 +4822,21 @@ for connection parameters check the parent (SHELLY host device)</Label>
 				<ValueType>Number</ValueType>
 				<TriggerLabel>tilt</TriggerLabel>
 				<ControlPageLabel>tilt</ControlPageLabel>
+			</State>
+			<State id="closedTriggered">
+				<ValueType>String</ValueType>
+				<TriggerLabel>closedTriggered</TriggerLabel>
+				<ControlPageLabel>closedTriggered</ControlPageLabel>
+			</State>
+			<State id="darkOpen">
+				<ValueType>String</ValueType>
+				<TriggerLabel>darkOpen</TriggerLabel>
+				<ControlPageLabel>darkOpen</ControlPageLabel>
+			</State>
+			<State id="twilightOpen">
+				<ValueType>String</ValueType>
+				<TriggerLabel>twilightOpen</TriggerLabel>
+				<ControlPageLabel>twilightOpen</ControlPageLabel>
 			</State>
 			<State id="vibration">
 				<ValueType>String</ValueType>
