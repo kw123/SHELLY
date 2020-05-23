@@ -3741,9 +3741,8 @@ class Plugin(indigo.PluginBase):
 				###### TOGGLE ######
 				if action.deviceAction == indigo.kDimmerRelayAction.Toggle:
 					if "onOffState" in dev.states:
-						newOnState = not dev.states["onOffState"]
-						if newOnState: 	actionValues["TurnOff"] = "off"
-						else: 			actionValues["TurnOn"] 	= "on"
+						if dev.states["onOffState"]: 	actionValues["TurnOff"] = "off"
+						else: 							actionValues["TurnOn"] 	= "on"
 						setAction = True
 
 
@@ -3811,9 +3810,8 @@ class Plugin(indigo.PluginBase):
 				###### TOGGLE ######
 				if action.deviceAction == indigo.kDimmerRelayAction.Toggle:
 					if "onOffState" in dev.states:
-						newOnState = not dev.states["onOffState"]
-						if newOnState: 	actionValues["TurnOff"] = "off"
-						else: 			actionValues["TurnOn"] 	= "on"
+						if dev.states["onOffState"]: 	actionValues["TurnOff"] = "off"
+						else: 							actionValues["TurnOn"] 	= "on"
 						setAction = True
 
 					###### SET BRIGHTNESS ######
@@ -3908,15 +3906,14 @@ class Plugin(indigo.PluginBase):
 				###### TOGGLE ######
 				if action.deviceAction == indigo.kDimmerRelayAction.Toggle:
 					if "onOffState" in dev.states:
-						newOnState = not dev.states["onOffState"]
-						if newOnState: 	actionValues["TurnOff"] = "off"
-						else: 			actionValues["TurnOn"] 	= "on"
+						if dev.states["onOffState"]: 	actionValues["TurnOff"] = "off"
+						else: 							actionValues["TurnOn"] 	= "on"
 						setAction = True
 
 				if setAction:
-						for colorAction in IndigoStateMapToShellyDev:	
-							if colorAction in actionValues:
-								page += "{}={}&".format("turn", actionValues[colorAction])
+						for thisAction in IndigoStateMapToShellyDev:	
+							if thisAction in actionValues:
+								page += "{}={}&".format("turn", actionValues[thisAction])
 
 			else:
 				self.indiLOG.log(20,"ACTION not implemented: {}  action:{}".format(dev.name.encode("utf8"), unicode(action) ))
