@@ -194,7 +194,7 @@ _emptyProps ={	# switches
 
 			 	"shellyswitch25-roller":{"props":{"isRelay":False, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
 						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
-						"parentIndigoId":0,"children":"{}","isParent":True,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":100,  "expirationSeconds":180, "mode":"roller"},
+						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":100,  "expirationSeconds":180, "mode":"roller"},
 						"setPageActionPageOnShellyDev":{"0":"relay/0?","1":"relay/1?","roller":"roller/0?"},
 																					  ### roller actions  "roller/0?go=" / "roller/0?roller_pos=" / "roller/0?duration=" / "roller/0?offset="
 						"action_url":   { "settings/roller/0?":{"roller_open_url":"state=open", "roller_close_url":"state=close", "roller_stop_url":"state=stop"}
@@ -1409,7 +1409,15 @@ class Plugin(indigo.PluginBase):
 
 
 			for pp in["ipNumber", "pollingFrequency", "expirationSeconds"]:
-				self.SHELLY[devId][pp] = copy.copy(valuesDict[pp])
+				try: 
+					self.SHELLY[devId][pp] = copy.copy(valuesDict[pp])
+				except Exception, e:
+					self.indiLOG.log(40,"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+					self.indiLOG.log(40,"deviceTypeId:  {}, pp::{}::".format(dev.deviceTypeId,pp))
+					self.indiLOG.log(40,"replacing w default, valuesDict is: {}".format(valuesDict))
+					self.indiLOG.log(40,"_emptyProps: {}".format(_emptyProps[dev.deviceTypeId]))
+					self.SHELLY[devId][pp] 	= copy.copy(_emptyProps[dev.deviceTypeId]["props"][pp])
+					valuesDict[pp] 			= copy.copy(_emptyProps[dev.deviceTypeId]["props"][pp])
 
 			#copy changes from child to parent props button settings, as only the parent will push 
 			if dev.deviceTypeId.find("shellyswitch25") == 0 and dev.deviceTypeId.find("child") ==-1:

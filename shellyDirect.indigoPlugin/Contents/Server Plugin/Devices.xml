@@ -1564,8 +1564,8 @@
 you can change the device type to 2 relays below</Label>
 			</Field>
 
-			<Field id="modeLabelswitch " type="label" fontColor="red" visibleBindingId="SENDTOSHELLYDEVICE-mode" visibleBindingValue="relay" >
-				<Label>!! ......... To finish chaninging to "relay" please ............... !!
+			<Field id="modeLabelswitch" type="label" fontColor="red" visibleBindingId="SENDTOSHELLYDEVICE-mode" visibleBindingValue="relay" >
+				<Label>!! ......... To finish changing to "relay" please ................. !!
 !! .........    click save, ....................................................... !! 
 !! .........    wait 10 secs and then ..................................... !!
 !! .........    edit device again to set the relay parameters.. !!</Label>
@@ -1949,8 +1949,8 @@ you can change the device type to roller below</Label>
 			<Field id="modeLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey"  visibleBindingId="SENDTOSHELLYDEVICE-mode" visibleBindingValue="relay" >
 				<Label>By selecting ROLLER the device will be converted to a roller device type. You will need to save and edit it again to set the proper information</Label>
 			</Field>
-			<Field id="modeLabelswitch " type="label"  fontColor="red" visibleBindingId="SENDTOSHELLYDEVICE-mode" visibleBindingValue="roller" >
-				<Label>!! ......... To finish chaninging to "roller" please ................ !!
+			<Field id="modeLabelswitch" type="label"  fontColor="red" visibleBindingId="SENDTOSHELLYDEVICE-mode" visibleBindingValue="roller" >
+				<Label>!! ......... To finish changing to "roller" please .................. !!
 !! .........    click save, ........................................................ !! 
 !! .........    wait 10 secs and then ...................................... !!
 !! .........    edit device again to set the roller parameters.. !!</Label>
@@ -2236,7 +2236,7 @@ you can change the device type to roller below</Label>
 				</List>
 			</Field>
 
-			<Field id="SENDTOSHELLYDEVICE-relay_1_max_power"   type="menu" defaultValue="none"  >
+			<Field id="SENDTOSHELLYDEVICE-relay_1_max_power"   type="textfield" defaultValue="none"  >
 				<Label>Set max power(switch off if larger):</Label>
 			</Field>
 
