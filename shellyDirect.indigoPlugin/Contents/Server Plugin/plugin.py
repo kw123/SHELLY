@@ -3051,7 +3051,6 @@ class Plugin(indigo.PluginBase):
 							self.addToStatesUpdateDict(devID, "previousAlarm", dev.states["lastAlarm"])
 						self.addToStatesUpdateDict(devID, "lastAlarm", datetime.datetime.now().strftime(_defaultDateStampFormat))
 						self.addToStatesUpdateDict(devID, "Alarm", x[1])
-					self.addToStatesUpdateDict(devID, "alarm", 	data["gas_sensor"]["alarm_state"], decimalPlaces="")
 					if    x[1] == _alarmStates[0]: dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOn)
 					elif  x[1] == _alarmStates[1]: dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
 					elif  x[1] == _alarmStates[2]: dev.updateStateImageOnServer(indigo.kStateImageSel.SensorTripped)
