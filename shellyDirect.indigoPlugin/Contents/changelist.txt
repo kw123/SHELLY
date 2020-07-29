@@ -1,4 +1,17 @@
-Added features / changes in v7.7.14 @ 2020-05-23
+Added features / changes in v7.8.16 @ 2020-07-29
+===================================================
+
+1. added shelly GAS device, beta version
+
+
+
+Added features / changes in v7.7.16 @ 2020-07-10
+===================================================
+
+1. changed default port for call back to indigo from 7987 to 7980, ..7 does not work anymore seems to collide with other process
+
+
+Added features / changes in v7.7.15 @ 2020-05-23
 ===================================================
 
 1. fixed XML tag error ( had a space after id name)

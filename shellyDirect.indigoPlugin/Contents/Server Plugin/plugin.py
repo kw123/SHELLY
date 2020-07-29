@@ -146,10 +146,11 @@ settingCmds ={
 			 "SENDTOSHELLYDEVICE-nightMode_start_time":			["settings/night_mode?start_time=",			"start_time"],
 			 "SENDTOSHELLYDEVICE-nightMode_end_time":			["settings/night_mode?end_time=",			"end_time"],
 			 "SENDTOSHELLYDEVICE-brightness":					["settings/night_mode?brightness=",			"brightness"],
-			 "SENDTOSHELLYDEVICE-pulse_mode":					["settings?pulse_mode=",					"pulse_mode"]
+			 "SENDTOSHELLYDEVICE-pulse_mode":					["settings?pulse_mode=",					"pulse_mode"],
+			 "SENDTOSHELLYDEVICE-set_volume":					["settings?set_volume=",					"set_volume"]
 	}
 
-
+_alarmStates= ["none","mild","heavy","unknown","test"]
 ## these are the properties of the shelly devices
 _emptyProps ={	# switches
 				"shellyplug-s":{"props":{"isRelay":True, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
@@ -189,6 +190,15 @@ _emptyProps ={	# switches
 						"childTypes_Sensors":["ext_temperature","ext_humidity"],
 						"childTypes_SplitDevices":[],
 						"tempUnits":"C"
+						},
+			
+				"shellygas":{"props":{"isRelay":False, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
+						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
+						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":100,  "expirationSeconds":180 },
+						"setPageActionPageOnShellyDev":{"self_test":"self_test","mute":"mute","unmute":"unmute"},
+						"action_url":   {"settings/?":{"alarm_off_url":"alarm="+_alarmStates[0], "alarm_mild_url":"alarm="+_alarmStates[1], "alarm_heavy_url":"alarm="+_alarmStates[2]}},
+						"childTypes_Sensors":[],
+						"childTypes_SplitDevices":[]
 						},
 
 
@@ -437,7 +447,7 @@ _emptyShelly 					= { "ipNumber":"", "MAC":"", "lastCheck":0, "state":"", "reset
 
 _colorSets 						= ["SupportsColor", "SupportsRGB", "SupportsWhite", "SupportsWhiteTemperature", "SupportsRGBandWhiteSimultaneously", "SupportsTwoWhiteLevels", "SupportsTwoWhiteLevelsSimultaneously"]
 
-_GlobalConst_fillMinMaxStates 	= ["Temperature","Pressure","Humidity"]
+_GlobalConst_fillMinMaxStates 	= ["Temperature","Pressure","Humidity","Gas_concentration"]
 _defaultDateStampFormat			= "%Y-%m-%d %H:%M:%S"
 
 ################################################################################
@@ -672,7 +682,7 @@ class Plugin(indigo.PluginBase):
 				self.unfiCurl = "/usr/bin/curl"
 				self.pluginPrefs["unfiCurl"] = self.unfiCurl
 
-			self.testHTTPsuccess			 = 0
+			self.testHTTPsuccess			= 0
 			self.HTTPlisternerTestIP		= "127.0.0.1"
 			try:
 				xx = (self.pluginPrefs.get("SQLLoggingEnable", "on-on")).split("-")
@@ -701,7 +711,7 @@ class Plugin(indigo.PluginBase):
 			except:	self.currentDigits		 = 1
 
 
-			self.portOfIndigoServer			= int(self.pluginPrefs.get(u"portOfIndigoServer","7987"))
+			self.portOfIndigoServer			= int(self.pluginPrefs.get(u"portOfIndigoServer","7980"))
 			self.portOfShellyDevices		= int(self.pluginPrefs.get(u"portOfShellyDevices","80"))
 
 			self.userIDOfShellyDevices		= self.pluginPrefs.get(u"userIDOfShellyDevices", u"")
@@ -861,7 +871,7 @@ class Plugin(indigo.PluginBase):
 		helpText +='== How it works:  \n'
 		helpText +='   \n'
 		helpText +='The plugin is:  \n'
-		helpText +='(A) listening to any messages from the devices on a tcp port (set in config, default 7987)  \n'
+		helpText +='(A) listening to any messages from the devices on a tcp port (set in config, default 7980)  \n'
 		helpText +='    the plugin will push action url settings to each shelly device  \n'
 		helpText +='    that causes the shelly device to SEND info to the plugin when anything changes  \n'
 		helpText +='(B) polling the devices on a regular schedule (1/s .. min., set in dev edit)  \n'
@@ -907,12 +917,14 @@ class Plugin(indigo.PluginBase):
 		helpText +='Shelly Door Window                 Door/window open(when dark or light) / close alarm. Lux and vibration measuremnt  \n'
 		helpText +='Shelly Plug                        power outlets w relay and power measurement   \n'
 		helpText +='Shelly PlugS                       power outlets w relay and power and energy measurement  \n'
+		helpText +='Shelly-Vintage Bulb:               110-220V LED light bulb vintage style  \n'
 		helpText +='  programmed, but not tested:   \n'
 		helpText +='Shelly-EM3 Power 3 Ch. - 1 Relay:  110-220V measures Power, volt, has 1 relay - the plugin creates 4 devices: R + EM1 + EM2 + EM3  \n'
 		helpText +='                                   the 3 EM  will be added as device: hostName-sheleeyEM3-child-1/2  \n'
 		helpText +='Shelly-PRO4, 4 relay:              220V measures Power, volt, the plugin creates 4 relay devices  \n'
 		helpText +='                                   the 2-4 relays will be added as device: hostName-shellypro-child-# (1/2/3)  \n'
-		helpText +='Shelly-Vintage Bulb:               110-220V LED light bulb vintage style  \n'
+		helpText +='Shelly-GAS-1,  GAS sensor:         Gas sensor, values  "none","mild","heavy","unknown","test", can set speaker level 1-11,  \n' 
+		helpText +='                                   start self test, mute, unmute  \n'
 		helpText +='   \n'
 		helpText +='=========================================================================================   \n'
 		helpText +='   \n'
@@ -1372,7 +1384,7 @@ class Plugin(indigo.PluginBase):
 							sensorNo = dev.states["sensorNo"]
 							try: 	theDictList[0]["sensorNo"] = str(int(sensorNo)-1)
 							except: theDictList[0]["sensorNo"] = "0"
-					if devId in self.SHELLY:
+				if devId in self.SHELLY:
 						theDictList[0]["MAC"] = self.SHELLY[int(devId)]["MAC"]
 						theDictList[0]["ipNumber"]  = self.SHELLY[int(devId)]["ipNumber"]
 
@@ -1402,10 +1414,18 @@ class Plugin(indigo.PluginBase):
 
 
 			if devId not in self.SHELLY:
-				valuesDict["MSG"] = "ERROR: use menu/scan to create new shelly devices"
 				valuesDict[u"MSG"] = "ERROR: use menu/scan to create new shelly devices"
 				errorDict[u"MSG"] = "use menu/scan to create new shelly devices"
 				return ( False, valuesDict, errorDict )
+
+			if not self.isValidIP(valuesDict["ipNumber"]):
+				valuesDict[u"MSG"] = "ERROR: bad IP Number"
+				errorDict[u"MSG"] = "bad IP Number"
+				return ( False, valuesDict, errorDict )
+
+			if "isParent" in props:
+				if valuesDict["ipNumber"] != self.SHELLY[dev.id]["ipNumber"]: self.SHELLY[dev.id]["ipNumber"] = valuesDict["ipNumber"]
+				if dev.address != self.SHELLY[dev.id]["ipNumber"]: valuesDict["address"] = valuesDict["ipNumber"]
 
 
 			for pp in["ipNumber", "pollingFrequency", "expirationSeconds"]:
@@ -1656,6 +1676,7 @@ class Plugin(indigo.PluginBase):
 
 		self.initConcurrentThread()
 
+		self.testHTTPlistener()
 
 		if self.logFileActive !="standard":
 			indigo.server.log(u"..  initialized")
@@ -2454,6 +2475,9 @@ class Plugin(indigo.PluginBase):
 			self.fillLight(data, dev)
 
 			self.fillSHWT( data, dev)
+
+			self.fillSHGAS( data, dev)
+
 			self.fillshellydw( data, dev)
 
 
@@ -2710,6 +2734,36 @@ class Plugin(indigo.PluginBase):
 			self.indiLOG.log(40,"{} data:{}".format(dev.id,data))
 		return 
 
+
+####-------------------------------------------------------------------------####
+	def fillSHGAS(self, data, dev):
+		try:
+			if dev.deviceTypeId != "shellygas": return 
+			devID = str(dev.id)		
+			if "concentration" in data  and "Gas_concentration" in dev.states:
+				#self.indiLOG.log(20,"flood: regular data:{}".format(data) )
+				#self.indiLOG.log(40,"flood: setting trip to green" )
+				self.fillMinMaxSensors(dev,"Gas_concentration",data["concentration"], decimalPlaces=0)
+				self.addToStatesUpdateDict(devID, "Gas_concentration", data["concentration"] , decimalPlaces=0)
+
+			if "gas_sensor" in data:
+				GS = data["gas_sensor"]
+				if "sensor_state"    in dev.states:	self.addToStatesUpdateDict(devID, "sensor_state", 	 GS["sensor_state"], 	decimalPlaces="")
+				if "self_test_state" in dev.states:	self.addToStatesUpdateDict(devID, "self_test_state", GS["self_test_state"], decimalPlaces="")
+				if "alarm" in dev.states:			
+					alarmState = GS["alarm_state"]
+					self.addToStatesUpdateDict(devID, "alarm", alarmState, decimalPlaces="")
+					if   alarmState == _alarmStates[0]: dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOn)
+					elif alarmState == _alarmStates[1]: dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
+					elif alarmState == _alarmStates[2]: dev.updateStateImageOnServer(indigo.kStateImageSel.SensorTripped)
+					else: 								dev.updateStateImageOnServer(indigo.kStateImageSel.PowerOff)
+
+
+		except Exception, e:
+			self.indiLOG.log(40,"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+			self.indiLOG.log(40,"{} data:{}".format(dev.id,data))
+		return 
+
 ####-------------------------------------------------------------------------####
 	def fillExternalSensors(self, data, parentDev, children):
 		try:
@@ -2934,6 +2988,10 @@ class Plugin(indigo.PluginBase):
 						if x[0].find("action") == 0:
 							x[2] = True
 
+						if x[0].find("alarm") == 0:
+							pass
+
+
 						if x[0].find("action") == 0:
 							if  x[1] == "button": 
 								x[2] = "date"
@@ -2983,6 +3041,22 @@ class Plugin(indigo.PluginBase):
 						self.fillSensor(useDev, {"Temperature": trigger[1]}, "Temperature", "Temperature", unit="", decimalPlaces="")
 					if trigger[0] == "Humidity":
 						self.fillSensor(devs[0], {"Humidity": trigger[1]},    "Humidity",    "Humidity", unit="", decimalPlaces=0)
+
+
+			elif useDev.deviceTypeId.find("shellygas") >-1:
+				# data:= /data?&hum=49&temp=29.00 
+				for trigger in TRIGGERS:
+					if trigger[0] == "alarm":
+						if "previousAlarm" in dev.states and "lastAlarm" in dev.states:
+							self.addToStatesUpdateDict(devID, "previousAlarm", dev.states["lastAlarm"])
+						self.addToStatesUpdateDict(devID, "lastAlarm", datetime.datetime.now().strftime(_defaultDateStampFormat))
+						self.addToStatesUpdateDict(devID, "Alarm", x[1])
+					self.addToStatesUpdateDict(devID, "alarm", 	data["gas_sensor"]["alarm_state"], decimalPlaces="")
+					if    x[1] == _alarmStates[0]: dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOn)
+					elif  x[1] == _alarmStates[1]: dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
+					elif  x[1] == _alarmStates[2]: dev.updateStateImageOnServer(indigo.kStateImageSel.SensorTripped)
+					else: 						   dev.updateStateImageOnServer(indigo.kStateImageSel.PowerOff)
+
 
 			elif useDev.deviceTypeId == "shellydw":
 				for trigger in TRIGGERS:
@@ -3655,12 +3729,28 @@ class Plugin(indigo.PluginBase):
 
 		return
 
+####-------------------------------------------------------------------------####
+	def gasAlarmSetCALLBACKaction(self, action1=None, typeId="", devId=0):
+		valuesDict = action1.props
+		self.gasAlarmSetCALLBACKmenu(valuesDict)
+		return
 
+####-------------------------------------------------------------------------####
+	def gasAlarmSetCALLBACKmenu(self, action, dev):
+
+		checkStatusTime = time.time() + 20
+		if  valuesDict["action"] in ["self_test", "mute", "unmute"]:
+			page = valuesDict["action"]
+			if self.decideMyLog(u"Actions"): self.indiLOG.log(20,"ACTIONS: dev {} sending   page:{} deviceTypeId:{}".format(dev.name.encode("utf8"), page, dev.deviceTypeId))
+			queueID	= int(valuesDict["devId"])
+			self.addToShellyPollerQueue( queueID, page, now=True)
+			self.deviceActionList.append({"devId":queueID,"action":"checkStatus","value":time.time()+ 20})
+		return 
 
 ####-------------------------------------------------------------------------####
 	def actionControlGeneral(self, action, dev):
-		###### STATUS REQUEST ######
 		return 
+
 
 
 	########################################
@@ -3704,6 +3794,9 @@ class Plugin(indigo.PluginBase):
 			setAction = False
 			actionValues ={}
 			IndigoStateMapToShellyDev ={'redLevel':"red", 'greenLevel':"green", 'blueLevel':"blue", 'whiteLevel':"white", "brightnessLevel":"brightness", "whiteTemperature":"temp","TurnOff":"turn","TurnOn":"turn"}
+			IndigoStateMapToShellyDev['self_test'] = "self_test"
+			IndigoStateMapToShellyDev['mute'] = "mute"
+			IndigoStateMapToShellyDev['unmute'] = "unmute"
 
 			page 	  = ""
 			extraPage = ""
@@ -3922,6 +4015,15 @@ class Plugin(indigo.PluginBase):
 						for thisAction in IndigoStateMapToShellyDev:	
 							if thisAction in actionValues:
 								page += "{}={}&".format("turn", actionValues[thisAction])
+
+
+
+			elif dev.deviceTypeId  == "shellygas":
+				checkStatusTime = time.time() + 20
+				page = ""
+				if    action.deviceAction == "self_test": 	channel 	= "self_test"
+				elif  action.deviceAction == "mute": 		channel 	= "mute"
+				elif  action.deviceAction == "unmute": 		channel 	= "unmute"
 
 			else:
 				self.indiLOG.log(20,"ACTION not implemented: {}  action:{}".format(dev.name.encode("utf8"), unicode(action) ))

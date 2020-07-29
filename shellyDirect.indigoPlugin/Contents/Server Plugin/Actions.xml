@@ -1,6 +1,27 @@
 <Actions>
 
 
+
+	<Action id="setGasAlarmParameters">
+		<Name>Set gas alarm parameters</Name>
+		<CallbackMethod>gasAlarmSetCALLBACKmenu</CallbackMethod>
+		<ConfigUI>
+			<Field id="devId" type="menu">
+				<Label>Select gas alarm  device:</Label>
+				<List class="self" filter="shellygas" method="filterActiveShellyDevicesNotChild" dynamicReload="true" />
+			</Field>
+			<Field id="action" type="menu">
+				<Label>action:</Label>
+				<List>
+					<Option value="self_test">self test</Option>
+					<Option value="mute">mute</Option>
+					<Option value="unmute">un-mute</Option>
+				</List>
+			</Field>
+		</ConfigUI>
+    </Action>
+
+
     <Action id="calibrateShelly25Roller">
         <Name>CALIBRATe shelly-25 roller</Name>
         <CallbackMethod>startShelly25CalibrationCALLBACKaction</CallbackMethod>
