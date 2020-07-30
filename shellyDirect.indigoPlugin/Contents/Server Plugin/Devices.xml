@@ -4118,6 +4118,7 @@ for connection parameters check the parent (SHELLY host device)</Label>
 				<Label>Property to display in the State Column:</Label>
 				<List>
 					<Option value="alarm">alarm</Option>
+					<Option value="Gas_concentration">Gas concentration</Option>
 				</List>
 			</Field>
 			<Field id="SENDTOSHELLYDEVICE-set_volume" type="menu" defaultValue="none">

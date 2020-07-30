@@ -194,7 +194,7 @@ _emptyProps ={	# switches
 			
 				"shellygas":{"props":{"isRelay":False, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
 						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
-						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":100,  "expirationSeconds":180 },
+						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":100,  "expirationSeconds":180 ,"displaySelect":"alarm"},
 						"setPageActionPageOnShellyDev":{"self_test":"self_test","mute":"mute","unmute":"unmute"},
 						"action_url":   {"settings/?":{"alarm_off_url":"alarm="+_alarmStates[0], "alarm_mild_url":"alarm="+_alarmStates[1], "alarm_heavy_url":"alarm="+_alarmStates[2]}},
 						"childTypes_Sensors":[],
@@ -553,16 +553,19 @@ class Plugin(indigo.PluginBase):
 				self.errorLog(u"It should be   /Libray/....../Plugins/"+self.pluginName+".indigPlugin")
 				p=max(0,self.pathToPlugin.find("/Contents/Server"))
 				self.errorLog(u"It is: "+self.pathToPlugin[:p])
-				self.errorLog(u"please check your download folder, delete old *.indigoPlugin files or this will happen again during next update")
+				self.errorLog(u"please check your download folder, delete old *.indigoPlugin files or this will happen again during next update" )
 				self.errorLog(u"---------------------------------------------------------------------------------------------------------------" )
 				self.errorLog(u"---------------------------------------------------------------------------------------------------------------" )
 				self.errorLog(u"---------------------------------------------------------------------------------------------------------------" )
-				self.errorLog(u"---------------------------------------------------------------------------------------------------------------" )
+				self.errorLog(u"-------  the plugin has stopped, waiting for you to change the name and restart it  ---------------------------" )
+				self.errorLog(u"-------  the plugin has stopped, waiting for you to change the name and restart it  ---------------------------" )
+				self.errorLog(u"-------  the plugin has stopped, waiting for you to change the name and restart it  ---------------------------" )
+				self.errorLog(u"-------  the plugin has stopped, waiting for you to change the name and restart it  ---------------------------" )
 				self.errorLog(u"---------------------------------------------------------------------------------------------------------------" )
 				self.errorLog(u"---------------------------------------------------------------------------------------------------------------" )
 				self.errorLog(u"---------------------------------------------------------------------------------------------------------------" )
 				self.sleep(100000)
-				self.quitNOW="wromg plugin name"
+				self.quitNOW="wrong plugin name"
 				return
 
 			if not self.checkPluginPath(self.pluginName,  self.pathToPlugin):
@@ -925,7 +928,9 @@ class Plugin(indigo.PluginBase):
 		helpText +='                                   the 2-4 relays will be added as device: hostName-shellypro-child-# (1/2/3)  \n'
 		helpText +='Shelly-GAS-1,  GAS sensor:         Gas sensor, values  "none","mild","heavy","unknown","test", can set speaker level 1-11,  \n' 
 		helpText +='                                   start self test, mute, unmute  \n'
-		helpText +='   \n'
+		helpText +=' comming up   \n'
+		helpText +=' i3                                3 input switches w short, long, double, tripple push \n'
+		helpText +=' Button1                           1 input switch w rechargeable battery w short, long, double, tripple push  \n'
 		helpText +='=========================================================================================   \n'
 		helpText +='   \n'
 		indigo.server.log(helpText.encode('utf8'))
@@ -2743,8 +2748,11 @@ class Plugin(indigo.PluginBase):
 			if "concentration" in data  and "Gas_concentration" in dev.states:
 				#self.indiLOG.log(20,"flood: regular data:{}".format(data) )
 				#self.indiLOG.log(40,"flood: setting trip to green" )
-				self.fillMinMaxSensors(dev,"Gas_concentration",data["concentration"]["ppm"], decimalPlaces=0)
-				self.addToStatesUpdateDict(devID, "Gas_concentration", data["concentration"]["ppm"] , decimalPlaces=0)
+				if data["concentration"]["is_valid"]:
+					self.fillMinMaxSensors(dev,"Gas_concentration",data["concentration"]["ppm"], decimalPlaces=0)
+					self.addToStatesUpdateDict(devID, "Gas_concentration", data["concentration"]["ppm"], uiValue="{:d}[ppm]".format(data["concentration"]["ppm"]), decimalPlaces=0)
+				else:
+					self.addToStatesUpdateDict(devID, "Gas_concentration", -99 , uiValue = "error")
 
 			if "gas_sensor" in data:
 				GS = data["gas_sensor"]
@@ -2752,10 +2760,10 @@ class Plugin(indigo.PluginBase):
 				if "self_test_state" in dev.states:	self.addToStatesUpdateDict(devID, "self_test_state", GS["self_test_state"], decimalPlaces="")
 				if "alarm" in dev.states:			
 					alarmState = GS["alarm_state"]
-					self.addToStatesUpdateDict(devID, "alarm", alarmState, decimalPlaces="")
-					if   alarmState == _alarmStates[0]: dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOn)
-					elif alarmState == _alarmStates[1]: dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
-					elif alarmState == _alarmStates[2]: dev.updateStateImageOnServer(indigo.kStateImageSel.SensorTripped)
+					self.addToStatesUpdateDict(devID, "alarm", alarmState, uiValue=alarmState, decimalPlaces="")
+					if   alarmState == _alarmStates[0]: dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOn) # green
+					elif alarmState == _alarmStates[1]: dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)# grey
+					elif alarmState == _alarmStates[2]: dev.updateStateImageOnServer(indigo.kStateImageSel.SensorTripped) # red
 					else: 								dev.updateStateImageOnServer(indigo.kStateImageSel.PowerOff)
 
 
