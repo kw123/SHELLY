@@ -1,4 +1,4 @@
-Added features / changes in v7.8.17 @ 2020-07-29
+Added features / changes in v7.8.18 @ 2020-07-30
 ===================================================
 
 1. added shelly GAS device, beta version

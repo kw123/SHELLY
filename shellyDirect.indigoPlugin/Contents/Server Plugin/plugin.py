@@ -207,7 +207,7 @@ _emptyProps ={	# switches
 						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":100,  "expirationSeconds":180, "mode":"roller"},
 						"setPageActionPageOnShellyDev":{"0":"relay/0?","1":"relay/1?","roller":"roller/0?"},
 																					  ### roller actions  "roller/0?go=" / "roller/0?roller_pos=" / "roller/0?duration=" / "roller/0?offset="
-						"action_url":   { "settings/roller/0?":{"roller_open_url":"state=open", "roller_close_url":"state=close", "roller_stop_url":"state=stop"}
+						"action_url":   {"settings/roller/0?":{"roller_open_url":"state=open", "roller_close_url":"state=close", "roller_stop_url":"state=stop"}
 									},
 						"childTypes_Sensors":[],
 						"childTypes_SplitDevices":[],
@@ -2743,8 +2743,8 @@ class Plugin(indigo.PluginBase):
 			if "concentration" in data  and "Gas_concentration" in dev.states:
 				#self.indiLOG.log(20,"flood: regular data:{}".format(data) )
 				#self.indiLOG.log(40,"flood: setting trip to green" )
-				self.fillMinMaxSensors(dev,"Gas_concentration",data["concentration"], decimalPlaces=0)
-				self.addToStatesUpdateDict(devID, "Gas_concentration", data["concentration"] , decimalPlaces=0)
+				self.fillMinMaxSensors(dev,"Gas_concentration",data["concentration"]["ppm"], decimalPlaces=0)
+				self.addToStatesUpdateDict(devID, "Gas_concentration", data["concentration"]["ppm"] , decimalPlaces=0)
 
 			if "gas_sensor" in data:
 				GS = data["gas_sensor"]
