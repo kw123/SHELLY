@@ -3,7 +3,7 @@
 
 
 	<Action id="setGasAlarmParameters">
-		<Name>Set gas alarm parameters</Name>
+		<Name>Set gas alarm device parameters</Name>
 		<CallbackMethod>gasAlarmSetCALLBACKmenu</CallbackMethod>
 		<ConfigUI>
 			<Field id="devId" type="menu">
@@ -13,9 +13,9 @@
 			<Field id="action" type="menu">
 				<Label>action:</Label>
 				<List>
-					<Option value="self_test">self test</Option>
-					<Option value="mute">mute</Option>
-					<Option value="unmute">un-mute</Option>
+					<Option value="self_test">start self test</Option>
+					<Option value="mute">mute current alarm</Option>
+					<Option value="unmute">un-mute current alarm</Option>
 				</List>
 			</Field>
 		</ConfigUI>

@@ -119,6 +119,16 @@
 				<TriggerLabel>rssi</TriggerLabel>
 				<ControlPageLabel>rssi</ControlPageLabel>
 			</State>
+			<State id="ipv4_method">
+				<ValueType>String</ValueType>
+				<TriggerLabel>ipv4_method</TriggerLabel>
+				<ControlPageLabel>ipv4_method</ControlPageLabel>
+			</State>
+			<State id="cloud_enabled">
+				<ValueType>String</ValueType>
+				<TriggerLabel>cloud_enabled</TriggerLabel>
+				<ControlPageLabel>cloud_enabled</ControlPageLabel>
+			</State>
 			<State id="software_update_available">
 				<ValueType>String</ValueType>
 				<TriggerLabel>software_update_available</TriggerLabel>
@@ -262,6 +272,16 @@
 				<TriggerLabel>rssi</TriggerLabel>
 				<ControlPageLabel>rssi</ControlPageLabel>
 			</State>
+			<State id="ipv4_method">
+				<ValueType>String</ValueType>
+				<TriggerLabel>ipv4_method</TriggerLabel>
+				<ControlPageLabel>ipv4_method</ControlPageLabel>
+			</State>
+			<State id="cloud_enabled">
+				<ValueType>String</ValueType>
+				<TriggerLabel>cloud_enabled</TriggerLabel>
+				<ControlPageLabel>cloud_enabled</ControlPageLabel>
+			</State>
 			<State id="software_update_available">
 				<ValueType>String</ValueType>
 				<TriggerLabel>software_update_available</TriggerLabel>
@@ -396,6 +416,16 @@
 				<ValueType>Number</ValueType>
 				<TriggerLabel>rssi</TriggerLabel>
 				<ControlPageLabel>rssi</ControlPageLabel>
+			</State>
+			<State id="ipv4_method">
+				<ValueType>String</ValueType>
+				<TriggerLabel>ipv4_method</TriggerLabel>
+				<ControlPageLabel>ipv4_method</ControlPageLabel>
+			</State>
+			<State id="cloud_enabled">
+				<ValueType>String</ValueType>
+				<TriggerLabel>cloud_enabled</TriggerLabel>
+				<ControlPageLabel>cloud_enabled</ControlPageLabel>
 			</State>
 			<State id="software_update_available">
 				<ValueType>String</ValueType>
@@ -559,6 +589,16 @@
 				<TriggerLabel>rssi</TriggerLabel>
 				<ControlPageLabel>rssi</ControlPageLabel>
 			</State>
+			<State id="ipv4_method">
+				<ValueType>String</ValueType>
+				<TriggerLabel>ipv4_method</TriggerLabel>
+				<ControlPageLabel>ipv4_method</ControlPageLabel>
+			</State>
+			<State id="cloud_enabled">
+				<ValueType>String</ValueType>
+				<TriggerLabel>cloud_enabled</TriggerLabel>
+				<ControlPageLabel>cloud_enabled</ControlPageLabel>
+			</State>
 			<State id="software_update_available">
 				<ValueType>String</ValueType>
 				<TriggerLabel>software_update_available</TriggerLabel>
@@ -703,6 +743,11 @@
 				<TriggerLabel>input_long</TriggerLabel>
 				<ControlPageLabel>input_long</ControlPageLabel>
 			</State>
+			<State id="event_cnt">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>event_cnt</TriggerLabel>
+				<ControlPageLabel>event_cnt</ControlPageLabel>
+			</State>
 			<State id="Temperature_internal">
 				<ValueType>Number</ValueType>
 				<TriggerLabel>Temperature_internal</TriggerLabel>
@@ -753,6 +798,16 @@
 				<ValueType>Number</ValueType>
 				<TriggerLabel>rssi</TriggerLabel>
 				<ControlPageLabel>rssi</ControlPageLabel>
+			</State>
+			<State id="ipv4_method">
+				<ValueType>String</ValueType>
+				<TriggerLabel>ipv4_method</TriggerLabel>
+				<ControlPageLabel>ipv4_method</ControlPageLabel>
+			</State>
+			<State id="cloud_enabled">
+				<ValueType>String</ValueType>
+				<TriggerLabel>cloud_enabled</TriggerLabel>
+				<ControlPageLabel>cloud_enabled</ControlPageLabel>
 			</State>
 			<State id="software_update_available">
 				<ValueType>String</ValueType>
@@ -888,6 +943,11 @@
 				<TriggerLabel>input_long</TriggerLabel>
 				<ControlPageLabel>input_long</ControlPageLabel>
 			</State>
+			<State id="event_cnt">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>event_cnt</TriggerLabel>
+				<ControlPageLabel>event_cnt</ControlPageLabel>
+			</State>
 			<!--   this is same for all: -->
 			<State id="lastSuccessfullConfigPush">
 				<ValueType>String</ValueType>
@@ -924,6 +984,16 @@
 				<TriggerLabel>rssi</TriggerLabel>
 				<ControlPageLabel>rssi</ControlPageLabel>
 			</State>
+			<State id="ipv4_method">
+				<ValueType>String</ValueType>
+				<TriggerLabel>ipv4_method</TriggerLabel>
+				<ControlPageLabel>ipv4_method</ControlPageLabel>
+			</State>
+			<State id="cloud_enabled">
+				<ValueType>String</ValueType>
+				<TriggerLabel>cloud_enabled</TriggerLabel>
+				<ControlPageLabel>cloud_enabled</ControlPageLabel>
+			</State>
 			<State id="software_update_available">
 				<ValueType>String</ValueType>
 				<TriggerLabel>software_update_available</TriggerLabel>
@@ -936,6 +1006,150 @@
 			</State>
 		</States>
 	</Device>
+
+
+	<Device type="relay" id="shellybutton1">
+		<Name>Shelly-Button (SHBUT-1)</Name>
+		<UiDisplayStateId>status</UiDisplayStateId>
+		<ConfigUI>
+			<Field id="isShellyDevice" type="checkbox" defaultValue="true" hidden="yes" />
+			<Field id="MSG" type="textfield" defaultValue="">
+				<Label>message from plugin:</Label>
+			</Field>
+			<Field id="SupportsOnState" type="checkbox" defaultValue="true" hidden="true" />
+			<Field id="SupportsStatusRequest" type="checkbox" defaultValue="true" hidden="true" />
+			<Field id="AllowOnStateChange" type="checkbox" defaultValue="false" hidden="true" />
+			<Field id="AllowSensorValueChange" type="checkbox" defaultValue="false" hidden="true" />
+			<Field id="label1" type="label">
+				<Label>Parameters for  Button-1 device</Label>
+			</Field>
+			<Field id="ipNumber" type="textfield" defaultValue="192.168.1.x">
+				<Label>Shelly device IP Number</Label>
+			</Field>
+			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
+				<Label>Overwrite existing IP number</Label>
+			</Field>
+			<Field id="MAC" type="textfield" defaultValue="" readonly="yes">
+				<Label>Shelly device mac number</Label>
+			</Field>
+			<Field id="pollingFrequency" type="menu" defaultValue="-1">
+				<Label>Polling frequency, how often the plugin requests status from the device:</Label>
+				<List>
+					<Option value="5">every 5 sec</Option>
+					<Option value="7">every 7 sec</Option>
+					<Option value="10">every 10 sec</Option>
+					<Option value="15">every 15 sec</Option>
+					<Option value="20">every 20 sec</Option>
+					<Option value="30">every 30 sec</Option>
+					<Option value="40">every 40 sec</Option>
+					<Option value="80">every 80 sec</Option>
+					<Option value="120">every 2 minutes</Option>
+					<Option value="180">every 3 minutes</Option>
+					<Option value="-1">automatic adaptive</Option>
+				</List>
+			</Field>
+			<Field id="pollingFrequencyLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
+				<Label>can be higher/adaptive if actions are setup on the devices</Label>
+			</Field>
+			<Field id="expirationSeconds" type="menu" defaultValue="3600">
+				<Label>Device goes to EXPIRED w no message or answer after:</Label>
+				<List>
+					<Option value="180">after 3 minutes</Option>
+					<Option value="300">after 5 minutes</Option>
+					<Option value="600">after 10 minutes</Option>
+					<Option value="1800">after 30 minutes</Option>
+					<Option value="3600">after 1 hour</Option>
+				</List>
+			</Field>
+		</ConfigUI>
+		<States>
+			<!--   this is dev specific -->
+			<State id="input_short">
+				<ValueType>String</ValueType>
+				<TriggerLabel>input_short</TriggerLabel>
+				<ControlPageLabel>input_short</ControlPageLabel>
+			</State>
+			<State id="input_short_double">
+				<ValueType>String</ValueType>
+				<TriggerLabel>input_short_double</TriggerLabel>
+				<ControlPageLabel>input_short_double</ControlPageLabel>
+			</State>
+			<State id="input_short_tripple">
+				<ValueType>String</ValueType>
+				<TriggerLabel>input_short_tripple</TriggerLabel>
+				<ControlPageLabel>input_short_tripple</ControlPageLabel>
+			</State>
+			<State id="input_long">
+				<ValueType>String</ValueType>
+				<TriggerLabel>input_long</TriggerLabel>
+				<ControlPageLabel>input_long</ControlPageLabel>
+			</State>
+			<State id="event_cnt">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>event_cnt</TriggerLabel>
+				<ControlPageLabel>event_cnt</ControlPageLabel>
+			</State>
+			<!--   this is same for all: -->
+			<State id="lastSuccessfullConfigPush">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastSuccessfullConfigPush</TriggerLabel>
+				<ControlPageLabel>lastSuccessfullConfigPush</ControlPageLabel>
+			</State>
+			<State id="action_from_Device">
+				<ValueType>String</ValueType>
+				<TriggerLabel>action_from_Device</TriggerLabel>
+				<ControlPageLabel>action_from_Device</ControlPageLabel>
+			</State>
+			<State id="MAC">
+				<ValueType>String</ValueType>
+				<TriggerLabel>MAC</TriggerLabel>
+				<ControlPageLabel>MAC</ControlPageLabel>
+			</State>
+			<State id="lastMessageFromDevice">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastMessageFromDevice</TriggerLabel>
+				<ControlPageLabel>lastMessageFromDevice</ControlPageLabel>
+			</State>
+			<State id="created">
+				<ValueType>String</ValueType>
+				<TriggerLabel>created</TriggerLabel>
+				<ControlPageLabel>created</ControlPageLabel>
+			</State>
+			<State id="lastStatusChange">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastStatusChange</TriggerLabel>
+				<ControlPageLabel>lastStatusChange</ControlPageLabel>
+			</State>
+			<State id="rssi">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>rssi</TriggerLabel>
+				<ControlPageLabel>rssi</ControlPageLabel>
+			</State>
+			<State id="ipv4_method">
+				<ValueType>String</ValueType>
+				<TriggerLabel>ipv4_method</TriggerLabel>
+				<ControlPageLabel>ipv4_method</ControlPageLabel>
+			</State>
+			<State id="cloud_enabled">
+				<ValueType>String</ValueType>
+				<TriggerLabel>cloud_enabled</TriggerLabel>
+				<ControlPageLabel>cloud_enabled</ControlPageLabel>
+			</State>
+			<State id="software_update_available">
+				<ValueType>String</ValueType>
+				<TriggerLabel>software_update_available</TriggerLabel>
+				<ControlPageLabel>software_update_available</ControlPageLabel>
+			</State>
+			<State id="expired">
+				<ValueType>String</ValueType>
+				<TriggerLabel>expired</TriggerLabel>
+				<ControlPageLabel>expired</ControlPageLabel>
+			</State>
+		</States>
+	</Device>
+
+
+
 
 	<Device type="relay" id="shellyplug">
 		<Name>Shelly-Plug (SHPLG2-1)</Name>
@@ -1082,6 +1296,16 @@
 				<ValueType>Number</ValueType>
 				<TriggerLabel>rssi</TriggerLabel>
 				<ControlPageLabel>rssi</ControlPageLabel>
+			</State>
+			<State id="ipv4_method">
+				<ValueType>String</ValueType>
+				<TriggerLabel>ipv4_method</TriggerLabel>
+				<ControlPageLabel>ipv4_method</ControlPageLabel>
+			</State>
+			<State id="cloud_enabled">
+				<ValueType>String</ValueType>
+				<TriggerLabel>cloud_enabled</TriggerLabel>
+				<ControlPageLabel>cloud_enabled</ControlPageLabel>
 			</State>
 			<State id="software_update_available">
 				<ValueType>String</ValueType>
@@ -1251,6 +1475,16 @@
 				<ValueType>Number</ValueType>
 				<TriggerLabel>rssi</TriggerLabel>
 				<ControlPageLabel>rssi</ControlPageLabel>
+			</State>
+			<State id="ipv4_method">
+				<ValueType>String</ValueType>
+				<TriggerLabel>ipv4_method</TriggerLabel>
+				<ControlPageLabel>ipv4_method</ControlPageLabel>
+			</State>
+			<State id="cloud_enabled">
+				<ValueType>String</ValueType>
+				<TriggerLabel>cloud_enabled</TriggerLabel>
+				<ControlPageLabel>cloud_enabled</ControlPageLabel>
 			</State>
 			<State id="software_update_available">
 				<ValueType>String</ValueType>
@@ -1492,6 +1726,11 @@ you can change the device type to 2 relays below</Label>
 				<TriggerLabel>input</TriggerLabel>
 				<ControlPageLabel>input</ControlPageLabel>
 			</State>
+			<State id="event_cnt">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>event_cnt</TriggerLabel>
+				<ControlPageLabel>event_cnt</ControlPageLabel>
+			</State>
 			<State id="overtemperature">
 				<ValueType>String</ValueType>
 				<TriggerLabel>overtemperature</TriggerLabel>
@@ -1573,6 +1812,16 @@ you can change the device type to 2 relays below</Label>
 				<ValueType>Number</ValueType>
 				<TriggerLabel>rssi</TriggerLabel>
 				<ControlPageLabel>rssi</ControlPageLabel>
+			</State>
+			<State id="ipv4_method">
+				<ValueType>String</ValueType>
+				<TriggerLabel>ipv4_method</TriggerLabel>
+				<ControlPageLabel>ipv4_method</ControlPageLabel>
+			</State>
+			<State id="cloud_enabled">
+				<ValueType>String</ValueType>
+				<TriggerLabel>cloud_enabled</TriggerLabel>
+				<ControlPageLabel>cloud_enabled</ControlPageLabel>
 			</State>
 			<State id="software_update_available">
 				<ValueType>String</ValueType>
@@ -1745,6 +1994,11 @@ you can change the device type to roller below</Label>
 				<TriggerLabel>input_long</TriggerLabel>
 				<ControlPageLabel>input_long</ControlPageLabel>
 			</State>
+			<State id="event_cnt">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>event_cnt</TriggerLabel>
+				<ControlPageLabel>event_cnt</ControlPageLabel>
+			</State>
 			<State id="overtemperature">
 				<ValueType>String</ValueType>
 				<TriggerLabel>overtemperature</TriggerLabel>
@@ -1790,6 +2044,16 @@ you can change the device type to roller below</Label>
 				<ValueType>Number</ValueType>
 				<TriggerLabel>rssi</TriggerLabel>
 				<ControlPageLabel>rssi</ControlPageLabel>
+			</State>
+			<State id="ipv4_method">
+				<ValueType>String</ValueType>
+				<TriggerLabel>ipv4_method</TriggerLabel>
+				<ControlPageLabel>ipv4_method</ControlPageLabel>
+			</State>
+			<State id="cloud_enabled">
+				<ValueType>String</ValueType>
+				<TriggerLabel>cloud_enabled</TriggerLabel>
+				<ControlPageLabel>cloud_enabled</ControlPageLabel>
 			</State>
 			<State id="software_update_available">
 				<ValueType>String</ValueType>
@@ -1914,6 +2178,11 @@ you can change the device type to roller below</Label>
 				<TriggerLabel>input_long</TriggerLabel>
 				<ControlPageLabel>input_long</ControlPageLabel>
 			</State>
+			<State id="event_cnt">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>event_cnt</TriggerLabel>
+				<ControlPageLabel>event_cnt</ControlPageLabel>
+			</State>
 			<State id="childNo">
 				<ValueType>String</ValueType>
 				<TriggerLabel>childNo</TriggerLabel>
@@ -1964,6 +2233,16 @@ you can change the device type to roller below</Label>
 				<ValueType>Number</ValueType>
 				<TriggerLabel>rssi</TriggerLabel>
 				<ControlPageLabel>rssi</ControlPageLabel>
+			</State>
+			<State id="ipv4_method">
+				<ValueType>String</ValueType>
+				<TriggerLabel>ipv4_method</TriggerLabel>
+				<ControlPageLabel>ipv4_method</ControlPageLabel>
+			</State>
+			<State id="cloud_enabled">
+				<ValueType>String</ValueType>
+				<TriggerLabel>cloud_enabled</TriggerLabel>
+				<ControlPageLabel>cloud_enabled</ControlPageLabel>
 			</State>
 			<State id="software_update_available">
 				<ValueType>String</ValueType>
@@ -2139,6 +2418,16 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<TriggerLabel>rssi</TriggerLabel>
 				<ControlPageLabel>rssi</ControlPageLabel>
 			</State>
+			<State id="ipv4_method">
+				<ValueType>String</ValueType>
+				<TriggerLabel>ipv4_method</TriggerLabel>
+				<ControlPageLabel>ipv4_method</ControlPageLabel>
+			</State>
+			<State id="cloud_enabled">
+				<ValueType>String</ValueType>
+				<TriggerLabel>cloud_enabled</TriggerLabel>
+				<ControlPageLabel>cloud_enabled</ControlPageLabel>
+			</State>
 			<State id="software_update_available">
 				<ValueType>String</ValueType>
 				<TriggerLabel>software_update_available</TriggerLabel>
@@ -2297,6 +2586,16 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<TriggerLabel>rssi</TriggerLabel>
 				<ControlPageLabel>rssi</ControlPageLabel>
 			</State>
+			<State id="ipv4_method">
+				<ValueType>String</ValueType>
+				<TriggerLabel>ipv4_method</TriggerLabel>
+				<ControlPageLabel>ipv4_method</ControlPageLabel>
+			</State>
+			<State id="cloud_enabled">
+				<ValueType>String</ValueType>
+				<TriggerLabel>cloud_enabled</TriggerLabel>
+				<ControlPageLabel>cloud_enabled</ControlPageLabel>
+			</State>
 			<State id="software_update_available">
 				<ValueType>String</ValueType>
 				<TriggerLabel>software_update_available</TriggerLabel>
@@ -2454,6 +2753,16 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<ValueType>Number</ValueType>
 				<TriggerLabel>rssi</TriggerLabel>
 				<ControlPageLabel>rssi</ControlPageLabel>
+			</State>
+			<State id="ipv4_method">
+				<ValueType>String</ValueType>
+				<TriggerLabel>ipv4_method</TriggerLabel>
+				<ControlPageLabel>ipv4_method</ControlPageLabel>
+			</State>
+			<State id="cloud_enabled">
+				<ValueType>String</ValueType>
+				<TriggerLabel>cloud_enabled</TriggerLabel>
+				<ControlPageLabel>cloud_enabled</ControlPageLabel>
 			</State>
 			<State id="software_update_available">
 				<ValueType>String</ValueType>
@@ -2615,6 +2924,16 @@ C) White Only</Label>
 				<ValueType>Number</ValueType>
 				<TriggerLabel>rssi</TriggerLabel>
 				<ControlPageLabel>rssi</ControlPageLabel>
+			</State>
+			<State id="ipv4_method">
+				<ValueType>String</ValueType>
+				<TriggerLabel>ipv4_method</TriggerLabel>
+				<ControlPageLabel>ipv4_method</ControlPageLabel>
+			</State>
+			<State id="cloud_enabled">
+				<ValueType>String</ValueType>
+				<TriggerLabel>cloud_enabled</TriggerLabel>
+				<ControlPageLabel>cloud_enabled</ControlPageLabel>
 			</State>
 			<State id="software_update_available">
 				<ValueType>String</ValueType>
@@ -2892,6 +3211,16 @@ C) White Only</Label>
 				<TriggerLabel>rssi</TriggerLabel>
 				<ControlPageLabel>rssi</ControlPageLabel>
 			</State>
+			<State id="ipv4_method">
+				<ValueType>String</ValueType>
+				<TriggerLabel>ipv4_method</TriggerLabel>
+				<ControlPageLabel>ipv4_method</ControlPageLabel>
+			</State>
+			<State id="cloud_enabled">
+				<ValueType>String</ValueType>
+				<TriggerLabel>cloud_enabled</TriggerLabel>
+				<ControlPageLabel>cloud_enabled</ControlPageLabel>
+			</State>
 			<State id="software_update_available">
 				<ValueType>String</ValueType>
 				<TriggerLabel>software_update_available</TriggerLabel>
@@ -3066,6 +3395,16 @@ C) White Only</Label>
 				<TriggerLabel>rssi</TriggerLabel>
 				<ControlPageLabel>rssi</ControlPageLabel>
 			</State>
+			<State id="ipv4_method">
+				<ValueType>String</ValueType>
+				<TriggerLabel>ipv4_method</TriggerLabel>
+				<ControlPageLabel>ipv4_method</ControlPageLabel>
+			</State>
+			<State id="cloud_enabled">
+				<ValueType>String</ValueType>
+				<TriggerLabel>cloud_enabled</TriggerLabel>
+				<ControlPageLabel>cloud_enabled</ControlPageLabel>
+			</State>
 			<State id="software_update_available">
 				<ValueType>String</ValueType>
 				<TriggerLabel>software_update_available</TriggerLabel>
@@ -3222,6 +3561,16 @@ C) White Only</Label>
 				<ValueType>Number</ValueType>
 				<TriggerLabel>rssi</TriggerLabel>
 				<ControlPageLabel>rssi</ControlPageLabel>
+			</State>
+			<State id="ipv4_method">
+				<ValueType>String</ValueType>
+				<TriggerLabel>ipv4_method</TriggerLabel>
+				<ControlPageLabel>ipv4_method</ControlPageLabel>
+			</State>
+			<State id="cloud_enabled">
+				<ValueType>String</ValueType>
+				<TriggerLabel>cloud_enabled</TriggerLabel>
+				<ControlPageLabel>cloud_enabled</ControlPageLabel>
 			</State>
 			<State id="software_update_available">
 				<ValueType>String</ValueType>
@@ -3415,6 +3764,16 @@ C) White Only</Label>
 				<TriggerLabel>rssi</TriggerLabel>
 				<ControlPageLabel>rssi</ControlPageLabel>
 			</State>
+			<State id="ipv4_method">
+				<ValueType>String</ValueType>
+				<TriggerLabel>ipv4_method</TriggerLabel>
+				<ControlPageLabel>ipv4_method</ControlPageLabel>
+			</State>
+			<State id="cloud_enabled">
+				<ValueType>String</ValueType>
+				<TriggerLabel>cloud_enabled</TriggerLabel>
+				<ControlPageLabel>cloud_enabled</ControlPageLabel>
+			</State>
 			<State id="software_update_available">
 				<ValueType>String</ValueType>
 				<TriggerLabel>software_update_available</TriggerLabel>
@@ -3593,6 +3952,16 @@ C) White Only</Label>
 				<ValueType>Number</ValueType>
 				<TriggerLabel>rssi</TriggerLabel>
 				<ControlPageLabel>rssi</ControlPageLabel>
+			</State>
+			<State id="ipv4_method">
+				<ValueType>String</ValueType>
+				<TriggerLabel>ipv4_method</TriggerLabel>
+				<ControlPageLabel>ipv4_method</ControlPageLabel>
+			</State>
+			<State id="cloud_enabled">
+				<ValueType>String</ValueType>
+				<TriggerLabel>cloud_enabled</TriggerLabel>
+				<ControlPageLabel>cloud_enabled</ControlPageLabel>
 			</State>
 			<State id="software_update_available">
 				<ValueType>String</ValueType>
@@ -4027,6 +4396,16 @@ for connection parameters check the parent (SHELLY host device)</Label>
 				<TriggerLabel>rssi</TriggerLabel>
 				<ControlPageLabel>rssi</ControlPageLabel>
 			</State>
+			<State id="ipv4_method">
+				<ValueType>String</ValueType>
+				<TriggerLabel>ipv4_method</TriggerLabel>
+				<ControlPageLabel>ipv4_method</ControlPageLabel>
+			</State>
+			<State id="cloud_enabled">
+				<ValueType>String</ValueType>
+				<TriggerLabel>cloud_enabled</TriggerLabel>
+				<ControlPageLabel>cloud_enabled</ControlPageLabel>
+			</State>
 			<State id="software_update_available">
 				<ValueType>String</ValueType>
 				<TriggerLabel>software_update_available</TriggerLabel>
@@ -4049,7 +4428,7 @@ for connection parameters check the parent (SHELLY host device)</Label>
 			<Field id="MSG" type="textfield" defaultValue="">
 				<Label>message from plugin:</Label>
 			</Field>
-			<Field id="SupportsOnState" type="checkbox" defaultValue="true" hidden="true">
+			<Field id="SupportsOnState" type="checkbox" defaultValue="true" hidden="false">
 				<Label>SupportsOnState</Label>
 			</Field>
 			<Field id="SupportsSensorValue" type="checkbox" defaultValue="true" hidden="true">
@@ -4114,15 +4493,27 @@ for connection parameters check the parent (SHELLY host device)</Label>
 					<Option value="480">after 8 minutes</Option>
 				</List>
 			</Field>
-			<Field id="displaySelect" type="menu" defaultValue="alarm">
+			<Field id="useAlarm" type="menu" defaultValue="sensor">
+				<Label>Sensitivity for Alarm State levels (none,medium,high):</Label>
+				<List>
+					<Option value="0-800"   >high:  medium>0; high>800 ppm;</Option>
+					<Option value="800-1500" >medium: medium>800; high>1500 ppm;</Option>
+					<Option value="1000-2000">lower: medium>1000; high>2000 ppm;</Option>
+					<Option value="sensor"   >least- sensor defs: medium>~2000; high>~4000 ppm</Option>
+				</List>
+			</Field>
+			<Field id="useAlarmLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
+				<Label>The sensor starts with 600ppm, resolution is ~ 200 ppm</Label>
+			</Field>
+
+			<Field id="displaySelect" type="menu" defaultValue="Gas_concentration">
 				<Label>Property to display in the State Column:</Label>
 				<List>
-					<Option value="alarm">alarm</Option>
 					<Option value="Gas_concentration">Gas concentration</Option>
 				</List>
 			</Field>
 			<Field id="SENDTOSHELLYDEVICE-set_volume" type="menu" defaultValue="none">
-				<Label>set volume of alarm:</Label>
+				<Label>set volume of Alarm:</Label>
 				<List>
 					<Option value="none">do not set</Option>
 					<Option value="1">1</Option>
@@ -4193,15 +4584,10 @@ for connection parameters check the parent (SHELLY host device)</Label>
 				<TriggerLabel>self_test_state</TriggerLabel>
 				<ControlPageLabel>self_test_state</ControlPageLabel>
 			</State>
-			<State id="alarm_state">
-				<ValueType>String</ValueType>
-				<TriggerLabel>alarm_state</TriggerLabel>
-				<ControlPageLabel>alarm_state</ControlPageLabel>
-			</State>
-			<State id="action_from_Device">
-				<ValueType>String</ValueType>
-				<TriggerLabel>action_from_Device</TriggerLabel>
-				<ControlPageLabel>action_from_Device</ControlPageLabel>
+			<State id="volume">
+				<ValueType>number</ValueType>
+				<TriggerLabel>volume</TriggerLabel>
+				<ControlPageLabel>volume</ControlPageLabel>
 			</State>
 			<!--   this is same for all: -->
 			<State id="MAC">
@@ -4233,6 +4619,16 @@ for connection parameters check the parent (SHELLY host device)</Label>
 				<ValueType>Number</ValueType>
 				<TriggerLabel>rssi</TriggerLabel>
 				<ControlPageLabel>rssi</ControlPageLabel>
+			</State>
+			<State id="ipv4_method">
+				<ValueType>String</ValueType>
+				<TriggerLabel>ipv4_method</TriggerLabel>
+				<ControlPageLabel>ipv4_method</ControlPageLabel>
+			</State>
+			<State id="cloud_enabled">
+				<ValueType>String</ValueType>
+				<TriggerLabel>cloud_enabled</TriggerLabel>
+				<ControlPageLabel>cloud_enabled</ControlPageLabel>
 			</State>
 			<State id="software_update_available">
 				<ValueType>String</ValueType>
@@ -4450,6 +4846,16 @@ for connection parameters check the parent (SHELLY host device)</Label>
 				<ValueType>Number</ValueType>
 				<TriggerLabel>rssi</TriggerLabel>
 				<ControlPageLabel>rssi</ControlPageLabel>
+			</State>
+			<State id="ipv4_method">
+				<ValueType>String</ValueType>
+				<TriggerLabel>ipv4_method</TriggerLabel>
+				<ControlPageLabel>ipv4_method</ControlPageLabel>
+			</State>
+			<State id="cloud_enabled">
+				<ValueType>String</ValueType>
+				<TriggerLabel>cloud_enabled</TriggerLabel>
+				<ControlPageLabel>cloud_enabled</ControlPageLabel>
 			</State>
 			<State id="software_update_available">
 				<ValueType>String</ValueType>

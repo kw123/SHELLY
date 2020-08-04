@@ -53,7 +53,7 @@
 			</Field>
 			<Field id="devId" type="menu">
 				<Label>Select SHELLY device:</Label>
-				<List class="self" filter="" method="filterActiveShellyDevices" dynamicReload="true" />
+				<List class="self" filter="" method="filterActiveShellyDevices" dynamicReload="false" />
 			</Field>
 			<Field id="confirmPush" type="button">
 				<Label>CLICK to</Label>
@@ -73,7 +73,7 @@
 			</Field>
 			<Field id="devId" type="menu">
 				<Label>Select SHELLY device:</Label>
-				<List class="self" filter="" method="filterActiveShellyDevicesNotChild" dynamicReload="true" />
+				<List class="self" filter="" method="filterActiveShellyDevicesNotChild" dynamicReload="false" />
 			</Field>
 			<Field id="confirmPush" type="button">
 				<Label>CLICK to</Label>
@@ -86,21 +86,18 @@
 		</ConfigUI>
 	</MenuItem>
 	<MenuItem id="setGasAlarmParameters">
-		<Name>Set gas alarm parameters</Name>
+		<Name>Set gas alarm device parameters</Name>
 		<ConfigUI>
-			<Field id="infoLabel11" type="label">
-				<Label>Set gas alarm parameters</Label>
-			</Field>
 			<Field id="devId" type="menu">
 				<Label>Select gas alarm device:</Label>
-				<List class="self" filter="shellygas" method="filterActiveShellyDevicesNotChild" dynamicReload="true" />
+				<List class="self" filter="shellygas" method="filterActiveShellyDevicesNotChild" dynamicReload="false" />
 			</Field>
 			<Field id="action" type="menu">
 				<Label>action:</Label>
 				<List>
-					<Option value="self_test">self test</Option>
-					<Option value="mute">mute</Option>
-					<Option value="unmute">un-mute</Option>
+					<Option value="self_test">start self test</Option>
+					<Option value="mute">mute current alarm</Option>
+					<Option value="unmute">un-mute current alarm</Option>
 				</List>
 			</Field>
 			<Field id="confirm" type="button">
@@ -121,7 +118,7 @@
 			</Field>
 			<Field id="devId" type="menu">
 				<Label>Select ROLLER device:</Label>
-				<List class="self" filter="shellyswitch25" method="filterActiveShellyDevicesNotChild" dynamicReload="true" />
+				<List class="self" filter="shellyswitch25" method="filterActiveShellyDevicesNotChild" dynamicReload="false" />
 			</Field>
 			<Field id="confirm" type="button">
 				<Label>CLICK to</Label>
@@ -141,7 +138,7 @@
 			</Field>
 			<Field id="devId" type="menu">
 				<Label>Select ROLLER device:</Label>
-				<List class="self" filter="shellyswitch25" method="filterActiveShellyDevicesNotChild" dynamicReload="true" />
+				<List class="self" filter="shellyswitch25" method="filterActiveShellyDevicesNotChild" dynamicReload="false" />
 			</Field>
 			<Field id="confirm" type="button">
 				<Label>CLICK to</Label>
@@ -161,7 +158,7 @@
 			</Field>
 			<Field id="devId" type="menu">
 				<Label>Select roller device:</Label>
-				<List class="self" filter="shellyswitch25" method="filterActiveShellyDevicesNotChild" dynamicReload="true" />
+				<List class="self" filter="shellyswitch25" method="filterActiveShellyDevicesNotChild" dynamicReload="false" />
 			</Field>
 			<Field id="roller_pos" type="textfield" default="100">
 				<Label>set position (0..100):</Label>
@@ -184,7 +181,7 @@
 			</Field>
 			<Field id="devId" type="menu">
 				<Label>Select roller device:</Label>
-				<List class="self" filter="shellyswitch25" method="filterActiveShellyDevicesNotChild" dynamicReload="true" />
+				<List class="self" filter="shellyswitch25" method="filterActiveShellyDevicesNotChild" dynamicReload="false" />
 			</Field>
 			<Field id="duration" type="textfield" default="5">
 				<Label>move for xx secs:</Label>
@@ -215,7 +212,7 @@
 			</Field>
 			<Field id="devId" type="menu">
 				<Label>Select SHELLY device:</Label>
-				<List class="self" filter="" method="filterEmeterDevices" dynamicReload="true" />
+				<List class="self" filter="" method="filterEmeterDevices" dynamicReload="false" />
 			</Field>
 			<Field id="confirmPush" type="button">
 				<Label>CLICK to</Label>
@@ -254,7 +251,7 @@
 			</Field>
 			<Field id="ipNumber" type="menu">
 				<Label>Select IP numebr to be used again:</Label>
-				<List class="self" filter="" method="filterignoredIPNumbers" dynamicReload="true" />
+				<List class="self" filter="" method="filterignoredIPNumbers" dynamicReload="false" />
 			</Field>
 			<Field id="confirmUnIgnore" type="button">
 				<Label>CLICK to</Label>
@@ -278,7 +275,7 @@
 			</Field>
 			<Field id="devId" type="menu">
 				<Label>Select SHELLY device:</Label>
-				<List class="self" filter="" method="filterActiveShellyDevices" dynamicReload="true" />
+				<List class="self" filter="" method="filterActiveShellyDevices" dynamicReload="false" />
 			</Field>
 			<Field id="confirmPush" type="button">
 				<Label>CLICK to</Label>

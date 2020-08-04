@@ -34,7 +34,7 @@ except ImportError:
 ################################################################################
 
 ##
-_definedShellyDeviceswAction	= ["shelly1","shelly1pm","shellyswitch25","shellyswitch25-roller","shellyem","shellydimmer","shellyflood","shellyht", "shellyem3","shellyplug","shellyplug-s","shelly4pro","shellydw"]
+_definedShellyDeviceswAction	= ["shelly1","shelly1pm","shellyswitch25","shellyswitch25-roller","shellyem","shellydimmer","shellyflood","shellyht", "shellyem3","shellyplug","shellyplug-s","shelly4pro","shellydw","shellygas","shellybutton1"]
 
 
 ## which child type 
@@ -150,9 +150,9 @@ settingCmds ={
 			 "SENDTOSHELLYDEVICE-set_volume":					["settings?set_volume=",					"set_volume"]
 	}
 
-_alarmStates= ["none","mild","heavy","unknown","test"]
+_alarmStates= ["none","mild","high","unknown","test"]
 ## these are the properties of the shelly devices
-_emptyProps ={	# switches
+_emptyProps = {	# switches
 				"shellyplug-s":{"props":{"isRelay":True, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
 						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
 						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":False,"ipNumber":"", "MAC":"", "pollingFrequency":-1, "automaticPollingFrequency":100, "expirationSeconds":180 },
@@ -162,6 +162,7 @@ _emptyProps ={	# switches
 						"childTypes_SplitDevices":[],
 						"tempUnits":"C"
 						},
+
 				"shellyplug":{"props":{"isRelay":True, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
 						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
 						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":False,"ipNumber":"", "MAC":"", "pollingFrequency":-1, "automaticPollingFrequency":100, "expirationSeconds":180 },
@@ -171,6 +172,7 @@ _emptyProps ={	# switches
 						"childTypes_SplitDevices":[],
 						"tempUnits":"C"
 						},
+
 				"shelly1":{"props":{"isRelay":True, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
 						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
 						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":False,"ipNumber":"", "MAC":"", "pollingFrequency":-1, "automaticPollingFrequency":100, "expirationSeconds":180 },
@@ -194,13 +196,12 @@ _emptyProps ={	# switches
 			
 				"shellygas":{"props":{"isRelay":False, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
 						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
-						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":100,  "expirationSeconds":180 ,"displaySelect":"alarm"},
+						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":50,  "expirationSeconds":180 ,"displaySelect":"Gas_concentration", "useAlarm":"10-600"},
 						"setPageActionPageOnShellyDev":{"self_test":"self_test","mute":"mute","unmute":"unmute"},
 						"action_url":   {"settings/?":{"alarm_off_url":"alarm="+_alarmStates[0], "alarm_mild_url":"alarm="+_alarmStates[1], "alarm_heavy_url":"alarm="+_alarmStates[2]}},
 						"childTypes_Sensors":[],
 						"childTypes_SplitDevices":[]
 						},
-
 
 			 	"shellyswitch25-roller":{"props":{"isRelay":False, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
 						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
@@ -240,6 +241,12 @@ _emptyProps ={	# switches
 						"tempUnits":"C"
 						},
 
+			 	"shellybutton1":{"props":{"isRelay":True, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
+						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
+						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":100,  "expirationSeconds":180},
+						"action_url":   {"settings/input/0?":{"shortpush_url":"input=short", "double_shortpush_url":"input=double_short", "triple_shortpush_url":"input=triple_short", "longpush_url":"input=long"}},
+						"childTypes_Sensors":[]
+						},
 
 			 	"shelly4pro":{"props":{"isRelay":True, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
 						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
@@ -411,6 +418,7 @@ _emptyProps ={	# switches
 						"childTypes_SplitDevices":[],
 						"tempUnits":"C"
 						},
+
 				"ext_temperature":{"props":{"isRelay":False, "devNo":0, "SupportsOnState":False, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
 						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
 						"WhiteTemperatureMin":3000, "WhiteTemperatureMax":6500,
@@ -421,6 +429,7 @@ _emptyProps ={	# switches
 						"childTypes_SplitDevices":[],
 						"tempUnits":"C"
 						},
+
 				"ext_humidity":{"props":{"isRelay":False, "devNo":0, "SupportsOnState":False, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
 						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
 						"WhiteTemperatureMin":3000, "WhiteTemperatureMax":6500,
@@ -432,6 +441,7 @@ _emptyProps ={	# switches
 						"tempUnits":"C"
 						}
 			}
+
 ####  "children":{devtypeOfChild:{n:devidOfchild,n2:devIdofChild2}}"
 ####     eg      {"ext_temperature":{"1":123456,"3":534212},"ext_humidity":{"1":43256,"3":3214789}"shellyswitch25":{"1":123456}}
 ####  currently only for ex_temperature and shellyswitch25 the second relay
@@ -926,7 +936,7 @@ class Plugin(indigo.PluginBase):
 		helpText +='                                   the 3 EM  will be added as device: hostName-sheleeyEM3-child-1/2  \n'
 		helpText +='Shelly-PRO4, 4 relay:              220V measures Power, volt, the plugin creates 4 relay devices  \n'
 		helpText +='                                   the 2-4 relays will be added as device: hostName-shellypro-child-# (1/2/3)  \n'
-		helpText +='Shelly-GAS-1,  GAS sensor:         Gas sensor, values  "none","mild","heavy","unknown","test", can set speaker level 1-11,  \n' 
+		helpText +='Shelly-GAS-1,  GAS sensor:         Gas sensor, values  "none","mild","high","unknown","test", can set speaker level 1-11,  \n' 
 		helpText +='                                   start self test, mute, unmute  \n'
 		helpText +=' comming up   \n'
 		helpText +=' i3                                3 input switches w short, long, double, tripple push \n'
@@ -2137,6 +2147,9 @@ class Plugin(indigo.PluginBase):
 		return 
 
 
+
+
+
 ####-------------------------------------------------------------------------####
 	def changeIpNumber(self, dev, oldIP, ipNumber):
 		try:
@@ -2471,7 +2484,7 @@ class Plugin(indigo.PluginBase):
 
 	
 			if page == "httpAction":
-				self.doHTTPactionData(data, dev)
+				self.fillHTTPactionData(data, dev)
 				self.executeUpdateStatesDict()
 				return 
 
@@ -2519,6 +2532,7 @@ class Plugin(indigo.PluginBase):
 				devX  = devs[devNo]
 				props = devX.pluginProps
 				self.fillbasicProps(data, devX, devNo)
+
 				if  "wifi_sta" in data:
 					if self.fillWiFi(data, devX):
 						devX = indigo.devices[devX]
@@ -2545,6 +2559,160 @@ class Plugin(indigo.PluginBase):
 
 		self.executeUpdateStatesDict()
 		return 
+
+####-------------------------------------------------------------------------####
+####  this is called when the device sends an action triggered by button, inputs, or temp/hum changes
+####-------------------------------------------------------------------------####
+	def fillHTTPactionData(self, data, dev):
+		try:
+			self.SHELLY[dev.id]["lastMessage-Http"] = data
+			if self.decideMyLog(u"HTTPlistener"):self.indiLOG.log(20,"doHTTPactionData {}   data: {}".format(self.SHELLY[dev.id]["ipNumber"], data) )
+			if dev.deviceTypeId not in _definedShellyDeviceswAction: return
+
+			children = self.SHELLY[dev.id]["children"]
+			devs, devNos = self.getChildDevices( children)
+
+			## eg data?hum=55&temp=33.7
+			## eg data?onOffState=0/1
+			## eg data?input=short/double_short/triple_short/long
+			dst = datetime.datetime.now().strftime(_defaultDateStampFormat) 
+			cmd = data.split("?")
+			useDev = dev
+			if len(cmd) == 2:
+				cmd = cmd[1].split("&")
+				TRIGGERS = []
+				for item in cmd:
+					if len(item) < 1: continue
+					x = item.split("=")
+					if len(x) == 2:
+						x.append(True)
+						if   x[0] == "hum":   x[0] = "Humidity"
+						elif x[0] == "temp":  x[0] = "Temperature"
+
+						elif x[0].find("onOffState") == 0:
+							if   x[1] == "1": x[1] = True
+							elif x[1] == "0": x[1] = False
+							if x[0] == "onOffState_1":
+								useDev = devs[0]
+							x[0] = "onOffState"
+
+						elif x[0].find("action") == 0:
+							x[2] = True
+
+						elif x[0].find("alarm") == 0:
+							pass
+
+
+						elif x[0].find("action") == 0:
+							if  x[1] == "button": 
+								x[2] = dst
+
+
+						elif x[0].find("input") == 0:
+							for inputType in [["1","on","input"],["0","off","input"],["short",dst,"input_short"],["short_double",dst,"input_short_double"],["short_triple",dst,"input_short_triple"],["long",dst,"input_long"]]:
+								if x[1] == inputType[0]: 
+									x[1] = inputType[1]
+									x[0] = inputType[2]
+									break
+
+						elif x[0] not in useDev.states:
+							if x[0].split("_")[0] in useDev.states:
+								x[0] = x[0].split("_")[0] 
+							else: x[2] = False
+
+						TRIGGERS.append(x)
+					else:
+						TRIGGERS.append({"cmd":item})
+				if self.decideMyLog(u"HTTPlistener"):self.indiLOG.log(20,"doHTTPactionData {}  devType:{}  TRIGGERS:{}".format(self.SHELLY[dev.id]["ipNumber"], useDev.deviceTypeId , TRIGGERS) )
+			else:
+				return
+
+			devID = str(useDev.id)
+
+			if useDev.deviceTypeId == "shellyflood":
+				# data:= {'path': >>> '/data?temp=32.62&flood=1&batV=2.83'}<<< 
+				for trigger in TRIGGERS:
+					if trigger[0] == "flood":
+						if trigger[1] == "1" and dev.states["Flood"] != "FLOOD": 
+							if self.decideMyLog(u"HTTPlistener"): self.indiLOG.log(20,"doHTTPactionData setting flood state to ON" )
+							self.addToStatesUpdateDict(devID, "Flood", "FLOOD" )
+							self.addToStatesUpdateDict(devID, "onOffState", True)
+							if "previousAlarm" in dev.states and "lastAlarm" in dev.states:
+								self.addToStatesUpdateDict(dev.id, "previousAlarm", dev.states["lastAlarm"])
+							self.addToStatesUpdateDict(devID, "lastAlarm", dst)
+							useDev.updateStateImageOnServer(indigo.kStateImageSel.SensorTripped)
+							self.SHELLY[useDev.id]["lastAlarm"] = time.time()
+
+			elif useDev.deviceTypeId.find("shellyht") >-1:
+				# data:= /data?&hum=49&temp=29.00 
+				for trigger in TRIGGERS:
+					if trigger[0] == "Temperature":
+						self.fillSensor(useDev, {"Temperature": trigger[1]}, "Temperature", "Temperature", unit="", decimalPlaces="")
+					if trigger[0] == "Humidity":
+						self.fillSensor(devs[0], {"Humidity": trigger[1]},    "Humidity",    "Humidity", unit="", decimalPlaces=0)
+
+
+			elif useDev.deviceTypeId.find("shellygas") >-1:
+				# data:= /data?&hum=49&temp=29.00 
+				for trigger in TRIGGERS:
+					if trigger[0] == "alarm":
+						if "previousAlarm" in dev.states and "lastAlarm" in dev.states:
+							self.addToStatesUpdateDict(devID, "previousAlarm", dev.states["lastAlarm"])
+						self.addToStatesUpdateDict(devID, "lastAlarm", dst)
+						self.addToStatesUpdateDict(devID, "Alarm",     x[1])
+					if    x[1] == _alarmStates[0]: dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOn)
+					elif  x[1] == _alarmStates[1]: dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
+					elif  x[1] == _alarmStates[2]: dev.updateStateImageOnServer(indigo.kStateImageSel.SensorTripped)
+					else: 						   dev.updateStateImageOnServer(indigo.kStateImageSel.PowerOff)
+
+
+			elif useDev.deviceTypeId == "shellydw":
+				for trigger in TRIGGERS:
+					if trigger[0] == "action" and trigger[1] == "close":
+						self.addToStatesUpdateDict(devID, "closedTriggered", datetime.datetime.now().strftime(_defaultDateStampFormat))
+						self.addToStatesUpdateDict(devID, "state", "close")
+						self.fillSwitch( useDev, {"onOffState":False}, "onOffState")
+					if trigger[0] == "action" and trigger[1] == "darkOpen":
+						self.addToStatesUpdateDict(devID, "darkOpen", datetime.datetime.now().strftime(_defaultDateStampFormat))
+						self.addToStatesUpdateDict(devID, "state", "open")
+						self.fillSwitch( useDev, {"onOffState":True}, "onOffState")
+					if trigger[0] == "action" and trigger[1] == "twilightOpen":
+						self.addToStatesUpdateDict(devID, "state", "open")
+						self.fillSwitch( useDev, {"onOffState":True}, "onOffState")
+						self.addToStatesUpdateDict(devID, "twilightOpen", datetime.datetime.now().strftime(_defaultDateStampFormat))
+				
+			## cover the rest of the defined devices w actions reporting
+			elif useDev.deviceTypeId in _definedShellyDeviceswAction:
+				for trigger in TRIGGERS:
+					if self.decideMyLog(u"HTTPlistener"):						self.indiLOG.log(20,"doHTTPactionData   trigger:{}".format(trigger) )
+
+					if   trigger[0].find("onOffState") == 0:					self.fillSwitch( useDev, {trigger[0]:trigger[1]}, trigger[0])
+
+					if   trigger[0].find("state")  == 0 and trigger[1]=="open":	self.fillSwitch( useDev, {"onOffState":True}, "onOffState")
+
+					if trigger[0].find("state")  == 0 and trigger[1]=="close": 	self.fillSwitch( useDev, {"onOffState":False}, "onOffState")
+
+					if trigger[0].find("action") == 0 and trigger[1]=="button" and trigger[2] == "date": 
+																				self.addToStatesUpdateDict(devID, "input", dst)
+
+					if   trigger[0] in dev.states:								self.addToStatesUpdateDict(devID, trigger[0], trigger[1])
+
+
+
+
+			# missing or wrong
+			else:
+				self.indiLOG.log(20,"doHTTPactionData {};  not supported message:{}".format(self.SHELLY[dev.id]["ipNumber"], data) )
+
+		except Exception, e:
+			self.indiLOG.log(40,"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+			self.indiLOG.log(40,"len(devs):{}".format(len(devs)))
+		self.executeUpdateStatesDict()
+		return 
+
+
+
+
 
 ####-------------------------------------------------------------------------####
 	def fillWiFi(self, data, dev):
@@ -2594,6 +2762,16 @@ class Plugin(indigo.PluginBase):
 				if "period"  in data["sleep_mode"] and "unit" in data["sleep_mode"]:	
 					sleepM = "{}{}".format(data["sleep_mode"]["period"],data["sleep_mode"]["unit"])
 					if True:														self.addToStatesUpdateDict(devID, 		"sleep_mode", 				sleepM )
+
+			if "set_volume" in data and "volume" in dev.states: 
+				self.addToStatesUpdateDict(devID, "volume", data["set_volume"])
+
+			if "wifi_sta" in data and "ipv4_method" in data["wifi_sta"]:
+				if "ipv4_method" in dev.states: 
+					self.addToStatesUpdateDict(devID, "ipv4_method", data["wifi_sta"]["ipv4_method"])
+			if "cloud" in data and "enabled" in data["cloud"]:
+				if "cloud_enabled" in dev.states: 
+					self.addToStatesUpdateDict(devID, "cloud_enabled", data["cloud"]["enabled"])
 
 			if "act_reasons" in data:
 				out =""
@@ -2743,29 +2921,96 @@ class Plugin(indigo.PluginBase):
 ####-------------------------------------------------------------------------####
 	def fillSHGAS(self, data, dev):
 		try:
-			if dev.deviceTypeId != "shellygas": return 
+			if dev.deviceTypeId != "shellygas":			return 
 			devID = str(dev.id)		
-			if "concentration" in data  and "Gas_concentration" in dev.states:
-				#self.indiLOG.log(20,"flood: regular data:{}".format(data) )
-				#self.indiLOG.log(40,"flood: setting trip to green" )
-				if data["concentration"]["is_valid"]:
-					self.fillMinMaxSensors(dev,"Gas_concentration",data["concentration"]["ppm"], decimalPlaces=0)
-					self.addToStatesUpdateDict(devID, "Gas_concentration", data["concentration"]["ppm"], uiValue="{:d}[ppm]".format(data["concentration"]["ppm"]), decimalPlaces=0)
+
+			if "gas_sensor" 		not in data: 		return 
+			if "concentration" 		not in data:		return
+			if "concentration" 		not in data:		return
+			if "Gas_concentration" 	not in dev.states: 	return 
+			if "Alarm" 				not in dev.states: 	return 
+			if "sensor_state" 		not in dev.states: 	return 
+			#'data': { u'gas_sensor': {u'sensor_state': u'normal', u'alarm_state': u'none', u'self_test_state': u'completed'}, 'concentration': {u'is_valid': True, u'ppm': 0} }
+			#self.indiLOG.log(20,"flood: regular data:{}".format(data) )
+			#self.indiLOG.log(40,"flood: setting trip to green" )
+			GS = data["gas_sensor"]
+			CO = data["concentration"]
+			alarmState = unicode(GS["alarm_state"])
+			if alarmState == "heavy": alarmState = "high"
+			props = dev.pluginProps
+
+			if "self_test_state" not in self.SHELLY[dev.id]: self.SHELLY[dev.id]["self_test_state"] = 0
+			if GS["self_test_state"] != "completed":
+				#if self.decideMyLog(u"Special"): self.indiLOG.log(20,"fillSHGAS setting freq to 10 secs" )
+				self.SHELLY[dev.id]["pollingFrequency"]	 = 10	
+			if GS["self_test_state"] == "not_completed" and GS["sensor_state"] == "normal": # startup is finished, but not self test, force selftest
+				if "self_test_state" not in self.SHELLY[dev.id] or time.time() - self.SHELLY[dev.id]["self_test_state"] > 100: # only force if last force > 100 secs agao
+					self.SHELLY[dev.id]["self_test_state"] = time.time()
+					self.addToShellyPollerQueue( dev.id, "self_test", now=True)
+					warmingUp = "starting"
 				else:
-					self.addToStatesUpdateDict(devID, "Gas_concentration", -99 , uiValue = "error")
+					warmingUp = "waiting"
+			else:
+				warmingUp = "normal" 
 
-			if "gas_sensor" in data:
-				GS = data["gas_sensor"]
-				if "sensor_state"    in dev.states:	self.addToStatesUpdateDict(devID, "sensor_state", 	 GS["sensor_state"], 	decimalPlaces="")
-				if "self_test_state" in dev.states:	self.addToStatesUpdateDict(devID, "self_test_state", GS["self_test_state"], decimalPlaces="")
-				if "alarm" in dev.states:			
-					alarmState = GS["alarm_state"]
-					self.addToStatesUpdateDict(devID, "alarm", alarmState, uiValue=alarmState, decimalPlaces="")
-					if   alarmState == _alarmStates[0]: dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOn) # green
-					elif alarmState == _alarmStates[1]: dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)# grey
-					elif alarmState == _alarmStates[2]: dev.updateStateImageOnServer(indigo.kStateImageSel.SensorTripped) # red
-					else: 								dev.updateStateImageOnServer(indigo.kStateImageSel.PowerOff)
+			if GS["self_test_state"] == "completed" and GS["sensor_state"] == "normal":
+				if not dev.states["onOffState"]:
+					#if self.decideMyLog(u"Special"): self.indiLOG.log(20,"fillSHGAS setting freq time" )
+					if time.time() - self.SHELLY[dev.id]["self_test_state"] < 50:
+						#if self.decideMyLog(u"Special"): self.indiLOG.log(20,"fillSHGAS setting freq to {}".format(float(dev.pluginProps["pollingFrequency"])) )
+						self.SHELLY[dev.id]["pollingFrequency"] = float(props["pollingFrequency"])		
+					self.addToStatesUpdateDict(devID, "onOffState", True)
+			else:
+				self.addToStatesUpdateDict(devID, "onOffState", False)
 
+
+			self.addToStatesUpdateDict(devID, "sensor_state", 	 GS["sensor_state"], 	decimalPlaces="")
+			self.addToStatesUpdateDict(devID, "self_test_state", GS["self_test_state"],	decimalPlaces="")
+
+
+			if CO["is_valid"]:
+				if CO["ppm"] > 30: # thats a whiff,  
+					self.SHELLY[dev.id]["pollingFrequency"] = 15# fast polling if there is any gas  	
+				else:
+					self.SHELLY[dev.id]["pollingFrequency"] = float(props["pollingFrequency"]) 	
+
+				self.fillMinMaxSensors(dev,"Gas_concentration",CO["ppm"], decimalPlaces=0)
+				self.addToStatesUpdateDict(devID, "Gas_concentration", CO["ppm"], uiValue="{:d} [ppm]".format(CO["ppm"]), decimalPlaces=0)
+				self.addToStatesUpdateDict(devID, "sensorValue", CO["ppm"], uiValue="{:d} [ppm]".format(CO["ppm"]), decimalPlaces=0)
+			else:
+				if GS["sensor_state"] == "warm_up" and warmingUp != "normal":
+					self.addToStatesUpdateDict(devID, "Gas_concentration", -99 , uiValue = warmingUp, decimalPlaces=0)
+					self.addToStatesUpdateDict(devID, "sensorValue", -99, uiValue=warmingUp, decimalPlaces="")
+
+				elif GS["sensor_state"] == "not_completed" and warmingUp != "normal":
+					self.addToStatesUpdateDict(devID, "Gas_concentration", -99 , uiValue = warmingUp, decimalPlaces=0)
+					self.addToStatesUpdateDict(devID, "sensorValue", -99, uiValue=warmingUp, decimalPlaces=0)
+
+				elif GS["sensor_state"] == "warmup":
+					self.addToStatesUpdateDict(devID, "Gas_concentration", -99 , uiValue = "warmup", decimalPlaces=0)
+					self.addToStatesUpdateDict(devID, "sensorValue", -99, uiValue="warmup", decimalPlaces=0)
+
+				else:
+					self.addToStatesUpdateDict(devID, "Gas_concentration", -99 , uiValue = "error", decimalPlaces=0)
+					self.addToStatesUpdateDict(devID, "sensorValue", -99, uiValue="error", decimalPlaces=0)
+
+			if "useAlarm" in props:
+				if props["useAlarm"] != "sensor":
+					try:
+						alarmLimits = props["useAlarm"] .split("-")
+						alarmLimits = [int(alarmLimits[0]),int(alarmLimits[1])]
+						if   CO["ppm"] < alarmLimits[0]:	alarmState = "none"
+						elif CO["ppm"] > alarmLimits[1]:	alarmState = "high"
+						else:								alarmState = "medium"
+					except:
+						self.indiLOG.log(30,'"Use for Alarm State.." in device edit not set')
+				
+			self.addToStatesUpdateDict(devID, "Alarm", alarmState, uiValue=alarmState, decimalPlaces="")
+
+			if   alarmState == _alarmStates[0]: dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOn) # green
+			elif alarmState == _alarmStates[1]: dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)# grey
+			elif alarmState == _alarmStates[2]: dev.updateStateImageOnServer(indigo.kStateImageSel.SensorTripped) # red
+			else: 								dev.updateStateImageOnServer(indigo.kStateImageSel.PowerOff)
 
 		except Exception, e:
 			self.indiLOG.log(40,"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
@@ -2848,30 +3093,44 @@ class Plugin(indigo.PluginBase):
 	def fillInputs(self, data, devs):
 		try:
 			if "inputs" not in data: return
-			ii = 0
+			devNo = 0
+			dts = datetime.datetime.now().strftime(_defaultDateStampFormat)
 			for input in data["inputs"]:
+				devIDs = str(devs[devNo].id)
 				if "input" in input:
-					if   input["input"] == "1": input["input"] = "on"
-					else:						input["input"] = "off"
-					if "input" 	 			in devs[ii].states: self.addToStatesUpdateDict(str(devs[ii].id), "input",   			input["input"])
-					if "input_"+str(ii+1)	in devs[ii].states: self.addToStatesUpdateDict(str(devs[ii].id), "input_"+str(ii+1),	input["input"])
-					ii+=1
+					if   str(input["input"]) == "1": inp = "on"
+					else:							 inp = "off"
+					if "input" 	 									 in devs[devNo].states:	 self.addToStatesUpdateDict(devIDs, "input",   				inp)
+					if "input_"+str(devNo+1)						 in devs[devNo].states:	 self.addToStatesUpdateDict(devIDs, "input_"+str(devNo+1),	inp)
+					self.indiLOG.log(20,"fillInputs, input: devIDs:{};   inp:{}".format(devIDs, inp) )
 
+				if "event" in input:
+					for xxx in [["input_short","S"], ["input_short_double","SS"], ["input_short_tripple","SSS"], ["input_long","L"]]:
+						if input["event"] == xxx[1]  and xxx[0]		  in devs[devNo].states: 
+																							 self.addToStatesUpdateDict(devIDs, xxx[0], dts)
+																							 self.indiLOG.log(20,"fillInputs,event: devIDs:{};   xxx:{}".format(devIDs, xxx) )
+
+				if "event_cnt" in input			     and  "event_cnt" in devs[devNo].states: 
+																							 self.indiLOG.log(20,"fillInputs, event_cnt: devIDs:{};   evc:{}".format(devIDs, input["event_cnt"]) )
+																							 self.addToStatesUpdateDict(devIDs, "event_cnt", input["event_cnt"])
+
+				devNo += 1
 
 		except Exception, e:
 			self.indiLOG.log(40,"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
 			self.indiLOG.log(40,"data {} ".format(data))
 		return 
 
+
 ####-------------------------------------------------------------------------####
 	def fillRelays(self,  data, devs):
 		try:
 			if "relays" not in data: return
-			ii = 0
+			devNo = 0
 			for relay in data["relays"]:
-				if "ison" in relay:												self.fillSwitch(devs[ii], relay, "ison")
-				if "overPower" in devs[ii].states and "overpower" in relay:		self.addToStatesUpdateDict(str(devs[ii].id), "overPower", relay["overpower"])
-				ii+=1
+				if "ison" in relay:												self.fillSwitch(devs[devNo], relay, "ison")
+				if "overPower" in devs[devNo].states and "overpower" in relay:		self.addToStatesUpdateDict(str(devs[devNo].id), "overPower", relay["overpower"])
+				devNo += 1
 
 
 		except Exception, e:
@@ -2884,9 +3143,9 @@ class Plugin(indigo.PluginBase):
 	def fillRollers(self,  data, devs):
 		try:
 			if "rollers" not in data: return
-			ii = 0
+			devNo = 0
 			for roller in data["rollers"]:
-				dev = devs[ii]
+				dev = devs[devNo]
 				devId = str(dev.id)
 				if "positioning" in dev.states and "positioning" in roller:			self.addToStatesUpdateDict(devId, "positioning", roller["positioning"])
 				if "calibrating" in dev.states and "calibrating" in roller:			self.addToStatesUpdateDict(devId, "calibrating", roller["calibrating"])
@@ -2895,14 +3154,14 @@ class Plugin(indigo.PluginBase):
 																					self.addToStatesUpdateDict(devId, "current_pos", position)
 																					self.addToStatesUpdateDict(devId, "brightnessLevel", position, uiValue="{:d}%".format(position))
 				if "last_direction" in dev.states and "last_direction" in roller:	self.addToStatesUpdateDict(devId, "last_direction", roller["last_direction"])
-				if "stop_reason" in dev.states and "stop_reason" in roller:			self.addToStatesUpdateDict(devId, "stop_reason", roller["stop_reason"])
-				if "safety_switch" in dev.states and "safety_switch" in roller:		self.addToStatesUpdateDict(devId, "safety_switch", roller["safety_switch"])
-				if "state" in dev.states and "state" in roller:
+				if "stop_reason"    in dev.states and "stop_reason" in roller:		self.addToStatesUpdateDict(devId, "stop_reason", roller["stop_reason"])
+				if "safety_switch"  in dev.states and "safety_switch" in roller:	self.addToStatesUpdateDict(devId, "safety_switch", roller["safety_switch"])
+				if "state" 			in dev.states and "state" in roller:
 																					self.addToStatesUpdateDict(devId, "state", roller["state"])
 																					if   roller["state"] == "open" : self.fillSwitch( dev, {"onOffState":True},  "onOffState")
 																					elif roller["state"] == "close": self.fillSwitch( dev, {"onOffState":False}, "onOffState")
 				if "power" 	in roller and	"power"	in dev.states:					self.addToStatesUpdateDict(dev.id, "power",  round(roller["power"],self.powerDigits), 	 uiValue="{:.{}f}[W]".format(roller["power"],self.powerDigits), 		decimalPlaces=self.powerDigits)
-				ii+=1
+				devNo += 1
 
 # settings:[{"maxtime":10.00,"maxtime_open":10.00,"maxtime_close":10.00,"default_state":"stop","swap":false,"swap_inputs":false,"input_mode":"openclose","button_type":"toggle","btn_reverse":0,"state":"stop","power":0.00,"is_valid":false,"safety_switch":false,"roller_open_url":"http://192.168.1.50:7987/?roller=open","roller_close_url":"http://192.168.1.50:7987/?roller=close","roller_stop_url":"http://192.168.1.50:7987/?roller=stop","schedule":false,"schedule_rules":[],"obstacle_mode":"disabled","obstacle_action":"stop","obstacle_power":200,"obstacle_delay":1,"safety_mode":"while_opening","safety_action":"stop","safety_allowed_on_trigger":"none","off_power":2,"positioning":true}]
 # status [{"state":"stop","power":0.00,"is_valid":false,"safety_switch":false,"overtemperature":false,"stop_reason":"normal","last_direction":"open","current_pos":101,"calibrating":true,"positioning":true}],
@@ -2923,7 +3182,7 @@ class Plugin(indigo.PluginBase):
 				if "total"	in meter and	"energy" 			in devs[devNo].states:	self.addToStatesUpdateDict(devs[devNo].id, "energy", 		 round(meter["total"],self.energyDigits), 	 uiValue="{:.{}f}[Wmin]".format(meter["total"],self.energyDigits), 	decimalPlaces=self.energyDigits)
 				if "energy" in meter and 	"energy" 			in devs[devNo].states:	self.addToStatesUpdateDict(devs[devNo].id, "energy", 		 round(meter["energy"],self.energyDigits), 	 uiValue="{:.{}f}[Wmin]".format(meter["total"],self.energyDigits), 	decimalPlaces=self.energyDigits)
 				if "counters" in meter and	"energy_counters" 	in devs[devNo].states:	self.addToStatesUpdateDict(devs[devNo].id, "energy_counters",str(meter["counters"]).strip("[]"),																			decimalPlaces="")					
-				devNo+=1
+				devNo += 1
 
 		except Exception, e:
 			self.indiLOG.log(40,"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
@@ -2961,151 +3220,7 @@ class Plugin(indigo.PluginBase):
 
 
 
-####-------------------------------------------------------------------------####
-	def doHTTPactionData(self, data, dev):
-		try:
-			self.SHELLY[dev.id]["lastMessage-Http"] = data
-			if self.decideMyLog(u"HTTPlistener"):self.indiLOG.log(20,"doHTTPactionData {}   data: {}".format(self.SHELLY[dev.id]["ipNumber"], data) )
-			if dev.deviceTypeId not in _definedShellyDeviceswAction: return
 
-			children = self.SHELLY[dev.id]["children"]
-			devs, devNos = self.getChildDevices( children)
-
-			## eg data?hum=55&temp=33.7
-			## eg data?onOffState=0/1
-			cmd = data.split("?")
-			useDev = dev
-			if len(cmd) == 2:
-				cmd = cmd[1].split("&")
-				TRIGGERS = []
-				for item in cmd:
-					if len(item) < 1: continue
-					x = item.split("=")
-					if len(x) == 2:
-						x.append(True)
-						if   x[0] == "hum":   x[0] = "Humidity"
-						elif x[0] == "temp":  x[0] = "Temperature"
-
-						if x[0].find("onOffState") == 0:
-							if   x[1] == "1": x[1] = True
-							elif x[1] == "0": x[1] = False
-							if x[0] == "onOffState_1":
-								useDev = devs[0]
-							x[0] = "onOffState"
-
-						if x[0].find("action") == 0:
-							x[2] = True
-
-						if x[0].find("alarm") == 0:
-							pass
-
-
-						if x[0].find("action") == 0:
-							if  x[1] == "button": 
-								x[2] = "date"
-
-
-						elif x[0].find("input") == 0:
-							if   x[1] == "1": x[1] = "on"
-							elif x[1] == "0": x[1] = "off"
-							elif x[1] == "long": 
-									x[1] =datetime.datetime.now().strftime(_defaultDateStampFormat)  
-									x[0] +="_long"
-							elif x[1] == "short": 
-									x[1] =datetime.datetime.now().strftime(_defaultDateStampFormat)  
-									x[0] +="_short"
-
-						elif x[0] not in useDev.states:
-							if x[0].split("_")[0] in useDev.states:
-								x[0] = x[0].split("_")[0] 
-							else: x[2] = False
-
-						TRIGGERS.append([x[0],x[1],x[2]])
-					else:
-						TRIGGERS.append({"cmd":item})
-				if self.decideMyLog(u"HTTPlistener"):self.indiLOG.log(20,"doHTTPactionData {}  devType:{}  TRIGGERS:{}".format(self.SHELLY[dev.id]["ipNumber"], useDev.deviceTypeId , TRIGGERS) )
-			else:
-				return
-			devID = str(useDev.id)
-
-			if useDev.deviceTypeId == "shellyflood":
-				# data:= {'path': >>> '/data?temp=32.62&flood=1&batV=2.83'}<<< 
-				for trigger in TRIGGERS:
-					if trigger[0] == "flood":
-						if trigger[1] == "1" and dev.states["Flood"] != "FLOOD": 
-							if self.decideMyLog(u"HTTPlistener"): self.indiLOG.log(20,"doHTTPactionData setting flood state to ON" )
-							self.addToStatesUpdateDict(devID, "Flood", "FLOOD" )
-							self.addToStatesUpdateDict(devID, "onOffState", True)
-							if "previousAlarm" in dev.states and "lastAlarm" in dev.states:
-								self.addToStatesUpdateDict(dev.id, "previousAlarm", dev.states["lastAlarm"])
-							self.addToStatesUpdateDict(devID, "lastAlarm", datetime.datetime.now().strftime(_defaultDateStampFormat))
-							useDev.updateStateImageOnServer(indigo.kStateImageSel.SensorTripped)
-							self.SHELLY[useDev.id]["lastAlarm"] = time.time()
-
-			elif useDev.deviceTypeId.find("shellyht") >-1:
-				# data:= /data?&hum=49&temp=29.00 
-				for trigger in TRIGGERS:
-					if trigger[0] == "Temperature":
-						self.fillSensor(useDev, {"Temperature": trigger[1]}, "Temperature", "Temperature", unit="", decimalPlaces="")
-					if trigger[0] == "Humidity":
-						self.fillSensor(devs[0], {"Humidity": trigger[1]},    "Humidity",    "Humidity", unit="", decimalPlaces=0)
-
-
-			elif useDev.deviceTypeId.find("shellygas") >-1:
-				# data:= /data?&hum=49&temp=29.00 
-				for trigger in TRIGGERS:
-					if trigger[0] == "alarm":
-						if "previousAlarm" in dev.states and "lastAlarm" in dev.states:
-							self.addToStatesUpdateDict(devID, "previousAlarm", dev.states["lastAlarm"])
-						self.addToStatesUpdateDict(devID, "lastAlarm", datetime.datetime.now().strftime(_defaultDateStampFormat))
-						self.addToStatesUpdateDict(devID, "Alarm", x[1])
-					if    x[1] == _alarmStates[0]: dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOn)
-					elif  x[1] == _alarmStates[1]: dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
-					elif  x[1] == _alarmStates[2]: dev.updateStateImageOnServer(indigo.kStateImageSel.SensorTripped)
-					else: 						   dev.updateStateImageOnServer(indigo.kStateImageSel.PowerOff)
-
-
-			elif useDev.deviceTypeId == "shellydw":
-				for trigger in TRIGGERS:
-					if trigger[0] == "action" and trigger[1] == "close":
-						self.addToStatesUpdateDict(devID, "closedTriggered", datetime.datetime.now().strftime(_defaultDateStampFormat))
-						self.addToStatesUpdateDict(devID, "state", "close")
-						self.fillSwitch( useDev, {"onOffState":False}, "onOffState")
-					if trigger[0] == "action" and trigger[1] == "darkOpen":
-						self.addToStatesUpdateDict(devID, "darkOpen", datetime.datetime.now().strftime(_defaultDateStampFormat))
-						self.addToStatesUpdateDict(devID, "state", "open")
-						self.fillSwitch( useDev, {"onOffState":True}, "onOffState")
-					if trigger[0] == "action" and trigger[1] == "twilightOpen":
-						self.addToStatesUpdateDict(devID, "state", "open")
-						self.fillSwitch( useDev, {"onOffState":True}, "onOffState")
-						self.addToStatesUpdateDict(devID, "twilightOpen", datetime.datetime.now().strftime(_defaultDateStampFormat))
-				
-			## cover the rest of the defined devices w actions reporting
-			elif useDev.deviceTypeId in _definedShellyDeviceswAction:
-				for trigger in TRIGGERS:
-					if self.decideMyLog(u"HTTPlistener"):						self.indiLOG.log(20,"doHTTPactionData   trigger:{}".format(trigger) )
-
-					if trigger[0].find("onOffState") == 0:						self.fillSwitch( useDev, {trigger[0]:trigger[1]}, trigger[0])
-					else: 														self.fillSwitch( useDev, {trigger[0]:trigger[1]}, trigger[0], onOffState=False)
-					if   trigger[0].find("state") == 0 and trigger[1]=="open":	self.fillSwitch( useDev, {"onOffState":True}, "onOffState")
-					elif trigger[0].find("state") == 0 and trigger[1]=="close"	:self.fillSwitch( useDev, {"onOffState":False}, "onOffState")
-					if   trigger[0].find("action") == 0 and trigger[1]=="button" and trigger[2]=="date": 
-																				self.addToStatesUpdateDict(devID, "input", datetime.datetime.now().strftime(_defaultDateStampFormat))
-
-
-
-
-			# missing or wrong
-			else:
-				self.indiLOG.log(20,"doHTTPactionData {};  not supported message:{}".format(self.SHELLY[dev.id]["ipNumber"], data) )
-
-		except Exception, e:
-			self.indiLOG.log(40,"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
-			self.indiLOG.log(40,"len(devs):{}".format(len(devs)))
-		self.executeUpdateStatesDict()
-		return 
-
-#
 ###-------------------------------------------------------------------------####
 	def fillSwitch(self, dev, data, token, onOffState=True):
 		try:
@@ -3285,11 +3400,11 @@ class Plugin(indigo.PluginBase):
 									reset = True
 								if not reset: 
 									try:
-										if	(float(dev.states[ttx+u"MaxToday"]) == float(dev.states[ttx+u"MinToday"]) and float(dev.states[ttx+u"MaxToday"]) == 0.) :	 reset = True
+										if (float(dev.states[ttx+u"MaxToday"]) == float(dev.states[ttx+u"MinToday"]) and float(dev.states[ttx+u"MaxToday"]) == 0.) :	 reset = True
 									except: pass
 								if reset:
-									self.addToStatesUpdateDict(dev.id,ttx+u"MaxYesterday", val,decimalPlaces=decimalPlaces)
-									self.addToStatesUpdateDict(dev.id,ttx+u"MinYesterday", val,decimalPlaces=decimalPlaces)
+									self.addToStatesUpdateDict(dev.id,ttx+u"MaxYesterday",  val,decimalPlaces=decimalPlaces)
+									self.addToStatesUpdateDict(dev.id,ttx+u"MinYesterday",  val,decimalPlaces=decimalPlaces)
 									self.addToStatesUpdateDict(dev.id,ttx+u"MaxToday",		val,decimalPlaces=decimalPlaces)
 									self.addToStatesUpdateDict(dev.id,ttx+u"MinToday",		val,decimalPlaces=decimalPlaces)
 
@@ -3496,7 +3611,7 @@ class Plugin(indigo.PluginBase):
 				pollingFrequency = self.SHELLY[shellyIndigoDevNumber]["pollingFrequency"]
 				if pollingFrequency == -1:
 					pollingFrequency = 10
-					if self.SHELLY[shellyIndigoDevNumber]["lastSuccessfullConfigPush"] >0 and time.time() - self.SHELLY[shellyIndigoDevNumber]["lastSuccessfullConfigPush"] < self.repeatConfigPush:
+					if self.SHELLY[shellyIndigoDevNumber]["lastSuccessfullConfigPush"] > 0 and time.time() - self.SHELLY[shellyIndigoDevNumber]["lastSuccessfullConfigPush"] < self.repeatConfigPush:
 						pollingFrequency = _emptyProps[self.SHELLY[shellyIndigoDevNumber]["devTypeId"]]["props"]["automaticPollingFrequency"]
 
 					
@@ -3743,15 +3858,19 @@ class Plugin(indigo.PluginBase):
 		return
 
 ####-------------------------------------------------------------------------####
-	def gasAlarmSetCALLBACKmenu(self, action, dev):
+	def gasAlarmSetCALLBACKmenu(self, valuesDict, typeId=""):
 
 		checkStatusTime = time.time() + 20
 		if  valuesDict["action"] in ["self_test", "mute", "unmute"]:
-			page = valuesDict["action"]
-			if self.decideMyLog(u"Actions"): self.indiLOG.log(20,"ACTIONS: dev {} sending   page:{} deviceTypeId:{}".format(dev.name.encode("utf8"), page, dev.deviceTypeId))
 			queueID	= int(valuesDict["devId"])
+			page = valuesDict["action"]
+			if self.decideMyLog(u"Actions"): self.indiLOG.log(20,"ACTIONS: dev {} sending   page:{}".format(queueID, page))
 			self.addToShellyPollerQueue( queueID, page, now=True)
 			self.deviceActionList.append({"devId":queueID,"action":"checkStatus","value":time.time()+ 20})
+			if page.find("test") >-1:
+				self.SHELLY[queueID]["self_test_state"] 	= time.time()
+				self.SHELLY[queueID]["pollingFrequency"]	= 10	
+
 		return 
 
 ####-------------------------------------------------------------------------####

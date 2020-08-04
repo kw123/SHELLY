@@ -1,3 +1,16 @@
+Added features / changes in v7.8.21 @ 2020-08-03
+===================================================
+
+1. added shelly GAS device final fully supported (volume, alarm triggers, mute ..)
+   has option to set alarm levels, polls the device every 15 secs, if gas concentraion > 0 
+   start sensor caliobration of not calibrated
+2. added event_count to shelly -1, pm1, 2.5
+3. added state ipv4_mode  (static/dhcp..)
+4. added state cloud_enabled
+
+
+
+
 Added features / changes in v7.8.19 @ 2020-07-30
 ===================================================
 
