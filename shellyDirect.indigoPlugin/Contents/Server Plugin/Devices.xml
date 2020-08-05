@@ -612,6 +612,196 @@
 		</States>
 	</Device>
 
+
+	<Device type="sensor" id="shellybutton1">
+		<Name>Shelly-Button (SHBTN-1)</Name>
+		<UiDisplayStateId>status</UiDisplayStateId>
+		<ConfigUI>
+			<Field id="isShellyDevice" type="checkbox" defaultValue="true" hidden="yes" />
+			<Field id="MSG" type="textfield" defaultValue="">
+				<Label>message from plugin:</Label>
+			</Field>
+			<Field id="SupportsOnState" type="checkbox" defaultValue="false" hidden="false" />
+			<Field id="SupportsSensorValue" type="checkbox" defaultValue="True" hidden="false" />
+			<Field id="SupportsStatusRequest" type="checkbox" defaultValue="true" hidden="false" />
+			<Field id="AllowOnStateChange" type="checkbox" defaultValue="false" hidden="false" />
+			<Field id="AllowSensorValueChange" type="checkbox" defaultValue="false" hidden="false" />
+			<Field id="label1" type="label">
+				<Label>Parameters for Shelly-Button1 device</Label>
+			</Field>
+			<Field id="ipNumber" type="textfield" defaultValue="192.168.1.x">
+				<Label>Shelly device IP Number</Label>
+			</Field>
+			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
+				<Label>Overwrite existing IP number</Label>
+			</Field>
+			<Field id="MAC" type="textfield" defaultValue="" readonly="yes">
+				<Label>Shelly device mac number</Label>
+			</Field>
+			<Field id="pollingFrequency" type="menu" defaultValue="-1">
+				<Label>Polling frequency, how often the plugin requests status from the device:</Label>
+				<List>
+					<Option value="5">every 5 sec</Option>
+					<Option value="7">every 7 sec</Option>
+					<Option value="10">every 10 sec</Option>
+					<Option value="15">every 15 sec</Option>
+					<Option value="20">every 20 sec</Option>
+					<Option value="30">every 30 sec</Option>
+					<Option value="40">every 40 sec</Option>
+					<Option value="80">every 80 sec</Option>
+					<Option value="120">every 2 minutes</Option>
+					<Option value="180">every 3 minutes</Option>
+					<Option value="-1">automatic adaptive</Option>
+				</List>
+			</Field>
+			<Field id="pollingFrequencyLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
+				<Label>can be higher/adaptive if actions are setup on the devices</Label>
+			</Field>
+			<Field id="expirationSeconds" type="menu" defaultValue="57600">
+				<Label>Device goes to EXPIRED w no message or answer after:</Label>
+				<List>
+					<Option value="43000">after 12 hours</Option>
+					<Option value="57600">after 16 hours</Option>
+					<Option value="72000">after 20 hours</Option>
+					<Option value="86400">after 24 hours</Option>
+				</List>
+			</Field>
+		<Field id="displaySelect" type="menu" defaultValue="event_cnt">
+				<Label>state to show in status column:</Label>
+				<List>
+					<Option value="event_cnt">last event= eventCount#-type</Option>
+				</List>
+			</Field>
+			<Field id="SENDTOSHELLYDEVICE-led_status_disable" type="menu" defaultValue="none">
+				<Label>Set WiFi LED:</Label>
+				<List>
+					<Option value="none">do not set</Option>
+					<Option value="1">off</Option>
+					<Option value="0">ON</Option>
+				</List>
+			</Field>
+			<Field id="SENDTOSHELLYDEVICE-remain_awake" type="menu" defaultValue="2">
+				<Label>Set remain awake time after button press(while on battery):</Label>
+				<List>
+					<Option value="none">do not set</Option>
+					<Option value="0">0 secs</Option>
+					<Option value="1">1 sec</Option>
+					<Option value="2">2 sec</Option>
+					<Option value="3">3 sec</Option>
+					<Option value="4">4 sec</Option>
+					<Option value="5">5 sec</Option>
+				</List>
+			</Field>
+			<Field id="SENDTOSHELLYDEVICE-longpush_duration_ms_max" type="menu" defaultValue="none">
+				<Label>Set longpush duration[secs]:</Label>
+				<List>
+					<Option value="none">do not set</Option>
+					<Option value="800">0.8</Option>
+					<Option value="1000">1</Option>
+					<Option value="1500">1.5</Option>
+					<Option value="2000">2</Option>
+				</List>
+			</Field>
+			<Field id="SENDTOSHELLYDEVICE-multipush_time_between_pushes_ms_max" type="menu" defaultValue="none">
+				<Label>Set multipush time between pushes duration[secs]:</Label>
+				<List>
+					<Option value="none">do not set</Option>
+					<Option value="500">0.5</Option>
+					<Option value="800">0.8</Option>
+					<Option value="1000">1</Option>
+					<Option value="1500">1.5</Option>
+					<Option value="2000">2</Option>
+				</List>
+			</Field>
+		</ConfigUI>
+		<States>
+			<!--   this is dev specific -->
+			<State id="input_short">
+				<ValueType>String</ValueType>
+				<TriggerLabel>input_short</TriggerLabel>
+				<ControlPageLabel>input_short</ControlPageLabel>
+			</State>
+			<State id="input_short_double">
+				<ValueType>String</ValueType>
+				<TriggerLabel>input_short_double</TriggerLabel>
+				<ControlPageLabel>input_short_double</ControlPageLabel>
+			</State>
+			<State id="input_short_tripple">
+				<ValueType>String</ValueType>
+				<TriggerLabel>input_short_tripple</TriggerLabel>
+				<ControlPageLabel>input_short_tripple</ControlPageLabel>
+			</State>
+			<State id="input_long">
+				<ValueType>String</ValueType>
+				<TriggerLabel>input_long</TriggerLabel>
+				<ControlPageLabel>input_long</ControlPageLabel>
+			</State>
+			<State id="event_cnt">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>event_cnt</TriggerLabel>
+				<ControlPageLabel>event_cnt</ControlPageLabel>
+			</State>
+			<!--   this is same for all: -->
+			<State id="lastSuccessfullConfigPush">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastSuccessfullConfigPush</TriggerLabel>
+				<ControlPageLabel>lastSuccessfullConfigPush</ControlPageLabel>
+			</State>
+			<State id="action_from_Device">
+				<ValueType>String</ValueType>
+				<TriggerLabel>action_from_Device</TriggerLabel>
+				<ControlPageLabel>action_from_Device</ControlPageLabel>
+			</State>
+			<State id="MAC">
+				<ValueType>String</ValueType>
+				<TriggerLabel>MAC</TriggerLabel>
+				<ControlPageLabel>MAC</ControlPageLabel>
+			</State>
+			<State id="lastMessageFromDevice">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastMessageFromDevice</TriggerLabel>
+				<ControlPageLabel>lastMessageFromDevice</ControlPageLabel>
+			</State>
+			<State id="created">
+				<ValueType>String</ValueType>
+				<TriggerLabel>created</TriggerLabel>
+				<ControlPageLabel>created</ControlPageLabel>
+			</State>
+			<State id="lastStatusChange">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastStatusChange</TriggerLabel>
+				<ControlPageLabel>lastStatusChange</ControlPageLabel>
+			</State>
+			<State id="rssi">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>rssi</TriggerLabel>
+				<ControlPageLabel>rssi</ControlPageLabel>
+			</State>
+			<State id="ipv4_method">
+				<ValueType>String</ValueType>
+				<TriggerLabel>ipv4_method</TriggerLabel>
+				<ControlPageLabel>ipv4_method</ControlPageLabel>
+			</State>
+			<State id="cloud_enabled">
+				<ValueType>String</ValueType>
+				<TriggerLabel>cloud_enabled</TriggerLabel>
+				<ControlPageLabel>cloud_enabled</ControlPageLabel>
+			</State>
+			<State id="software_update_available">
+				<ValueType>String</ValueType>
+				<TriggerLabel>software_update_available</TriggerLabel>
+				<ControlPageLabel>software_update_available</ControlPageLabel>
+			</State>
+			<State id="expired">
+				<ValueType>String</ValueType>
+				<TriggerLabel>expired</TriggerLabel>
+				<ControlPageLabel>expired</ControlPageLabel>
+			</State>
+		</States>
+	</Device>
+
+
+
 	<Device type="relay" id="shelly1pm">
 		<Name>Shelly-Relay (PM)</Name>
 		<UiDisplayStateId>status</UiDisplayStateId>
@@ -1006,149 +1196,6 @@
 			</State>
 		</States>
 	</Device>
-
-
-	<Device type="relay" id="shellybutton1">
-		<Name>Shelly-Button (SHBUT-1)</Name>
-		<UiDisplayStateId>status</UiDisplayStateId>
-		<ConfigUI>
-			<Field id="isShellyDevice" type="checkbox" defaultValue="true" hidden="yes" />
-			<Field id="MSG" type="textfield" defaultValue="">
-				<Label>message from plugin:</Label>
-			</Field>
-			<Field id="SupportsOnState" type="checkbox" defaultValue="true" hidden="true" />
-			<Field id="SupportsStatusRequest" type="checkbox" defaultValue="true" hidden="true" />
-			<Field id="AllowOnStateChange" type="checkbox" defaultValue="false" hidden="true" />
-			<Field id="AllowSensorValueChange" type="checkbox" defaultValue="false" hidden="true" />
-			<Field id="label1" type="label">
-				<Label>Parameters for  Button-1 device</Label>
-			</Field>
-			<Field id="ipNumber" type="textfield" defaultValue="192.168.1.x">
-				<Label>Shelly device IP Number</Label>
-			</Field>
-			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
-				<Label>Overwrite existing IP number</Label>
-			</Field>
-			<Field id="MAC" type="textfield" defaultValue="" readonly="yes">
-				<Label>Shelly device mac number</Label>
-			</Field>
-			<Field id="pollingFrequency" type="menu" defaultValue="-1">
-				<Label>Polling frequency, how often the plugin requests status from the device:</Label>
-				<List>
-					<Option value="5">every 5 sec</Option>
-					<Option value="7">every 7 sec</Option>
-					<Option value="10">every 10 sec</Option>
-					<Option value="15">every 15 sec</Option>
-					<Option value="20">every 20 sec</Option>
-					<Option value="30">every 30 sec</Option>
-					<Option value="40">every 40 sec</Option>
-					<Option value="80">every 80 sec</Option>
-					<Option value="120">every 2 minutes</Option>
-					<Option value="180">every 3 minutes</Option>
-					<Option value="-1">automatic adaptive</Option>
-				</List>
-			</Field>
-			<Field id="pollingFrequencyLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
-				<Label>can be higher/adaptive if actions are setup on the devices</Label>
-			</Field>
-			<Field id="expirationSeconds" type="menu" defaultValue="3600">
-				<Label>Device goes to EXPIRED w no message or answer after:</Label>
-				<List>
-					<Option value="180">after 3 minutes</Option>
-					<Option value="300">after 5 minutes</Option>
-					<Option value="600">after 10 minutes</Option>
-					<Option value="1800">after 30 minutes</Option>
-					<Option value="3600">after 1 hour</Option>
-				</List>
-			</Field>
-		</ConfigUI>
-		<States>
-			<!--   this is dev specific -->
-			<State id="input_short">
-				<ValueType>String</ValueType>
-				<TriggerLabel>input_short</TriggerLabel>
-				<ControlPageLabel>input_short</ControlPageLabel>
-			</State>
-			<State id="input_short_double">
-				<ValueType>String</ValueType>
-				<TriggerLabel>input_short_double</TriggerLabel>
-				<ControlPageLabel>input_short_double</ControlPageLabel>
-			</State>
-			<State id="input_short_tripple">
-				<ValueType>String</ValueType>
-				<TriggerLabel>input_short_tripple</TriggerLabel>
-				<ControlPageLabel>input_short_tripple</ControlPageLabel>
-			</State>
-			<State id="input_long">
-				<ValueType>String</ValueType>
-				<TriggerLabel>input_long</TriggerLabel>
-				<ControlPageLabel>input_long</ControlPageLabel>
-			</State>
-			<State id="event_cnt">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>event_cnt</TriggerLabel>
-				<ControlPageLabel>event_cnt</ControlPageLabel>
-			</State>
-			<!--   this is same for all: -->
-			<State id="lastSuccessfullConfigPush">
-				<ValueType>String</ValueType>
-				<TriggerLabel>lastSuccessfullConfigPush</TriggerLabel>
-				<ControlPageLabel>lastSuccessfullConfigPush</ControlPageLabel>
-			</State>
-			<State id="action_from_Device">
-				<ValueType>String</ValueType>
-				<TriggerLabel>action_from_Device</TriggerLabel>
-				<ControlPageLabel>action_from_Device</ControlPageLabel>
-			</State>
-			<State id="MAC">
-				<ValueType>String</ValueType>
-				<TriggerLabel>MAC</TriggerLabel>
-				<ControlPageLabel>MAC</ControlPageLabel>
-			</State>
-			<State id="lastMessageFromDevice">
-				<ValueType>String</ValueType>
-				<TriggerLabel>lastMessageFromDevice</TriggerLabel>
-				<ControlPageLabel>lastMessageFromDevice</ControlPageLabel>
-			</State>
-			<State id="created">
-				<ValueType>String</ValueType>
-				<TriggerLabel>created</TriggerLabel>
-				<ControlPageLabel>created</ControlPageLabel>
-			</State>
-			<State id="lastStatusChange">
-				<ValueType>String</ValueType>
-				<TriggerLabel>lastStatusChange</TriggerLabel>
-				<ControlPageLabel>lastStatusChange</ControlPageLabel>
-			</State>
-			<State id="rssi">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>rssi</TriggerLabel>
-				<ControlPageLabel>rssi</ControlPageLabel>
-			</State>
-			<State id="ipv4_method">
-				<ValueType>String</ValueType>
-				<TriggerLabel>ipv4_method</TriggerLabel>
-				<ControlPageLabel>ipv4_method</ControlPageLabel>
-			</State>
-			<State id="cloud_enabled">
-				<ValueType>String</ValueType>
-				<TriggerLabel>cloud_enabled</TriggerLabel>
-				<ControlPageLabel>cloud_enabled</ControlPageLabel>
-			</State>
-			<State id="software_update_available">
-				<ValueType>String</ValueType>
-				<TriggerLabel>software_update_available</TriggerLabel>
-				<ControlPageLabel>software_update_available</ControlPageLabel>
-			</State>
-			<State id="expired">
-				<ValueType>String</ValueType>
-				<TriggerLabel>expired</TriggerLabel>
-				<ControlPageLabel>expired</ControlPageLabel>
-			</State>
-		</States>
-	</Device>
-
-
 
 
 	<Device type="relay" id="shellyplug">
@@ -3763,6 +3810,16 @@ C) White Only</Label>
 				<ValueType>Number</ValueType>
 				<TriggerLabel>rssi</TriggerLabel>
 				<ControlPageLabel>rssi</ControlPageLabel>
+			</State>
+			<State id="rssi">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>rssi</TriggerLabel>
+				<ControlPageLabel>rssi</ControlPageLabel>
+			</State>
+			<State id="WiFi_connect_retries">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>WiFi_connect_retries</TriggerLabel>
+				<ControlPageLabel>WiFi_connect_retries</ControlPageLabel>
 			</State>
 			<State id="ipv4_method">
 				<ValueType>String</ValueType>
