@@ -23,6 +23,12 @@
 			<Field id="AllowSensorValueChange" type="checkbox" defaultValue="false" hidden="true">
 				<Label>AllowSensorValueChange</Label>
 			</Field>
+			<Field id="usesInputForOnOff" type="checkbox" defaultValue="false" hidden="true">
+				<Label>usesInputForOnOff</Label>
+			</Field>
+			<Field id="usesInputForOnOff" type="checkbox" defaultValue="false" hidden="true">
+				<Label>usesInputForOnOff</Label>
+			</Field>
 			<Field id="label1" type="label">
 				<Label>Parameters for Shelly-EM device, thsi device hosts only the relay part, the EM part is hosted by the otehr 2 EM devices</Label>
 			</Field>
@@ -89,10 +95,10 @@
 				<TriggerLabel>lastSuccessfullConfigPush</TriggerLabel>
 				<ControlPageLabel>lastSuccessfullConfigPush</ControlPageLabel>
 			</State>
-			<State id="action_from_Device">
+			<State id="action_from_device">
 				<ValueType>String</ValueType>
-				<TriggerLabel>action_from_Device</TriggerLabel>
-				<ControlPageLabel>action_from_Device</ControlPageLabel>
+				<TriggerLabel>action_from_device</TriggerLabel>
+				<ControlPageLabel>action_from_device</ControlPageLabel>
 			</State>
 			<State id="MAC">
 				<ValueType>String</ValueType>
@@ -124,10 +130,10 @@
 				<TriggerLabel>ipv4_method</TriggerLabel>
 				<ControlPageLabel>ipv4_method</ControlPageLabel>
 			</State>
-			<State id="cloud_enabled">
+			<State id="cloud">
 				<ValueType>String</ValueType>
-				<TriggerLabel>cloud_enabled</TriggerLabel>
-				<ControlPageLabel>cloud_enabled</ControlPageLabel>
+				<TriggerLabel>cloud</TriggerLabel>
+				<ControlPageLabel>cloud</ControlPageLabel>
 			</State>
 			<State id="software_update_available">
 				<ValueType>String</ValueType>
@@ -164,6 +170,9 @@
 			</Field>
 			<Field id="AllowSensorValueChange" type="checkbox" defaultValue="false" hidden="true">
 				<Label>AllowSensorValueChange</Label>
+			</Field>
+			<Field id="usesInputForOnOff" type="checkbox" defaultValue="false" hidden="true">
+				<Label>usesInputForOnOff</Label>
 			</Field>
 			<Field id="label1" type="label">
 				<Label>Parameters for Shelly-EM device, this device hosts ONE set of the energy sensors</Label>
@@ -242,10 +251,10 @@
 				<TriggerLabel>lastSuccessfullConfigPush</TriggerLabel>
 				<ControlPageLabel>lastSuccessfullConfigPush</ControlPageLabel>
 			</State>
-			<State id="action_from_Device">
+			<State id="action_from_device">
 				<ValueType>String</ValueType>
-				<TriggerLabel>action_from_Device</TriggerLabel>
-				<ControlPageLabel>action_from_Device</ControlPageLabel>
+				<TriggerLabel>action_from_device</TriggerLabel>
+				<ControlPageLabel>action_from_device</ControlPageLabel>
 			</State>
 			<State id="MAC">
 				<ValueType>String</ValueType>
@@ -277,10 +286,10 @@
 				<TriggerLabel>ipv4_method</TriggerLabel>
 				<ControlPageLabel>ipv4_method</ControlPageLabel>
 			</State>
-			<State id="cloud_enabled">
+			<State id="cloud">
 				<ValueType>String</ValueType>
-				<TriggerLabel>cloud_enabled</TriggerLabel>
-				<ControlPageLabel>cloud_enabled</ControlPageLabel>
+				<TriggerLabel>cloud</TriggerLabel>
+				<ControlPageLabel>cloud</ControlPageLabel>
 			</State>
 			<State id="software_update_available">
 				<ValueType>String</ValueType>
@@ -294,6 +303,486 @@
 			</State>
 		</States>
 	</Device>
+
+	<Device type="sensor" id="shellyix3">
+		<Name>Shelly-ix3 - Host input-1 (SHIX3)</Name>
+		<UiDisplayStateId>status</UiDisplayStateId>
+		<ConfigUI>
+			<Field id="isShellyDevice" type="checkbox" defaultValue="true" hidden="yes" />
+			<Field id="MSG" type="textfield" defaultValue="">
+				<Label>message from plugin:</Label>
+			</Field>
+			<Field id="SupportsOnState" type="checkbox" defaultValue="true" hidden="false">
+				<Label>SupportsOnState</Label>
+			</Field>
+			<Field id="SupportsSensorValue" type="checkbox" defaultValue="true" hidden="true">
+				<Label>SupportsSensorValue</Label>
+			</Field>
+			<Field id="SupportsStatusRequest" type="checkbox" defaultValue="true" hidden="true">
+				<Label>SupportsStatusRequest</Label>
+			</Field>
+			<Field id="AllowOnStateChange" type="checkbox" defaultValue="false" hidden="true">
+				<Label>AllowOnStateChange</Label>
+			</Field>
+			<Field id="AllowSensorValueChange" type="checkbox" defaultValue="false" hidden="true">
+				<Label>AllowSensorValueChange</Label>
+			</Field>
+			<Field id="usesInputForOnOff" type="checkbox" defaultValue="true" hidden="true">
+				<Label>usesInputForOnOff</Label>
+			</Field>
+			<Field id="label1" type="label">
+				<Label>Parameters for Shelly-ix3 device, this device hosts the first input, the other 2 inputs are childen devices</Label>
+			</Field>
+			<Field id="ipNumber" type="textfield" defaultValue="192.168.1.x">
+				<Label>Shelly device IP Number</Label>
+			</Field>
+			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey ">
+				<Label>Overwrite existing IP number</Label>
+			</Field>
+			<Field id="MAC" type="textfield" defaultValue="" readonly="yes">
+				<Label>Shelly device mac number</Label>
+			</Field>
+			<Field id="devNo" type="menu" defaultValue="0" hidden="true">
+				<Label>Channel #</Label>
+				<List>
+					<Option value="0">0</Option>
+				</List>
+			</Field>
+			<Field id="pollingFrequency" type="menu" defaultValue="-1">
+				<Label>Polling frequency, how often the plugin requests status from the device:</Label>
+				<List>
+					<Option value="5">every 5 sec</Option>
+					<Option value="7">every 7 sec</Option>
+					<Option value="10">every 10 sec</Option>
+					<Option value="15">every 15 sec</Option>
+					<Option value="20">every 20 sec</Option>
+					<Option value="30">every 30 sec</Option>
+					<Option value="40">every 40 sec</Option>
+					<Option value="80">every 80 sec</Option>
+					<Option value="120">every 2 minutes</Option>
+					<Option value="180">every 3 minutes</Option>
+					<Option value="-1">automatic adaptive</Option>
+				</List>
+			</Field>
+			<Field id="pollingFrequencyLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
+				<Label>can be higher/adaptive if actions are setup on the devices</Label>
+			</Field>
+			<Field id="expirationSeconds" type="menu" defaultValue="3600">
+				<Label>Device goes to EXPIRED w no message or answer after:</Label>
+				<List>
+					<Option value="180">after 3 minutes</Option>
+					<Option value="300">after 5 minutes</Option>
+					<Option value="600">after 10 minutes</Option>
+					<Option value="1800">after 30 minutes</Option>
+					<Option value="3600">after 1 hour</Option>
+				</List>
+			</Field>
+			<Field id="displaySelect" type="menu" defaultValue="event_cnt">
+				<Label>state to show in status column:</Label>
+				<List>
+					<Option value="event_cnt">last event= eventCount#-type</Option>
+					<Option value="input">state of input button</Option>
+				</List>
+			</Field>
+			<Field id="SENDTOSHELLYDEVICE-btn_reverse" type="textfield" defaultValue="none">
+				<Label>Set button reverse :</Label>
+				<List>
+					<Option value="none">do not set</Option>
+					<Option value="0">normal</Option>
+					<Option value="1">reverse</Option>
+				</List>
+			</Field>
+			<Field id="SENDTOSHELLYDEVICE-btn_type" type="textfield" defaultValue="none">
+				<Label>Set button type :</Label>
+				<List>
+					<Option value="none">do not set</Option>
+					<Option value="toggle">toggle</Option>
+					<Option value="momentary">momentary</Option>
+				</List>
+			</Field>
+			<Field id="SENDTOSHELLYDEVICE-longpush_duration_ms_min" type="menu" defaultValue="none">
+				<Label>Set longpush duration-min[secs]:</Label>
+				<List>
+					<Option value="none">do not set(def0.8)</Option>
+					<Option value="800">0.8</Option>
+					<Option value="1000">1</Option>
+				</List>
+			</Field>
+			<Field id="SENDTOSHELLYDEVICE-longpush_duration_ms_max" type="menu" defaultValue="none">
+				<Label>Set longpush duration-max[secs]:</Label>
+				<List>
+					<Option value="none">do not set(def3)</Option>
+					<Option value="1000">1</Option>
+					<Option value="1500">1.5</Option>
+					<Option value="2000">2</Option>
+					<Option value="3000">3</Option>
+				</List>
+			</Field>
+			<Field id="SENDTOSHELLYDEVICE-multipush_time_between_pushes_ms_max" type="menu" defaultValue="none">
+				<Label>Set multipush time between pushes duration[secs]:</Label>
+				<List>
+					<Option value="none">do not set(def0.5)</Option>
+					<Option value="500">0.5</Option>
+					<Option value="800">0.8</Option>
+					<Option value="1000">1</Option>
+					<Option value="1500">1.5</Option>
+				</List>
+			</Field>
+
+		</ConfigUI>
+		<States>
+			<!--   this is dev specific -->
+			<State id="input">
+				<ValueType>String</ValueType>
+				<TriggerLabel>input</TriggerLabel>
+				<ControlPageLabel>input</ControlPageLabel>
+			</State>
+			<State id="input_short">
+				<ValueType>String</ValueType>
+				<TriggerLabel>input_short</TriggerLabel>
+				<ControlPageLabel>input_short</ControlPageLabel>
+			</State>
+			<State id="input_short_double">
+				<ValueType>String</ValueType>
+				<TriggerLabel>input_short_double</TriggerLabel>
+				<ControlPageLabel>input_short_double</ControlPageLabel>
+			</State>
+			<State id="input_short_tripple">
+				<ValueType>String</ValueType>
+				<TriggerLabel>input_short_tripple</TriggerLabel>
+				<ControlPageLabel>input_short_tripple</ControlPageLabel>
+			</State>
+			<State id="input_long">
+				<ValueType>String</ValueType>
+				<TriggerLabel>input_long</TriggerLabel>
+				<ControlPageLabel>input_long</ControlPageLabel>
+			</State>
+			<State id="input_short_long">
+				<ValueType>String</ValueType>
+				<TriggerLabel>input_short_long</TriggerLabel>
+				<ControlPageLabel>input_short_long</ControlPageLabel>
+			</State>
+			<State id="input_long_short">
+				<ValueType>String</ValueType>
+				<TriggerLabel>input_long_short</TriggerLabel>
+				<ControlPageLabel>input_long_short</ControlPageLabel>
+			</State>
+			<State id="event_cnt">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>event_cnt</TriggerLabel>
+				<ControlPageLabel>event_cnt</ControlPageLabel>
+			</State>			<!--   this is same for all: -->
+			<State id="lastEvent">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastEvent</TriggerLabel>
+				<ControlPageLabel>lastEvent</ControlPageLabel>
+			</State>			<!--   this is same for all: -->
+			<State id="onOffState">
+				<ValueType>bool</ValueType>
+				<TriggerLabel>onOffState</TriggerLabel>
+				<ControlPageLabel>onOffState</ControlPageLabel>
+			</State>			<!--   this is same for all: -->
+			<State id="lastSuccessfullConfigPush">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastSuccessfullConfigPush</TriggerLabel>
+				<ControlPageLabel>lastSuccessfullConfigPush</ControlPageLabel>
+			</State>
+			<State id="action_from_device">
+				<ValueType>String</ValueType>
+				<TriggerLabel>action_from_device</TriggerLabel>
+				<ControlPageLabel>action_from_device</ControlPageLabel>
+			</State>
+			<State id="MAC">
+				<ValueType>String</ValueType>
+				<TriggerLabel>MAC</TriggerLabel>
+				<ControlPageLabel>MAC</ControlPageLabel>
+			</State>
+			<State id="lastMessageFromDevice">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastMessageFromDevice</TriggerLabel>
+				<ControlPageLabel>lastMessageFromDevice</ControlPageLabel>
+			</State>
+			<State id="created">
+				<ValueType>String</ValueType>
+				<TriggerLabel>created</TriggerLabel>
+				<ControlPageLabel>created</ControlPageLabel>
+			</State>
+			<State id="lastStatusChange">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastStatusChange</TriggerLabel>
+				<ControlPageLabel>lastStatusChange</ControlPageLabel>
+			</State>
+			<State id="rssi">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>rssi</TriggerLabel>
+				<ControlPageLabel>rssi</ControlPageLabel>
+			</State>
+			<State id="ipv4_method">
+				<ValueType>String</ValueType>
+				<TriggerLabel>ipv4_method</TriggerLabel>
+				<ControlPageLabel>ipv4_method</ControlPageLabel>
+			</State>
+			<State id="cloud">
+				<ValueType>String</ValueType>
+				<TriggerLabel>cloud</TriggerLabel>
+				<ControlPageLabel>cloud</ControlPageLabel>
+			</State>
+			<State id="software_update_available">
+				<ValueType>String</ValueType>
+				<TriggerLabel>software_update_available</TriggerLabel>
+				<ControlPageLabel>software_update_available</ControlPageLabel>
+			</State>
+			<State id="expired">
+				<ValueType>String</ValueType>
+				<TriggerLabel>expired</TriggerLabel>
+				<ControlPageLabel>expired</ControlPageLabel>
+			</State>
+		</States>
+	</Device>
+
+	<Device type="sensor" id="shellyix3-child">
+		<Name>Shelly-ix3 - 3 input child (SHIX3)</Name>
+		<UiDisplayStateId>status</UiDisplayStateId>
+		<ConfigUI>
+			<Field id="isShellyDevice" type="checkbox" defaultValue="true" hidden="yes" />
+			<Field id="MSG" type="textfield" defaultValue="">
+				<Label>message from plugin:</Label>
+			</Field>
+			<Field id="SupportsOnState" type="checkbox" defaultValue="true" hidden="false">
+				<Label>SupportsOnState</Label>
+			</Field>
+			<Field id="SupportsSensorValue" type="checkbox" defaultValue="true" hidden="false">
+				<Label>SupportsSensorValue</Label>
+			</Field>
+			<Field id="SupportsStatusRequest" type="checkbox" defaultValue="true" hidden="true">
+				<Label>SupportsStatusRequest</Label>
+			</Field>
+			<Field id="AllowOnStateChange" type="checkbox" defaultValue="false" hidden="true">
+				<Label>AllowOnStateChange</Label>
+			</Field>
+			<Field id="AllowSensorValueChange" type="checkbox" defaultValue="false" hidden="true">
+				<Label>AllowSensorValueChange</Label>
+			</Field>
+			<Field id="usesInputForOnOff" type="checkbox" defaultValue="True" hidden="true">
+				<Label>usesInputForOnOff</Label>
+			</Field>
+			<Field id="parentIndigoId" type="textfield" defaultValue="0" readonly="yes">
+				<Label>The indigo Id of the hosting device</Label>
+			</Field>
+			<Field id="ipNumber" type="textfield" defaultValue="192.168.1.x" readonly="yes">
+				<Label>Shelly device IP Number</Label>
+			</Field>
+			<Field id="MAC" type="textfield" defaultValue="" readonly="yes">
+				<Label>Shelly device mac number</Label>
+			</Field>
+			<Field id="devNo" type="menu" defaultValue="1">
+				<Label>Channel #</Label>
+				<List>
+					<Option value="1">1</Option>
+					<Option value="2">2</Option>
+				</List>
+			</Field>
+			<Field id="pollingFrequency" type="menu" defaultValue="-1">
+				<Label>Polling frequency, how often the plugin requests status from the device:</Label>
+				<List>
+					<Option value="5">every 5 sec</Option>
+					<Option value="7">every 7 sec</Option>
+					<Option value="10">every 10 sec</Option>
+					<Option value="15">every 15 sec</Option>
+					<Option value="20">every 20 sec</Option>
+					<Option value="30">every 30 sec</Option>
+					<Option value="40">every 40 sec</Option>
+					<Option value="80">every 80 sec</Option>
+					<Option value="120">every 2 minutes</Option>
+					<Option value="180">every 3 minutes</Option>
+					<Option value="-1">automatic adaptive</Option>
+				</List>
+			</Field>
+			<Field id="pollingFrequencyLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
+				<Label>can be higher/adaptive if actions are setup on the devices</Label>
+			</Field>
+			<Field id="expirationSeconds" type="menu" defaultValue="3600">
+				<Label>Device goes to EXPIRED w no message or answer after:</Label>
+				<List>
+					<Option value="180">after 3 minutes</Option>
+					<Option value="300">after 5 minutes</Option>
+					<Option value="600">after 10 minutes</Option>
+					<Option value="1800">after 30 minutes</Option>
+					<Option value="3600">after 1 hour</Option>
+				</List>
+			</Field>
+			<Field id="displaySelect" type="menu" defaultValue="event_cnt">
+				<Label>state to show in status column:</Label>
+				<List>
+					<Option value="event_cnt">last event= eventCount#-type</Option>
+					<Option value="input">state of input button</Option>
+				</List>
+			</Field>
+			<Field id="SENDTOSHELLYDEVICE-btn_reverse" type="textfield" defaultValue="none">
+				<Label>Set button reverse :</Label>
+				<List>
+					<Option value="none">do not set</Option>
+					<Option value="0">normal</Option>
+					<Option value="1">reverse</Option>
+				</List>
+			</Field>
+			<Field id="SENDTOSHELLYDEVICE-btn_type" type="textfield" defaultValue="none" readonly="yes">
+				<Label>Set button type :</Label>
+				<List>
+					<Option value="none">do not set</Option>
+					<Option value="toggle">toggle</Option>
+					<Option value="momentary">momentary</Option>
+				</List>
+			</Field>
+			<Field id="SENDTOSHELLYDEVICE-longpush_duration_ms_min" type="menu" defaultValue="none" readonly="yes">
+				<Label>Set longpush duration-min[secs]:</Label>
+				<List>
+					<Option value="none">do not set</Option>
+					<Option value="800">0.8</Option>
+					<Option value="1000">1</Option>
+					<Option value="1500">1.5</Option>
+					<Option value="2000">2</Option>
+				</List>
+			</Field>
+			<Field id="SENDTOSHELLYDEVICE-longpush_duration_ms_max" type="menu" defaultValue="none" readonly="yes">
+				<Label>Set longpush duration-max[secs]:</Label>
+				<List>
+					<Option value="none">do not set</Option>
+					<Option value="800">0.8</Option>
+					<Option value="1000">1</Option>
+					<Option value="1500">1.5</Option>
+					<Option value="2000">2</Option>
+				</List>
+			</Field>
+			<Field id="SENDTOSHELLYDEVICE-multipush_time_between_pushes_ms_max" type="menu" defaultValue="none" readonly="yes">
+				<Label>Set multipush time between pushes duration[secs]:</Label>
+				<List>
+					<Option value="none">do not set</Option>
+					<Option value="500">0.5</Option>
+					<Option value="800">0.8</Option>
+					<Option value="1000">1</Option>
+					<Option value="1500">1.5</Option>
+					<Option value="2000">2</Option>
+				</List>
+			</Field>
+		</ConfigUI>
+		<States>
+			<!--   this is dev specific -->
+			<State id="input">
+				<ValueType>String</ValueType>
+				<TriggerLabel>input</TriggerLabel>
+				<ControlPageLabel>input</ControlPageLabel>
+			</State>
+			<State id="input_short">
+				<ValueType>String</ValueType>
+				<TriggerLabel>input_short</TriggerLabel>
+				<ControlPageLabel>input_short</ControlPageLabel>
+			</State>
+			<State id="input_short_double">
+				<ValueType>String</ValueType>
+				<TriggerLabel>input_short_double</TriggerLabel>
+				<ControlPageLabel>input_short_double</ControlPageLabel>
+			</State>
+			<State id="input_short_tripple">
+				<ValueType>String</ValueType>
+				<TriggerLabel>input_short_tripple</TriggerLabel>
+				<ControlPageLabel>input_short_tripple</ControlPageLabel>
+			</State>
+			<State id="input_short_long">
+				<ValueType>String</ValueType>
+				<TriggerLabel>input_short_long</TriggerLabel>
+				<ControlPageLabel>input_short_long</ControlPageLabel>
+			</State>
+			<State id="input_long_short">
+				<ValueType>String</ValueType>
+				<TriggerLabel>input_long_short</TriggerLabel>
+				<ControlPageLabel>input_long_short</ControlPageLabel>
+			</State>
+			<State id="input_long">
+				<ValueType>String</ValueType>
+				<TriggerLabel>input_long</TriggerLabel>
+				<ControlPageLabel>input_long</ControlPageLabel>
+			</State>
+			<State id="event_cnt">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>event_cnt</TriggerLabel>
+				<ControlPageLabel>event_cnt</ControlPageLabel>
+			</State>			<!--   this is same for all: -->
+			<State id="lastEvent">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastEvent</TriggerLabel>
+				<ControlPageLabel>lastEvent</ControlPageLabel>
+			</State>			<!--   this is same for all: -->
+			<State id="onOffState">
+				<ValueType>bool</ValueType>
+				<TriggerLabel>onOffState</TriggerLabel>
+				<ControlPageLabel>onOffState</ControlPageLabel>
+			</State>			<!--   this is same for all: -->
+			<State id="childNo">
+				<ValueType>String</ValueType>
+				<TriggerLabel>childNo</TriggerLabel>
+				<ControlPageLabel>childNo</ControlPageLabel>
+			</State>
+			<State id="lastSuccessfullConfigPush">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastSuccessfullConfigPush</TriggerLabel>
+				<ControlPageLabel>lastSuccessfullConfigPush</ControlPageLabel>
+			</State>
+			<State id="action_from_device">
+				<ValueType>String</ValueType>
+				<TriggerLabel>action_from_device</TriggerLabel>
+				<ControlPageLabel>action_from_device</ControlPageLabel>
+			</State>
+			<State id="MAC">
+				<ValueType>String</ValueType>
+				<TriggerLabel>MAC</TriggerLabel>
+				<ControlPageLabel>MAC</ControlPageLabel>
+			</State>
+			<State id="lastMessageFromDevice">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastMessageFromDevice</TriggerLabel>
+				<ControlPageLabel>lastMessageFromDevice</ControlPageLabel>
+			</State>
+			<State id="created">
+				<ValueType>String</ValueType>
+				<TriggerLabel>created</TriggerLabel>
+				<ControlPageLabel>created</ControlPageLabel>
+			</State>
+			<State id="lastStatusChange">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastStatusChange</TriggerLabel>
+				<ControlPageLabel>lastStatusChange</ControlPageLabel>
+			</State>
+			<State id="rssi">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>rssi</TriggerLabel>
+				<ControlPageLabel>rssi</ControlPageLabel>
+			</State>
+			<State id="ipv4_method">
+				<ValueType>String</ValueType>
+				<TriggerLabel>ipv4_method</TriggerLabel>
+				<ControlPageLabel>ipv4_method</ControlPageLabel>
+			</State>
+			<State id="cloud">
+				<ValueType>String</ValueType>
+				<TriggerLabel>cloud</TriggerLabel>
+				<ControlPageLabel>cloud</ControlPageLabel>
+			</State>
+			<State id="software_update_available">
+				<ValueType>String</ValueType>
+				<TriggerLabel>software_update_available</TriggerLabel>
+				<ControlPageLabel>software_update_available</ControlPageLabel>
+			</State>
+			<State id="expired">
+				<ValueType>String</ValueType>
+				<TriggerLabel>expired</TriggerLabel>
+				<ControlPageLabel>expired</ControlPageLabel>
+			</State>
+		</States>
+	</Device>
+
+
+
 
 	<Device type="relay" id="shellyem3">
 		<Name>Shelly-EM3 - Relay (SHEM3)</Name>
@@ -317,6 +806,9 @@
 			</Field>
 			<Field id="AllowSensorValueChange" type="checkbox" defaultValue="false" hidden="true">
 				<Label>AllowSensorValueChange</Label>
+			</Field>
+			<Field id="usesInputForOnOff" type="checkbox" defaultValue="false" hidden="true">
+				<Label>usesInputForOnOff</Label>
 			</Field>
 			<Field id="label1" type="label">
 				<Label>Parameters for Shelly-EM3 device, this device hosts only the relay part, the EM part is hosted by the other 3 EM devices</Label>
@@ -387,10 +879,10 @@
 				<TriggerLabel>lastSuccessfullConfigPush</TriggerLabel>
 				<ControlPageLabel>lastSuccessfullConfigPush</ControlPageLabel>
 			</State>
-			<State id="action_from_Device">
+			<State id="action_from_device">
 				<ValueType>String</ValueType>
-				<TriggerLabel>action_from_Device</TriggerLabel>
-				<ControlPageLabel>action_from_Device</ControlPageLabel>
+				<TriggerLabel>action_from_device</TriggerLabel>
+				<ControlPageLabel>action_from_device</ControlPageLabel>
 			</State>
 			<State id="MAC">
 				<ValueType>String</ValueType>
@@ -402,7 +894,7 @@
 				<TriggerLabel>lastMessageFromDevice</TriggerLabel>
 				<ControlPageLabel>lastMessageFromDevice</ControlPageLabel>
 			</State>
-			<State id="created ">
+			<State id="created">
 				<ValueType>String</ValueType>
 				<TriggerLabel>created</TriggerLabel>
 				<ControlPageLabel>created</ControlPageLabel>
@@ -422,10 +914,10 @@
 				<TriggerLabel>ipv4_method</TriggerLabel>
 				<ControlPageLabel>ipv4_method</ControlPageLabel>
 			</State>
-			<State id="cloud_enabled">
+			<State id="cloud">
 				<ValueType>String</ValueType>
-				<TriggerLabel>cloud_enabled</TriggerLabel>
-				<ControlPageLabel>cloud_enabled</ControlPageLabel>
+				<TriggerLabel>cloud</TriggerLabel>
+				<ControlPageLabel>cloud</ControlPageLabel>
 			</State>
 			<State id="software_update_available">
 				<ValueType>String</ValueType>
@@ -462,6 +954,9 @@
 			</Field>
 			<Field id="AllowSensorValueChange" type="checkbox" defaultValue="false" hidden="true">
 				<Label>AllowSensorValueChange</Label>
+			</Field>
+			<Field id="usesInputForOnOff" type="checkbox" defaultValue="false" hidden="true">
+				<Label>usesInputForOnOff</Label>
 			</Field>
 			<Field id="label1" type="label">
 				<Label>Parameters for Shelly-EM3 device, this device hosts ONE set of the energy sensors</Label>
@@ -559,10 +1054,10 @@
 				<TriggerLabel>lastSuccessfullConfigPush</TriggerLabel>
 				<ControlPageLabel>lastSuccessfullConfigPush</ControlPageLabel>
 			</State>
-			<State id="action_from_Device">
+			<State id="action_from_device">
 				<ValueType>String</ValueType>
-				<TriggerLabel>action_from_Device</TriggerLabel>
-				<ControlPageLabel>action_from_Device</ControlPageLabel>
+				<TriggerLabel>action_from_device</TriggerLabel>
+				<ControlPageLabel>action_from_device</ControlPageLabel>
 			</State>
 			<State id="MAC">
 				<ValueType>String</ValueType>
@@ -594,10 +1089,10 @@
 				<TriggerLabel>ipv4_method</TriggerLabel>
 				<ControlPageLabel>ipv4_method</ControlPageLabel>
 			</State>
-			<State id="cloud_enabled">
+			<State id="cloud">
 				<ValueType>String</ValueType>
-				<TriggerLabel>cloud_enabled</TriggerLabel>
-				<ControlPageLabel>cloud_enabled</ControlPageLabel>
+				<TriggerLabel>cloud</TriggerLabel>
+				<ControlPageLabel>cloud</ControlPageLabel>
 			</State>
 			<State id="software_update_available">
 				<ValueType>String</ValueType>
@@ -666,7 +1161,7 @@
 					<Option value="86400">after 24 hours</Option>
 				</List>
 			</Field>
-		<Field id="displaySelect" type="menu" defaultValue="event_cnt">
+			<Field id="displaySelect" type="menu" defaultValue="event_cnt">
 				<Label>state to show in status column:</Label>
 				<List>
 					<Option value="event_cnt">last event= eventCount#-type</Option>
@@ -741,16 +1236,26 @@
 				<TriggerLabel>event_cnt</TriggerLabel>
 				<ControlPageLabel>event_cnt</ControlPageLabel>
 			</State>
+			<State id="lastEvent">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastEvent</TriggerLabel>
+				<ControlPageLabel>lastEvent</ControlPageLabel>
+			</State>			<!--   this is same for all: -->
 			<!--   this is same for all: -->
 			<State id="lastSuccessfullConfigPush">
 				<ValueType>String</ValueType>
 				<TriggerLabel>lastSuccessfullConfigPush</TriggerLabel>
 				<ControlPageLabel>lastSuccessfullConfigPush</ControlPageLabel>
 			</State>
-			<State id="action_from_Device">
+			<State id="action_from_device">
 				<ValueType>String</ValueType>
-				<TriggerLabel>action_from_Device</TriggerLabel>
-				<ControlPageLabel>action_from_Device</ControlPageLabel>
+				<TriggerLabel>action_from_device</TriggerLabel>
+				<ControlPageLabel>action_from_device</ControlPageLabel>
+			</State>
+			<State id="charger">
+				<ValueType>String</ValueType>
+				<TriggerLabel>charger</TriggerLabel>
+				<ControlPageLabel>charger</ControlPageLabel>
 			</State>
 			<State id="MAC">
 				<ValueType>String</ValueType>
@@ -782,10 +1287,10 @@
 				<TriggerLabel>ipv4_method</TriggerLabel>
 				<ControlPageLabel>ipv4_method</ControlPageLabel>
 			</State>
-			<State id="cloud_enabled">
+			<State id="cloud">
 				<ValueType>String</ValueType>
-				<TriggerLabel>cloud_enabled</TriggerLabel>
-				<ControlPageLabel>cloud_enabled</ControlPageLabel>
+				<TriggerLabel>cloud</TriggerLabel>
+				<ControlPageLabel>cloud</ControlPageLabel>
 			</State>
 			<State id="software_update_available">
 				<ValueType>String</ValueType>
@@ -959,10 +1464,10 @@
 				<TriggerLabel>lastSuccessfullConfigPush</TriggerLabel>
 				<ControlPageLabel>lastSuccessfullConfigPush</ControlPageLabel>
 			</State>
-			<State id="action_from_Device">
+			<State id="action_from_device">
 				<ValueType>String</ValueType>
-				<TriggerLabel>action_from_Device</TriggerLabel>
-				<ControlPageLabel>action_from_Device</ControlPageLabel>
+				<TriggerLabel>action_from_device</TriggerLabel>
+				<ControlPageLabel>action_from_device</ControlPageLabel>
 			</State>
 			<State id="MAC">
 				<ValueType>String</ValueType>
@@ -994,10 +1499,10 @@
 				<TriggerLabel>ipv4_method</TriggerLabel>
 				<ControlPageLabel>ipv4_method</ControlPageLabel>
 			</State>
-			<State id="cloud_enabled">
+			<State id="cloud">
 				<ValueType>String</ValueType>
-				<TriggerLabel>cloud_enabled</TriggerLabel>
-				<ControlPageLabel>cloud_enabled</ControlPageLabel>
+				<TriggerLabel>cloud</TriggerLabel>
+				<ControlPageLabel>cloud</ControlPageLabel>
 			</State>
 			<State id="software_update_available">
 				<ValueType>String</ValueType>
@@ -1144,10 +1649,10 @@
 				<TriggerLabel>lastSuccessfullConfigPush</TriggerLabel>
 				<ControlPageLabel>lastSuccessfullConfigPush</ControlPageLabel>
 			</State>
-			<State id="action_from_Device">
+			<State id="action_from_device">
 				<ValueType>String</ValueType>
-				<TriggerLabel>action_from_Device</TriggerLabel>
-				<ControlPageLabel>action_from_Device</ControlPageLabel>
+				<TriggerLabel>action_from_device</TriggerLabel>
+				<ControlPageLabel>action_from_device</ControlPageLabel>
 			</State>
 			<State id="MAC">
 				<ValueType>String</ValueType>
@@ -1179,10 +1684,10 @@
 				<TriggerLabel>ipv4_method</TriggerLabel>
 				<ControlPageLabel>ipv4_method</ControlPageLabel>
 			</State>
-			<State id="cloud_enabled">
+			<State id="cloud">
 				<ValueType>String</ValueType>
-				<TriggerLabel>cloud_enabled</TriggerLabel>
-				<ControlPageLabel>cloud_enabled</ControlPageLabel>
+				<TriggerLabel>cloud</TriggerLabel>
+				<ControlPageLabel>cloud</ControlPageLabel>
 			</State>
 			<State id="software_update_available">
 				<ValueType>String</ValueType>
@@ -1314,10 +1819,10 @@
 				<TriggerLabel>lastSuccessfullConfigPush</TriggerLabel>
 				<ControlPageLabel>lastSuccessfullConfigPush</ControlPageLabel>
 			</State>
-			<State id="action_from_Device">
+			<State id="action_from_device">
 				<ValueType>String</ValueType>
-				<TriggerLabel>action_from_Device</TriggerLabel>
-				<ControlPageLabel>action_from_Device</ControlPageLabel>
+				<TriggerLabel>action_from_device</TriggerLabel>
+				<ControlPageLabel>action_from_device</ControlPageLabel>
 			</State>
 			<State id="MAC">
 				<ValueType>String</ValueType>
@@ -1349,10 +1854,10 @@
 				<TriggerLabel>ipv4_method</TriggerLabel>
 				<ControlPageLabel>ipv4_method</ControlPageLabel>
 			</State>
-			<State id="cloud_enabled">
+			<State id="cloud">
 				<ValueType>String</ValueType>
-				<TriggerLabel>cloud_enabled</TriggerLabel>
-				<ControlPageLabel>cloud_enabled</ControlPageLabel>
+				<TriggerLabel>cloud</TriggerLabel>
+				<ControlPageLabel>cloud</ControlPageLabel>
 			</State>
 			<State id="software_update_available">
 				<ValueType>String</ValueType>
@@ -1493,10 +1998,10 @@
 				<TriggerLabel>lastSuccessfullConfigPush</TriggerLabel>
 				<ControlPageLabel>lastSuccessfullConfigPush</ControlPageLabel>
 			</State>
-			<State id="action_from_Device">
+			<State id="action_from_device">
 				<ValueType>String</ValueType>
-				<TriggerLabel>action_from_Device</TriggerLabel>
-				<ControlPageLabel>action_from_Device</ControlPageLabel>
+				<TriggerLabel>action_from_device</TriggerLabel>
+				<ControlPageLabel>action_from_device</ControlPageLabel>
 			</State>
 			<State id="MAC">
 				<ValueType>String</ValueType>
@@ -1528,10 +2033,10 @@
 				<TriggerLabel>ipv4_method</TriggerLabel>
 				<ControlPageLabel>ipv4_method</ControlPageLabel>
 			</State>
-			<State id="cloud_enabled">
+			<State id="cloud">
 				<ValueType>String</ValueType>
-				<TriggerLabel>cloud_enabled</TriggerLabel>
-				<ControlPageLabel>cloud_enabled</ControlPageLabel>
+				<TriggerLabel>cloud</TriggerLabel>
+				<ControlPageLabel>cloud</ControlPageLabel>
 			</State>
 			<State id="software_update_available">
 				<ValueType>String</ValueType>
@@ -1830,10 +2335,10 @@ you can change the device type to 2 relays below</Label>
 				<TriggerLabel>lastSuccessfullConfigPush</TriggerLabel>
 				<ControlPageLabel>lastSuccessfullConfigPush</ControlPageLabel>
 			</State>
-			<State id="action_from_Device">
+			<State id="action_from_device">
 				<ValueType>String</ValueType>
-				<TriggerLabel>action_from_Device</TriggerLabel>
-				<ControlPageLabel>action_from_Device</ControlPageLabel>
+				<TriggerLabel>action_from_device</TriggerLabel>
+				<ControlPageLabel>action_from_device</ControlPageLabel>
 			</State>
 			<State id="MAC">
 				<ValueType>String</ValueType>
@@ -1865,10 +2370,10 @@ you can change the device type to 2 relays below</Label>
 				<TriggerLabel>ipv4_method</TriggerLabel>
 				<ControlPageLabel>ipv4_method</ControlPageLabel>
 			</State>
-			<State id="cloud_enabled">
+			<State id="cloud">
 				<ValueType>String</ValueType>
-				<TriggerLabel>cloud_enabled</TriggerLabel>
-				<ControlPageLabel>cloud_enabled</ControlPageLabel>
+				<TriggerLabel>cloud</TriggerLabel>
+				<ControlPageLabel>cloud</ControlPageLabel>
 			</State>
 			<State id="software_update_available">
 				<ValueType>String</ValueType>
@@ -2062,10 +2567,10 @@ you can change the device type to roller below</Label>
 				<TriggerLabel>lastSuccessfullConfigPush</TriggerLabel>
 				<ControlPageLabel>lastSuccessfullConfigPush</ControlPageLabel>
 			</State>
-			<State id="action_from_Device">
+			<State id="action_from_device">
 				<ValueType>String</ValueType>
-				<TriggerLabel>action_from_Device</TriggerLabel>
-				<ControlPageLabel>action_from_Device</ControlPageLabel>
+				<TriggerLabel>action_from_device</TriggerLabel>
+				<ControlPageLabel>action_from_device</ControlPageLabel>
 			</State>
 			<State id="MAC">
 				<ValueType>String</ValueType>
@@ -2097,10 +2602,10 @@ you can change the device type to roller below</Label>
 				<TriggerLabel>ipv4_method</TriggerLabel>
 				<ControlPageLabel>ipv4_method</ControlPageLabel>
 			</State>
-			<State id="cloud_enabled">
+			<State id="cloud">
 				<ValueType>String</ValueType>
-				<TriggerLabel>cloud_enabled</TriggerLabel>
-				<ControlPageLabel>cloud_enabled</ControlPageLabel>
+				<TriggerLabel>cloud</TriggerLabel>
+				<ControlPageLabel>cloud</ControlPageLabel>
 			</State>
 			<State id="software_update_available">
 				<ValueType>String</ValueType>
@@ -2251,10 +2756,10 @@ you can change the device type to roller below</Label>
 				<TriggerLabel>lastSuccessfullConfigPush</TriggerLabel>
 				<ControlPageLabel>lastSuccessfullConfigPush</ControlPageLabel>
 			</State>
-			<State id="action_from_Device">
+			<State id="action_from_device">
 				<ValueType>String</ValueType>
-				<TriggerLabel>action_from_Device</TriggerLabel>
-				<ControlPageLabel>action_from_Device</ControlPageLabel>
+				<TriggerLabel>action_from_device</TriggerLabel>
+				<ControlPageLabel>action_from_device</ControlPageLabel>
 			</State>
 			<State id="MAC">
 				<ValueType>String</ValueType>
@@ -2286,10 +2791,10 @@ you can change the device type to roller below</Label>
 				<TriggerLabel>ipv4_method</TriggerLabel>
 				<ControlPageLabel>ipv4_method</ControlPageLabel>
 			</State>
-			<State id="cloud_enabled">
+			<State id="cloud">
 				<ValueType>String</ValueType>
-				<TriggerLabel>cloud_enabled</TriggerLabel>
-				<ControlPageLabel>cloud_enabled</ControlPageLabel>
+				<TriggerLabel>cloud</TriggerLabel>
+				<ControlPageLabel>cloud</ControlPageLabel>
 			</State>
 			<State id="software_update_available">
 				<ValueType>String</ValueType>
@@ -2435,10 +2940,10 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<TriggerLabel>lastSuccessfullConfigPush</TriggerLabel>
 				<ControlPageLabel>lastSuccessfullConfigPush</ControlPageLabel>
 			</State>
-			<State id="action_from_Device">
+			<State id="action_from_device">
 				<ValueType>String</ValueType>
-				<TriggerLabel>action_from_Device</TriggerLabel>
-				<ControlPageLabel>action_from_Device</ControlPageLabel>
+				<TriggerLabel>action_from_device</TriggerLabel>
+				<ControlPageLabel>action_from_device</ControlPageLabel>
 			</State>
 			<State id="MAC">
 				<ValueType>String</ValueType>
@@ -2470,10 +2975,10 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<TriggerLabel>ipv4_method</TriggerLabel>
 				<ControlPageLabel>ipv4_method</ControlPageLabel>
 			</State>
-			<State id="cloud_enabled">
+			<State id="cloud">
 				<ValueType>String</ValueType>
-				<TriggerLabel>cloud_enabled</TriggerLabel>
-				<ControlPageLabel>cloud_enabled</ControlPageLabel>
+				<TriggerLabel>cloud</TriggerLabel>
+				<ControlPageLabel>cloud</ControlPageLabel>
 			</State>
 			<State id="software_update_available">
 				<ValueType>String</ValueType>
@@ -2603,10 +3108,10 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<TriggerLabel>lastSuccessfullConfigPush</TriggerLabel>
 				<ControlPageLabel>lastSuccessfullConfigPush</ControlPageLabel>
 			</State>
-			<State id="action_from_Device">
+			<State id="action_from_device">
 				<ValueType>String</ValueType>
-				<TriggerLabel>action_from_Device</TriggerLabel>
-				<ControlPageLabel>action_from_Device</ControlPageLabel>
+				<TriggerLabel>action_from_device</TriggerLabel>
+				<ControlPageLabel>action_from_device</ControlPageLabel>
 			</State>
 			<State id="MAC">
 				<ValueType>String</ValueType>
@@ -2638,10 +3143,10 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<TriggerLabel>ipv4_method</TriggerLabel>
 				<ControlPageLabel>ipv4_method</ControlPageLabel>
 			</State>
-			<State id="cloud_enabled">
+			<State id="cloud">
 				<ValueType>String</ValueType>
-				<TriggerLabel>cloud_enabled</TriggerLabel>
-				<ControlPageLabel>cloud_enabled</ControlPageLabel>
+				<TriggerLabel>cloud</TriggerLabel>
+				<ControlPageLabel>cloud</ControlPageLabel>
 			</State>
 			<State id="software_update_available">
 				<ValueType>String</ValueType>
@@ -2677,6 +3182,9 @@ Parent and child share the same connection, the plugin creates two devices to be
 			</Field>
 			<Field id="AllowSensorValueChange" type="checkbox" defaultValue="false" hidden="true">
 				<Label>AllowSensorValueChange</Label>
+			</Field>
+			<Field id="usesInputForOnOff" type="checkbox" defaultValue="false" hidden="true">
+				<Label>usesInputForOnOff</Label>
 			</Field>
 			<Field id="SupportsColor" type="checkbox" defaultValue="true" hidden="true">
 				<Label>SupportsColor</Label>
@@ -2771,10 +3279,10 @@ Parent and child share the same connection, the plugin creates two devices to be
 			</State>
  -->
 			<!--   this is same for all: -->
-			<State id="action_from_Device">
+			<State id="action_from_device">
 				<ValueType>String</ValueType>
-				<TriggerLabel>action_from_Device</TriggerLabel>
-				<ControlPageLabel>action_from_Device</ControlPageLabel>
+				<TriggerLabel>action_from_device</TriggerLabel>
+				<ControlPageLabel>action_from_device</ControlPageLabel>
 			</State>
 			<State id="MAC">
 				<ValueType>String</ValueType>
@@ -2806,10 +3314,10 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<TriggerLabel>ipv4_method</TriggerLabel>
 				<ControlPageLabel>ipv4_method</ControlPageLabel>
 			</State>
-			<State id="cloud_enabled">
+			<State id="cloud">
 				<ValueType>String</ValueType>
-				<TriggerLabel>cloud_enabled</TriggerLabel>
-				<ControlPageLabel>cloud_enabled</ControlPageLabel>
+				<TriggerLabel>cloud</TriggerLabel>
+				<ControlPageLabel>cloud</ControlPageLabel>
 			</State>
 			<State id="software_update_available">
 				<ValueType>String</ValueType>
@@ -2845,6 +3353,9 @@ Parent and child share the same connection, the plugin creates two devices to be
 			</Field>
 			<Field id="AllowSensorValueChange" type="checkbox" defaultValue="false" hidden="true">
 				<Label>AllowSensorValueChange</Label>
+			</Field>
+			<Field id="usesInputForOnOff" type="checkbox" defaultValue="false" hidden="true">
+				<Label>usesInputForOnOff</Label>
 			</Field>
 			<Field id="SupportsWhiteTemperature" type="checkbox" defaultValue="false" hidden="true">
 				<Label>SupportsWhiteTemperature</Label>
@@ -2942,10 +3453,10 @@ C) White Only</Label>
 			</State>
  -->
 			<!--   this is same for all: -->
-			<State id="action_from_Device">
+			<State id="action_from_device">
 				<ValueType>String</ValueType>
-				<TriggerLabel>action_from_Device</TriggerLabel>
-				<ControlPageLabel>action_from_Device</ControlPageLabel>
+				<TriggerLabel>action_from_device</TriggerLabel>
+				<ControlPageLabel>action_from_device</ControlPageLabel>
 			</State>
 			<State id="MAC">
 				<ValueType>String</ValueType>
@@ -2977,10 +3488,10 @@ C) White Only</Label>
 				<TriggerLabel>ipv4_method</TriggerLabel>
 				<ControlPageLabel>ipv4_method</ControlPageLabel>
 			</State>
-			<State id="cloud_enabled">
+			<State id="cloud">
 				<ValueType>String</ValueType>
-				<TriggerLabel>cloud_enabled</TriggerLabel>
-				<ControlPageLabel>cloud_enabled</ControlPageLabel>
+				<TriggerLabel>cloud</TriggerLabel>
+				<ControlPageLabel>cloud</ControlPageLabel>
 			</State>
 			<State id="software_update_available">
 				<ValueType>String</ValueType>
@@ -3016,6 +3527,9 @@ C) White Only</Label>
 			</Field>
 			<Field id="AllowSensorValueChange" type="checkbox" defaultValue="false" hidden="true">
 				<Label>AllowSensorValueChange</Label>
+			</Field>
+			<Field id="usesInputForOnOff" type="checkbox" defaultValue="false" hidden="true">
+				<Label>usesInputForOnOff</Label>
 			</Field>
 			<Field id="SupportsColor" type="checkbox" defaultValue="false" hidden="true">
 				<Label>SupportsColor</Label>
@@ -3228,10 +3742,10 @@ C) White Only</Label>
 				<TriggerLabel>lastSuccessfullConfigPush</TriggerLabel>
 				<ControlPageLabel>lastSuccessfullConfigPush</ControlPageLabel>
 			</State>
-			<State id="action_from_Device">
+			<State id="action_from_device">
 				<ValueType>String</ValueType>
-				<TriggerLabel>action_from_Device</TriggerLabel>
-				<ControlPageLabel>action_from_Device</ControlPageLabel>
+				<TriggerLabel>action_from_device</TriggerLabel>
+				<ControlPageLabel>action_from_device</ControlPageLabel>
 			</State>
 			<State id="MAC">
 				<ValueType>String</ValueType>
@@ -3263,10 +3777,10 @@ C) White Only</Label>
 				<TriggerLabel>ipv4_method</TriggerLabel>
 				<ControlPageLabel>ipv4_method</ControlPageLabel>
 			</State>
-			<State id="cloud_enabled">
+			<State id="cloud">
 				<ValueType>String</ValueType>
-				<TriggerLabel>cloud_enabled</TriggerLabel>
-				<ControlPageLabel>cloud_enabled</ControlPageLabel>
+				<TriggerLabel>cloud</TriggerLabel>
+				<ControlPageLabel>cloud</ControlPageLabel>
 			</State>
 			<State id="software_update_available">
 				<ValueType>String</ValueType>
@@ -3312,6 +3826,9 @@ C) White Only</Label>
 			</Field>
 			<Field id="AllowSensorValueChange" type="checkbox" defaultValue="false" hidden="true">
 				<Label>AllowSensorValueChange</Label>
+			</Field>
+			<Field id="usesInputForOnOff" type="checkbox" defaultValue="false" hidden="true">
+				<Label>usesInputForOnOff</Label>
 			</Field>
 			<Field id="WhiteTemperatureMin" type="textfield" defaultValue="2700" hidden="true" />
 			<Field id="WhiteTemperatureMax" type="textfield" defaultValue="6500" hidden="true" />
@@ -3407,10 +3924,10 @@ C) White Only</Label>
 				<TriggerLabel>power</TriggerLabel>
 				<ControlPageLabel>power</ControlPageLabel>
 			</State>
-			<State id="action_from_Device">
+			<State id="action_from_device">
 				<ValueType>String</ValueType>
-				<TriggerLabel>action_from_Device</TriggerLabel>
-				<ControlPageLabel>action_from_Device</ControlPageLabel>
+				<TriggerLabel>action_from_device</TriggerLabel>
+				<ControlPageLabel>action_from_device</ControlPageLabel>
 			</State>
 			<State id="MAC">
 				<ValueType>String</ValueType>
@@ -3447,10 +3964,10 @@ C) White Only</Label>
 				<TriggerLabel>ipv4_method</TriggerLabel>
 				<ControlPageLabel>ipv4_method</ControlPageLabel>
 			</State>
-			<State id="cloud_enabled">
+			<State id="cloud">
 				<ValueType>String</ValueType>
-				<TriggerLabel>cloud_enabled</TriggerLabel>
-				<ControlPageLabel>cloud_enabled</ControlPageLabel>
+				<TriggerLabel>cloud</TriggerLabel>
+				<ControlPageLabel>cloud</ControlPageLabel>
 			</State>
 			<State id="software_update_available">
 				<ValueType>String</ValueType>
@@ -3486,6 +4003,9 @@ C) White Only</Label>
 			</Field>
 			<Field id="AllowSensorValueChange" type="checkbox" defaultValue="false" hidden="true">
 				<Label>AllowSensorValueChange</Label>
+			</Field>
+			<Field id="usesInputForOnOff" type="checkbox" defaultValue="false" hidden="true">
+				<Label>usesInputForOnOff</Label>
 			</Field>
 			<Field id="SupportsColor" type="checkbox" defaultValue="false" hidden="true">
 				<Label>SupportsColor</Label>
@@ -3579,10 +4099,10 @@ C) White Only</Label>
 				<TriggerLabel>power</TriggerLabel>
 				<ControlPageLabel>power</ControlPageLabel>
 			</State>
-			<State id="action_from_Device">
+			<State id="action_from_device">
 				<ValueType>String</ValueType>
-				<TriggerLabel>action_from_Device</TriggerLabel>
-				<ControlPageLabel>action_from_Device</ControlPageLabel>
+				<TriggerLabel>action_from_device</TriggerLabel>
+				<ControlPageLabel>action_from_device</ControlPageLabel>
 			</State>
 			<State id="MAC">
 				<ValueType>String</ValueType>
@@ -3614,10 +4134,10 @@ C) White Only</Label>
 				<TriggerLabel>ipv4_method</TriggerLabel>
 				<ControlPageLabel>ipv4_method</ControlPageLabel>
 			</State>
-			<State id="cloud_enabled">
+			<State id="cloud">
 				<ValueType>String</ValueType>
-				<TriggerLabel>cloud_enabled</TriggerLabel>
-				<ControlPageLabel>cloud_enabled</ControlPageLabel>
+				<TriggerLabel>cloud</TriggerLabel>
+				<ControlPageLabel>cloud</ControlPageLabel>
 			</State>
 			<State id="software_update_available">
 				<ValueType>String</ValueType>
@@ -3781,10 +4301,10 @@ C) White Only</Label>
 				<TriggerLabel>lastSuccessfullConfigPush</TriggerLabel>
 				<ControlPageLabel>lastSuccessfullConfigPush</ControlPageLabel>
 			</State>
-			<State id="action_from_Device">
+			<State id="action_from_device">
 				<ValueType>String</ValueType>
-				<TriggerLabel>action_from_Device</TriggerLabel>
-				<ControlPageLabel>action_from_Device</ControlPageLabel>
+				<TriggerLabel>action_from_device</TriggerLabel>
+				<ControlPageLabel>action_from_device</ControlPageLabel>
 			</State>
 			<State id="MAC">
 				<ValueType>String</ValueType>
@@ -3826,10 +4346,10 @@ C) White Only</Label>
 				<TriggerLabel>ipv4_method</TriggerLabel>
 				<ControlPageLabel>ipv4_method</ControlPageLabel>
 			</State>
-			<State id="cloud_enabled">
+			<State id="cloud">
 				<ValueType>String</ValueType>
-				<TriggerLabel>cloud_enabled</TriggerLabel>
-				<ControlPageLabel>cloud_enabled</ControlPageLabel>
+				<TriggerLabel>cloud</TriggerLabel>
+				<ControlPageLabel>cloud</ControlPageLabel>
 			</State>
 			<State id="software_update_available">
 				<ValueType>String</ValueType>
@@ -3980,10 +4500,10 @@ C) White Only</Label>
 				<TriggerLabel>lastSuccessfullConfigPush</TriggerLabel>
 				<ControlPageLabel>lastSuccessfullConfigPush</ControlPageLabel>
 			</State>
-			<State id="action_from_Device">
+			<State id="action_from_device">
 				<ValueType>String</ValueType>
-				<TriggerLabel>action_from_Device</TriggerLabel>
-				<ControlPageLabel>action_from_Device</ControlPageLabel>
+				<TriggerLabel>action_from_device</TriggerLabel>
+				<ControlPageLabel>action_from_device</ControlPageLabel>
 			</State>
 			<State id="MAC">
 				<ValueType>String</ValueType>
@@ -4015,10 +4535,10 @@ C) White Only</Label>
 				<TriggerLabel>ipv4_method</TriggerLabel>
 				<ControlPageLabel>ipv4_method</ControlPageLabel>
 			</State>
-			<State id="cloud_enabled">
+			<State id="cloud">
 				<ValueType>String</ValueType>
-				<TriggerLabel>cloud_enabled</TriggerLabel>
-				<ControlPageLabel>cloud_enabled</ControlPageLabel>
+				<TriggerLabel>cloud</TriggerLabel>
+				<ControlPageLabel>cloud</ControlPageLabel>
 			</State>
 			<State id="software_update_available">
 				<ValueType>String</ValueType>
@@ -4265,6 +4785,9 @@ for connection parameters check the parent (SHELLY host device)</Label>
 			<Field id="AllowSensorValueChange" type="checkbox" defaultValue="false" hidden="true">
 				<Label>AllowSensorValueChange</Label>
 			</Field>
+			<Field id="usesInputForOnOff" type="checkbox" defaultValue="false" hidden="true">
+				<Label>usesInputForOnOff</Label>
+			</Field>
 			<Field id="label1" type="label">
 				<Label>Parameters for Shelly-Flood device</Label>
 			</Field>
@@ -4418,10 +4941,10 @@ for connection parameters check the parent (SHELLY host device)</Label>
 				<TriggerLabel>batteryVoltage</TriggerLabel>
 				<ControlPageLabel>batteryVoltage</ControlPageLabel>
 			</State>
-			<State id="action_from_Device">
+			<State id="action_from_device">
 				<ValueType>String</ValueType>
-				<TriggerLabel>action_from_Device</TriggerLabel>
-				<ControlPageLabel>action_from_Device</ControlPageLabel>
+				<TriggerLabel>action_from_device</TriggerLabel>
+				<ControlPageLabel>action_from_device</ControlPageLabel>
 			</State>
 			<State id="MAC">
 				<ValueType>String</ValueType>
@@ -4458,10 +4981,10 @@ for connection parameters check the parent (SHELLY host device)</Label>
 				<TriggerLabel>ipv4_method</TriggerLabel>
 				<ControlPageLabel>ipv4_method</ControlPageLabel>
 			</State>
-			<State id="cloud_enabled">
+			<State id="cloud">
 				<ValueType>String</ValueType>
-				<TriggerLabel>cloud_enabled</TriggerLabel>
-				<ControlPageLabel>cloud_enabled</ControlPageLabel>
+				<TriggerLabel>cloud</TriggerLabel>
+				<ControlPageLabel>cloud</ControlPageLabel>
 			</State>
 			<State id="software_update_available">
 				<ValueType>String</ValueType>
@@ -4499,6 +5022,9 @@ for connection parameters check the parent (SHELLY host device)</Label>
 			</Field>
 			<Field id="AllowSensorValueChange" type="checkbox" defaultValue="false" hidden="true">
 				<Label>AllowSensorValueChange</Label>
+			</Field>
+			<Field id="usesInputForOnOff" type="checkbox" defaultValue="false" hidden="true">
+				<Label>usesInputForOnOff</Label>
 			</Field>
 			<Field id="label1" type="label">
 				<Label>Parameters for Shelly-Smoke device</Label>
@@ -4555,8 +5081,8 @@ for connection parameters check the parent (SHELLY host device)</Label>
 				<List>
 					<Option value="0-800"   >high:  medium>0; high>800 ppm;</Option>
 					<Option value="800-1500" >medium: medium>800; high>1500 ppm;</Option>
-					<Option value="1000-2000">lower: medium>1000; high>2000 ppm;</Option>
-					<Option value="sensor"   >least- sensor defs: medium>~2000; high>~4000 ppm</Option>
+					<Option value="1200-2000">lower: medium>1200; high>2000 ppm;</Option>
+					<Option value="sensor"   >least- sensor defs: medium>1800; high>3000 ppm</Option>
 				</List>
 			</Field>
 			<Field id="useAlarmLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
@@ -4682,10 +5208,10 @@ for connection parameters check the parent (SHELLY host device)</Label>
 				<TriggerLabel>ipv4_method</TriggerLabel>
 				<ControlPageLabel>ipv4_method</ControlPageLabel>
 			</State>
-			<State id="cloud_enabled">
+			<State id="cloud">
 				<ValueType>String</ValueType>
-				<TriggerLabel>cloud_enabled</TriggerLabel>
-				<ControlPageLabel>cloud_enabled</ControlPageLabel>
+				<TriggerLabel>cloud</TriggerLabel>
+				<ControlPageLabel>cloud</ControlPageLabel>
 			</State>
 			<State id="software_update_available">
 				<ValueType>String</ValueType>
@@ -4722,6 +5248,9 @@ for connection parameters check the parent (SHELLY host device)</Label>
 			</Field>
 			<Field id="AllowSensorValueChange" type="checkbox" defaultValue="false" hidden="true">
 				<Label>AllowSensorValueChange</Label>
+			</Field>
+			<Field id="usesInputForOnOff" type="checkbox" defaultValue="false" hidden="true">
+				<Label>usesInputForOnOff</Label>
 			</Field>
 			<Field id="label1" type="label">
 				<Label>Parameters for Shelly-Door Window device</Label>
@@ -4869,10 +5398,10 @@ for connection parameters check the parent (SHELLY host device)</Label>
 				<TriggerLabel>batteryVoltage</TriggerLabel>
 				<ControlPageLabel>batteryVoltage</ControlPageLabel>
 			</State>
-			<State id="action_from_Device">
+			<State id="action_from_device">
 				<ValueType>String</ValueType>
-				<TriggerLabel>action_from_Device</TriggerLabel>
-				<ControlPageLabel>action_from_Device</ControlPageLabel>
+				<TriggerLabel>action_from_device</TriggerLabel>
+				<ControlPageLabel>action_from_device</ControlPageLabel>
 			</State>
 			<State id="MAC">
 				<ValueType>String</ValueType>
@@ -4909,10 +5438,10 @@ for connection parameters check the parent (SHELLY host device)</Label>
 				<TriggerLabel>ipv4_method</TriggerLabel>
 				<ControlPageLabel>ipv4_method</ControlPageLabel>
 			</State>
-			<State id="cloud_enabled">
+			<State id="cloud">
 				<ValueType>String</ValueType>
-				<TriggerLabel>cloud_enabled</TriggerLabel>
-				<ControlPageLabel>cloud_enabled</ControlPageLabel>
+				<TriggerLabel>cloud</TriggerLabel>
+				<ControlPageLabel>cloud</ControlPageLabel>
 			</State>
 			<State id="software_update_available">
 				<ValueType>String</ValueType>

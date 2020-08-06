@@ -34,7 +34,7 @@ except ImportError:
 ################################################################################
 
 ##
-_definedShellyDeviceswAction	= ["shelly1","shelly1pm","shellyswitch25","shellyswitch25-roller","shellyem","shellydimmer","shellyflood","shellyht", "shellyem3","shellyplug","shellyplug-s","shelly4pro","shellydw","shellygas","shellybutton1"]
+_definedShellyDeviceswAction	= ["shelly1","shelly1pm","shellyswitch25","shellyswitch25-roller","shellyem","shellydimmer","shellyflood","shellyht", "shellyem3","shellyplug","shellyplug-s","shelly4pro","shellydw","shellygas","shellybutton1","shellyix3"]
 
 
 ## which child type 
@@ -43,6 +43,7 @@ _childDevTypes					= {	"ext_temperature":{			"state":"Temperature",	"dataKey":"t
 									"ext_humidity":{			"state":"Humidity",		"dataKey":"hum","nameExt":"_ext_hum_"},
 									"shellyht-child":{			"state":"Humidity",		"dataKey":"hum","nameExt":"_hum_"},
 									"shellyswitch25-child":{	"state":"",				"dataKey":"",	"nameExt":"_relay-2"},
+									"shellyix3-child":{			"state":"",				"dataKey":"",	"nameExt":"_input-2"},
 									"shelly4pro-child":{		"state":"",				"dataKey":"",	"nameExt":"_relay-2"},
 									"shellyem-child":{			"state":"",				"dataKey":"",	"nameExt":"_EM"}
 								}
@@ -120,6 +121,7 @@ settingCmds ={
 			 "SENDTOSHELLYDEVICE-light_1_default_state":		["settings/light/1?default_state=",			"default_state"],
 			 "SENDTOSHELLYDEVICE-light_1_name":					["settings/light/1?name=",					"name"],
 			### button device
+			 "SENDTOSHELLYDEVICE-longpush_duration_ms_min":		["settings/?longpush_duration_ms_min=",		"longpush_duration_ms_min"],
 			 "SENDTOSHELLYDEVICE-longpush_duration_ms_max":		["settings/?longpush_duration_ms_max=",		"longpush_duration_ms_max"],
 			 "SENDTOSHELLYDEVICE-multipush_time_between_pushes_ms_max": ["settings/?multipush_time_between_pushes_ms_max=", "multipush_time_between_pushes_ms_max"],
 			### misc settings
@@ -156,7 +158,7 @@ settingCmds ={
 _alarmStates= ["none","mild","high","unknown","test"]
 ## these are the properties of the shelly devices
 _emptyProps = {	# switches
-				"shellyplug-s":{"props":{"isShellyDevice":True, "isRelay":True, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
+				"shellyplug-s":{"props":{"isShellyDevice":True, "usesInputForOnOff":False, "isRelay":True, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
 						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
 						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":False,"ipNumber":"", "MAC":"", "pollingFrequency":-1, "automaticPollingFrequency":100, "expirationSeconds":180 },
 						"setPageActionPageOnShellyDev":{"0":"relay/0?","1":"relay/1?"},
@@ -166,7 +168,7 @@ _emptyProps = {	# switches
 						"tempUnits":"C"
 						},
 
-				"shellyplug":{"props":{"isShellyDevice":True, "isRelay":True, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
+				"shellyplug":{"props":{"isShellyDevice":True, "usesInputForOnOff":False, "isRelay":True, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
 						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
 						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":False,"ipNumber":"", "MAC":"", "pollingFrequency":-1, "automaticPollingFrequency":100, "expirationSeconds":180 },
 						"setPageActionPageOnShellyDev":{"0":"relay/0?","1":"relay/1?"},
@@ -176,7 +178,7 @@ _emptyProps = {	# switches
 						"tempUnits":"C"
 						},
 
-				"shelly":{"props":{"isShellyDevice":True, "isRelay":True, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":False, "SupportsStatusRequest":False, "AllowOnStateChange":False,  
+				"shelly":{"props":{"isShellyDevice":True, "usesInputForOnOff":False, "isRelay":True, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":False, "SupportsStatusRequest":False, "AllowOnStateChange":False,  
 						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
 						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":False,"ipNumber":"", "MAC":"", "pollingFrequency":-1, "automaticPollingFrequency":100, "expirationSeconds":57600},
 						"action_url":   {"settings/input/0?":{"shortpush_url":"button=S", "double_shortpush_url":"button=SS", "triple_shortpush_url":"button=SSS", "longpush_url":"button=L"}},
@@ -184,7 +186,7 @@ _emptyProps = {	# switches
 						"childTypes_SplitDevices":[]
 						},
 
-				"shelly1":{"props":{"isShellyDevice":True, "isRelay":True, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
+				"shelly1":{"props":{"isShellyDevice":True, "usesInputForOnOff":False, "isRelay":True, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
 						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
 						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":False,"ipNumber":"", "MAC":"", "pollingFrequency":-1, "automaticPollingFrequency":100, "expirationSeconds":180 },
 						"setPageActionPageOnShellyDev":{"0":"relay/0?","1":"relay/1?"},
@@ -194,7 +196,7 @@ _emptyProps = {	# switches
 						"tempUnits":"C"
 						},
 			
-				"shelly1pm":{"props":{"isShellyDevice":True, "isRelay":True, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
+				"shelly1pm":{"props":{"isShellyDevice":True, "usesInputForOnOff":False, "isRelay":True, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
 						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
 						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":100,  "expirationSeconds":180 },
 						"setPageActionPageOnShellyDev":{"0":"relay/0?","1":"relay/1?"},
@@ -205,7 +207,7 @@ _emptyProps = {	# switches
 						"tempUnits":"C"
 						},
 			
-				"shellygas":{"props":{"isShellyDevice":True, "isRelay":False, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
+				"shellygas":{"props":{"isShellyDevice":True, "usesInputForOnOff":False, "isRelay":False, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
 						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
 						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":50,  "expirationSeconds":180 ,"displaySelect":"Gas_concentration", "useAlarm":"10-600"},
 						"setPageActionPageOnShellyDev":{"self_test":"self_test","mute":"mute","unmute":"unmute"},
@@ -214,7 +216,7 @@ _emptyProps = {	# switches
 						"childTypes_SplitDevices":[]
 						},
 
-			 	"shellyswitch25-roller":{"props":{"isShellyDevice":True, "isRelay":False, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
+			 	"shellyswitch25-roller":{"props":{"isShellyDevice":True, "usesInputForOnOff":False, "isRelay":False, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
 						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
 						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":100,  "expirationSeconds":180, "mode":"roller"},
 						"setPageActionPageOnShellyDev":{"0":"relay/0?","1":"relay/1?","roller":"roller/0?"},
@@ -226,13 +228,13 @@ _emptyProps = {	# switches
 						"tempUnits":"C"
 						},
 
-			 	"shellyswitch25":{"props":{"isShellyDevice":True, "isRelay":True, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
+			 	"shellyswitch25":{"props":{"isShellyDevice":True, "usesInputForOnOff":False, "isRelay":True, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
 						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
 						"parentIndigoId":0,"children":"{}","isParent":True,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":100,  "expirationSeconds":180, "mode":"relay"},
 						"setPageActionPageOnShellyDev":{"0":"relay/0?","1":"relay/1?","roller":"roller/0?"},
 																					  ### roller actions  "roller/0?go=" / "roller/0?roller_pos=" / "roller/0?duration=" / "roller/0?offset="
 						"action_url":   {"settings/relay/0?":{"btn_on_url":"input=on", "btn_off_url":"input=off", "out_on_url":"onOffState=1", "out_off_url":"onOffState=0", "longpush_url":"input=long", "shortpush_url":"input=short"},
-									     "settings/relay/1?":{"btn_on_url":"input=on", "btn_off_url":"input=off", "out_on_url":"onOffState=1", "out_off_url":"onOffState=0", "longpush_url":"input=long", "shortpush_url":"input=short"},
+									     "settings/relay/1?":{"btn_on_url":"input_1=on", "btn_off_url":"input_1=off", "out_on_url":"onOffState_1=1", "out_off_url":"onOffState_1=0", "longpush_url":"input_1=long", "shortpush_url":"input_1=short"},
 										 "settings/roller/0?":{"roller_open_url":"state=open", "roller_close_url":"state=close", "roller_stop_url":"state=stop"}
 									},
 						"childTypes_Sensors":[],
@@ -240,26 +242,47 @@ _emptyProps = {	# switches
 						"tempUnits":"C"
 						},
 
-			 	"shellyswitch25-child":{"props":{"isShellyDevice":True, "isRelay":True, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
+			 	"shellyswitch25-child":{"props":{"isShellyDevice":True, "usesInputForOnOff":False, "isRelay":True, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
 						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
 						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":True,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":100,  "expirationSeconds":180 },
 						"setPageActionPageOnShellyDev":{"0":"relay/0?","1":"relay/1?","roller":{"0":"roller/0?","1":"roller/1?"}},
 						"action_url":   {"settings/relay/0?":{"btn_on_url":"input=on", "btn_off_url":"input=off", "out_on_url":"onOffState=1", "out_off_url":"onOffState=0", "longpush_url":"input=long", "shortpush_url":"input=short"},
-									     "settings/relay/1?":{"btn_on_url":"input=on", "btn_off_url":"input=off", "out_on_url":"onOffState=1", "out_off_url":"onOffState=0", "longpush_url":"input=long", "shortpush_url":"input=short"},
+									     "settings/relay/1?":{"btn_on_url":"input_1=on", "btn_off_url":"input_1=off", "out_on_url":"onOffState_1=1", "out_off_url":"onOffState_1=0", "longpush_url":"input_1=long", "shortpush_url":"input_1=short"},
 									},
 						"childTypes_Sensors":[],
 						"childTypes_SplitDevices":[],
 						"tempUnits":"C"
 						},
 
-			 	"shellybutton1":{"props":{"isShellyDevice":True, "isRelay":False, "devNo":0, "SupportsOnState":False, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False, "AllowSensorValueChange":False,  
+			 	"shellybutton1":{"props":{"isShellyDevice":True, "usesInputForOnOff":False, "isRelay":False, "devNo":0, "SupportsOnState":False, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False, "AllowSensorValueChange":False,  
 						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":100,  "expirationSeconds":57600, "SupportsBatteryLevel":True, "displaySelect":"event_cnt"},
 						"action_url":   {"settings/input/0?":{"shortpush_url":"input=short", "double_shortpush_url":"input=short_double", "triple_shortpush_url":"input=short_triple", "longpush_url":"input=long"}},
 						"childTypes_Sensors":[],
 						"childTypes_SplitDevices":[]
 						},
 
-			 	"shelly4pro":{"props":{"isShellyDevice":True, "isRelay":True, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
+			 	"shellyix3":{"props":{"isShellyDevice":True, "usesInputForOnOff":True, "isRelay":False, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
+						"parentIndigoId":0,"children":"{}","isParent":True,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":100,  "expirationSeconds":180, "displaySelect":"event_cnt"},
+						"action_url":   {"settings/input/0?":{"btn_on_url":"input=on", "btn_off_url":"input=off","shortpush_url":"input=short", "double_shortpush_url":"input=short_double", "triple_shortpush_url":"input=short_triple", "longpush_url":"input=long","shortpush_longpush_url":"input=short_long","longpush_shortpush_url":"input=long_short"},
+										 "settings/input/1?":{"btn_on_url":"input_1=on", "btn_off_url":"input_1=off","shortpush_url":"input_1=short", "double_shortpush_url":"input_1=short_double", "triple_shortpush_url":"input_1=short_triple", "longpush_url":"input_1=long","shortpush_longpush_url":"input_1=short_long","longpush_shortpush_url":"input_1=long_short"},
+										 "settings/input/2?":{"btn_on_url":"input_2=on", "btn_off_url":"input_2=off","shortpush_url":"input_2=short", "double_shortpush_url":"input_2=short_double", "triple_shortpush_url":"input_2=short_triple", "longpush_url":"input_2=long","shortpush_longpush_url":"input_2=short_long","longpush_shortpush_url":"input_2=long_short"}
+										},
+						"childTypes_Sensors":[],
+						"childTypes_SplitDevices":["shellyix3-child","shellyix3-child"]
+						},
+
+			 	"shellyix3-child":{"props":{"isShellyDevice":True, "usesInputForOnOff":True, "isRelay":False, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
+						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":True,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":100,  "expirationSeconds":180, "displaySelect":"event_cnt"},
+						"action_url":   {"settings/input/0?":{"btn_on_url":"input=on", "btn_off_url":"input=off","shortpush_url":"input=short", "double_shortpush_url":"input=short_double", "triple_shortpush_url":"input=short_triple", "longpush_url":"input=long","shortpush_longpush_url":"input=short_long","longpush_shortpush_url":"input=long_short"},
+										 "settings/input/1?":{"btn_on_url":"input_1=on", "btn_off_url":"input_1=off","shortpush_url":"input_1=short", "double_shortpush_url":"input_1=short_double", "triple_shortpush_url":"input_1=short_triple", "longpush_url":"input_1=long","shortpush_longpush_url":"input_1=short_long","longpush_shortpush_url":"input_1=long_short"},
+										 "settings/input/2?":{"btn_on_url":"input_2=on", "btn_off_url":"input_2=off","shortpush_url":"input_2=short", "double_shortpush_url":"input_2=short_double", "triple_shortpush_url":"input_2=short_triple", "longpush_url":"input_2=long","shortpush_longpush_url":"input_2=short_long","longpush_shortpush_url":"input_2=long_short"}
+										},
+						"childTypes_Sensors":[],
+						"childTypes_SplitDevices":[]
+						},
+
+
+			 	"shelly4pro":{"props":{"isShellyDevice":True, "usesInputForOnOff":False, "isRelay":True, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
 						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
 						"parentIndigoId":0,"children":"{}","isParent":True,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":100,  "expirationSeconds":180 },
 						"setPageActionPageOnShellyDev":{"0":"relay/0?","1":"relay/1?","2":"relay/2?","3":"relay/3?"},
@@ -269,7 +292,7 @@ _emptyProps = {	# switches
 						"tempUnits":"C"
 						},
 
-			 	"shelly4pro-child":{"props":{"isShellyDevice":True, "isRelay":True, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
+			 	"shelly4pro-child":{"props":{"isShellyDevice":True, "usesInputForOnOff":False, "isRelay":True, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
 						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
 						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":True,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":100,  "expirationSeconds":180 },
 						"setPageActionPageOnShellyDev":{"0":"relay/0?","1":"relay/1?","2":"relay/2?","3":"relay/3?"},
@@ -279,7 +302,7 @@ _emptyProps = {	# switches
 						"tempUnits":"C"
 						},
 
-				"shellyem":{"props":{"isShellyDevice":True, "isRelay":True, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
+				"shellyem":{"props":{"isShellyDevice":True, "usesInputForOnOff":False, "isRelay":True, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
 						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
 						"parentIndigoId":0,"children":"{}","isParent":True,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":100,  "expirationSeconds":180 },
 						"setPageActionPageOnShellyDev":{"0":"relay/0?","1":"relay/1?"},
@@ -289,7 +312,7 @@ _emptyProps = {	# switches
 						"tempUnits":"C"
 						},
 
-				"shellyem-child":{"props":{"isShellyDevice":True, "isRelay":False, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
+				"shellyem-child":{"props":{"isShellyDevice":True, "usesInputForOnOff":False, "isRelay":False, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
 						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
 						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":True,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":100,  "expirationSeconds":180,"displaySelect":"power"},
 						"setPageActionPageOnShellyDev":{"0":"relay/0?","1":"relay/1?"},
@@ -299,7 +322,7 @@ _emptyProps = {	# switches
 						"tempUnits":"C"
 						},
 
-				"shellyem3":{"props":{"isShellyDevice":True, "isRelay":True, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
+				"shellyem3":{"props":{"isShellyDevice":True, "usesInputForOnOff":False, "isRelay":True, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
 						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
 						"parentIndigoId":0,"children":"{}","isParent":True,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":100,  "expirationSeconds":180 },
 						"setPageActionPageOnShellyDev":{"0":"relay/0?","1":"relay/1?"},
@@ -309,7 +332,7 @@ _emptyProps = {	# switches
 						"tempUnits":"C"
 						},
 
-				"shellyem3-child":{"props":{"isShellyDevice":True, "isRelay":False, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
+				"shellyem3-child":{"props":{"isShellyDevice":True, "usesInputForOnOff":False, "isRelay":False, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
 						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
 						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":True,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":100,  "expirationSeconds":180,"displaySelect":"power"},
 						"setPageActionPageOnShellyDev":{"0":"relay/0?","1":"relay/1?"},
@@ -320,7 +343,7 @@ _emptyProps = {	# switches
 						},
 
 				# dimmers
-				"shellydimmer":{"props":{"isShellyDevice":True, "isRelay":False, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False, 
+				"shellydimmer":{"props":{"isShellyDevice":True, "usesInputForOnOff":False, "isRelay":False, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False, 
 						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
 						"WhiteTemperatureMin":3000, "WhiteTemperatureMax":6500,
 						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":6,  "expirationSeconds":180},
@@ -336,7 +359,7 @@ _emptyProps = {	# switches
 						"tempUnits":"C"
 						},
 
-				"ShellyBulbDuo":{"props":{"isShellyDevice":True, "isRelay":False, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False, 
+				"ShellyBulbDuo":{"props":{"isShellyDevice":True, "usesInputForOnOff":False, "isRelay":False, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False, 
 						"SupportsColor":True, "SupportsRGB":False, "SupportsWhite":True, "SupportsWhiteTemperature":True, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
 						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":6,  "expirationSeconds":180},
 						"WhiteTemperatureMin":2700, "WhiteTemperatureMax":6500,
@@ -348,7 +371,7 @@ _emptyProps = {	# switches
 						"tempUnits":"C"
 						},
 
-				"shellybulb":{"props":{"isShellyDevice":True, "isRelay":False, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False, 
+				"shellybulb":{"props":{"isShellyDevice":True, "usesInputForOnOff":False, "isRelay":False, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False, 
 						"SupportsColor":True, "SupportsRGB":True, "SupportsWhite":True, "SupportsWhiteTemperature":True, "SupportsRGBandWhiteSimultaneously":True, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
 						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":6,  "expirationSeconds":180},
 						"WhiteTemperatureMin":3000, "WhiteTemperatureMax":6500,
@@ -361,7 +384,7 @@ _emptyProps = {	# switches
 						},
 
 
-				"ShellyVintage":{"props":{"isShellyDevice":True, "isRelay":False, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False, 
+				"ShellyVintage":{"props":{"isShellyDevice":True, "usesInputForOnOff":False, "isRelay":False, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False, 
 						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":True, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
 						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":6,  "expirationSeconds":180},
 						"WhiteTemperatureMin":3000, "WhiteTemperatureMax":6500,
@@ -373,7 +396,7 @@ _emptyProps = {	# switches
 						"tempUnits":"C"
 						},
 
-				"shellyrgbw2":{"props":{"isShellyDevice":True, "isRelay":False, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False, 
+				"shellyrgbw2":{"props":{"isShellyDevice":True, "usesInputForOnOff":False, "isRelay":False, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False, 
 						"SupportsColor":True, "SupportsRGB":True, "SupportsWhite":True, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":True, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
 						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":6,  "expirationSeconds":180 },
 						"WhiteTemperatureMin":3000, "WhiteTemperatureMax":6500,
@@ -386,7 +409,7 @@ _emptyProps = {	# switches
 						},
 
 				# sensors
-				"shellydw":{"props":{"isShellyDevice":True, "isRelay":False, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
+				"shellydw":{"props":{"isShellyDevice":True, "usesInputForOnOff":False, "isRelay":False, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
 						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
 						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":60,  "expirationSeconds":50400,"displaySelect":"lux","SupportsBatteryLevel":True  },
 						"WhiteTemperatureMin":3000, "WhiteTemperatureMax":6500,
@@ -398,7 +421,7 @@ _emptyProps = {	# switches
 						"tempUnits":"C"
 						}, 
 
-				"shellyflood":{"props":{"isShellyDevice":True, "isRelay":False, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
+				"shellyflood":{"props":{"isShellyDevice":True, "usesInputForOnOff":False, "isRelay":False, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
 						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
 						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":60,  "expirationSeconds":50400,"displaySelect":"Temperature","SupportsBatteryLevel":True },
 						"setPageActionPageOnShellyDev":{},
@@ -408,7 +431,7 @@ _emptyProps = {	# switches
 						"tempUnits":"C"
 						}, 
 
-				"shellyht":{"props":{"isShellyDevice":True, "isRelay":False, "devNo":0, "SupportsOnState":False, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
+				"shellyht":{"props":{"isShellyDevice":True, "usesInputForOnOff":False, "isRelay":False, "devNo":0, "SupportsOnState":False, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
 						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
 						"parentIndigoId":0,"children":"{}","isParent":True,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":60,  "expirationSeconds":50400,"displaySelect":"Temperature","SupportsBatteryLevel":True},
 						"setPageActionPageOnShellyDev":{},
@@ -419,7 +442,7 @@ _emptyProps = {	# switches
 						"tempUnits":"C"
 						},
 
-				"shellyht-child":{"props":{"isShellyDevice":True, "isRelay":False, "devNo":0, "SupportsOnState":False, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
+				"shellyht-child":{"props":{"isShellyDevice":True, "usesInputForOnOff":False, "isRelay":False, "devNo":0, "SupportsOnState":False, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
 						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
 						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":True,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":60,  "expirationSeconds":50400,"displaySelect":"Humidity","SupportsBatteryLevel":True},
 						"setPageActionPageOnShellyDev":{},
@@ -430,7 +453,7 @@ _emptyProps = {	# switches
 						"tempUnits":"C"
 						},
 
-				"ext_temperature":{"props":{"isShellyDevice":True, "isRelay":False, "devNo":0, "SupportsOnState":False, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
+				"ext_temperature":{"props":{"isShellyDevice":True, "usesInputForOnOff":False, "isRelay":False, "devNo":0, "SupportsOnState":False, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
 						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
 						"WhiteTemperatureMin":3000, "WhiteTemperatureMax":6500,
 						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":True,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":60,  "expirationSeconds":180,"displaySelect":"Temperature"},
@@ -441,7 +464,7 @@ _emptyProps = {	# switches
 						"tempUnits":"C"
 						},
 
-				"ext_humidity":{"props":{"isShellyDevice":True, "isRelay":False, "devNo":0, "SupportsOnState":False, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
+				"ext_humidity":{"props":{"isShellyDevice":True, "usesInputForOnOff":False, "isRelay":False, "devNo":0, "SupportsOnState":False, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
 						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
 						"WhiteTemperatureMin":3000, "WhiteTemperatureMax":6500,
 						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":True,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":60,  "expirationSeconds":180,"displaySelect":"Humidity"},
@@ -942,16 +965,15 @@ class Plugin(indigo.PluginBase):
 		helpText +='Shelly Plug                        power outlets w relay and power measurement   \n'
 		helpText +='Shelly PlugS                       power outlets w relay and power and energy measurement  \n'
 		helpText +='Shelly-Vintage Bulb:               110-220V LED light bulb vintage style  \n'
+		helpText +='Shelly-GAS-1,  GAS sensor:         Gas sensor, values  "none","medium","high","unknown","test", can set speaker level 1-11,  \n' 
+		helpText +='                                   start self test, mute, unmute  \n'
+		helpText +='i3:                                3 input switches w short, long, double, tripple short/long/long/short push \n'
+		helpText +='Button1                            1 input switch/button w rechargeable battery w short, long, double, tripple push  \n'
 		helpText +='  programmed, but not tested:   \n'
 		helpText +='Shelly-EM3 Power 3 Ch. - 1 Relay:  110-220V measures Power, volt, has 1 relay - the plugin creates 4 devices: R + EM1 + EM2 + EM3  \n'
 		helpText +='                                   the 3 EM  will be added as device: hostName-sheleeyEM3-child-1/2  \n'
 		helpText +='Shelly-PRO4, 4 relay:              220V measures Power, volt, the plugin creates 4 relay devices  \n'
 		helpText +='                                   the 2-4 relays will be added as device: hostName-shellypro-child-# (1/2/3)  \n'
-		helpText +='Shelly-GAS-1,  GAS sensor:         Gas sensor, values  "none","mild","high","unknown","test", can set speaker level 1-11,  \n' 
-		helpText +='                                   start self test, mute, unmute  \n'
-		helpText +=' comming up   \n'
-		helpText +=' i3                                3 input switches w short, long, double, tripple push \n'
-		helpText +=' Button1                           1 input switch w rechargeable battery w short, long, double, tripple push  \n'
 		helpText +='=========================================================================================   \n'
 		helpText +='   \n'
 		indigo.server.log(helpText.encode('utf8'))
@@ -1213,7 +1235,7 @@ class Plugin(indigo.PluginBase):
 	def deviceStartComm(self, dev):
 		try:
 			if self.decideMyLog(u"SetupDevices"): 
-				self.indiLOG.log(20,"deviceStartComm called for {}; dev={}".format(dev.id, dev.name) )
+				self.indiLOG.log(20,"deviceStartComm called for {}; dev={}".format(dev.id, dev.name.encode("utf8")) )
 
 			if dev.id == self.doNotrestartDev: return 
 			dev.stateListOrDisplayStateIdChanged()
@@ -1236,11 +1258,15 @@ class Plugin(indigo.PluginBase):
 					dev = indigo.devices[dev.id]
 
 				self.renewShelly(dev)
-				if self.decideMyLog(u"SetupDevices"): self.indiLOG.log(20,"deviceStartComm finished for {}; dev={}, props:{}".format(dev.id, dev.name,props) )
-				self.doNotrestartDev = ""
+				if self.decideMyLog(u"SetupDevices"): 
+					self.indiLOG.log(20,"deviceStartComm finished for {}; dev={}".format(dev.id, dev.name.encode("utf8")) )
+					self.indiLOG.log(20,"deviceStartComm .... props:{}".format(props) )
+					states = unicode(dev.states)
+					self.indiLOG.log(20,"deviceStartComm  ... states:{}".format(states.encode("utf8")) )
 		except Exception, e:
 			self.indiLOG.log(40,"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
 			self.indiLOG.log(40,"for dev: {}".format(dev.name.encode("utf8")))
+		self.doNotrestartDev = ""
 		return 
 
 
@@ -2121,6 +2147,7 @@ class Plugin(indigo.PluginBase):
 			found      = False
 			devIdFound = 0
 			for devId in self.SHELLY:
+				if self.SHELLY[devId]["isChild"]: continue 
 				if self.SHELLY[devId]["ipNumber"] == ipNumber: 
 					try: 
 						dev = indigo.devices[devId]
@@ -2365,7 +2392,7 @@ class Plugin(indigo.PluginBase):
 
 			except Exception, e:
 				self.indiLOG.log(40,"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
-				self.indiLOG.log(40,"name:{}, props:{}, ipNumber:{}".format(name_Parent, props, ipNumber))
+				self.indiLOG.log(40,"name:{}, props:{}, ipNumber:{}, description:{}, deviceTypeId:>>{}<<\n ".format(name_Parent, props, ipNumber,description, useDevType))
 				return 0
 
 			#now create regular splitoff childs if needed
@@ -2499,6 +2526,8 @@ class Plugin(indigo.PluginBase):
 			if page == "httpAction":
 				self.fillHTTPactionData(data, dev)
 				self.executeUpdateStatesDict()
+				self.addToShellyPollerQueue(dev.id, "status")
+				
 				return 
 
 			self.fillExternalSensors(data, dev, children)
@@ -2513,10 +2542,10 @@ class Plugin(indigo.PluginBase):
 
 
 			# now for devices with children 
-			devs, devNos = self.getChildDevices( children)
-			if False and len(children) >999:
+			devs, devNos = self.getChildDevices(children)
+			if False and len(children) >0:
 				devids = [dd.id for dd in devs]
-				self.indiLOG.log(20,"{};   children:{};  childrenfromProps:{};  devids:{}, devNos:{}".format(dev.name, children,dev.pluginProps["children"], devids, devNos))
+				self.indiLOG.log(20,"{};   children:{};  childrenfromProps:{};  devids:{}, devNos:{}".format(dev.name.encode("utf8"), children, dev.pluginProps["children"], devids, devNos))
 				
 			if len(devs) ==0: devs = [dev, dev]
 			else:			  
@@ -2579,18 +2608,22 @@ class Plugin(indigo.PluginBase):
 	def fillHTTPactionData(self, data, dev):
 		try:
 			self.SHELLY[dev.id]["lastMessage-Http"] = data
-			if self.decideMyLog(u"HTTPlistener"):self.indiLOG.log(20,"doHTTPactionData {}   data: {}".format(self.SHELLY[dev.id]["ipNumber"], data) )
-			if dev.deviceTypeId not in _definedShellyDeviceswAction: return
+			if self.decideMyLog(u"HTTPlistener"):self.indiLOG.log(20,"doHTTPactionData {}, id:{}, devType:{},  data: {}".format(self.SHELLY[dev.id]["ipNumber"],dev.id, dev.deviceTypeId ,data) )
+			if dev.deviceTypeId.split("-")[0] not in _definedShellyDeviceswAction: return
 
 			children = self.SHELLY[dev.id]["children"]
-			devs, devNos = self.getChildDevices( children)
+			devs, devNos = self.getChildDevices(children)
+			devs = [dev] + devs # indexes start w 1 for input .... 
+			if self.decideMyLog(u"HTTPlistener"):self.indiLOG.log(20,"doHTTPactionData  .. len(devs):{}, devNos:{}, children:{}".format(len(devs), devNos, children) )
 
 			## eg data?hum=55&temp=33.7
 			## eg data?onOffState=0/1
 			## eg data?input=short/double_short/triple_short/long
+			## /?input_1=off
 			dst = datetime.datetime.now().strftime(_defaultDateStampFormat) 
 			cmd = data.split("?")
 			useDev = dev
+			devNo = 0
 			if len(cmd) == 2:
 				cmd = cmd[1].split("&")
 				TRIGGERS = []
@@ -2605,8 +2638,11 @@ class Plugin(indigo.PluginBase):
 						elif x[0].find("onOffState") == 0:
 							if   x[1] == "1": x[1] = True
 							elif x[1] == "0": x[1] = False
-							if x[0] == "onOffState_1":
-								useDev = devs[0]
+							if x[0].find("_") >-1:
+								xxx = x[0].split("_") # for devices w 2 buttons onOfstate + onOfstate_1
+								devNo = int(xxx[1])
+								x[0] = xxx[0]
+								useDev = devs[devNo]
 							x[0] = "onOffState"
 
 						elif x[0].find("action") == 0:
@@ -2622,8 +2658,13 @@ class Plugin(indigo.PluginBase):
 
 
 						elif x[0].find("input") == 0:
-							for inputType in [["1","on","input"],["0","off","input"],["short",dst,"input_short"],["short_double",dst,"input_short_double"],["short_triple",dst,"input_short_triple"],["long",dst,"input_long"]]:
+							for inputType in [["1","on","input"],["0","off","input"],["short",dst,"input_short"],["short_double",dst,"input_short_double"],["short_triple",dst,"input_short_triple"],["long",dst,"input_long"],["long_short",dst,"input_long_short"],["short_long",dst,"input_short_long"]]:
 								if x[1] == inputType[0]: 
+									if x[0].find("_") >-1:
+										xxx = x[0].split("_")# for devices w 2+ buttons input + input_1 + input_2
+										devNo = int(xxx[1])
+										x[0] = xxx[0]
+										useDev = devs[devNo]
 									x[1] = inputType[1]
 									x[0] = inputType[2]
 									break
@@ -2641,8 +2682,9 @@ class Plugin(indigo.PluginBase):
 				return
 
 			devID = str(useDev.id)
+			deviceTypeId = useDev.deviceTypeId.split("-")[0]
 
-			if useDev.deviceTypeId == "shellyflood":
+			if deviceTypeId == "shellyflood":
 				# data:= {'path': >>> '/data?temp=32.62&flood=1&batV=2.83'}<<< 
 				for trigger in TRIGGERS:
 					if trigger[0] == "flood":
@@ -2656,16 +2698,16 @@ class Plugin(indigo.PluginBase):
 							useDev.updateStateImageOnServer(indigo.kStateImageSel.SensorTripped)
 							self.SHELLY[useDev.id]["lastAlarm"] = time.time()
 
-			elif useDev.deviceTypeId.find("shellyht") >-1:
+			elif deviceTypeId.find("shellyht") >-1:
 				# data:= /data?&hum=49&temp=29.00 
 				for trigger in TRIGGERS:
 					if trigger[0] == "Temperature":
 						self.fillSensor(useDev, {"Temperature": trigger[1]}, "Temperature", "Temperature", unit="", decimalPlaces="")
-					if trigger[0] == "Humidity":
-						self.fillSensor(devs[0], {"Humidity": trigger[1]},    "Humidity",    "Humidity", unit="", decimalPlaces=0)
+					if trigger[0] == "Humidity": # it goes to teh child dev (devNo =1)
+						self.fillSensor(devs[1], {"Humidity": trigger[1]},    "Humidity",    "Humidity", unit="", decimalPlaces=0)
 
 
-			elif useDev.deviceTypeId.find("shellygas") >-1:
+			elif deviceTypeId.find("shellygas") >-1:
 				# data:= /data?&hum=49&temp=29.00 
 				for trigger in TRIGGERS:
 					if trigger[0] == "alarm":
@@ -2679,7 +2721,7 @@ class Plugin(indigo.PluginBase):
 					else: 						   dev.updateStateImageOnServer(indigo.kStateImageSel.PowerOff)
 
 
-			elif useDev.deviceTypeId == "shellydw":
+			elif deviceTypeId == "shellydw":
 				for trigger in TRIGGERS:
 					if trigger[0] == "action" and trigger[1] == "close":
 						self.addToStatesUpdateDict(devID, "closedTriggered", datetime.datetime.now().strftime(_defaultDateStampFormat))
@@ -2695,7 +2737,7 @@ class Plugin(indigo.PluginBase):
 						self.addToStatesUpdateDict(devID, "twilightOpen", datetime.datetime.now().strftime(_defaultDateStampFormat))
 				
 			## cover the rest of the defined devices w actions reporting
-			elif useDev.deviceTypeId in _definedShellyDeviceswAction:
+			elif deviceTypeId in _definedShellyDeviceswAction:
 				for trigger in TRIGGERS:
 					if self.decideMyLog(u"HTTPlistener"):						self.indiLOG.log(20,"doHTTPactionData   trigger:{}".format(trigger) )
 
@@ -2720,7 +2762,6 @@ class Plugin(indigo.PluginBase):
 		except Exception, e:
 			self.indiLOG.log(40,"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
 			self.indiLOG.log(40,"len(devs):{}".format(len(devs)))
-		self.executeUpdateStatesDict()
 		return 
 
 
@@ -2784,8 +2825,12 @@ class Plugin(indigo.PluginBase):
 					self.addToStatesUpdateDict(devID, "ipv4_method", data["wifi_sta"]["ipv4_method"])
 
 			if "cloud" in data and "enabled" in data["cloud"]:
-				if "cloud_enabled" in dev.states: 
-					self.addToStatesUpdateDict(devID, "cloud_enabled", data["cloud"]["enabled"])
+				if "cloud" in dev.states: 
+					self.addToStatesUpdateDict(devID, "cloud", "connected" if data["cloud"]["enabled"] else "local")
+
+			if "charger" in data :
+				if "charger" in dev.states: 
+					self.addToStatesUpdateDict(devID, "charger", "USB" if data["charger"] else "Battery"  )
 
 			if "connect_retries" in data:
 				if "WiFi_connect_retries" in dev.states: 
@@ -2801,7 +2846,7 @@ class Plugin(indigo.PluginBase):
 					out+=xx+";"
 
 				if len(out) >0:
-					self.addToStatesUpdateDict(devID, "action_from_Device", out.strip(";"))
+					self.addToStatesUpdateDict(devID, "action_from_device", out.strip(";"))
 
 		except Exception, e:
 			self.indiLOG.log(40,"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
@@ -2878,7 +2923,7 @@ class Plugin(indigo.PluginBase):
 
 				
 				if "ison"       in light and "onOffState" in dev.states: 
-					#self.indiLOG.log(40,"checking lights  on dev:{}  light ison:{}".format(dev.name, light["ison"]))
+					#self.indiLOG.log(40,"checking lights  on dev:{}  light ison:{}".format(dev.name.encode("utf8"), light["ison"]))
 					self.addToStatesUpdateDict(devID, "onOffState",	light["ison"] )
 					if light["ison"]:	dev.updateStateImageOnServer(indigo.kStateImageSel.DimmerOn)
 					else:				dev.updateStateImageOnServer(indigo.kStateImageSel.DimmerOff)
@@ -3118,28 +3163,47 @@ class Plugin(indigo.PluginBase):
 			devNo = 0
 			dts = datetime.datetime.now().strftime(_defaultDateStampFormat)
 			for input in data["inputs"]:
-				devIDs = str(devs[devNo].id)
+				try: devIDs = str(devs[devNo].id)
+				except:
+					self.indiLOG.log(40,"fillInputs,, devNo:{}, len(devs):{}, data {} ".format(devNo,len(devs), data))
+
+					continue
+				inp = "no"
+				useInput = False
+				usesInputForOnOff = False
 				if "input" in input:
 					if   str(input["input"]) == "1": inp = "on"
 					else:							 inp = "off"
-					if "input" 	 									 in devs[devNo].states:	 self.addToStatesUpdateDict(devIDs, "input",   				inp)
-					if "input_"+str(devNo+1)						 in devs[devNo].states:	 self.addToStatesUpdateDict(devIDs, "input_"+str(devNo+1),	inp)
+					if "input" in devs[devNo].states:	
+						useInput = True
+						self.addToStatesUpdateDict(devIDs, "input",	inp)
+						props = devs[devNo].pluginProps 
+						if "usesInputForOnOff" in props and props["usesInputForOnOff"]: 
+							self.addToStatesUpdateDict(devIDs, "onOffState", inp == "on")
+							usesInputForOnOff = True
+
+					if "input_"+str(devNo+1) in devs[devNo].states:	 
+						self.addToStatesUpdateDict(devIDs, "input_"+str(devNo+1),	inp)
 					#self.indiLOG.log(20,"fillInputs, input: devIDs:{};   inp:{}".format(devIDs, inp) )
 
-				evText =""
-				if "event" in input:
-					for xxx in [["input_short","S"], ["input_short_double","SS"], ["input_short_tripple","SSS"], ["input_long","L"]]:
-						if input["event"] == xxx[1]  and xxx[0]		  in devs[devNo].states: 
+				if "lastEvent" in devs[devNo].states: lastEvent = devs[devNo].states["lastEvent"]
+				else: lastEvent = ""
+
+				if "event" in input and ( not useInput or (useInput and inp == "on") or usesInputForOnOff ):
+					for xxx in [["input_short","S","short"], ["input_short_double","SS","short_double"], ["input_short_tripple","SSS","short_tripple"], ["input_long","L","long"], ["input_long_short","LS","long_short"], ["input_short_long","SL","hort_long"]]:
+						if input["event"] == xxx[1]  and xxx[0] in devs[devNo].states: 
 							self.addToStatesUpdateDict(devIDs, xxx[0], dts)
-							self.indiLOG.log(20,"fillInputs,event: devIDs:{};   xxx:{}".format(devIDs, xxx) )
-							evText = xxx[1]
+							if "lastEvent" in devs[devNo].states: self.addToStatesUpdateDict(devIDs, "lastEvent",xxx[2]  )
+							#self.indiLOG.log(20,"fillInputs,event: devIDs:{};   xxx:{}".format(devIDs, xxx) )
+							lastEvent = xxx[1]
+
 				if "event_cnt" in input	and  "event_cnt" in devs[devNo].states: 
 					uiText = str(input["event_cnt"])
-					if evText != "":
+					if lastEvent != "":
 						props = devs[devNo].pluginProps
 						if "displaySelect" in props:
 							if props["displaySelect"] == "event_cnt":
-								uiText = "last_Ev#:"+uiText+"-Type:"+evText
+								uiText = "last_Ev#:"+uiText+"-Type:"+lastEvent
 					#self.indiLOG.log(20,"fillInputs, event_cnt: devIDs:{};   evc:{}, uiValue:{}".format(devIDs, input["event_cnt"],uiText) )
 					self.addToStatesUpdateDict(devIDs, "event_cnt", input["event_cnt"], uiValue=uiText)
 				devNo += 1
@@ -3788,7 +3852,7 @@ class Plugin(indigo.PluginBase):
 		if action.deviceAction == indigo.kUniversalAction.Beep:
 			# Beep the hardware module (dev) here:
 			# ** IMPLEMENT ME **
-			indigo.server.log(u"sent \"{}\" beep request not implemented".format(dev.name))
+			indigo.server.log(u"sent \"{}\" beep request not implemented".format(dev.name.encode("utf8")))
 
 		###### STATUS REQUEST ######
 		elif action.deviceAction == indigo.kUniversalAction.RequestStatus:
@@ -4234,7 +4298,7 @@ class Plugin(indigo.PluginBase):
 								page = parameter+pageBack +"/"+ actionURLs[parameter][setting]
 								###  = eg settings/?report_url=ttp://ip:port/data?"
 							elif actionURLs[parameter][setting] == "disable":
-								page = parameter+ setting + "=x" 
+								page = parameter + setting + "=x" 
 								searchFor1 = parameter
 								searchFor2 = "x"
 								###  = eg settings/relay/0?shortpush_url="

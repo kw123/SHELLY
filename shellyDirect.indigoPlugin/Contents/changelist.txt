@@ -1,7 +1,18 @@
+Added features / changes in v7.10.21 @ 2020-08-04
+===================================================
+
+1. added shelly i3 device
+2. added dev states 
+   cloud = connetced / local
+   ipv4_method = dhcp / static
+3. for button1 and i3:
+   event type in status field: lastEv#:n-Type: s / ss / sss / L/ SL / LS (short  .. long press)
+
+
 Added features / changes in v7.9.21 @ 2020-08-04
 ===================================================
 
-1. added shelly GAS button1 device
+1. added shelly button1 device
 
 
 Added features / changes in v7.8.21 @ 2020-08-03
