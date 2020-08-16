@@ -120,15 +120,15 @@
 				<TriggerLabel>lastStatusChange</TriggerLabel>
 				<ControlPageLabel>lastStatusChange</ControlPageLabel>
 			</State>
-			<State id="rssi">
+			<State id="WiFi_rssi">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>rssi</TriggerLabel>
-				<ControlPageLabel>rssi</ControlPageLabel>
+				<TriggerLabel>WiFi_rssi</TriggerLabel>
+				<ControlPageLabel>WiFi_rssi</ControlPageLabel>
 			</State>
-			<State id="ipv4_method">
+			<State id="WiFi_ipv4_method">
 				<ValueType>String</ValueType>
-				<TriggerLabel>ipv4_method</TriggerLabel>
-				<ControlPageLabel>ipv4_method</ControlPageLabel>
+				<TriggerLabel>WiFi_ipv4_method</TriggerLabel>
+				<ControlPageLabel>WiFi_ipv4_method</ControlPageLabel>
 			</State>
 			<State id="cloud">
 				<ValueType>String</ValueType>
@@ -276,15 +276,15 @@
 				<TriggerLabel>lastStatusChange</TriggerLabel>
 				<ControlPageLabel>lastStatusChange</ControlPageLabel>
 			</State>
-			<State id="rssi">
+			<State id="WiFi_rssi">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>rssi</TriggerLabel>
-				<ControlPageLabel>rssi</ControlPageLabel>
+				<TriggerLabel>WiFi_rssi</TriggerLabel>
+				<ControlPageLabel>WiFi_rssi</ControlPageLabel>
 			</State>
-			<State id="ipv4_method">
+			<State id="WiFi_ipv4_method">
 				<ValueType>String</ValueType>
-				<TriggerLabel>ipv4_method</TriggerLabel>
-				<ControlPageLabel>ipv4_method</ControlPageLabel>
+				<TriggerLabel>WiFi_ipv4_method</TriggerLabel>
+				<ControlPageLabel>WiFi_ipv4_method</ControlPageLabel>
 			</State>
 			<State id="cloud">
 				<ValueType>String</ValueType>
@@ -512,15 +512,15 @@
 				<TriggerLabel>lastStatusChange</TriggerLabel>
 				<ControlPageLabel>lastStatusChange</ControlPageLabel>
 			</State>
-			<State id="rssi">
+			<State id="WiFi_rssi">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>rssi</TriggerLabel>
-				<ControlPageLabel>rssi</ControlPageLabel>
+				<TriggerLabel>WiFi_rssi</TriggerLabel>
+				<ControlPageLabel>WiFi_rssi</ControlPageLabel>
 			</State>
-			<State id="ipv4_method">
+			<State id="WiFi_ipv4_method">
 				<ValueType>String</ValueType>
-				<TriggerLabel>ipv4_method</TriggerLabel>
-				<ControlPageLabel>ipv4_method</ControlPageLabel>
+				<TriggerLabel>WiFi_ipv4_method</TriggerLabel>
+				<ControlPageLabel>WiFi_ipv4_method</ControlPageLabel>
 			</State>
 			<State id="cloud">
 				<ValueType>String</ValueType>
@@ -753,15 +753,15 @@
 				<TriggerLabel>lastStatusChange</TriggerLabel>
 				<ControlPageLabel>lastStatusChange</ControlPageLabel>
 			</State>
-			<State id="rssi">
+			<State id="WiFi_rssi">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>rssi</TriggerLabel>
-				<ControlPageLabel>rssi</ControlPageLabel>
+				<TriggerLabel>WiFi_rssi</TriggerLabel>
+				<ControlPageLabel>WiFi_rssi</ControlPageLabel>
 			</State>
-			<State id="ipv4_method">
+			<State id="WiFi_ipv4_method">
 				<ValueType>String</ValueType>
-				<TriggerLabel>ipv4_method</TriggerLabel>
-				<ControlPageLabel>ipv4_method</ControlPageLabel>
+				<TriggerLabel>WiFi_ipv4_method</TriggerLabel>
+				<ControlPageLabel>WiFi_ipv4_method</ControlPageLabel>
 			</State>
 			<State id="cloud">
 				<ValueType>String</ValueType>
@@ -904,15 +904,15 @@
 				<TriggerLabel>lastStatusChange</TriggerLabel>
 				<ControlPageLabel>lastStatusChange</ControlPageLabel>
 			</State>
-			<State id="rssi">
+			<State id="WiFi_rssi">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>rssi</TriggerLabel>
-				<ControlPageLabel>rssi</ControlPageLabel>
+				<TriggerLabel>WiFi_rssi</TriggerLabel>
+				<ControlPageLabel>WiFi_rssi</ControlPageLabel>
 			</State>
-			<State id="ipv4_method">
+			<State id="WiFi_ipv4_method">
 				<ValueType>String</ValueType>
-				<TriggerLabel>ipv4_method</TriggerLabel>
-				<ControlPageLabel>ipv4_method</ControlPageLabel>
+				<TriggerLabel>WiFi_ipv4_method</TriggerLabel>
+				<ControlPageLabel>WiFi_ipv4_method</ControlPageLabel>
 			</State>
 			<State id="cloud">
 				<ValueType>String</ValueType>
@@ -1079,15 +1079,15 @@
 				<TriggerLabel>lastStatusChange</TriggerLabel>
 				<ControlPageLabel>lastStatusChange</ControlPageLabel>
 			</State>
-			<State id="rssi">
+			<State id="WiFi_rssi">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>rssi</TriggerLabel>
-				<ControlPageLabel>rssi</ControlPageLabel>
+				<TriggerLabel>WiFi_rssi</TriggerLabel>
+				<ControlPageLabel>WiFi_rssi</ControlPageLabel>
 			</State>
-			<State id="ipv4_method">
+			<State id="WiFi_ipv4_method">
 				<ValueType>String</ValueType>
-				<TriggerLabel>ipv4_method</TriggerLabel>
-				<ControlPageLabel>ipv4_method</ControlPageLabel>
+				<TriggerLabel>WiFi_ipv4_method</TriggerLabel>
+				<ControlPageLabel>WiFi_ipv4_method</ControlPageLabel>
 			</State>
 			<State id="cloud">
 				<ValueType>String</ValueType>
@@ -1121,6 +1121,7 @@
 			<Field id="SupportsStatusRequest" type="checkbox" defaultValue="true" hidden="false" />
 			<Field id="AllowOnStateChange" type="checkbox" defaultValue="false" hidden="false" />
 			<Field id="AllowSensorValueChange" type="checkbox" defaultValue="false" hidden="false" />
+			<Field id="SupportsBatteryLevel" type="checkbox" defaultValue="true" hidden="true" />
 			<Field id="label1" type="label">
 				<Label>Parameters for Shelly-Button1 device</Label>
 			</Field>
@@ -1267,6 +1268,11 @@
 				<TriggerLabel>lastMessageFromDevice</TriggerLabel>
 				<ControlPageLabel>lastMessageFromDevice</ControlPageLabel>
 			</State>
+			<State id="batteryVoltage">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>batteryVoltage</TriggerLabel>
+				<ControlPageLabel>batteryVoltage</ControlPageLabel>
+			</State>
 			<State id="created">
 				<ValueType>String</ValueType>
 				<TriggerLabel>created</TriggerLabel>
@@ -1277,15 +1283,20 @@
 				<TriggerLabel>lastStatusChange</TriggerLabel>
 				<ControlPageLabel>lastStatusChange</ControlPageLabel>
 			</State>
-			<State id="rssi">
+			<State id="WiFi_rssi">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>rssi</TriggerLabel>
-				<ControlPageLabel>rssi</ControlPageLabel>
+				<TriggerLabel>WiFi_rssi</TriggerLabel>
+				<ControlPageLabel>WiFi_rssi</ControlPageLabel>
 			</State>
-			<State id="ipv4_method">
+			<State id="WiFi_connect_retries">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>WiFi_connect_retries</TriggerLabel>
+				<ControlPageLabel>WiFi_connect_retries</ControlPageLabel>
+			</State>
+			<State id="WiFi_ipv4_method">
 				<ValueType>String</ValueType>
-				<TriggerLabel>ipv4_method</TriggerLabel>
-				<ControlPageLabel>ipv4_method</ControlPageLabel>
+				<TriggerLabel>WiFi_ipv4_method</TriggerLabel>
+				<ControlPageLabel>WiFi_ipv4_method</ControlPageLabel>
 			</State>
 			<State id="cloud">
 				<ValueType>String</ValueType>
@@ -1489,15 +1500,15 @@
 				<TriggerLabel>lastStatusChange</TriggerLabel>
 				<ControlPageLabel>lastStatusChange</ControlPageLabel>
 			</State>
-			<State id="rssi">
+			<State id="WiFi_rssi">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>rssi</TriggerLabel>
-				<ControlPageLabel>rssi</ControlPageLabel>
+				<TriggerLabel>WiFi_rssi</TriggerLabel>
+				<ControlPageLabel>WiFi_rssi</ControlPageLabel>
 			</State>
-			<State id="ipv4_method">
+			<State id="WiFi_ipv4_method">
 				<ValueType>String</ValueType>
-				<TriggerLabel>ipv4_method</TriggerLabel>
-				<ControlPageLabel>ipv4_method</ControlPageLabel>
+				<TriggerLabel>WiFi_ipv4_method</TriggerLabel>
+				<ControlPageLabel>WiFi_ipv4_method</ControlPageLabel>
 			</State>
 			<State id="cloud">
 				<ValueType>String</ValueType>
@@ -1674,15 +1685,15 @@
 				<TriggerLabel>lastStatusChange</TriggerLabel>
 				<ControlPageLabel>lastStatusChange</ControlPageLabel>
 			</State>
-			<State id="rssi">
+			<State id="WiFi_rssi">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>rssi</TriggerLabel>
-				<ControlPageLabel>rssi</ControlPageLabel>
+				<TriggerLabel>WiFi_rssi</TriggerLabel>
+				<ControlPageLabel>WiFi_rssi</ControlPageLabel>
 			</State>
-			<State id="ipv4_method">
+			<State id="WiFi_ipv4_method">
 				<ValueType>String</ValueType>
-				<TriggerLabel>ipv4_method</TriggerLabel>
-				<ControlPageLabel>ipv4_method</ControlPageLabel>
+				<TriggerLabel>WiFi_ipv4_method</TriggerLabel>
+				<ControlPageLabel>WiFi_ipv4_method</ControlPageLabel>
 			</State>
 			<State id="cloud">
 				<ValueType>String</ValueType>
@@ -1844,15 +1855,15 @@
 				<TriggerLabel>lastStatusChange</TriggerLabel>
 				<ControlPageLabel>lastStatusChange</ControlPageLabel>
 			</State>
-			<State id="rssi">
+			<State id="WiFi_rssi">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>rssi</TriggerLabel>
-				<ControlPageLabel>rssi</ControlPageLabel>
+				<TriggerLabel>WiFi_rssi</TriggerLabel>
+				<ControlPageLabel>WiFi_rssi</ControlPageLabel>
 			</State>
-			<State id="ipv4_method">
+			<State id="WiFi_ipv4_method">
 				<ValueType>String</ValueType>
-				<TriggerLabel>ipv4_method</TriggerLabel>
-				<ControlPageLabel>ipv4_method</ControlPageLabel>
+				<TriggerLabel>WiFi_ipv4_method</TriggerLabel>
+				<ControlPageLabel>WiFi_ipv4_method</ControlPageLabel>
 			</State>
 			<State id="cloud">
 				<ValueType>String</ValueType>
@@ -2023,15 +2034,15 @@
 				<TriggerLabel>lastStatusChange</TriggerLabel>
 				<ControlPageLabel>lastStatusChange</ControlPageLabel>
 			</State>
-			<State id="rssi">
+			<State id="WiFi_rssi">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>rssi</TriggerLabel>
-				<ControlPageLabel>rssi</ControlPageLabel>
+				<TriggerLabel>WiFi_rssi</TriggerLabel>
+				<ControlPageLabel>WiFi_rssi</ControlPageLabel>
 			</State>
-			<State id="ipv4_method">
+			<State id="WiFi_ipv4_method">
 				<ValueType>String</ValueType>
-				<TriggerLabel>ipv4_method</TriggerLabel>
-				<ControlPageLabel>ipv4_method</ControlPageLabel>
+				<TriggerLabel>WiFi_ipv4_method</TriggerLabel>
+				<ControlPageLabel>WiFi_ipv4_method</ControlPageLabel>
 			</State>
 			<State id="cloud">
 				<ValueType>String</ValueType>
@@ -2360,15 +2371,15 @@ you can change the device type to 2 relays below</Label>
 				<TriggerLabel>lastStatusChange</TriggerLabel>
 				<ControlPageLabel>lastStatusChange</ControlPageLabel>
 			</State>
-			<State id="rssi">
+			<State id="WiFi_rssi">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>rssi</TriggerLabel>
-				<ControlPageLabel>rssi</ControlPageLabel>
+				<TriggerLabel>WiFi_rssi</TriggerLabel>
+				<ControlPageLabel>WiFi_rssi</ControlPageLabel>
 			</State>
-			<State id="ipv4_method">
+			<State id="WiFi_ipv4_method">
 				<ValueType>String</ValueType>
-				<TriggerLabel>ipv4_method</TriggerLabel>
-				<ControlPageLabel>ipv4_method</ControlPageLabel>
+				<TriggerLabel>WiFi_ipv4_method</TriggerLabel>
+				<ControlPageLabel>WiFi_ipv4_method</ControlPageLabel>
 			</State>
 			<State id="cloud">
 				<ValueType>String</ValueType>
@@ -2592,15 +2603,15 @@ you can change the device type to roller below</Label>
 				<TriggerLabel>lastStatusChange</TriggerLabel>
 				<ControlPageLabel>lastStatusChange</ControlPageLabel>
 			</State>
-			<State id="rssi">
+			<State id="WiFi_rssi">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>rssi</TriggerLabel>
-				<ControlPageLabel>rssi</ControlPageLabel>
+				<TriggerLabel>WiFi_rssi</TriggerLabel>
+				<ControlPageLabel>WiFi_rssi</ControlPageLabel>
 			</State>
-			<State id="ipv4_method">
+			<State id="WiFi_ipv4_method">
 				<ValueType>String</ValueType>
-				<TriggerLabel>ipv4_method</TriggerLabel>
-				<ControlPageLabel>ipv4_method</ControlPageLabel>
+				<TriggerLabel>WiFi_ipv4_method</TriggerLabel>
+				<ControlPageLabel>WiFi_ipv4_method</ControlPageLabel>
 			</State>
 			<State id="cloud">
 				<ValueType>String</ValueType>
@@ -2781,15 +2792,15 @@ you can change the device type to roller below</Label>
 				<TriggerLabel>lastStatusChange</TriggerLabel>
 				<ControlPageLabel>lastStatusChange</ControlPageLabel>
 			</State>
-			<State id="rssi">
+			<State id="WiFi_rssi">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>rssi</TriggerLabel>
-				<ControlPageLabel>rssi</ControlPageLabel>
+				<TriggerLabel>WiFi_rssi</TriggerLabel>
+				<ControlPageLabel>WiFi_rssi</ControlPageLabel>
 			</State>
-			<State id="ipv4_method">
+			<State id="WiFi_ipv4_method">
 				<ValueType>String</ValueType>
-				<TriggerLabel>ipv4_method</TriggerLabel>
-				<ControlPageLabel>ipv4_method</ControlPageLabel>
+				<TriggerLabel>WiFi_ipv4_method</TriggerLabel>
+				<ControlPageLabel>WiFi_ipv4_method</ControlPageLabel>
 			</State>
 			<State id="cloud">
 				<ValueType>String</ValueType>
@@ -2965,15 +2976,15 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<TriggerLabel>lastStatusChange</TriggerLabel>
 				<ControlPageLabel>lastStatusChange</ControlPageLabel>
 			</State>
-			<State id="rssi">
+			<State id="WiFi_rssi">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>rssi</TriggerLabel>
-				<ControlPageLabel>rssi</ControlPageLabel>
+				<TriggerLabel>WiFi_rssi</TriggerLabel>
+				<ControlPageLabel>WiFi_rssi</ControlPageLabel>
 			</State>
-			<State id="ipv4_method">
+			<State id="WiFi_ipv4_method">
 				<ValueType>String</ValueType>
-				<TriggerLabel>ipv4_method</TriggerLabel>
-				<ControlPageLabel>ipv4_method</ControlPageLabel>
+				<TriggerLabel>WiFi_ipv4_method</TriggerLabel>
+				<ControlPageLabel>WiFi_ipv4_method</ControlPageLabel>
 			</State>
 			<State id="cloud">
 				<ValueType>String</ValueType>
@@ -3133,15 +3144,15 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<TriggerLabel>lastStatusChange</TriggerLabel>
 				<ControlPageLabel>lastStatusChange</ControlPageLabel>
 			</State>
-			<State id="rssi">
+			<State id="WiFi_rssi">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>rssi</TriggerLabel>
-				<ControlPageLabel>rssi</ControlPageLabel>
+				<TriggerLabel>WiFi_rssi</TriggerLabel>
+				<ControlPageLabel>WiFi_rssi</ControlPageLabel>
 			</State>
-			<State id="ipv4_method">
+			<State id="WiFi_ipv4_method">
 				<ValueType>String</ValueType>
-				<TriggerLabel>ipv4_method</TriggerLabel>
-				<ControlPageLabel>ipv4_method</ControlPageLabel>
+				<TriggerLabel>WiFi_ipv4_method</TriggerLabel>
+				<ControlPageLabel>WiFi_ipv4_method</ControlPageLabel>
 			</State>
 			<State id="cloud">
 				<ValueType>String</ValueType>
@@ -3168,6 +3179,9 @@ Parent and child share the same connection, the plugin creates two devices to be
 			<Field id="MSG" type="textfield" defaultValue="">
 				<Label>message from plugin:</Label>
 			</Field>
+			<Field id="isRGBWDevice" type="checkbox" defaultValue="true" hidden="true">
+				<Label>isRGBWDevice</Label>
+			</Field>
 			<Field id="SupportsOnState" type="checkbox" defaultValue="true" hidden="true">
 				<Label>SupportsOnState</Label>
 			</Field>
@@ -3186,30 +3200,49 @@ Parent and child share the same connection, the plugin creates two devices to be
 			<Field id="usesInputForOnOff" type="checkbox" defaultValue="false" hidden="true">
 				<Label>usesInputForOnOff</Label>
 			</Field>
-			<Field id="SupportsColor" type="checkbox" defaultValue="true" hidden="true">
-				<Label>SupportsColor</Label>
-			</Field>
-			<Field id="SupportsRGB" type="checkbox" defaultValue="true" hidden="true">
-				<Label>SupportsRGB</Label>
-			</Field>
-			<Field id="SupportsWhite" type="checkbox" defaultValue="true" hidden="true">
-				<Label>SupportsWhite</Label>
-			</Field>
-			<Field id="SupportsWhiteTemperature" type="checkbox" defaultValue="true" hidden="true">
-				<Label>SupportsWhiteTemperature</Label>
-			</Field>
-			<Field id="SupportsRGBandWhiteSimultaneously" type="checkbox" defaultValue="true" hidden="true">
-				<Label>SupportsRGBandWhiteSimultaneously</Label>
-			</Field>
 			<Field id="SupportsTwoWhiteLevels" type="checkbox" defaultValue="false" hidden="true">
 				<Label>SupportsTwoWhiteLevels</Label>
 			</Field>
 			<Field id="SupportsTwoWhiteLevelsSimultaneously" type="checkbox" defaultValue="false" hidden="true">
 				<Label>SupportsTwoWhiteLevelsSimultaneously</Label>
 			</Field>
+			<Field id="WhiteTemperatureMin" type="textfield" defaultValue="3000" hidden="true" />
+			<Field id="WhiteTemperatureMax" type="textfield" defaultValue="6500" hidden="true" />
 			<Field id="label1" type="label">
 				<Label>Parameters for Shelly-Bulb device</Label>
 			</Field>
+			<Field id="rgbSetupLabel" type="label" >
+				<Label>Setup RGB W options, you can use 
+- RGB + W = use RGB for color and W led for white levels, no color temperature
+- RGB = use RGB ONLY for color and white levels
+- W = use white levels and color temperature:</Label>
+			</Field>
+			<Field id="rgbSetup" type="menu" defaultValue="RGBW">
+				<Label>Select:</Label>
+				<List>
+					<Option value="RGBW">RGB + W </Option>
+					<Option value="RGB">RGB </Option>
+					<Option value="WT"> W + T </Option>
+				</List>
+			</Field>
+			
+			<Field id="SupportsColor" type="checkbox" defaultValue="true" hidden="true">
+				<Label>enable color in indigo</Label>
+			</Field>
+			<Field id="SupportsRGB" type="checkbox" defaultValue="true" hidden="true">
+				<Label>enable RGB LEDs</Label>
+			</Field>
+			<Field id="SupportsWhite" type="checkbox" defaultValue="true" hidden="true">
+				<Label>enable White LED </Label>
+			</Field>
+			<Field id="SupportsWhiteTemperature" type="checkbox" defaultValue="true" hidden="true">
+				<Label>enable temperature of white</Label>
+			</Field>
+			<Field id="SupportsRGBandWhiteSimultaneously" type="checkbox" defaultValue="true" hidden="true">
+				<Label>use RGB for color and W led for white</Label>
+			</Field>
+
+
 			<Field id="ipNumber" type="textfield" defaultValue="192.168.1.x">
 				<Label>Shelly device IP Number</Label>
 			</Field>
@@ -3266,6 +3299,11 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<TriggerLabel>mode</TriggerLabel>
 				<ControlPageLabel>mode</ControlPageLabel>
 			</State>
+			<State id="rgbwSetup">
+				<ValueType>String</ValueType>
+				<TriggerLabel>rgbwSetup</TriggerLabel>
+				<ControlPageLabel>rgbwSetup</ControlPageLabel>
+			</State>
 			<State id="power">
 				<ValueType>Number</ValueType>
 				<TriggerLabel>power</TriggerLabel>
@@ -3279,6 +3317,11 @@ Parent and child share the same connection, the plugin creates two devices to be
 			</State>
  -->
 			<!--   this is same for all: -->
+			<State id="lastSuccessfullConfigPush">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastSuccessfullConfigPush</TriggerLabel>
+				<ControlPageLabel>lastSuccessfullConfigPush</ControlPageLabel>
+			</State>
 			<State id="action_from_device">
 				<ValueType>String</ValueType>
 				<TriggerLabel>action_from_device</TriggerLabel>
@@ -3304,15 +3347,15 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<TriggerLabel>lastStatusChange</TriggerLabel>
 				<ControlPageLabel>lastStatusChange</ControlPageLabel>
 			</State>
-			<State id="rssi">
+			<State id="WiFi_rssi">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>rssi</TriggerLabel>
-				<ControlPageLabel>rssi</ControlPageLabel>
+				<TriggerLabel>WiFi_rssi</TriggerLabel>
+				<ControlPageLabel>WiFi_rssi</ControlPageLabel>
 			</State>
-			<State id="ipv4_method">
+			<State id="WiFi_ipv4_method">
 				<ValueType>String</ValueType>
-				<TriggerLabel>ipv4_method</TriggerLabel>
-				<ControlPageLabel>ipv4_method</ControlPageLabel>
+				<TriggerLabel>WiFi_ipv4_method</TriggerLabel>
+				<ControlPageLabel>WiFi_ipv4_method</ControlPageLabel>
 			</State>
 			<State id="cloud">
 				<ValueType>String</ValueType>
@@ -3338,6 +3381,9 @@ Parent and child share the same connection, the plugin creates two devices to be
 			<Field id="isShellyDevice" type="checkbox" defaultValue="true" hidden="yes" />
 			<Field id="MSG" type="textfield" defaultValue="">
 				<Label>message from plugin:</Label>
+			</Field>
+			<Field id="isRGBWDevice" type="checkbox" defaultValue="true" hidden="true">
+				<Label>isRGBWDevice</Label>
 			</Field>
 			<Field id="SupportsOnState" type="checkbox" defaultValue="true" hidden="true">
 				<Label>SupportsOnState</Label>
@@ -3372,6 +3418,20 @@ Parent and child share the same connection, the plugin creates two devices to be
 			<Field id="label1" type="label">
 				<Label>Parameters for Shelly-RGW2 device</Label>
 			</Field>
+			<Field id="rgbSetupLabel" type="label" >
+				<Label>Setup RGB W options, you can use 
+- RGB + W = use RGB for color and W led for white levels, no color temperature
+- RGB = use RGB ONLY for color and white levels
+- W = use white levels and color temperature:</Label>
+			</Field>
+			<Field id="rgbSetup" type="menu" defaultValue="RGBW">
+				<Label>Select:</Label>
+				<List>
+					<Option value="RGBW">RGB + W </Option>
+					<Option value="RGB">RGB </Option>
+					<Option value="WT"> W + T</Option>
+				</List>
+			</Field>
 			<Field id="ipNumber" type="textfield" defaultValue="192.168.1.x">
 				<Label>Shelly device IP Number</Label>
 			</Field>
@@ -3392,11 +3452,6 @@ Parent and child share the same connection, the plugin creates two devices to be
 			</Field>
 			<Field id="SupportsWhite" type="checkbox" defaultValue="true" hidden="false">
 				<Label>.. supports White channel</Label>
-			</Field>
-			<Field id="modelB" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
-				<Label>A) RGB+Color and White
-B) RGB+Color only
-C) White Only</Label>
 			</Field>
 			<Field id="pollingFrequency" type="menu" defaultValue="-1">
 				<Label>Polling frequency, how often the plugin requests status from the device:</Label>
@@ -3445,6 +3500,11 @@ C) White Only</Label>
 				<TriggerLabel>mode</TriggerLabel>
 				<ControlPageLabel>mode</ControlPageLabel>
 			</State>
+			<State id="rgbwSetup">
+				<ValueType>String</ValueType>
+				<TriggerLabel>rgbwSetup</TriggerLabel>
+				<ControlPageLabel>rgbwSetup</ControlPageLabel>
+			</State>
 			<!--   not for rgb light bulb 
 			<State id="lastSuccessfullConfigPush">
 				<ValueType>String</ValueType>
@@ -3453,6 +3513,11 @@ C) White Only</Label>
 			</State>
  -->
 			<!--   this is same for all: -->
+			<State id="lastSuccessfullConfigPush">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastSuccessfullConfigPush</TriggerLabel>
+				<ControlPageLabel>lastSuccessfullConfigPush</ControlPageLabel>
+			</State>
 			<State id="action_from_device">
 				<ValueType>String</ValueType>
 				<TriggerLabel>action_from_device</TriggerLabel>
@@ -3478,15 +3543,15 @@ C) White Only</Label>
 				<TriggerLabel>lastStatusChange</TriggerLabel>
 				<ControlPageLabel>lastStatusChange</ControlPageLabel>
 			</State>
-			<State id="rssi">
+			<State id="WiFi_rssi">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>rssi</TriggerLabel>
-				<ControlPageLabel>rssi</ControlPageLabel>
+				<TriggerLabel>WiFi_rssi</TriggerLabel>
+				<ControlPageLabel>WiFi_rssi</ControlPageLabel>
 			</State>
-			<State id="ipv4_method">
+			<State id="WiFi_ipv4_method">
 				<ValueType>String</ValueType>
-				<TriggerLabel>ipv4_method</TriggerLabel>
-				<ControlPageLabel>ipv4_method</ControlPageLabel>
+				<TriggerLabel>WiFi_ipv4_method</TriggerLabel>
+				<ControlPageLabel>WiFi_ipv4_method</ControlPageLabel>
 			</State>
 			<State id="cloud">
 				<ValueType>String</ValueType>
@@ -3767,15 +3832,15 @@ C) White Only</Label>
 				<TriggerLabel>lastStatusChange</TriggerLabel>
 				<ControlPageLabel>lastStatusChange</ControlPageLabel>
 			</State>
-			<State id="rssi">
+			<State id="WiFi_rssi">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>rssi</TriggerLabel>
-				<ControlPageLabel>rssi</ControlPageLabel>
+				<TriggerLabel>WiFi_rssi</TriggerLabel>
+				<ControlPageLabel>WiFi_rssi</ControlPageLabel>
 			</State>
-			<State id="ipv4_method">
+			<State id="WiFi_ipv4_method">
 				<ValueType>String</ValueType>
-				<TriggerLabel>ipv4_method</TriggerLabel>
-				<ControlPageLabel>ipv4_method</ControlPageLabel>
+				<TriggerLabel>WiFi_ipv4_method</TriggerLabel>
+				<ControlPageLabel>WiFi_ipv4_method</ControlPageLabel>
 			</State>
 			<State id="cloud">
 				<ValueType>String</ValueType>
@@ -3954,15 +4019,15 @@ C) White Only</Label>
 				<TriggerLabel>lastStatusChange</TriggerLabel>
 				<ControlPageLabel>lastStatusChange</ControlPageLabel>
 			</State>
-			<State id="rssi">
+			<State id="WiFi_rssi">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>rssi</TriggerLabel>
-				<ControlPageLabel>rssi</ControlPageLabel>
+				<TriggerLabel>WiFi_rssi</TriggerLabel>
+				<ControlPageLabel>WiFi_rssi</ControlPageLabel>
 			</State>
-			<State id="ipv4_method">
+			<State id="WiFi_ipv4_method">
 				<ValueType>String</ValueType>
-				<TriggerLabel>ipv4_method</TriggerLabel>
-				<ControlPageLabel>ipv4_method</ControlPageLabel>
+				<TriggerLabel>WiFi_ipv4_method</TriggerLabel>
+				<ControlPageLabel>WiFi_ipv4_method</ControlPageLabel>
 			</State>
 			<State id="cloud">
 				<ValueType>String</ValueType>
@@ -4029,7 +4094,7 @@ C) White Only</Label>
 				<Label>SupportsTwoWhiteLevelsSimultaneously</Label>
 			</Field>
 			<Field id="label1" type="label">
-				<Label>Parameters for Shelly-Vintage Blub device</Label>
+				<Label>Parameters for Shelly-Vintage Bulb device</Label>
 			</Field>
 			<Field id="ipNumber" type="textfield" defaultValue="192.168.1.x">
 				<Label>Shelly device IP Number</Label>
@@ -4109,6 +4174,11 @@ C) White Only</Label>
 				<TriggerLabel>MAC</TriggerLabel>
 				<ControlPageLabel>MAC</ControlPageLabel>
 			</State>
+			<State id="lastSuccessfullConfigPush">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastSuccessfullConfigPush</TriggerLabel>
+				<ControlPageLabel>lastSuccessfullConfigPush</ControlPageLabel>
+			</State>
 			<State id="lastMessageFromDevice">
 				<ValueType>String</ValueType>
 				<TriggerLabel>lastMessageFromDevice</TriggerLabel>
@@ -4124,15 +4194,15 @@ C) White Only</Label>
 				<TriggerLabel>lastStatusChange</TriggerLabel>
 				<ControlPageLabel>lastStatusChange</ControlPageLabel>
 			</State>
-			<State id="rssi">
+			<State id="WiFi_rssi">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>rssi</TriggerLabel>
-				<ControlPageLabel>rssi</ControlPageLabel>
+				<TriggerLabel>WiFi_rssi</TriggerLabel>
+				<ControlPageLabel>WiFi_rssi</ControlPageLabel>
 			</State>
-			<State id="ipv4_method">
+			<State id="WiFi_ipv4_method">
 				<ValueType>String</ValueType>
-				<TriggerLabel>ipv4_method</TriggerLabel>
-				<ControlPageLabel>ipv4_method</ControlPageLabel>
+				<TriggerLabel>WiFi_ipv4_method</TriggerLabel>
+				<ControlPageLabel>WiFi_ipv4_method</ControlPageLabel>
 			</State>
 			<State id="cloud">
 				<ValueType>String</ValueType>
@@ -4326,25 +4396,25 @@ C) White Only</Label>
 				<TriggerLabel>lastStatusChange</TriggerLabel>
 				<ControlPageLabel>lastStatusChange</ControlPageLabel>
 			</State>
-			<State id="rssi">
+			<State id="WiFi_rssi">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>rssi</TriggerLabel>
-				<ControlPageLabel>rssi</ControlPageLabel>
+				<TriggerLabel>WiFi_rssi</TriggerLabel>
+				<ControlPageLabel>WiFi_rssi</ControlPageLabel>
 			</State>
-			<State id="rssi">
+			<State id="WiFi_rssi">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>rssi</TriggerLabel>
-				<ControlPageLabel>rssi</ControlPageLabel>
+				<TriggerLabel>WiFi_rssi</TriggerLabel>
+				<ControlPageLabel>WiFi_rssi</ControlPageLabel>
 			</State>
 			<State id="WiFi_connect_retries">
 				<ValueType>Number</ValueType>
 				<TriggerLabel>WiFi_connect_retries</TriggerLabel>
 				<ControlPageLabel>WiFi_connect_retries</ControlPageLabel>
 			</State>
-			<State id="ipv4_method">
+			<State id="WiFi_ipv4_method">
 				<ValueType>String</ValueType>
-				<TriggerLabel>ipv4_method</TriggerLabel>
-				<ControlPageLabel>ipv4_method</ControlPageLabel>
+				<TriggerLabel>WiFi_ipv4_method</TriggerLabel>
+				<ControlPageLabel>WiFi_ipv4_method</ControlPageLabel>
 			</State>
 			<State id="cloud">
 				<ValueType>String</ValueType>
@@ -4525,15 +4595,15 @@ C) White Only</Label>
 				<TriggerLabel>lastStatusChange</TriggerLabel>
 				<ControlPageLabel>lastStatusChange</ControlPageLabel>
 			</State>
-			<State id="rssi">
+			<State id="WiFi_rssi">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>rssi</TriggerLabel>
-				<ControlPageLabel>rssi</ControlPageLabel>
+				<TriggerLabel>WiFi_rssi</TriggerLabel>
+				<ControlPageLabel>WiFi_rssi</ControlPageLabel>
 			</State>
-			<State id="ipv4_method">
+			<State id="WiFi_ipv4_method">
 				<ValueType>String</ValueType>
-				<TriggerLabel>ipv4_method</TriggerLabel>
-				<ControlPageLabel>ipv4_method</ControlPageLabel>
+				<TriggerLabel>WiFi_ipv4_method</TriggerLabel>
+				<ControlPageLabel>WiFi_ipv4_method</ControlPageLabel>
 			</State>
 			<State id="cloud">
 				<ValueType>String</ValueType>
@@ -4634,6 +4704,11 @@ for connection parameters check the parent (SHELLY host device)</Label>
 				<ControlPageLabel>sensorNo</ControlPageLabel>
 			</State>
 			<!--   this is same for all: -->
+			<State id="lastSuccessfullConfigPush">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastSuccessfullConfigPush</TriggerLabel>
+				<ControlPageLabel>lastSuccessfullConfigPush</ControlPageLabel>
+			</State>
 			<State id="MAC">
 				<ValueType>String</ValueType>
 				<TriggerLabel>MAC</TriggerLabel>
@@ -4735,6 +4810,11 @@ for connection parameters check the parent (SHELLY host device)</Label>
 				<ControlPageLabel>sensorNo</ControlPageLabel>
 			</State>
 			<!--   this is same for all: -->
+			<State id="lastSuccessfullConfigPush">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastSuccessfullConfigPush</TriggerLabel>
+				<ControlPageLabel>lastSuccessfullConfigPush</ControlPageLabel>
+			</State>
 			<State id="MAC">
 				<ValueType>String</ValueType>
 				<TriggerLabel>MAC</TriggerLabel>
@@ -4788,6 +4868,7 @@ for connection parameters check the parent (SHELLY host device)</Label>
 			<Field id="usesInputForOnOff" type="checkbox" defaultValue="false" hidden="true">
 				<Label>usesInputForOnOff</Label>
 			</Field>
+			<Field id="SupportsBatteryLevel" type="checkbox" defaultValue="true" hidden="true" />
 			<Field id="label1" type="label">
 				<Label>Parameters for Shelly-Flood device</Label>
 			</Field>
@@ -4971,15 +5052,240 @@ for connection parameters check the parent (SHELLY host device)</Label>
 				<TriggerLabel>lastSuccessfullConfigPush</TriggerLabel>
 				<ControlPageLabel>lastSuccessfullConfigPush</ControlPageLabel>
 			</State>
-			<State id="rssi">
+			<State id="WiFi_rssi">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>rssi</TriggerLabel>
-				<ControlPageLabel>rssi</ControlPageLabel>
+				<TriggerLabel>WiFi_rssi</TriggerLabel>
+				<ControlPageLabel>WiFi_rssi</ControlPageLabel>
 			</State>
-			<State id="ipv4_method">
+			<State id="WiFi_ipv4_method">
 				<ValueType>String</ValueType>
-				<TriggerLabel>ipv4_method</TriggerLabel>
-				<ControlPageLabel>ipv4_method</ControlPageLabel>
+				<TriggerLabel>WiFi_ipv4_method</TriggerLabel>
+				<ControlPageLabel>WiFi_ipv4_method</ControlPageLabel>
+			</State>
+			<State id="cloud">
+				<ValueType>String</ValueType>
+				<TriggerLabel>cloud</TriggerLabel>
+				<ControlPageLabel>cloud</ControlPageLabel>
+			</State>
+			<State id="software_update_available">
+				<ValueType>String</ValueType>
+				<TriggerLabel>software_update_available</TriggerLabel>
+				<ControlPageLabel>software_update_available</ControlPageLabel>
+			</State>
+			<State id="expired">
+				<ValueType>String</ValueType>
+				<TriggerLabel>expired</TriggerLabel>
+				<ControlPageLabel>expired</ControlPageLabel>
+			</State>
+		</States>
+	</Device>
+
+
+	<Device type="sensor" id="shellysmoke">
+		<Name>Shelly-Smoke (SHSK-1)</Name>
+		<ConfigUI>
+			<Field id="isShellyDevice" type="checkbox" defaultValue="true" hidden="yes" />
+			<Field id="MSG" type="textfield" defaultValue="">
+				<Label>message from plugin:</Label>
+			</Field>
+			<Field id="SupportsOnState" type="checkbox" defaultValue="true" hidden="true">
+				<Label>SupportsOnState</Label>
+			</Field>
+			<Field id="SupportsSensorValue" type="checkbox" defaultValue="true" hidden="true">
+				<Label>SupportsSensorValue</Label>
+			</Field>
+			<Field id="SupportsStatusRequest" type="checkbox" defaultValue="true" hidden="true">
+				<Label>SupportsStatusRequest</Label>
+			</Field>
+			<Field id="AllowOnStateChange" type="checkbox" defaultValue="false" hidden="true">
+				<Label>AllowOnStateChange</Label>
+			</Field>
+			<Field id="AllowSensorValueChange" type="checkbox" defaultValue="false" hidden="true">
+				<Label>AllowSensorValueChange</Label>
+			</Field>
+			<Field id="usesInputForOnOff" type="checkbox" defaultValue="false" hidden="true">
+				<Label>usesInputForOnOff</Label>
+			</Field>
+			<Field id="SupportsBatteryLevel" type="checkbox" defaultValue="true" hidden="true" />
+			<Field id="label1" type="label">
+				<Label>Parameters for Shelly-Flood device</Label>
+			</Field>
+			<Field id="ipNumber" type="textfield" defaultValue="192.168.1.x">
+				<Label>Shelly device IP Number</Label>
+			</Field>
+			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
+				<Label>Overwrite existing IP number</Label>
+			</Field>
+			<Field id="MAC" type="textfield" defaultValue="" readonly="yes">
+				<Label>Shelly device mac number</Label>
+			</Field>
+			<Field id="devNo" type="menu" defaultValue="0" readonly="yes" hidden="true">
+				<Label>internal devNo</Label>
+				<List>
+					<Option value="0">0</Option>
+				</List>
+			</Field>
+			<Field id="pollingFrequency" type="menu" defaultValue="-1">
+				<Label>Polling frequency, how often the plugin requests status from the device:</Label>
+				<List>
+					<Option value="10">every 10 sec</Option>
+					<Option value="15">every 15 sec</Option>
+					<Option value="20">every 20 sec</Option>
+					<Option value="30">every 30 sec</Option>
+					<Option value="40">every 40 sec</Option>
+					<Option value="80">every 80 sec</Option>
+					<Option value="120">every 2 minutes</Option>
+					<Option value="180">every 3 minutes</Option>
+					<Option value="-1">automatic adaptive</Option>
+				</List>
+			</Field>
+			<Field id="pollingFrequencyLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
+				<Label>can be higher/adaptive if actions are setup on the devices</Label>
+			</Field>
+			<Field id="expirationSeconds" type="menu" defaultValue="50400">
+				<Label>Device goes to EXPIRED w no message or answer after:</Label>
+				<List>
+					<Option value="21600">after 6 hour</Option>
+					<Option value="28800">after 8 hour</Option>
+					<Option value="36000">after 10 hour</Option>
+					<Option value="43600">after 12 hour</Option>
+					<Option value="50400">after 14 hour</Option>
+					<Option value="57600">after 16 hour</Option>
+				</List>
+			</Field>
+			<Field id="displaySelect" type="menu" defaultValue="Temperature">
+				<Label>Property to display in the State Column:</Label>
+				<List>
+					<Option value="Temperature">Temperature</Option>
+				</List>
+			</Field>
+			<Field id="SENDTOSHELLYDEVICE-temperature_offset" type="menu" defaultValue="none">
+				<Label>temperature offset:</Label>
+				<List>
+					<Option value="none">do not set</Option>
+					<Option value="0">0</Option>
+					<Option value="0.5">0.5</Option>
+					<Option value="1">1</Option>
+					<Option value="2">2</Option>
+					<Option value="3">3</Option>
+					<Option value="4">4</Option>
+					<Option value="5">5</Option>
+					<Option value="-0.5">-0.5</Option>
+					<Option value="-1">-1</Option>
+					<Option value="-2">-2</Option>
+					<Option value="-3">-3</Option>
+					<Option value="-4">-4</Option>
+					<Option value="-5">-5</Option>
+				</List>
+			</Field>
+			<Field id="SENDTOSHELLYDEVICE-temperature_threshold" type="menu" defaultValue="none">
+				<Label>temperature threshold[C] to send data:</Label>
+				<List>
+					<Option value="none">do not set</Option>
+					<Option value="0.5">0.5</Option>
+					<Option value="1">1</Option>
+					<Option value="1.5">1.5</Option>
+					<Option value="2">2</Option>
+					<Option value="3">3</Option>
+					<Option value="4">4</Option>
+				</List>
+			</Field>
+			<Field id="SENDTOSHELLYDEVICE-temperature_units" type="menu" defaultValue="none">
+				<Label>Temperature unit on device:</Label>
+				<List>
+					<Option value="none">do not set</Option>
+					<Option value="F">F</Option>
+					<Option value="C">C</Option>
+				</List>
+			</Field>
+		</ConfigUI>
+		<States>
+			<!--   this is dev specific -->
+			<State id="Temperature">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Temperature</TriggerLabel>
+				<ControlPageLabel>Temperature</ControlPageLabel>
+			</State>
+			<State id="TemperatureMaxToday">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>TemperatureMaxToday</TriggerLabel>
+				<ControlPageLabel>TemperatureMaxToday</ControlPageLabel>
+			</State>
+			<State id="TemperatureMinToday">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>TemperatureMinToday</TriggerLabel>
+				<ControlPageLabel>TemperatureMinToday</ControlPageLabel>
+			</State>
+			<State id="TemperatureMaxYesterday">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>TemperatureMaxYesterday</TriggerLabel>
+				<ControlPageLabel>TemperatureMaxYesterday</ControlPageLabel>
+			</State>
+			<State id="TemperatureMinYesterday">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>TemperatureMinYesterday</TriggerLabel>
+				<ControlPageLabel>TemperatureMinYesterday</ControlPageLabel>
+			</State>
+			<State id="Smoke">
+				<ValueType>String</ValueType>
+				<TriggerLabel>Smoke</TriggerLabel>
+				<ControlPageLabel>Smoke</ControlPageLabel>
+			</State>
+			<State id="lastAlarm">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastAlarm</TriggerLabel>
+				<ControlPageLabel>lastAlarm</ControlPageLabel>
+			</State>
+			<State id="previousAlarm">
+				<ValueType>String</ValueType>
+				<TriggerLabel>previousAlarm</TriggerLabel>
+				<ControlPageLabel>previousAlarm</ControlPageLabel>
+			</State>
+			<!--   this is same for all: -->
+			<State id="batteryVoltage">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>batteryVoltage</TriggerLabel>
+				<ControlPageLabel>batteryVoltage</ControlPageLabel>
+			</State>
+			<State id="action_from_device">
+				<ValueType>String</ValueType>
+				<TriggerLabel>action_from_device</TriggerLabel>
+				<ControlPageLabel>action_from_device</ControlPageLabel>
+			</State>
+			<State id="MAC">
+				<ValueType>String</ValueType>
+				<TriggerLabel>MAC</TriggerLabel>
+				<ControlPageLabel>MAC</ControlPageLabel>
+			</State>
+			<State id="lastMessageFromDevice">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastMessageFromDevice</TriggerLabel>
+				<ControlPageLabel>lastMessageFromDevice</ControlPageLabel>
+			</State>
+			<State id="created">
+				<ValueType>String</ValueType>
+				<TriggerLabel>created</TriggerLabel>
+				<ControlPageLabel>created</ControlPageLabel>
+			</State>
+			<State id="lastStatusChange">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastStatusChange</TriggerLabel>
+				<ControlPageLabel>lastStatusChange</ControlPageLabel>
+			</State>
+			<State id="lastSuccessfullConfigPush">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastSuccessfullConfigPush</TriggerLabel>
+				<ControlPageLabel>lastSuccessfullConfigPush</ControlPageLabel>
+			</State>
+			<State id="WiFi_rssi">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>WiFi_rssi</TriggerLabel>
+				<ControlPageLabel>WiFi_rssi</ControlPageLabel>
+			</State>
+			<State id="WiFi_ipv4_method">
+				<ValueType>String</ValueType>
+				<TriggerLabel>WiFi_ipv4_method</TriggerLabel>
+				<ControlPageLabel>WiFi_ipv4_method</ControlPageLabel>
 			</State>
 			<State id="cloud">
 				<ValueType>String</ValueType>
@@ -5198,15 +5504,15 @@ for connection parameters check the parent (SHELLY host device)</Label>
 				<TriggerLabel>lastSuccessfullConfigPush</TriggerLabel>
 				<ControlPageLabel>lastSuccessfullConfigPush</ControlPageLabel>
 			</State>
-			<State id="rssi">
+			<State id="WiFi_rssi">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>rssi</TriggerLabel>
-				<ControlPageLabel>rssi</ControlPageLabel>
+				<TriggerLabel>WiFi_rssi</TriggerLabel>
+				<ControlPageLabel>WiFi_rssi</ControlPageLabel>
 			</State>
-			<State id="ipv4_method">
+			<State id="WiFi_ipv4_method">
 				<ValueType>String</ValueType>
-				<TriggerLabel>ipv4_method</TriggerLabel>
-				<ControlPageLabel>ipv4_method</ControlPageLabel>
+				<TriggerLabel>WiFi_ipv4_method</TriggerLabel>
+				<ControlPageLabel>WiFi_ipv4_method</ControlPageLabel>
 			</State>
 			<State id="cloud">
 				<ValueType>String</ValueType>
@@ -5388,11 +5694,6 @@ for connection parameters check the parent (SHELLY host device)</Label>
 				<TriggerLabel>illumination</TriggerLabel>
 				<ControlPageLabel>illumination</ControlPageLabel>
 			</State>
-			<State id="batteryLevel">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>batteryLevel</TriggerLabel>
-				<ControlPageLabel>batteryLevel</ControlPageLabel>
-			</State>
 			<State id="batteryVoltage">
 				<ValueType>Number</ValueType>
 				<TriggerLabel>batteryVoltage</TriggerLabel>
@@ -5428,15 +5729,15 @@ for connection parameters check the parent (SHELLY host device)</Label>
 				<TriggerLabel>lastSuccessfullConfigPush</TriggerLabel>
 				<ControlPageLabel>lastSuccessfullConfigPush</ControlPageLabel>
 			</State>
-			<State id="rssi">
+			<State id="WiFi_rssi">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>rssi</TriggerLabel>
-				<ControlPageLabel>rssi</ControlPageLabel>
+				<TriggerLabel>WiFi_rssi</TriggerLabel>
+				<ControlPageLabel>WiFi_rssi</ControlPageLabel>
 			</State>
-			<State id="ipv4_method">
+			<State id="WiFi_ipv4_method">
 				<ValueType>String</ValueType>
-				<TriggerLabel>ipv4_method</TriggerLabel>
-				<ControlPageLabel>ipv4_method</ControlPageLabel>
+				<TriggerLabel>WiFi_ipv4_method</TriggerLabel>
+				<ControlPageLabel>WiFi_ipv4_method</ControlPageLabel>
 			</State>
 			<State id="cloud">
 				<ValueType>String</ValueType>

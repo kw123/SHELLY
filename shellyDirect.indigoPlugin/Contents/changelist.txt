@@ -1,3 +1,25 @@
+
+Added features / changes in v7.11.23 @ 2020-08-14
+===================================================
+
+1. reconfigured RBG devices to allow for rgbw rgb  .. white +T  modus
+2. now supports change brightness from iphone screen, only SetColorLevels was supported now also SetBrightness is
+   that is used buy ophone interface
+
+
+Added features / changes in v7.11.22 @ 2020-08-14
+===================================================
+
+1. added support for shelly- smoke device
+2. added some missing states for some devcies (ie last sucessful push)
+
+
+Added features / changes in v7.10.22 @ 2020-08-09
+===================================================
+
+1. minor corrections for states ..
+
+
 Added features / changes in v7.10.21 @ 2020-08-04
 ===================================================
 
@@ -6,7 +28,7 @@ Added features / changes in v7.10.21 @ 2020-08-04
    cloud = connetced / local
    ipv4_method = dhcp / static
 3. for button1 and i3:
-   event type in status field: lastEv#:n-Type: s / ss / sss / L/ SL / LS (short  .. long press)
+   event type in status field: lastEv#:n-Type: S / SS / SSS / L/ SL / LS (short  .. long press)
 
 
 Added features / changes in v7.9.21 @ 2020-08-04
