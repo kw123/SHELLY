@@ -1,3 +1,8 @@
+Added features / changes in v7.11.24 @ 2020-08-14
+===================================================
+
+1. fixed error Line 1514 has error=‘key rgbSetup n...
+
 
 Added features / changes in v7.11.23 @ 2020-08-14
 ===================================================

@@ -360,7 +360,7 @@ _emptyProps = {	# switches
 
 				"ShellyBulbDuo":{"props":{"isShellyDevice":True, "usesInputForOnOff":False, "isRelay":False, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False, 
 						"SupportsColor":True, "SupportsRGB":False, "SupportsWhite":True, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
-						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":6,  "expirationSeconds":180, "isRGBWDevice":True},
+						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":6,  "expirationSeconds":180},
 						"WhiteTemperatureMin":2700, "WhiteTemperatureMax":6500,
 						"rgbLimits":[1,255],
 						"action_url":  {"settings/light/0?":{ "out_on_url":"onOffState=1", "out_off_url":"onOffState=0"}},
@@ -372,7 +372,7 @@ _emptyProps = {	# switches
 
 				"shellybulb":{"props":{"isShellyDevice":True, "usesInputForOnOff":False, "isRelay":False, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False, 
 						"SupportsColor":True, "SupportsRGB":True, "SupportsWhite":True, "SupportsWhiteTemperature":True, "SupportsRGBandWhiteSimultaneously":True, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
-						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":6,  "expirationSeconds":180},
+						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":6,  "expirationSeconds":180, "isRGBWDevice":True},
 						"WhiteTemperatureMin":3000, "WhiteTemperatureMax":6500,
 						"rgbLimits":[1,255],
 						"action_url":   {},
@@ -1510,7 +1510,7 @@ class Plugin(indigo.PluginBase):
 					self.deviceActionList.append({"devId":dev.id,"action":"changeDeviceTypeId","value":"shellyswitch25"})
 					return ( True, valuesDict )
 
-			if "isRGBWDevice" in valuesDict and valuesDict["isRGBWDevice"]:
+			if "isRGBWDevice" in valuesDict and valuesDict["isRGBWDevice"] and "rgbSetup" in valuesDict:
 				if valuesDict["rgbSetup"] == "RGBW":
 					valuesDict["SupportsColor"] = True
 					valuesDict["SupportsRGB"] = True
