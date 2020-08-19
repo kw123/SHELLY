@@ -346,7 +346,7 @@ _emptyProps = {	# switches
 				"shellydimmer":{"props":{"isShellyDevice":True, "usesInputForOnOff":False, "isRelay":False, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False, 
 						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
 						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":6,  "expirationSeconds":180},
-						"rgbLimits":[1,255],
+						"rgbLimits":[0,255],
 						"setPageActionPageOnShellyDev":{"white":"light/0?","white":"light/0?"},
 						"action_url":   {"settings/light/0?":{
 										"btn1_on_url":"input_0=on", "btn1_off_url":"input_0=off", "btn1_longpush_url":"input_0=long", "btn1_shortpush_url":"input_0=short",  
@@ -362,7 +362,7 @@ _emptyProps = {	# switches
 						"SupportsColor":True, "SupportsRGB":False, "SupportsWhite":True, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
 						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":6,  "expirationSeconds":180},
 						"WhiteTemperatureMin":2700, "WhiteTemperatureMax":6500,
-						"rgbLimits":[1,255],
+						"rgbLimits":[0,255],
 						"action_url":  {"settings/light/0?":{ "out_on_url":"onOffState=1", "out_off_url":"onOffState=0"}},
 						"childTypes_Sensors":[],
 						"setPageActionPageOnShellyDev":{"white":"light/0?","white":"light/0?"},
@@ -374,7 +374,7 @@ _emptyProps = {	# switches
 						"SupportsColor":True, "SupportsRGB":True, "SupportsWhite":True, "SupportsWhiteTemperature":True, "SupportsRGBandWhiteSimultaneously":True, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
 						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":6,  "expirationSeconds":180, "isRGBWDevice":True},
 						"WhiteTemperatureMin":3000, "WhiteTemperatureMax":6500,
-						"rgbLimits":[1,255],
+						"rgbLimits":[0,255],
 						"action_url":   {},
 						"setPageActionPageOnShellyDev":{"white":"light/0?","color":"light/0?"},
 						"childTypes_Sensors":[],
@@ -386,7 +386,7 @@ _emptyProps = {	# switches
 				"ShellyVintage":{"props":{"isShellyDevice":True, "usesInputForOnOff":False, "isRelay":False, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False, 
 						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":True, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
 						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":6,  "expirationSeconds":180},
-						"rgbLimits":[1,255],
+						"rgbLimits":[0,255],
 						"action_url":  {"settings/light/0?":{"out_on_url":"onOffState=1","out_off_url":"onOffState=0"}},
 						"setPageActionPageOnShellyDev":{"white":"light/0?","color":"light/0?"},
 						"childTypes_Sensors":[],
@@ -397,7 +397,7 @@ _emptyProps = {	# switches
 				"shellyrgbw2":{"props":{"isShellyDevice":True, "usesInputForOnOff":False, "isRelay":False, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False, 
 						"SupportsColor":True, "SupportsRGB":True, "SupportsWhite":True, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":True, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
 						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":6,  "expirationSeconds":180, "isRGBWDevice":True},
-						"rgbLimits":[1,255],
+						"rgbLimits":[0,255],
 						"action_url":   {},
 						"setPageActionPageOnShellyDev":{"white":"white/0?","color":"color/0?"},
 						"childTypes_Sensors":[],
@@ -409,7 +409,7 @@ _emptyProps = {	# switches
 				"shellydw":{"props":{"isShellyDevice":True, "usesInputForOnOff":False, "isRelay":False, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
 						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
 						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":60,  "expirationSeconds":50400,"displaySelect":"lux","SupportsBatteryLevel":True  },
-						"rgbLimits":[1,255],
+						"rgbLimits":[0,255],
 						"setPageActionPageOnShellyDev":{},
 						"action_url":{"settings/?twilight_url=":{"none":"data?action=twilightOpen"},"settings/?dark_url=":{"none":"data?action=darkOpen"},"settings/?close_url=":{"none":"data?action=close"},"settings/?vibration_url=":{"none":"data?action=vibration"}},
 						"childTypes_Sensors":[],
@@ -4123,7 +4123,7 @@ class Plugin(indigo.PluginBase):
 						actionValues["blueLevel"] 	= action.actionValue
 						actionValues["whiteLevel"] 	= 0
 					else:
-						actionValues["brightnessLevel"] 	= max(1,action.actionValue)
+						actionValues["brightnessLevel"] 	= max(0,action.actionValue)
 						if "whiteLevel" in actionValues: del actionValues["whiteLevel"]
 					setAction = True
 
@@ -4204,10 +4204,16 @@ class Plugin(indigo.PluginBase):
 											page += "{}={}&".format(IndigoStateMapToShellyDev[colorAction], int(min(WhiteTemperatureMax,max(WhiteTemperatureMin,actionValues[colorAction]))))
 											setThermometer["lights"][0]["temp"] = int(min(WhiteTemperatureMax,max(WhiteTemperatureMin,actionValues[colorAction])))
 										elif colorAction == "whiteLevel":
+											if actionValues[colorAction] ==0:
+												ison = False
+												page += "{}={}&".format("turn", "off")
 											page += "{}={}&".format(IndigoStateMapToShellyDev[colorAction], int(min(rgbLimits[1],max(rgbLimits[0],actionValues[colorAction]*255/100.))))
 											setThermometer["lights"][0]["white"] = int(min(rgbLimits[1],max(rgbLimits[0],actionValues[colorAction]*255/100.)))
 										elif colorAction == "brightnessLevel":
-											page += "{}={}&".format(IndigoStateMapToShellyDev[colorAction], int(min(100,         max(1,actionValues[colorAction]))))
+											if actionValues[colorAction] ==0:
+												ison = False
+												page += "{}={}&".format("turn", "off")
+											page += "{}={}&".format(IndigoStateMapToShellyDev[colorAction], int(min(100,         max(0,actionValues[colorAction]))))
 											setThermometer["lights"][0]["brightness"] = actionValues[colorAction]
 										else:
 											page += "{}={}&".format(IndigoStateMapToShellyDev[colorAction], int(min(rgbLimits[1],max(rgbLimits[0],actionValues[colorAction]*255/100.))))

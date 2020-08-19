@@ -1,3 +1,10 @@
+Added features / changes in v7.11.26 @ 2020-08-19
+===================================================
+
+1. if brightness level is set to 0 also lamp is switched off
+2. now allows RGB, brightnesslevel = 0 (min was 1, in previous shell device versions settuing rgb/brightness =0 created an error) 
+
+
 Added features / changes in v7.11.25 @ 2020-08-18
 ===================================================
 
