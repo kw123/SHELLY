@@ -4274,7 +4274,7 @@ class Plugin(indigo.PluginBase):
 			if len(page) > 0:
 
 				if setThermometer != {}:
-					self.indiLOG.log(20,"setThermometer  send: {}".format(setThermometer ))
+					#self.indiLOG.log(20,"setThermometer  send: {}".format(setThermometer ))
 					self.fillLight( setThermometer, dev)
 					self.executeUpdateStatesDict()
 
