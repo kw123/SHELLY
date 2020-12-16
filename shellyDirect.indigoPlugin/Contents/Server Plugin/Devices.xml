@@ -5757,4 +5757,229 @@ for connection parameters check the parent (SHELLY host device)</Label>
 		</States>
 	</Device>
 
+
+	<Device type="sensor" id="shellydw2">
+		<Name>Shelly-Door-Window -2 (SDW2)</Name>
+		<ConfigUI>
+			<Field id="isShellyDevice" type="checkbox" defaultValue="true" hidden="yes" />
+			<Field id="MSG" type="textfield" defaultValue="">
+				<Label>message from plugin:</Label>
+			</Field>
+			<Field id="SupportsOnState" type="checkbox" defaultValue="true" hidden="true">
+				<Label>SupportsOnState</Label>
+			</Field>
+			<Field id="SupportsSensorValue" type="checkbox" defaultValue="true" hidden="true">
+				<Label>SupportsSensorValue</Label>
+			</Field>
+			<Field id="SupportsStatusRequest" type="checkbox" defaultValue="true" hidden="true">
+				<Label>SupportsStatusRequest</Label>
+			</Field>
+			<Field id="AllowOnStateChange" type="checkbox" defaultValue="false" hidden="true">
+				<Label>AllowOnStateChange</Label>
+			</Field>
+			<Field id="AllowSensorValueChange" type="checkbox" defaultValue="false" hidden="true">
+				<Label>AllowSensorValueChange</Label>
+			</Field>
+			<Field id="usesInputForOnOff" type="checkbox" defaultValue="false" hidden="true">
+				<Label>usesInputForOnOff</Label>
+			</Field>
+			<Field id="label1" type="label">
+				<Label>Parameters for Shelly-Door Window device</Label>
+			</Field>
+			<Field id="ipNumber" type="textfield" defaultValue="192.168.1.x">
+				<Label>Shelly device IP Number</Label>
+			</Field>
+			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
+				<Label>Overwrite existing IP number</Label>
+			</Field>
+			<Field id="MAC" type="textfield" defaultValue="" readonly="yes">
+				<Label>Shelly device mac number</Label>
+			</Field>
+			<Field id="pollingFrequency" type="menu" defaultValue="-1">
+				<Label>Polling frequency, how often the plugin requests status from the device:</Label>
+				<List>
+					<Option value="10">every 10 sec</Option>
+					<Option value="15">every 15 sec</Option>
+					<Option value="20">every 20 sec</Option>
+					<Option value="30">every 30 sec</Option>
+					<Option value="40">every 40 sec</Option>
+					<Option value="80">every 80 sec</Option>
+					<Option value="120">every 2 minutes</Option>
+					<Option value="180">every 3 minutes</Option>
+					<Option value="-1">automatic adaptive</Option>
+				</List>
+			</Field>
+			<Field id="pollingFrequencyLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
+				<Label>can be higher/adaptive if actions are setup on the devices</Label>
+			</Field>
+			<Field id="expirationSeconds" type="menu" defaultValue="50400">
+				<Label>Device goes to EXPIRED w no message or answer after:</Label>
+				<List>
+					<Option value="36000">after 10 hour</Option>
+					<Option value="43600">after 12 hour</Option>
+					<Option value="50400">after 14 hour</Option>
+					<Option value="57600">after 16 hour</Option>
+				</List>
+			</Field>
+			<Field id="displaySelect" type="menu" defaultValue="lux">
+				<Label>Property to display as Sensor Value:</Label>
+				<List>
+					<Option value="lux">lux value</Option>
+					<Option value="tilt">tilt degrees</Option>
+				</List>
+			</Field>
+			<Field id="SENDTOSHELLYDEVICE-led_status_disable" type="menu" defaultValue="none">
+				<Label>En-disable LED:</Label>
+				<List>
+					<Option value="none">do not set</Option>
+					<Option value="1">disable LED</Option>
+					<!-- this is set disable lED  not enable LED-->
+					<Option value="0">enable LED</Option>
+				</List>
+			</Field>
+			<Field id="SENDTOSHELLYDEVICE-vibration_enabled" type="menu" defaultValue="none">
+				<Label>Enable vibration mode:</Label>
+				<List>
+					<Option value="none">do not set</Option>
+					<Option value="0">disable</Option>
+					<Option value="1">enable</Option>
+				</List>
+			</Field>
+			<Field id="SENDTOSHELLYDEVICE-tilt_enabled" type="menu" defaultValue="none">
+				<Label>En-disable tilt mode:</Label>
+				<List>
+					<Option value="none">do not set</Option>
+					<Option value="0">disable</Option>
+					<Option value="1">enable</Option>
+				</List>
+			</Field>
+			<Field id="SENDTOSHELLYDEVICE-sleep_mode_period" type="menu" defaultValue="none">
+				<Label>sleep mode period:</Label>
+				<List>
+					<Option value="none">do not set</Option>
+					<Option value="1">1 hour</Option>
+					<Option value="2">2 hour</Option>
+					<Option value="3">3 hour</Option>
+					<Option value="4">4 hour</Option>
+					<Option value="5">5 hour</Option>
+					<Option value="6">6 hour</Option>
+					<Option value="8">8 hour</Option>
+					<Option value="10">10 hour</Option>
+					<Option value="12">12 hour</Option>
+					<Option value="14">14 hour</Option>
+					<Option value="16">16 hour</Option>
+				</List>
+			</Field>
+			<Field id="SENDTOSHELLYDEVICE-dark_threshold" type="textfield" defaultValue="none">
+				<Label>dark threshold trigger(do not set=none):</Label>
+			</Field>
+			<Field id="SENDTOSHELLYDEVICE-twilight_threshold" type="textfield" defaultValue="none">
+				<Label>light threshold trigger(do not set=none), set to 70000 to be always on:</Label>
+			</Field>
+		</ConfigUI>
+		<States>
+			<!--   this is dev specific -->
+			<State id="state">
+				<ValueType>String</ValueType>
+				<TriggerLabel>state</TriggerLabel>
+				<ControlPageLabel>state</ControlPageLabel>
+			</State>
+			<State id="tilt">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>tilt</TriggerLabel>
+				<ControlPageLabel>tilt</ControlPageLabel>
+			</State>
+			<State id="closedTriggered">
+				<ValueType>String</ValueType>
+				<TriggerLabel>closedTriggered</TriggerLabel>
+				<ControlPageLabel>closedTriggered</ControlPageLabel>
+			</State>
+			<State id="darkOpen">
+				<ValueType>String</ValueType>
+				<TriggerLabel>darkOpen</TriggerLabel>
+				<ControlPageLabel>darkOpen</ControlPageLabel>
+			</State>
+			<State id="twilightOpen">
+				<ValueType>String</ValueType>
+				<TriggerLabel>twilightOpen</TriggerLabel>
+				<ControlPageLabel>twilightOpen</ControlPageLabel>
+			</State>
+			<State id="vibration">
+				<ValueType>String</ValueType>
+				<TriggerLabel>vibration</TriggerLabel>
+				<ControlPageLabel>vibration</ControlPageLabel>
+			</State>
+			<State id="lux">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>lux</TriggerLabel>
+				<ControlPageLabel>lux</ControlPageLabel>
+			</State>
+			<State id="illumination">
+				<ValueType>String</ValueType>
+				<TriggerLabel>illumination</TriggerLabel>
+				<ControlPageLabel>illumination</ControlPageLabel>
+			</State>
+			<State id="batteryVoltage">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>batteryVoltage</TriggerLabel>
+				<ControlPageLabel>batteryVoltage</ControlPageLabel>
+			</State>
+			<State id="action_from_device">
+				<ValueType>String</ValueType>
+				<TriggerLabel>action_from_device</TriggerLabel>
+				<ControlPageLabel>action_from_device</ControlPageLabel>
+			</State>
+			<State id="MAC">
+				<ValueType>String</ValueType>
+				<TriggerLabel>MAC</TriggerLabel>
+				<ControlPageLabel>MAC</ControlPageLabel>
+			</State>
+			<State id="lastMessageFromDevice">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastMessageFromDevice</TriggerLabel>
+				<ControlPageLabel>lastMessageFromDevice</ControlPageLabel>
+			</State>
+			<State id="created">
+				<ValueType>String</ValueType>
+				<TriggerLabel>created</TriggerLabel>
+				<ControlPageLabel>created</ControlPageLabel>
+			</State>
+			<State id="lastStatusChange">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastStatusChange</TriggerLabel>
+				<ControlPageLabel>lastStatusChange</ControlPageLabel>
+			</State>
+			<State id="lastSuccessfullConfigPush">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastSuccessfullConfigPush</TriggerLabel>
+				<ControlPageLabel>lastSuccessfullConfigPush</ControlPageLabel>
+			</State>
+			<State id="WiFi_rssi">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>WiFi_rssi</TriggerLabel>
+				<ControlPageLabel>WiFi_rssi</ControlPageLabel>
+			</State>
+			<State id="WiFi_ipv4_method">
+				<ValueType>String</ValueType>
+				<TriggerLabel>WiFi_ipv4_method</TriggerLabel>
+				<ControlPageLabel>WiFi_ipv4_method</ControlPageLabel>
+			</State>
+			<State id="cloud">
+				<ValueType>String</ValueType>
+				<TriggerLabel>cloud</TriggerLabel>
+				<ControlPageLabel>cloud</ControlPageLabel>
+			</State>
+			<State id="software_update_available">
+				<ValueType>String</ValueType>
+				<TriggerLabel>software_update_available</TriggerLabel>
+				<ControlPageLabel>software_update_available</ControlPageLabel>
+			</State>
+			<State id="expired">
+				<ValueType>String</ValueType>
+				<TriggerLabel>expired</TriggerLabel>
+				<ControlPageLabel>expired</ControlPageLabel>
+			</State>
+		</States>
+	</Device>
+
 </Devices>

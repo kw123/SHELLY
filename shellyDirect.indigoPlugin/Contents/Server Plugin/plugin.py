@@ -34,7 +34,7 @@ except ImportError:
 ################################################################################
 
 ##
-_definedShellyDeviceswAction	= ["shelly1","shelly1pm","shellyswitch25","shellyswitch25-roller","shellyem","shellydimmer","shellyflood","shellyht", "shellyem3","shellyplug","shellyplug-s","shelly4pro","shellydw","shellygas","shellybutton1","shellyix3"]
+_definedShellyDeviceswAction	= ["shelly1","shelly1pm","shellyswitch25","shellyswitch25-roller","shellyem","shellydimmer","shellyflood","shellyht", "shellyem3","shellyplug","shellyplug-s","shelly4pro","shellydw","shellydw2","shellygas","shellybutton1","shellyix3"]
 
 
 ## which child type 
@@ -407,6 +407,17 @@ _emptyProps = {	# switches
 
 				# sensors
 				"shellydw":{"props":{"isShellyDevice":True, "usesInputForOnOff":False, "isRelay":False, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
+						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
+						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":60,  "expirationSeconds":50400,"displaySelect":"lux","SupportsBatteryLevel":True  },
+						"rgbLimits":[0,255],
+						"setPageActionPageOnShellyDev":{},
+						"action_url":{"settings/?twilight_url=":{"none":"data?action=twilightOpen"},"settings/?dark_url=":{"none":"data?action=darkOpen"},"settings/?close_url=":{"none":"data?action=close"},"settings/?vibration_url=":{"none":"data?action=vibration"}},
+						"childTypes_Sensors":[],
+						"childTypes_SplitDevices":[],
+						"tempUnits":"C"
+						}, 
+				# sensors
+				"shellydw2":{"props":{"isShellyDevice":True, "usesInputForOnOff":False, "isRelay":False, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
 						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
 						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":60,  "expirationSeconds":50400,"displaySelect":"lux","SupportsBatteryLevel":True  },
 						"rgbLimits":[0,255],
@@ -2747,7 +2758,7 @@ class Plugin(indigo.PluginBase):
 					else: 						   dev.updateStateImageOnServer(indigo.kStateImageSel.PowerOff)
 
 
-			elif deviceTypeId == "shellydw":
+			elif deviceTypeId in ["shellydw","shellydw2"]:
 				for trigger in TRIGGERS:
 					if trigger[0] == "action" and trigger[1] == "close":
 						self.addToStatesUpdateDict(devID, "closedTriggered", datetime.datetime.now().strftime(_defaultDateStampFormat))
@@ -2950,7 +2961,7 @@ class Plugin(indigo.PluginBase):
 ####-------------------------------------------------------------------------####
 	def fillshellydw(self, data, dev):
 		try:
-			if dev.deviceTypeId != "shellydw": return 
+			if dev.deviceTypeId.find("shellydw") == -1: return 
 			devID = str(dev.id)		
 			if "lux" in data:
 				self.addToStatesUpdateDict(devID, "lux", 			data["lux"]["value"], str(data["lux"]["value"])+"[lux]", decimalPlaces=1)
