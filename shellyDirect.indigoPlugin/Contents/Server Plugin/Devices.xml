@@ -211,22 +211,22 @@
 		<States>
 			<!--   this is dev specific -->
 			<State id="power">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>power</TriggerLabel>
 				<ControlPageLabel>power</ControlPageLabel>
 			</State>
 			<State id="voltage">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>voltage</TriggerLabel>
 				<ControlPageLabel>voltage</ControlPageLabel>
 			</State>
 			<State id="reactive">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>reactive</TriggerLabel>
 				<ControlPageLabel>reactive</ControlPageLabel>
 			</State>
 			<State id="energy">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>energy</TriggerLabel>
 				<ControlPageLabel>energy</ControlPageLabel>
 			</State>
@@ -236,7 +236,7 @@
 				<ControlPageLabel>energy_counters</ControlPageLabel>
 			</State>
 			<State id="energyReturned">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>energyReturned</TriggerLabel>
 				<ControlPageLabel>energyReturned</ControlPageLabel>
 			</State>
@@ -331,7 +331,7 @@
 				<Label>usesInputForOnOff</Label>
 			</Field>
 			<Field id="label1" type="label">
-				<Label>Parameters for Shelly-ix3 device, this device hosts the first input, the other 2 inputs are childen devices</Label>
+				<Label>Parameters for Shelly-ix3 device, this device hosts the first input, the other 2 inputs are children devices</Label>
 			</Field>
 			<Field id="ipNumber" type="textfield" defaultValue="192.168.1.x">
 				<Label>Shelly device IP Number</Label>
@@ -384,7 +384,7 @@
 					<Option value="input">state of input button</Option>
 				</List>
 			</Field>
-			<Field id="SENDTOSHELLYDEVICE-btn_reverse" type="textfield" defaultValue="none">
+			<Field id="SENDTOSHELLYDEVICE-input_0_btn_reverse" type="menu" defaultValue="none">
 				<Label>Set button reverse :</Label>
 				<List>
 					<Option value="none">do not set</Option>
@@ -392,7 +392,7 @@
 					<Option value="1">reverse</Option>
 				</List>
 			</Field>
-			<Field id="SENDTOSHELLYDEVICE-btn_type" type="textfield" defaultValue="none">
+			<Field id="SENDTOSHELLYDEVICE-input_0_btn_type" type="menu" defaultValue="none">
 				<Label>Set button type :</Label>
 				<List>
 					<Option value="none">do not set</Option>
@@ -618,7 +618,7 @@
 					<Option value="input">state of input button</Option>
 				</List>
 			</Field>
-			<Field id="SENDTOSHELLYDEVICE-btn_reverse" type="textfield" defaultValue="none">
+			<Field id="SENDTOSHELLYDEVICE-input_0_btn_reverse" type="menu" defaultValue="none">
 				<Label>Set button reverse :</Label>
 				<List>
 					<Option value="none">do not set</Option>
@@ -626,7 +626,7 @@
 					<Option value="1">reverse</Option>
 				</List>
 			</Field>
-			<Field id="SENDTOSHELLYDEVICE-btn_type" type="textfield" defaultValue="none" readonly="yes">
+			<Field id="SENDTOSHELLYDEVICE-input_0_btn_type" type="menu" defaultValue="none" readonly="yes">
 				<Label>Set button type :</Label>
 				<List>
 					<Option value="none">do not set</Option>
@@ -1009,27 +1009,27 @@
 		<States>
 			<!--   this is dev specific -->
 			<State id="power">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>power</TriggerLabel>
 				<ControlPageLabel>power</ControlPageLabel>
 			</State>
 			<State id="voltage">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>voltage</TriggerLabel>
 				<ControlPageLabel>voltage</ControlPageLabel>
 			</State>
 			<State id="current">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>current</TriggerLabel>
 				<ControlPageLabel>current</ControlPageLabel>
 			</State>
 			<State id="reactive">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>reactive</TriggerLabel>
 				<ControlPageLabel>reactive</ControlPageLabel>
 			</State>
 			<State id="energy">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>energy</TriggerLabel>
 				<ControlPageLabel>energy</ControlPageLabel>
 			</State>
@@ -1039,7 +1039,7 @@
 				<ControlPageLabel>energy_counters</ControlPageLabel>
 			</State>
 			<State id="energyReturned">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>energyReturned</TriggerLabel>
 				<ControlPageLabel>energyReturned</ControlPageLabel>
 			</State>
@@ -1269,7 +1269,7 @@
 				<ControlPageLabel>lastMessageFromDevice</ControlPageLabel>
 			</State>
 			<State id="batteryVoltage">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>batteryVoltage</TriggerLabel>
 				<ControlPageLabel>batteryVoltage</ControlPageLabel>
 			</State>
@@ -1455,7 +1455,7 @@
 				<ControlPageLabel>event_cnt</ControlPageLabel>
 			</State>
 			<State id="Temperature_internal">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>Temperature_internal</TriggerLabel>
 				<ControlPageLabel>Temperature_internal</ControlPageLabel>
 			</State>
@@ -1714,6 +1714,224 @@
 	</Device>
 
 
+	<Device type="relay" id="shelly1l">
+		<Name>Shelly-Relay (SHSW-1L)</Name>
+		<UiDisplayStateId>status</UiDisplayStateId>
+		<ConfigUI>
+			<Field id="isShellyDevice" type="checkbox" defaultValue="true" hidden="yes" />
+			<Field id="MSG" type="textfield" defaultValue="">
+				<Label>message from plugin:</Label>
+			</Field>
+			<Field id="SupportsOnState" type="checkbox" defaultValue="true" hidden="true" />
+			<Field id="SupportsSensorValue" type="checkbox" defaultValue="true" hidden="true" />
+			<Field id="SupportsStatusRequest" type="checkbox" defaultValue="true" hidden="true" />
+			<Field id="AllowOnStateChange" type="checkbox" defaultValue="false" hidden="true" />
+			<Field id="AllowSensorValueChange" type="checkbox" defaultValue="false" hidden="true" />
+			<Field id="label1" type="label">
+				<Label>Parameters for Shelly-1L device</Label>
+			</Field>
+			<Field id="ipNumber" type="textfield" defaultValue="192.168.1.x">
+				<Label>Shelly device IP Number</Label>
+			</Field>
+			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
+				<Label>Overwrite existing IP number</Label>
+			</Field>
+			<Field id="MAC" type="textfield" defaultValue="" readonly="yes">
+				<Label>Shelly device mac number</Label>
+			</Field>
+			<Field id="pollingFrequency" type="menu" defaultValue="-1">
+				<Label>Polling frequency, how often the plugin requests status from the device:</Label>
+				<List>
+					<Option value="5">every 5 sec</Option>
+					<Option value="7">every 7 sec</Option>
+					<Option value="10">every 10 sec</Option>
+					<Option value="15">every 15 sec</Option>
+					<Option value="20">every 20 sec</Option>
+					<Option value="30">every 30 sec</Option>
+					<Option value="40">every 40 sec</Option>
+					<Option value="80">every 80 sec</Option>
+					<Option value="120">every 2 minutes</Option>
+					<Option value="180">every 3 minutes</Option>
+					<Option value="-1">automatic adaptive</Option>
+				</List>
+			</Field>
+			<Field id="pollingFrequencyLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
+				<Label>can be higher/adaptive if actions are setup on the devices</Label>
+			</Field>
+			<Field id="expirationSeconds" type="menu" defaultValue="3600">
+				<Label>Device goes to EXPIRED w no message or answer after:</Label>
+				<List>
+					<Option value="180">after 3 minutes</Option>
+					<Option value="300">after 5 minutes</Option>
+					<Option value="600">after 10 minutes</Option>
+					<Option value="1800">after 30 minutes</Option>
+					<Option value="3600">after 1 hour</Option>
+				</List>
+			</Field>
+			<Field id="SENDTOSHELLYDEVICE-relay_0_default_state" type="menu" defaultValue="none">
+				<Label>Set relay state at power on:</Label>
+				<List>
+					<Option value="none">do not set</Option>
+					<Option value="on">on</Option>
+					<Option value="off">off</Option>
+					<Option value="last">last</Option>
+					<Option value="switch">switch</Option>
+				</List>
+			</Field>
+			<Field id="SENDTOSHELLYDEVICE-relay_0_btn_type" type="menu" defaultValue="none">
+				<Label>Set button type :</Label>
+				<List>
+					<Option value="none">do not set</Option>
+					<Option value="toggle">toggle</Option>
+					<Option value="dual_toggle">dual_toggle</Option>
+					<Option value="edge">edge</Option>
+					<Option value="dual_edge">dual_edge</Option>
+					<Option value="detached">detached</Option>
+					<Option value="dual_detached">dual_detached</Option>
+					<Option value="momentary">momentary</Option>
+					<Option value="momentary_on_release">momentary_on_release</Option>
+					<Option value="detached">detached</Option>
+					<Option value="dual_detached">dual_detached</Option>
+					<Option value="action">action</Option>
+					<Option value="dual_action">dual_action</Option>
+					<Option value="momentary_on_release">momentary_on_release</Option>
+				</List>
+			</Field>
+			<Field id="SENDTOSHELLYDEVICE-relay_0_btn_reverse" type="menu" defaultValue="none">
+				<Label>Set button reverse / normal :</Label>
+				<List>
+					<Option value="none">do not set</Option>
+					<Option value="0">normal</Option>
+					<Option value="1">reverse</Option>
+				</List>
+			</Field>
+			<Field id="SENDTOSHELLYDEVICE-relay_0_max_power" type="textfield" defaultValue="none">
+				<Label>Set max power(switch off if larger) :</Label>
+			</Field>
+			<Field id="SENDTOSHELLYDEVICE-power" type="textfield" defaultValue="none">
+				<Label>Set power [Watt];  display - const independent of actual power:</Label>
+			</Field>
+			<Field id="SENDTOSHELLYDEVICE-relay_0_name" type="textfield" defaultValue="none">
+				<Label>Set name of relay:</Label>
+			</Field>
+		</ConfigUI>
+		<States>
+			<!--   this is dev specific -->
+			<State id="power">
+				<ValueType>Integer</ValueType>
+				<TriggerLabel>power</TriggerLabel>
+				<ControlPageLabel>power</ControlPageLabel>
+			</State>
+			<State id="lastOnOffChange">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastOnOffChange</TriggerLabel>
+				<ControlPageLabel>lastOnOffChange</ControlPageLabel>
+			</State>
+			<State id="input_1">
+				<ValueType>String</ValueType>
+				<TriggerLabel>input_1</TriggerLabel>
+				<ControlPageLabel>input_1</ControlPageLabel>
+			</State>
+			<State id="input_2">
+				<ValueType>String</ValueType>
+				<TriggerLabel>input_2</TriggerLabel>
+				<ControlPageLabel>input_2</ControlPageLabel>
+			</State>
+			<State id="input_1_long">
+				<ValueType>String</ValueType>
+				<TriggerLabel>input_1_long</TriggerLabel>
+				<ControlPageLabel>input_1_long</ControlPageLabel>
+			</State>
+			<State id="input_2_long">
+				<ValueType>String</ValueType>
+				<TriggerLabel>input_2_long</TriggerLabel>
+				<ControlPageLabel>input_2_long</ControlPageLabel>
+			</State>
+			<State id="input_1_short">
+				<ValueType>String</ValueType>
+				<TriggerLabel>input_1_short</TriggerLabel>
+				<ControlPageLabel>input_1_short</ControlPageLabel>
+			</State>
+			<State id="input_2_short">
+				<ValueType>String</ValueType>
+				<TriggerLabel>input_2_short</TriggerLabel>
+				<ControlPageLabel>input_2_short</ControlPageLabel>
+			</State>
+			<State id="event_cnt">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>event_cnt</TriggerLabel>
+				<ControlPageLabel>event_cnt</ControlPageLabel>
+			</State>
+			<State id="Temperature">
+				<ValueType>Float</ValueType>
+				<TriggerLabel>Temperature</TriggerLabel>
+				<ControlPageLabel>Temperature</ControlPageLabel>
+			</State>
+			<State id="overtemperature">
+				<ValueType>String</ValueType>
+				<TriggerLabel>overtemperature</TriggerLabel>
+				<ControlPageLabel>overtemperature</ControlPageLabel>
+			</State>
+			<!--   this is same for all: -->
+			<State id="lastSuccessfullConfigPush">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastSuccessfullConfigPush</TriggerLabel>
+				<ControlPageLabel>lastSuccessfullConfigPush</ControlPageLabel>
+			</State>
+			<State id="action_from_device">
+				<ValueType>String</ValueType>
+				<TriggerLabel>action_from_device</TriggerLabel>
+				<ControlPageLabel>action_from_device</ControlPageLabel>
+			</State>
+			<State id="MAC">
+				<ValueType>String</ValueType>
+				<TriggerLabel>MAC</TriggerLabel>
+				<ControlPageLabel>MAC</ControlPageLabel>
+			</State>
+			<State id="lastMessageFromDevice">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastMessageFromDevice</TriggerLabel>
+				<ControlPageLabel>lastMessageFromDevice</ControlPageLabel>
+			</State>
+			<State id="created">
+				<ValueType>String</ValueType>
+				<TriggerLabel>created</TriggerLabel>
+				<ControlPageLabel>created</ControlPageLabel>
+			</State>
+			<State id="lastStatusChange">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastStatusChange</TriggerLabel>
+				<ControlPageLabel>lastStatusChange</ControlPageLabel>
+			</State>
+			<State id="WiFi_rssi">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>WiFi_rssi</TriggerLabel>
+				<ControlPageLabel>WiFi_rssi</ControlPageLabel>
+			</State>
+			<State id="WiFi_ipv4_method">
+				<ValueType>String</ValueType>
+				<TriggerLabel>WiFi_ipv4_method</TriggerLabel>
+				<ControlPageLabel>WiFi_ipv4_method</ControlPageLabel>
+			</State>
+			<State id="cloud">
+				<ValueType>String</ValueType>
+				<TriggerLabel>cloud</TriggerLabel>
+				<ControlPageLabel>cloud</ControlPageLabel>
+			</State>
+			<State id="software_update_available">
+				<ValueType>String</ValueType>
+				<TriggerLabel>software_update_available</TriggerLabel>
+				<ControlPageLabel>software_update_available</ControlPageLabel>
+			</State>
+			<State id="expired">
+				<ValueType>String</ValueType>
+				<TriggerLabel>expired</TriggerLabel>
+				<ControlPageLabel>expired</ControlPageLabel>
+			</State>
+		</States>
+	</Device>
+
+
 	<Device type="relay" id="shellyplug">
 		<Name>Shelly-Plug (SHPLG2-1)</Name>
 		<UiDisplayStateId>status</UiDisplayStateId>
@@ -1800,7 +2018,7 @@
 		<States>
 			<!--   this is dev specific -->
 			<State id="power">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>power</TriggerLabel>
 				<ControlPageLabel>power</ControlPageLabel>
 			</State>
@@ -1810,7 +2028,7 @@
 				<ControlPageLabel>lastOnOffChange</ControlPageLabel>
 			</State>
 			<State id="energy">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>energy</TriggerLabel>
 				<ControlPageLabel>energy</ControlPageLabel>
 			</State>
@@ -1969,7 +2187,7 @@
 		<States>
 			<!--   this is dev specific -->
 			<State id="power">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>power</TriggerLabel>
 				<ControlPageLabel>power</ControlPageLabel>
 			</State>
@@ -1979,7 +2197,7 @@
 				<ControlPageLabel>lastOnOffChange</ControlPageLabel>
 			</State>
 			<State id="energy">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>energy</TriggerLabel>
 				<ControlPageLabel>energy</ControlPageLabel>
 			</State>
@@ -1989,7 +2207,7 @@
 				<ControlPageLabel>energy_counters</ControlPageLabel>
 			</State>
 			<State id="Temperature_internal">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>Temperature_internal</TriggerLabel>
 				<ControlPageLabel>Temperature_internal</ControlPageLabel>
 			</State>
@@ -2265,7 +2483,7 @@ you can change the device type to 2 relays below</Label>
 		<States>
 			<!--   this is dev specific -->
 			<State id="power">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>power</TriggerLabel>
 				<ControlPageLabel>power</ControlPageLabel>
 			</State>
@@ -2275,7 +2493,7 @@ you can change the device type to 2 relays below</Label>
 				<ControlPageLabel>lastOnOffChange</ControlPageLabel>
 			</State>
 			<State id="energy">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>energy</TriggerLabel>
 				<ControlPageLabel>energy</ControlPageLabel>
 			</State>
@@ -2300,7 +2518,7 @@ you can change the device type to 2 relays below</Label>
 				<ControlPageLabel>overtemperature</ControlPageLabel>
 			</State>
 			<State id="Temperature_internal">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>Temperature_internal</TriggerLabel>
 				<ControlPageLabel>Temperature_internal</ControlPageLabel>
 			</State>
@@ -2523,7 +2741,7 @@ you can change the device type to roller below</Label>
 		<States>
 			<!--   this is dev specific -->
 			<State id="power">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>power</TriggerLabel>
 				<ControlPageLabel>power</ControlPageLabel>
 			</State>
@@ -2533,7 +2751,7 @@ you can change the device type to roller below</Label>
 				<ControlPageLabel>lastOnOffChange</ControlPageLabel>
 			</State>
 			<State id="energy">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>energy</TriggerLabel>
 				<ControlPageLabel>energy</ControlPageLabel>
 			</State>
@@ -2558,7 +2776,7 @@ you can change the device type to roller below</Label>
 				<ControlPageLabel>input_long</ControlPageLabel>
 			</State>
 			<State id="event_cnt">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>event_cnt</TriggerLabel>
 				<ControlPageLabel>event_cnt</ControlPageLabel>
 			</State>
@@ -2568,7 +2786,7 @@ you can change the device type to roller below</Label>
 				<ControlPageLabel>overtemperature</ControlPageLabel>
 			</State>
 			<State id="Temperature_internal">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>Temperature_internal</TriggerLabel>
 				<ControlPageLabel>Temperature_internal</ControlPageLabel>
 			</State>
@@ -2707,7 +2925,7 @@ you can change the device type to roller below</Label>
 		<States>
 			<!--   this is dev specific -->
 			<State id="power">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>power</TriggerLabel>
 				<ControlPageLabel>power</ControlPageLabel>
 			</State>
@@ -2717,7 +2935,7 @@ you can change the device type to roller below</Label>
 				<ControlPageLabel>lastOnOffChange</ControlPageLabel>
 			</State>
 			<State id="energy">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>energy</TriggerLabel>
 				<ControlPageLabel>energy</ControlPageLabel>
 			</State>
@@ -2757,7 +2975,7 @@ you can change the device type to roller below</Label>
 				<ControlPageLabel>overtemperature</ControlPageLabel>
 			</State>
 			<State id="Temperature_internal">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>Temperature_internal</TriggerLabel>
 				<ControlPageLabel>Temperature_internal</ControlPageLabel>
 			</State>
@@ -2916,7 +3134,7 @@ Parent and child share the same connection, the plugin creates two devices to be
 		<States>
 			<!--   this is dev specific -->
 			<State id="power">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>power</TriggerLabel>
 				<ControlPageLabel>power</ControlPageLabel>
 			</State>
@@ -2926,7 +3144,7 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<ControlPageLabel>lastOnOffChange</ControlPageLabel>
 			</State>
 			<State id="energy">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>energy</TriggerLabel>
 				<ControlPageLabel>energy</ControlPageLabel>
 			</State>
@@ -3074,7 +3292,7 @@ Parent and child share the same connection, the plugin creates two devices to be
 		<States>
 			<!--   this is dev specific -->
 			<State id="power">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>power</TriggerLabel>
 				<ControlPageLabel>power</ControlPageLabel>
 			</State>
@@ -3089,7 +3307,7 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<ControlPageLabel>lastOnOffChange</ControlPageLabel>
 			</State>
 			<State id="energy">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>energy</TriggerLabel>
 				<ControlPageLabel>energy</ControlPageLabel>
 			</State>
@@ -3305,7 +3523,7 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<ControlPageLabel>rgbwSetup</ControlPageLabel>
 			</State>
 			<State id="power">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>power</TriggerLabel>
 				<ControlPageLabel>power</ControlPageLabel>
 			</State>
@@ -3745,17 +3963,17 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<ControlPageLabel>mode</ControlPageLabel>
 			</State>
 			<State id="Temperature_internal">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>Temperature_internal</TriggerLabel>
 				<ControlPageLabel>Temperature_internal</ControlPageLabel>
 			</State>
 			<State id="power">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>power</TriggerLabel>
 				<ControlPageLabel>power</ControlPageLabel>
 			</State>
 			<State id="energy">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>energy</TriggerLabel>
 				<ControlPageLabel>energy</ControlPageLabel>
 			</State>
@@ -3985,7 +4203,7 @@ Parent and child share the same connection, the plugin creates two devices to be
 		</ConfigUI>
 		<States>
 			<State id="power">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>power</TriggerLabel>
 				<ControlPageLabel>power</ControlPageLabel>
 			</State>
@@ -4160,7 +4378,7 @@ Parent and child share the same connection, the plugin creates two devices to be
 		</ConfigUI>
 		<States>
 			<State id="power">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>power</TriggerLabel>
 				<ControlPageLabel>power</ControlPageLabel>
 			</State>
@@ -4336,27 +4554,27 @@ Parent and child share the same connection, the plugin creates two devices to be
 		<States>
 			<!--   this is dev specific -->
 			<State id="Temperature">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>Temperature</TriggerLabel>
 				<ControlPageLabel>Temperature</ControlPageLabel>
 			</State>
 			<State id="TemperatureMaxToday">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>TemperatureMaxToday</TriggerLabel>
 				<ControlPageLabel>TemperatureMaxToday</ControlPageLabel>
 			</State>
 			<State id="TemperatureMinToday">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>TemperatureMinToday</TriggerLabel>
 				<ControlPageLabel>TemperatureMinToday</ControlPageLabel>
 			</State>
 			<State id="TemperatureMaxYesterday">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>TemperatureMaxYesterday</TriggerLabel>
 				<ControlPageLabel>TemperatureMaxYesterday</ControlPageLabel>
 			</State>
 			<State id="TemperatureMinYesterday">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>TemperatureMinYesterday</TriggerLabel>
 				<ControlPageLabel>TemperatureMinYesterday</ControlPageLabel>
 			</State>
@@ -4395,11 +4613,6 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<ValueType>String</ValueType>
 				<TriggerLabel>lastStatusChange</TriggerLabel>
 				<ControlPageLabel>lastStatusChange</ControlPageLabel>
-			</State>
-			<State id="WiFi_rssi">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>WiFi_rssi</TriggerLabel>
-				<ControlPageLabel>WiFi_rssi</ControlPageLabel>
 			</State>
 			<State id="WiFi_rssi">
 				<ValueType>Number</ValueType>
@@ -4674,27 +4887,27 @@ for connection parameters check the parent (SHELLY host device)</Label>
 		<States>
 			<!--   this is dev specific -->
 			<State id="Temperature">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>Temperature</TriggerLabel>
 				<ControlPageLabel>Temperature</ControlPageLabel>
 			</State>
 			<State id="TemperatureMaxToday">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>TemperatureMaxToday</TriggerLabel>
 				<ControlPageLabel>TemperatureMaxToday</ControlPageLabel>
 			</State>
 			<State id="TemperatureMinToday">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>TemperatureMinToday</TriggerLabel>
 				<ControlPageLabel>TemperatureMinToday</ControlPageLabel>
 			</State>
 			<State id="TemperatureMaxYesterday">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>TemperatureMaxYesterday</TriggerLabel>
 				<ControlPageLabel>TemperatureMaxYesterday</ControlPageLabel>
 			</State>
 			<State id="TemperatureMinYesterday">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>TemperatureMinYesterday</TriggerLabel>
 				<ControlPageLabel>TemperatureMinYesterday</ControlPageLabel>
 			</State>
@@ -4977,27 +5190,27 @@ for connection parameters check the parent (SHELLY host device)</Label>
 		<States>
 			<!--   this is dev specific -->
 			<State id="Temperature">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>Temperature</TriggerLabel>
 				<ControlPageLabel>Temperature</ControlPageLabel>
 			</State>
 			<State id="TemperatureMaxToday">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>TemperatureMaxToday</TriggerLabel>
 				<ControlPageLabel>TemperatureMaxToday</ControlPageLabel>
 			</State>
 			<State id="TemperatureMinToday">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>TemperatureMinToday</TriggerLabel>
 				<ControlPageLabel>TemperatureMinToday</ControlPageLabel>
 			</State>
 			<State id="TemperatureMaxYesterday">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>TemperatureMaxYesterday</TriggerLabel>
 				<ControlPageLabel>TemperatureMaxYesterday</ControlPageLabel>
 			</State>
 			<State id="TemperatureMinYesterday">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>TemperatureMinYesterday</TriggerLabel>
 				<ControlPageLabel>TemperatureMinYesterday</ControlPageLabel>
 			</State>
@@ -5018,7 +5231,7 @@ for connection parameters check the parent (SHELLY host device)</Label>
 			</State>
 			<!--   this is same for all: -->
 			<State id="batteryVoltage">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>batteryVoltage</TriggerLabel>
 				<ControlPageLabel>batteryVoltage</ControlPageLabel>
 			</State>
@@ -5202,27 +5415,27 @@ for connection parameters check the parent (SHELLY host device)</Label>
 		<States>
 			<!--   this is dev specific -->
 			<State id="Temperature">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>Temperature</TriggerLabel>
 				<ControlPageLabel>Temperature</ControlPageLabel>
 			</State>
 			<State id="TemperatureMaxToday">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>TemperatureMaxToday</TriggerLabel>
 				<ControlPageLabel>TemperatureMaxToday</ControlPageLabel>
 			</State>
 			<State id="TemperatureMinToday">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>TemperatureMinToday</TriggerLabel>
 				<ControlPageLabel>TemperatureMinToday</ControlPageLabel>
 			</State>
 			<State id="TemperatureMaxYesterday">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>TemperatureMaxYesterday</TriggerLabel>
 				<ControlPageLabel>TemperatureMaxYesterday</ControlPageLabel>
 			</State>
 			<State id="TemperatureMinYesterday">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>TemperatureMinYesterday</TriggerLabel>
 				<ControlPageLabel>TemperatureMinYesterday</ControlPageLabel>
 			</State>
@@ -5243,7 +5456,7 @@ for connection parameters check the parent (SHELLY host device)</Label>
 			</State>
 			<!--   this is same for all: -->
 			<State id="batteryVoltage">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>batteryVoltage</TriggerLabel>
 				<ControlPageLabel>batteryVoltage</ControlPageLabel>
 			</State>
@@ -5695,7 +5908,7 @@ for connection parameters check the parent (SHELLY host device)</Label>
 				<ControlPageLabel>illumination</ControlPageLabel>
 			</State>
 			<State id="batteryVoltage">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>batteryVoltage</TriggerLabel>
 				<ControlPageLabel>batteryVoltage</ControlPageLabel>
 			</State>
@@ -5920,7 +6133,7 @@ for connection parameters check the parent (SHELLY host device)</Label>
 				<ControlPageLabel>illumination</ControlPageLabel>
 			</State>
 			<State id="batteryVoltage">
-				<ValueType>Number</ValueType>
+				<ValueType>Float</ValueType>
 				<TriggerLabel>batteryVoltage</TriggerLabel>
 				<ControlPageLabel>batteryVoltage</ControlPageLabel>
 			</State>

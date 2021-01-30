@@ -80,6 +80,11 @@
 				<Title>EXECUTE</Title>
 				<CallbackMethod>buttonConfirmconfirmpPuschActionCALLBACK</CallbackMethod>
 			</Field>
+			<Field id="confirmPushCancel" type="button">
+				<Label>CLICK to</Label>
+				<Title>CancellALL</Title>
+				<CallbackMethod>buttonConfirmconfirmpPuschActionCancelCALLBACK</CallbackMethod>
+			</Field>
 			<Field id="MSG" type="textfield" defaultValue="">
 				<Label>message from Plugin:</Label>
 			</Field>

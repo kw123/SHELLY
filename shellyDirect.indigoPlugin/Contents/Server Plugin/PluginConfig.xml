@@ -44,6 +44,13 @@ http://indigoIP#:port/anytext  </Label>
    <Field id="portOfShellyDevicesLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">  
         <Label>if you have not setup anything, leave userid, passwd empty and set port to 80 - std http</Label>
     </Field>
+   <Field    id="sensorApiVersion"   type="menu" defaultValue="2">
+        <Label>Api version:</Label>
+        <List>
+            <Option value="2" >actions with SEVERAL http options 2021 </Option>
+            <Option value="1" >actions with SINGLE http options 2019</Option>
+        </List>
+   </Field>
 
   <Field id="otherLabel" type="label" fontSize="small" >
         <Label>Other parameters</Label>
