@@ -260,7 +260,7 @@ _emptyProps = {	# switches
 						"action_url":   {
 										"2":{
 											"settings/actions?enabled=true&index=0&name=":	{"btn1_on_url":"input_1=on", "btn1_off_url":"input_1=off", "btn1_longpush_url":"input_1=long", "btn1_shortpush_url":"input_1=short",
-																							 "btn2_on_url":"input_2=on", "btn2_off_url":"input_2=off", "btn2_longpush_url":"input_2=long", "btn2_shortpush_url":"input__2=short",
+																							 "btn2_on_url":"input_2=on", "btn2_off_url":"input_2=off", "btn2_longpush_url":"input_2=long", "btn2_shortpush_url":"input_2=short",
 																							 "out_on_url":"onOffState=1", "out_off_url":"onOffState=0"}
 											},
 										"1":{}
@@ -575,10 +575,10 @@ _emptyProps = {	# switches
 						"setPageActionPageOnShellyDev":{},
 						"action_url":	{
 										"2":{
-											"settings/actions?enabled=true&index=0&name=":	{"close_url":"onOffState=1","open_url":"onOffState=0", "twilight_url":"data?action=twilightOpen", "dark_url":"data?action=darkOpen", "close_url":"data?action=close", "vibration_url":"data?action=vibration"}
+											"settings/actions?enabled=true&index=0&name=":	{"close_url":"onOffState=1","open_url":"onOffState=0", "twilight_url":"action=twilightOpen", "dark_url":"action=darkOpen", "close_url":"action=close", "vibration_url":"action=vibration"}
 											},
 										"1":{
-											"settings/?twilight_url":{"none":"data?action=twilightOpen"},"settings/?dark_url":{"none":"data?action=darkOpen"},"settings/?close_url":{"none":"data?action=close"},"settings/?vibration_url":{"none":"data?action=vibration"}
+											"settings/?twilight_url":{"none":"action=twilightOpen"},"settings/?dark_url":{"none":"action=darkOpen"},"settings/?close_url":{"none":"action=close"},"settings/?vibration_url":{"none":"action=vibration"}
 											}
 										},
 						"childTypes_Sensors":[],
@@ -593,10 +593,10 @@ _emptyProps = {	# switches
 						"setPageActionPageOnShellyDev":{},
 						"action_url":	{
 										"2":{
-											"settings/actions?enabled=true&index=0&name=":	{"close_url":"onOffState=1","open_url":"onOffState=0", "twilight_url":"data?action=twilightOpen", "dark_url":"data?action=darkOpen", "close_url":"data?action=close", "vibration_url":"data?action=vibration"}
+											"settings/actions?enabled=true&index=0&name=":	{"close_url":"onOffState=1","open_url":"onOffState=0", "twilight_url":"action=twilightOpen", "dark_url":"action=darkOpen", "close_url":"action=close", "vibration_url":"action=vibration"}
 											},
 										"1":{
-											"settings/?twilight_url": {"none":"data?action=twilightOpen"},"settings/?dark_url":{"none":"data?action=darkOpen"},"settings/?close_url":{"none":"data?action=close"},"settings/?vibration_url":{"none":"data?action=vibration"}
+											"settings/?twilight_url": {"none":"action=twilightOpen"},"settings/?dark_url":{"none":"action=darkOpen"},"settings/?close_url":{"none":"action=close"},"settings/?vibration_url":{"none":"action=vibration"}
 											}
 										},
 						"childTypes_Sensors":[],
@@ -642,10 +642,10 @@ _emptyProps = {	# switches
 						"setPageActionPageOnShellyDev":{},
 						"action_url":	{
 										"2":{
-											"settings/actions?enabled=true&index=0&name=":	{"report_url":"data?", "flood_detected_url":"flood=1", "flood_gone_url":"flood=0"}
+											"settings/actions?enabled=true&index=0&name=":	{"report_url":"data", "flood_detected_url":"flood=1", "flood_gone_url":"flood=0"}
 											},
 										"1":{
-											"settings/?report_url":	{"none":"data?"},"settings/?flood_detected_url":{"none":"?flood=1"},"settings/?flood_gone_url":{"none":"?flood=0"}
+											"settings/?report_url":	{"none":"data"},"settings/?flood_detected_url":{"none":"?flood=1"},"settings/?flood_gone_url":{"none":"?flood=0"}
 											}
 										},
 						"childTypes_Sensors":[],
@@ -660,10 +660,10 @@ _emptyProps = {	# switches
 						"setPageActionPageOnShellyDev":{},
 						"action_url":	{
 										"2":{
-											"settings/actions?enabled=true&index=0&name=":	{"report_url":"data?"}
+											"settings/actions?enabled=true&index=0&name=":	{"report_url":"data"}
 											},
 										"1":{
-											"settings/?report_url":							{"none":"data?"}
+											"settings/?report_url":							{"none":"data"}
 											}
 										},
 						"childTypes_Sensors":[],
@@ -677,10 +677,10 @@ _emptyProps = {	# switches
 						"setPageActionPageOnShellyDev":{},
 						"action_url":	{
 										"2":{
-											"settings/actions?enabled=true&index=0&name=":	{"report_url":"data?"}
+											"settings/actions?enabled=true&index=0&name=":	{"report_url":"data"}
 											},
 										"1":{
-											"settings/?report_url":							{"none":"data?"}
+											"settings/?report_url":							{"none":"data"}
 											}
 										},
 						"childTypes_Sensors":[],
@@ -1368,10 +1368,10 @@ class Plugin(indigo.PluginBase):
 				self.SHELLY[devId]["lastSuccessfullConfigPush"] = time.time()
 				self.SHELLY[devId]["lastRequestedPush"] = 0
 				self.SHELLY[devId]["pushIdActive"] = "stop"
+				self.pushRequest  = -1
+				self.checkTimeIfPushToDevicesIsRequired = time.time() + 1000
 				try:	devName = indigo.devices[devId].name
 				except:	devName = devId
-
-				self.pushRequest  = -1
 			self.indiLOG.log(20,u"stopping all pushes of config to {}".format(devName) )
 		valuesDict["MSG"] = "forcing push of config to all"
 		return valuesDict
@@ -2443,8 +2443,8 @@ class Plugin(indigo.PluginBase):
 ####-------------------------------------------------------------------------####
 	def workOnActionMessage(self, items):
 		try:
-			#{"ipNumber":192.168.1.x, "page":"httpAction", "data":{"path": {'path': '/data?hum=33&temp=15.25'},}
-			if self.decideMyLog(u"Polling"): self.indiLOG.log(20,u"queue page item present" )
+			#{"ipNumber":192.168.1.x, "page":"httpAction", "data":{"path": {'path': '/?data&hum=33&temp=15.25'},}
+			if self.decideMyLog(u"HTTPlistener"): self.indiLOG.log(20,u"workOnActionMessage queue page item present items:{}".format(items) )
 			if "ipNumber" not in items: 
 				return 
 			ipNumber = items["ipNumber"]
@@ -2939,17 +2939,26 @@ class Plugin(indigo.PluginBase):
 			devs = [dev] + devs # indexes start w 1 for input .... 
 			if self.decideMyLog(u"HTTPlistener"):self.indiLOG.log(20,u"doHTTPactionData  .. len(devs):{}, devNos:{}, children:{}".format(len(devs), devNos, children) )
 
-			## eg data?hum=55&temp=33.7
-			## eg data?onOffState=0/1
+			## eg data&hum=55&temp=33.7
+			## eg ?onOffState=0 or 1
 			## eg data?input=short/double_short/triple_short/long
-			## /?input_1=off
+			## /input_1=off or /?input_1=off ..
 			dst = datetime.datetime.now().strftime(_defaultDateStampFormat) 
-			cmd = data.split("?")
+
+			## this makes it indendent of data format can have a / or ?  and strip first&
+			posQ = data.find("/")
+			if posQ >-1: data = data[posQ+1:]
+			posQ = data.find("?")
+			if posQ >-1: data = data[posQ+1:]
+			posQ = data.find("?")
+			if posQ >-1: data = data[posQ+1:]
+
 			useDev = dev
 			devNo = 0
-			if len(cmd) == 2:
-				cmd = cmd[1].split("&")
-				TRIGGERS = []
+			if self.decideMyLog(u"HTTPlistener"):self.indiLOG.log(20,u"doHTTPactionData  ..  data after: {}<".format(data) )
+			TRIGGERS = []
+			if True:
+				cmd = data.split("&")
 				for item in cmd:
 					if len(item) < 1: continue
 					x = item.split("=")  # eg input=on; input_1=on; "onOffState=1; "onOffState_1=1 ==> x=["input","on",True]; x=["input_1","on",True]
@@ -3002,7 +3011,8 @@ class Plugin(indigo.PluginBase):
 
 						TRIGGERS.append(x)
 					else:
-						TRIGGERS.append({"cmd":item})
+						pass
+						# TRIGGERS.append({"cmd":item})
 				if self.decideMyLog(u"HTTPlistener"):self.indiLOG.log(20,u"doHTTPactionData {}  devType:{}  TRIGGERS:{}".format(self.SHELLY[dev.id]["ipNumber"], useDev.deviceTypeId , TRIGGERS) )
 			else:
 				return
@@ -4728,7 +4738,7 @@ class Plugin(indigo.PluginBase):
 								searchFor2 = pageBack
 
 								if setting == "none":
-									page = parameter+_urlPrefix[self.sensorApiVersion]+"="+pageBack +"/"+ actionURLs[parameter][setting]
+									page = parameter+_urlPrefix[self.sensorApiVersion]+"="+pageBack +"/?"+ actionURLs[parameter][setting]
 									###  = eg settings/?report_url=ttp://ip:port/data?"
 
 								elif actionURLs[parameter][setting] == "disable":
@@ -4854,10 +4864,10 @@ class Plugin(indigo.PluginBase):
 					try:
 						jj = json.loads(ret[0])
 					except :
+						retCode = "timeout" if ret[1].find("timed out")>-1 else ret[1][0:50]
 						if ipNumber != self.HTTPlisternerTestIP:
-							self.indiLOG.log(30,u"Shelly repose from {}  no json object returned: >{}<>{}<".format(ipNumber, ret[0], ret[1]) )
-						return {}, "timeout" if ret[1].find("timed out")>-1 else ret[1][0:50]
-
+							self.indiLOG.log(20,u"Shelly repose from {}  no json object returned: >{}<>{}<".format(ipNumber, ret[0], retCode) )
+						return {}, retCode
 					if  jsonAction == "print":
 						self.indiLOG.log(20,u" Connection  info\n{}".format( json.dumps(jj, sort_keys=True, indent=2)) )
 
@@ -4884,8 +4894,10 @@ class Plugin(indigo.PluginBase):
 						try:
 							jj = resp.json()
 						except :
-							self.indiLOG.log(40,u"Shelly repose from {}  no json object returned:".format(ipNumber, resp) )
-							return {}, "noJson timeout?" 
+							r = unicode(resp)
+							r =  "timeout" if r.find("timed out")>-1 else rr[0:50]
+							self.indiLOG.log(40,u"Shelly repose from {}  no json object returned:".format(ipNumber, r) )
+							return {}, r
  
 						if  jsonAction == "print":
 							self.indiLOG.log(20,u" Connection  info\n{}".format(json.dumps(jj, sort_keys=True, indent=2)) )

@@ -1,3 +1,21 @@
+Added features / changes in v7.12.29 @ 2021-01-31
+===================================================
+
+1. clarified config settings
+2. made action messages independent of returned formats ie leading ? & / are ignored  
+3. cleaned up some debug logging 
+
+
+Added features / changes in v7.12.28 @ 2021-01-30
+===================================================
+
+1. added support for new api, 
+2. and new devices 
+-  shelly1L 
+-  i3 ..
+3. a lot fo internal improvements
+
+
 Added features / changes in v7.11.27 @ 2020-12-16
 ===================================================
 

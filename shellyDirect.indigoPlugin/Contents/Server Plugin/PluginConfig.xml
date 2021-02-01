@@ -13,21 +13,28 @@
         <Label>Folder name for NEW shelly devices:</Label> 
    </Field>
 
-   <Field id="portOfIndigoServer"   type="textfield" defaultValue="7980"  >
-        <Label>Set IP-PORT of http listener in PLUGIN (do not use 7987):</Label> 
-   </Field>
-
+   <Field id="IndigoServerIPNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">  
+        <Label>
+Next are the indigo IP# and port # that will be used on Shelly devices to connect to the plugin. On that ip:port the plugin will be listening to commands from the Shelly devices.
+see action field on Shelly device in shelly app:
+http://indigoIP#:port/command  </Label>
+    </Field>
    <Field id="IndigoServerIPNumber"   type="textfield" defaultValue="192.168.1.x"  >
         <Label>Set ip number of indigo server:</Label> 
    </Field>
-   <Field id="IndigoServerIPNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">  
-        <Label>this is the indigo IP# and port that will be used on Shelly devices to connect to the plugin
-In action field on Shelly device enter:
-http://indigoIP#:port/anytext  </Label>
+   <Field id="portOfIndigoServer"   type="textfield" defaultValue="9780"  >
+        <Label>Set IP-PORT of http listener in PLUGIN:</Label> 
+   </Field>
+   <Field id="portOfIndigoServerLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">  
+        <Label>use port number GT 5000 that is NOT in use on the indigo server, 
+and NOT indigo ports: 8176 or 1176</Label>
     </Field>
 
+
+
+
    <Field id="infoLabeluserID" type="label" fontSize="small" >
-        <Label>UserID  password, port of SHELLY devices</Label>
+        <Label>UserID, password, port of SHELLY devices</Label>
    </Field>
    
    <Field id="userIDOfShellyDevices"   type="textfield" defaultValue=""  >
@@ -39,18 +46,22 @@ http://indigoIP#:port/anytext  </Label>
    </Field>
 
    <Field id="portOfShellyDevices"   type="textfield" defaultValue="80"  >
-        <Label>Set IP-PORT of http SHELLY devices:</Label> 
+        <Label>Set IP-PORT of http on SHELLY devices:</Label> 
    </Field>
    <Field id="portOfShellyDevicesLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">  
         <Label>if you have not setup anything, leave userid, passwd empty and set port to 80 - std http</Label>
     </Field>
    <Field    id="sensorApiVersion"   type="menu" defaultValue="2">
-        <Label>Api version:</Label>
+        <Label>Shelly devices api version:</Label>
         <List>
-            <Option value="2" >actions with SEVERAL http options 2021 </Option>
-            <Option value="1" >actions with SINGLE http options 2019</Option>
+            <Option value="2" >2021: actions with SEVERAL http options </Option>
+            <Option value="1" >2020: actions with SINGLE http options</Option>
         </List>
    </Field>
+   <Field id="sensorApiVersionLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">  
+        <Label>use option 2021 if shelly devices upgraded after 1/15/2021. 
+All devices must be on the same release</Label>
+    </Field>
 
   <Field id="otherLabel" type="label" fontSize="small" >
         <Label>Other parameters</Label>
@@ -133,7 +144,7 @@ http://indigoIP#:port/anytext  </Label>
         <Label>Configure SQL logger for device-States (not) to log</Label>
         <List>
             <Option value="on-on"   >log normal = log everything </Option>
-            <Option value="off-off"	>disable loggin for specific dev-sates</Option>
+            <Option value="off-off"	>disable loggin for specific dev-states</Option>
         </List>    
    </Field>
    <Field id="SQLLoggingEnableLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">  
