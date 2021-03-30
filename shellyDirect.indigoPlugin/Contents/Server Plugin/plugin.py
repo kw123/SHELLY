@@ -3044,9 +3044,9 @@ class Plugin(indigo.PluginBase):
 				# data:= /data?&hum=49&temp=29.00 
 				for trigger in TRIGGERS:
 					if trigger[0] == "Temperature":
-						self.fillSensor(useDev, {"Temperature": trigger[1]}, "Temperature", "Temperature", unit="", decimalPlaces="")
-					if trigger[0] == "Humidity": # it goes to teh child dev (devNo =1)
-						self.fillSensor(devs[1], {"Humidity": trigger[1]},    "Humidity",    "Humidity", unit="", decimalPlaces=0)
+						self.fillSensor(useDev, {"Temperature": trigger[1]}, "Temperature", "Temperature",  decimalPlaces="")
+					if trigger[0] == "Humidity": # it goes to the child dev (devNo =1)
+						self.fillSensor(devs[1], {"Humidity": trigger[1]},    "Humidity",    "Humidity", decimalPlaces=0)
 
 
 			elif deviceTypeId.find("shellysmoke") >-1:
@@ -3706,7 +3706,7 @@ class Plugin(indigo.PluginBase):
 
 
 ####-------------------------------------------------------------------------####
-	def fillSensor(self, dev, data, token, state, unit="", decimalPlaces=""):
+	def fillSensor(self, dev, data, token, state, decimalPlaces=""):
 		try:
 			### we can get:
 			### :{u'tF': 72.84, u'tC': 22.69}
@@ -3729,6 +3729,8 @@ class Plugin(indigo.PluginBase):
 						try: 
 							x = float(data[token]["tC"]) 
 							if state.find("internal") == -1: internal = "_internal"
+							if self.SHELLY[dev.id]["tempUnits"] == u"F":
+								x = x*9./5 + 32.
 						except: 
 							self.indiLOG.log(40,u"fillSensor error  token:{}, data:{} ".format(token, data, dev.name ))
 							return dev
@@ -3744,8 +3746,6 @@ class Plugin(indigo.PluginBase):
 								dev = indigo.devices[dev.id]
 								self.SHELLY[dev.id]["tempUnits"] = data["units"]
 					except: pass	
-					if self.SHELLY[dev.id]["tempUnits"]  == "F":
-							x = (x-32.)*5./9.
 					x , xui = self.convTemp(x)
 					if dev.id == 446084418: self.indiLOG.log(20,u":::::fillSensor  {}  token:{}, x:{}, xui:{}; shelly units:{}, internal:{}".format( dev.id , token,  x, xui, self.SHELLY[dev.id]["tempUnits"],internal  ))
 					if "Temperature" in dev.states:
