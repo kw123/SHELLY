@@ -70,9 +70,9 @@ All devices must be on the same release</Label>
    <Field    id="tempUnits"   type="menu" defaultValue="Celsius">
         <Label>Temperature displayed in:</Label>
         <List>
-            <Option value="Celsius"    >Celsius </Option>
-            <Option value="Fahrenheit" >Fahrenheit</Option>
-            <Option value="Kelvin"     >Kelvin</Option>
+            <Option value="C" >Celsius </Option>
+            <Option value="F" >Fahrenheit</Option>
+            <Option value="K" >Kelvin</Option>
         </List>
    </Field>
 
