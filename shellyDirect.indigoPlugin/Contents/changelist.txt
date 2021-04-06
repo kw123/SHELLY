@@ -1,8 +1,15 @@
+Added features / changes in v7.13.32 @ 2021-04-05
+===================================================
+
+1.  finalized functions, states etc for motion sensor
+
+
 Added features / changes in v7.13.31 @ 2021-04-03
 ===================================================
 
 1.  added support for shelly motion sensor 
 ... and again fixed F/C 
+
 
 Added features / changes in v7.12.30 @ 2021-03-29
 ===================================================

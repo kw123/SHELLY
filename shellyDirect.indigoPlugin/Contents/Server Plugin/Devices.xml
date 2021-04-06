@@ -145,6 +145,11 @@
 				<TriggerLabel>expired</TriggerLabel>
 				<ControlPageLabel>expired</ControlPageLabel>
 			</State>
+			<State id="upFor">
+				<ValueType>String</ValueType>
+				<TriggerLabel>upFor</TriggerLabel>
+				<ControlPageLabel>upFor</ControlPageLabel>
+			</State>
 		</States>
 	</Device>
 
@@ -300,6 +305,11 @@
 				<ValueType>String</ValueType>
 				<TriggerLabel>expired</TriggerLabel>
 				<ControlPageLabel>expired</ControlPageLabel>
+			</State>
+			<State id="upFor">
+				<ValueType>String</ValueType>
+				<TriggerLabel>upFor</TriggerLabel>
+				<ControlPageLabel>upFor</ControlPageLabel>
 			</State>
 		</States>
 	</Device>
@@ -536,6 +546,11 @@
 				<ValueType>String</ValueType>
 				<TriggerLabel>expired</TriggerLabel>
 				<ControlPageLabel>expired</ControlPageLabel>
+			</State>
+			<State id="upFor">
+				<ValueType>String</ValueType>
+				<TriggerLabel>upFor</TriggerLabel>
+				<ControlPageLabel>upFor</ControlPageLabel>
 			</State>
 		</States>
 	</Device>
@@ -778,6 +793,11 @@
 				<TriggerLabel>expired</TriggerLabel>
 				<ControlPageLabel>expired</ControlPageLabel>
 			</State>
+			<State id="upFor">
+				<ValueType>String</ValueType>
+				<TriggerLabel>upFor</TriggerLabel>
+				<ControlPageLabel>upFor</ControlPageLabel>
+			</State>
 		</States>
 	</Device>
 
@@ -928,6 +948,11 @@
 				<ValueType>String</ValueType>
 				<TriggerLabel>expired</TriggerLabel>
 				<ControlPageLabel>expired</ControlPageLabel>
+			</State>
+			<State id="upFor">
+				<ValueType>String</ValueType>
+				<TriggerLabel>upFor</TriggerLabel>
+				<ControlPageLabel>upFor</ControlPageLabel>
 			</State>
 		</States>
 	</Device>
@@ -1103,6 +1128,11 @@
 				<ValueType>String</ValueType>
 				<TriggerLabel>expired</TriggerLabel>
 				<ControlPageLabel>expired</ControlPageLabel>
+			</State>
+			<State id="upFor">
+				<ValueType>String</ValueType>
+				<TriggerLabel>upFor</TriggerLabel>
+				<ControlPageLabel>upFor</ControlPageLabel>
 			</State>
 		</States>
 	</Device>
@@ -1312,6 +1342,11 @@
 				<ValueType>String</ValueType>
 				<TriggerLabel>expired</TriggerLabel>
 				<ControlPageLabel>expired</ControlPageLabel>
+			</State>
+			<State id="upFor">
+				<ValueType>String</ValueType>
+				<TriggerLabel>upFor</TriggerLabel>
+				<ControlPageLabel>upFor</ControlPageLabel>
 			</State>
 		</States>
 	</Device>
@@ -1525,6 +1560,11 @@
 				<TriggerLabel>expired</TriggerLabel>
 				<ControlPageLabel>expired</ControlPageLabel>
 			</State>
+			<State id="upFor">
+				<ValueType>String</ValueType>
+				<TriggerLabel>upFor</TriggerLabel>
+				<ControlPageLabel>upFor</ControlPageLabel>
+			</State>
 		</States>
 	</Device>
 
@@ -1709,6 +1749,11 @@
 				<ValueType>String</ValueType>
 				<TriggerLabel>expired</TriggerLabel>
 				<ControlPageLabel>expired</ControlPageLabel>
+			</State>
+			<State id="upFor">
+				<ValueType>String</ValueType>
+				<TriggerLabel>upFor</TriggerLabel>
+				<ControlPageLabel>upFor</ControlPageLabel>
 			</State>
 		</States>
 	</Device>
@@ -1928,6 +1973,11 @@
 				<TriggerLabel>expired</TriggerLabel>
 				<ControlPageLabel>expired</ControlPageLabel>
 			</State>
+			<State id="upFor">
+				<ValueType>String</ValueType>
+				<TriggerLabel>upFor</TriggerLabel>
+				<ControlPageLabel>upFor</ControlPageLabel>
+			</State>
 		</States>
 	</Device>
 
@@ -2097,6 +2147,11 @@
 				<ValueType>String</ValueType>
 				<TriggerLabel>expired</TriggerLabel>
 				<ControlPageLabel>expired</ControlPageLabel>
+			</State>
+			<State id="upFor">
+				<ValueType>String</ValueType>
+				<TriggerLabel>upFor</TriggerLabel>
+				<ControlPageLabel>upFor</ControlPageLabel>
 			</State>
 		</States>
 	</Device>
@@ -2276,6 +2331,11 @@
 				<ValueType>String</ValueType>
 				<TriggerLabel>expired</TriggerLabel>
 				<ControlPageLabel>expired</ControlPageLabel>
+			</State>
+			<State id="upFor">
+				<ValueType>String</ValueType>
+				<TriggerLabel>upFor</TriggerLabel>
+				<ControlPageLabel>upFor</ControlPageLabel>
 			</State>
 		</States>
 	</Device>
@@ -2614,6 +2674,11 @@ you can change the device type to 2 relays below</Label>
 				<TriggerLabel>expired</TriggerLabel>
 				<ControlPageLabel>expired</ControlPageLabel>
 			</State>
+			<State id="upFor">
+				<ValueType>String</ValueType>
+				<TriggerLabel>upFor</TriggerLabel>
+				<ControlPageLabel>upFor</ControlPageLabel>
+			</State>
 		</States>
 	</Device>
 
@@ -2846,6 +2911,11 @@ you can change the device type to roller below</Label>
 				<TriggerLabel>expired</TriggerLabel>
 				<ControlPageLabel>expired</ControlPageLabel>
 			</State>
+			<State id="upFor">
+				<ValueType>String</ValueType>
+				<TriggerLabel>upFor</TriggerLabel>
+				<ControlPageLabel>upFor</ControlPageLabel>
+			</State>
 		</States>
 	</Device>
 
@@ -3035,6 +3105,11 @@ you can change the device type to roller below</Label>
 				<TriggerLabel>expired</TriggerLabel>
 				<ControlPageLabel>expired</ControlPageLabel>
 			</State>
+			<State id="upFor">
+				<ValueType>String</ValueType>
+				<TriggerLabel>upFor</TriggerLabel>
+				<ControlPageLabel>upFor</ControlPageLabel>
+			</State>
 		</States>
 	</Device>
 
@@ -3219,6 +3294,11 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<TriggerLabel>expired</TriggerLabel>
 				<ControlPageLabel>expired</ControlPageLabel>
 			</State>
+			<State id="upFor">
+				<ValueType>String</ValueType>
+				<TriggerLabel>upFor</TriggerLabel>
+				<ControlPageLabel>upFor</ControlPageLabel>
+			</State>
 		</States>
 	</Device>
 
@@ -3386,6 +3466,11 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<ValueType>String</ValueType>
 				<TriggerLabel>expired</TriggerLabel>
 				<ControlPageLabel>expired</ControlPageLabel>
+			</State>
+			<State id="upFor">
+				<ValueType>String</ValueType>
+				<TriggerLabel>upFor</TriggerLabel>
+				<ControlPageLabel>upFor</ControlPageLabel>
 			</State>
 		</States>
 	</Device>
@@ -3590,6 +3675,11 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<TriggerLabel>expired</TriggerLabel>
 				<ControlPageLabel>expired</ControlPageLabel>
 			</State>
+			<State id="upFor">
+				<ValueType>String</ValueType>
+				<TriggerLabel>upFor</TriggerLabel>
+				<ControlPageLabel>upFor</ControlPageLabel>
+			</State>
 		</States>
 	</Device>
 
@@ -3785,6 +3875,11 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<ValueType>String</ValueType>
 				<TriggerLabel>expired</TriggerLabel>
 				<ControlPageLabel>expired</ControlPageLabel>
+			</State>
+			<State id="upFor">
+				<ValueType>String</ValueType>
+				<TriggerLabel>upFor</TriggerLabel>
+				<ControlPageLabel>upFor</ControlPageLabel>
 			</State>
 		</States>
 	</Device>
@@ -4075,6 +4170,11 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<TriggerLabel>expired</TriggerLabel>
 				<ControlPageLabel>expired</ControlPageLabel>
 			</State>
+			<State id="upFor">
+				<ValueType>String</ValueType>
+				<TriggerLabel>upFor</TriggerLabel>
+				<ControlPageLabel>upFor</ControlPageLabel>
+			</State>
 			<State id="overtemperature">
 				<ValueType>String</ValueType>
 				<TriggerLabel>overtemperature</TriggerLabel>
@@ -4262,6 +4362,11 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<TriggerLabel>expired</TriggerLabel>
 				<ControlPageLabel>expired</ControlPageLabel>
 			</State>
+			<State id="upFor">
+				<ValueType>String</ValueType>
+				<TriggerLabel>upFor</TriggerLabel>
+				<ControlPageLabel>upFor</ControlPageLabel>
+			</State>
 		</States>
 	</Device>
 
@@ -4437,6 +4542,11 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<TriggerLabel>expired</TriggerLabel>
 				<ControlPageLabel>expired</ControlPageLabel>
 			</State>
+			<State id="upFor">
+				<ValueType>String</ValueType>
+				<TriggerLabel>upFor</TriggerLabel>
+				<ControlPageLabel>upFor</ControlPageLabel>
+			</State>
 		</States>
 	</Device>
 
@@ -4578,10 +4688,10 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<TriggerLabel>TemperatureMinYesterday</TriggerLabel>
 				<ControlPageLabel>TemperatureMinYesterday</ControlPageLabel>
 			</State>
-			<State id="sleep_mode">
+			<State id="sleepMode">
 				<ValueType>String</ValueType>
-				<TriggerLabel>sleep_mode</TriggerLabel>
-				<ControlPageLabel>sleep_mode</ControlPageLabel>
+				<TriggerLabel>sleepMode</TriggerLabel>
+				<ControlPageLabel>sleepMode</ControlPageLabel>
 			</State>
 			<!--   this is same for all: -->
 			<State id="lastSuccessfullConfigPush">
@@ -4643,6 +4753,11 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<ValueType>String</ValueType>
 				<TriggerLabel>expired</TriggerLabel>
 				<ControlPageLabel>expired</ControlPageLabel>
+			</State>
+			<State id="upFor">
+				<ValueType>String</ValueType>
+				<TriggerLabel>upFor</TriggerLabel>
+				<ControlPageLabel>upFor</ControlPageLabel>
 			</State>
 		</States>
 	</Device>
@@ -4767,10 +4882,10 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<TriggerLabel>HumidityMinYesterday</TriggerLabel>
 				<ControlPageLabel>HumidityMinYesterday</ControlPageLabel>
 			</State>
-			<State id="sleep_mode">
+			<State id="sleepMode">
 				<ValueType>String</ValueType>
-				<TriggerLabel>sleep_mode</TriggerLabel>
-				<ControlPageLabel>sleep_mode</ControlPageLabel>
+				<TriggerLabel>sleepMode</TriggerLabel>
+				<ControlPageLabel>sleepMode</ControlPageLabel>
 			</State>
 			<State id="childNo">
 				<ValueType>String</ValueType>
@@ -4832,6 +4947,11 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<ValueType>String</ValueType>
 				<TriggerLabel>expired</TriggerLabel>
 				<ControlPageLabel>expired</ControlPageLabel>
+			</State>
+			<State id="upFor">
+				<ValueType>String</ValueType>
+				<TriggerLabel>upFor</TriggerLabel>
+				<ControlPageLabel>upFor</ControlPageLabel>
 			</State>
 		</States>
 	</Device>
@@ -4947,6 +5067,11 @@ for connection parameters check the parent (SHELLY host device)</Label>
 				<TriggerLabel>expired</TriggerLabel>
 				<ControlPageLabel>expired</ControlPageLabel>
 			</State>
+			<State id="upFor">
+				<ValueType>String</ValueType>
+				<TriggerLabel>upFor</TriggerLabel>
+				<ControlPageLabel>upFor</ControlPageLabel>
+			</State>
 		</States>
 	</Device>
 
@@ -5052,6 +5177,11 @@ for connection parameters check the parent (SHELLY host device)</Label>
 				<ValueType>String</ValueType>
 				<TriggerLabel>expired</TriggerLabel>
 				<ControlPageLabel>expired</ControlPageLabel>
+			</State>
+			<State id="upFor">
+				<ValueType>String</ValueType>
+				<TriggerLabel>upFor</TriggerLabel>
+				<ControlPageLabel>upFor</ControlPageLabel>
 			</State>
 		</States>
 	</Device>
@@ -5290,6 +5420,11 @@ for connection parameters check the parent (SHELLY host device)</Label>
 				<TriggerLabel>expired</TriggerLabel>
 				<ControlPageLabel>expired</ControlPageLabel>
 			</State>
+			<State id="upFor">
+				<ValueType>String</ValueType>
+				<TriggerLabel>upFor</TriggerLabel>
+				<ControlPageLabel>upFor</ControlPageLabel>
+			</State>
 		</States>
 	</Device>
 
@@ -5514,6 +5649,11 @@ for connection parameters check the parent (SHELLY host device)</Label>
 				<ValueType>String</ValueType>
 				<TriggerLabel>expired</TriggerLabel>
 				<ControlPageLabel>expired</ControlPageLabel>
+			</State>
+			<State id="upFor">
+				<ValueType>String</ValueType>
+				<TriggerLabel>upFor</TriggerLabel>
+				<ControlPageLabel>upFor</ControlPageLabel>
 			</State>
 		</States>
 	</Device>
@@ -5742,6 +5882,11 @@ for connection parameters check the parent (SHELLY host device)</Label>
 				<TriggerLabel>expired</TriggerLabel>
 				<ControlPageLabel>expired</ControlPageLabel>
 			</State>
+			<State id="upFor">
+				<ValueType>String</ValueType>
+				<TriggerLabel>upFor</TriggerLabel>
+				<ControlPageLabel>upFor</ControlPageLabel>
+			</State>
 		</States>
 	</Device>
 
@@ -5753,10 +5898,10 @@ for connection parameters check the parent (SHELLY host device)</Label>
 			<Field id="MSG" type="textfield" defaultValue="">
 				<Label>message from plugin:</Label>
 			</Field>
-			<Field id="SupportsOnState" type="checkbox" defaultValue="true" hidden="false">
+			<Field id="SupportsOnState" type="checkbox" defaultValue="true" hidden="true">
 				<Label>SupportsOnState</Label>
 			</Field>
-			<Field id="SupportsSensorValue" type="checkbox" defaultValue="true" hidden="true">
+			<Field id="SupportsSensorValue" type="checkbox" defaultValue="false" hidden="true">
 				<Label>SupportsSensorValue</Label>
 			</Field>
 			<Field id="SupportsStatusRequest" type="checkbox" defaultValue="true" hidden="true">
@@ -5822,73 +5967,115 @@ for connection parameters check the parent (SHELLY host device)</Label>
 				</List>
 			</Field>
 
-			<Field id="displaySelect" type="menu" defaultValue="Motion">
-				<Label>Property to display in the State Column:</Label>
-				<List>
-					<Option value="motion">Motion</Option>
-				</List>
-			</Field>
-
 
 		</ConfigUI>
 		<States>
 			<!--   this is dev specific -->
-
-			<State id="motion">
+			<State id="motionThreshold">
+				<ValueType>number</ValueType>
+				<TriggerLabel>motionThreshold</TriggerLabel>
+				<ControlPageLabel>motionThreshold</ControlPageLabel>
+			</State>
+			<State id="motionPulseCount">
+				<ValueType>number</ValueType>
+				<TriggerLabel>motionPulseCount</TriggerLabel>
+				<ControlPageLabel>motionPulseCount</ControlPageLabel>
+			</State>
+			<State id="motionBlindTime">
+				<ValueType>number</ValueType>
+				<TriggerLabel>motionBlindTime</TriggerLabel>
+				<ControlPageLabel>motionBlindTime</ControlPageLabel>
+			</State>
+			<State id="motionOperationMode">
 				<ValueType>String</ValueType>
-				<TriggerLabel>motion</TriggerLabel>
-				<ControlPageLabel>motion</ControlPageLabel>
+				<TriggerLabel>motionOperationMode</TriggerLabel>
+				<ControlPageLabel>motionOperationMode</ControlPageLabel>
+			</State>
+			<State id="motionTriggerEnabled">
+				<ValueType>Boolean</ValueType>
+				<TriggerLabel>motionTriggerEnabled</TriggerLabel>
+				<ControlPageLabel>motionTriggerEnabled</ControlPageLabel>
+			</State>
+			<State id="tamperThreshold">
+				<ValueType>String</ValueType>
+				<TriggerLabel>tamperThreshold</TriggerLabel>
+				<ControlPageLabel>tamperThreshold</ControlPageLabel>
+			</State>
+			<State id="darkThreshold">
+				<ValueType>String</ValueType>
+				<TriggerLabel>darkThreshold</TriggerLabel>
+				<ControlPageLabel>darkThreshold</ControlPageLabel>
+			</State>
+			<State id="twilightThreshold">
+				<ValueType>String</ValueType>
+				<TriggerLabel>twilightThreshold</TriggerLabel>
+				<ControlPageLabel>twilightThreshold</ControlPageLabel>
+			</State>
+			<State id="sleepMode">
+				<ValueType>String</ValueType>
+				<TriggerLabel>sleepMode</TriggerLabel>
+				<ControlPageLabel>sleepMode</ControlPageLabel>
+			</State>
+			<State id="motionTrigger">
+				<ValueType>Boolean</ValueType>
+				<TriggerLabel>motionTrigger</TriggerLabel>
+				<ControlPageLabel>motionTrigger</ControlPageLabel>
+			</State>
+			<State id="tamperTrigger">
+				<ValueType>Boolean</ValueType>
+				<TriggerLabel>tamperTrigger</TriggerLabel>
+				<ControlPageLabel>tamperTrigger</ControlPageLabel>
 			</State>
 
-			<State id="lastMotion">
+			<State id="lastMotionTrigger">
 				<ValueType>String</ValueType>
-				<TriggerLabel>lastMotion</TriggerLabel>
-				<ControlPageLabel>lastMotion</ControlPageLabel>
+				<TriggerLabel>lastMotionTrigger</TriggerLabel>
+				<ControlPageLabel>lastMotionTrigger</ControlPageLabel>
 			</State>
-			<State id="previousMotion">
+			<State id="previousMotionTrigger">
 				<ValueType>String</ValueType>
-				<TriggerLabel>previousMotion</TriggerLabel>
-				<ControlPageLabel>previousMotion</ControlPageLabel>
+				<TriggerLabel>previousMotionTrigger</TriggerLabel>
+				<ControlPageLabel>previousMotionTrigger</ControlPageLabel>
 			</State>
-			<State id="lastTamper">
+			<State id="lastTamperTrigger">
 				<ValueType>String</ValueType>
-				<TriggerLabel>lastTamper</TriggerLabel>
-				<ControlPageLabel>lastTamper</ControlPageLabel>
+				<TriggerLabel>lastTamperTrigger</TriggerLabel>
+				<ControlPageLabel>lastTamperTrigger</ControlPageLabel>
 			</State>
-			<State id="previousTamper">
+			<State id="previousTamperTrigger">
 				<ValueType>String</ValueType>
-				<TriggerLabel>previousTamper</TriggerLabel>
-				<ControlPageLabel>previousTamper</ControlPageLabel>
+				<TriggerLabel>previousTamperTrigger</TriggerLabel>
+				<ControlPageLabel>previousTamperTrigger</ControlPageLabel>
 			</State>
-			<State id="lastDark">
+			<State id="lastDarkTrigger">
 				<ValueType>String</ValueType>
-				<TriggerLabel>lastDark</TriggerLabel>
-				<ControlPageLabel>lastDark</ControlPageLabel>
+				<TriggerLabel>lastDarkTrigger</TriggerLabel>
+				<ControlPageLabel>lastDarkTrigger</ControlPageLabel>
 			</State>
-			<State id="previousDark">
+			<State id="previousDarkTrigger">
 				<ValueType>String</ValueType>
-				<TriggerLabel>previousDark</TriggerLabel>
-				<ControlPageLabel>previousDark</ControlPageLabel>
+				<TriggerLabel>previousDarkTrigger</TriggerLabel>
+				<ControlPageLabel>previousDarkTrigger</ControlPageLabel>
 			</State>
-			<State id="lastBright">
+			<State id="lastBrightTrigger">
 				<ValueType>String</ValueType>
-				<TriggerLabel>lastBright</TriggerLabel>
-				<ControlPageLabel>lastBright</ControlPageLabel>
+				<TriggerLabel>lastBrightTrigger</TriggerLabel>
+				<ControlPageLabel>lastBrightTrigger</ControlPageLabel>
 			</State>
-			<State id="previousBright">
+			<State id="previousBrightTrigger">
 				<ValueType>String</ValueType>
-				<TriggerLabel>previousBright</TriggerLabel>
-				<ControlPageLabel>previousBright</ControlPageLabel>
+				<TriggerLabel>previousBrightTrigger</TriggerLabel>
+				<ControlPageLabel>previousBrightTrigger</ControlPageLabel>
 			</State>
-			<State id="lastTwilight">
+			<State id="lastTwilightTrigger">
 				<ValueType>String</ValueType>
-				<TriggerLabel>lastTwilight</TriggerLabel>
-				<ControlPageLabel>lastTwilight</ControlPageLabel>
+				<TriggerLabel>lastTwilightTrigger</TriggerLabel>
+				<ControlPageLabel>lastTwilightTrigger</ControlPageLabel>
 			</State>
-			<State id="previousTwilight">
+			<State id="previousTwilightTrigger">
 				<ValueType>String</ValueType>
-				<TriggerLabel>previousTwilight</TriggerLabel>
-				<ControlPageLabel>previousTwilight</ControlPageLabel>
+				<TriggerLabel>previousTwilightTrigger</TriggerLabel>
+				<ControlPageLabel>previousTwilightTrigger</ControlPageLabel>
 			</State>
 			<State id="lux">
 				<ValueType>Number</ValueType>
@@ -5899,11 +6086,6 @@ for connection parameters check the parent (SHELLY host device)</Label>
 				<ValueType>String</ValueType>
 				<TriggerLabel>illumination</TriggerLabel>
 				<ControlPageLabel>illumination</ControlPageLabel>
-			</State>
-			<State id="vibration">
-				<ValueType>String</ValueType>
-				<TriggerLabel>vibration</TriggerLabel>
-				<ControlPageLabel>vibration</ControlPageLabel>
 			</State>
 			<!--   this is same for all: -->
 			<State id="charger">
@@ -5965,6 +6147,11 @@ for connection parameters check the parent (SHELLY host device)</Label>
 				<ValueType>String</ValueType>
 				<TriggerLabel>expired</TriggerLabel>
 				<ControlPageLabel>expired</ControlPageLabel>
+			</State>
+			<State id="upFor">
+				<ValueType>String</ValueType>
+				<TriggerLabel>upFor</TriggerLabel>
+				<ControlPageLabel>upFor</ControlPageLabel>
 			</State>
 		</States>
 	</Device>
@@ -6192,6 +6379,11 @@ for connection parameters check the parent (SHELLY host device)</Label>
 				<TriggerLabel>expired</TriggerLabel>
 				<ControlPageLabel>expired</ControlPageLabel>
 			</State>
+			<State id="upFor">
+				<ValueType>String</ValueType>
+				<TriggerLabel>upFor</TriggerLabel>
+				<ControlPageLabel>upFor</ControlPageLabel>
+			</State>
 		</States>
 	</Device>
 
@@ -6416,6 +6608,11 @@ for connection parameters check the parent (SHELLY host device)</Label>
 				<ValueType>String</ValueType>
 				<TriggerLabel>expired</TriggerLabel>
 				<ControlPageLabel>expired</ControlPageLabel>
+			</State>
+			<State id="upFor">
+				<ValueType>String</ValueType>
+				<TriggerLabel>upFor</TriggerLabel>
+				<ControlPageLabel>upFor</ControlPageLabel>
 			</State>
 		</States>
 	</Device>

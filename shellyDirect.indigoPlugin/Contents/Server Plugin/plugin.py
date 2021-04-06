@@ -607,11 +607,11 @@ _emptyProps = {	# switches
 
 				"shellymotionsensor":{"props":{"isShellyDevice":True, "usesInputForOnOff":False, "isRelay":False, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":False, "SupportsStatusRequest":True, "AllowOnStateChange":False,  "SupportsBatteryLevel":True,
 						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
-						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":60,  "expirationSeconds":50400,"displaySelect":"motion","SupportsBatteryLevel":True },
+						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":60,  "expirationSeconds":50400,"SupportsBatteryLevel":True },
 						"setPageActionPageOnShellyDev":{},
 						"action_url":	{
 										"2":{
-											"settings/actions?enabled=true&index=0&name=":	{ "motion_on":"motion=on",  "motion_off":"motion=off", "tamper_alarm_on":"tamper=on", "motion_bright": ":bright=on", "motion_twilight":"twilight=on", "motion_dark":"dark=on"}
+											"settings/actions?enabled=true&index=0&name=":	{ "motion_on":"motion=on",  "motion_off":"motion=off", "tamper_alarm_on":"tamper=on","tamper_alarm_off":"tamper=off", "motion_bright": "bright=on", "motion_twilight":"twilight=on", "motion_dark":"dark=on"}
 											},
 										"1":{
 											}
@@ -3075,30 +3075,51 @@ class Plugin(indigo.PluginBase):
 			elif deviceTypeId.find("shellymotionsensor") >-1:
 				# data:= /data?&hum=49&temp=29.00 
 				for trigger in TRIGGERS:
-					if self.decideMyLog(u"HTTPlistener"):self.indiLOG.log(10,u"doHTTPactionData {}   TRIGGERS:{}; dst:{}".format(self.SHELLY[dev.id]["ipNumber"], TRIGGERS, dst) )
+					if self.decideMyLog(u"HTTPlistener"):self.indiLOG.log(10,u"doHTTPactionData {}   TRIGGERS:{}; dst:{}, onState:{}".format(self.SHELLY[dev.id]["ipNumber"], TRIGGERS, dst, dev.states["onOffState"]) )
 					if trigger[0] == "motion":
-						if "previousMotion" in dev.states and "lastMotion" in dev.states:
-							self.addToStatesUpdateDict(devID, "previousMotion", dev.states["lastMotion"])
-						self.addToStatesUpdateDict(devID, "lastMotion", dst)
-						self.addToStatesUpdateDict(devID, "motion",     x[1])
-						if    x[1] == "off": dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOn)
-						else: 				 dev.updateStateImageOnServer(indigo.kStateImageSel.SensorTripped)
-					if trigger[0] == "tamper":
-						if "previousTamper" in dev.states and "lastTamper" in dev.states:
-							self.addToStatesUpdateDict(devID, "previousTamper", dev.states["lastTamper"])
-						self.addToStatesUpdateDict(devID, "lastTamper", dst)
+						if "previousMotionTrigger" in dev.states and "lastMotionTrigger" in dev.states:
+							self.addToStatesUpdateDict(devID, "previousMotionTrigger", dev.states["lastMotionTrigger"])
+						self.addToStatesUpdateDict(devID, "lastMotionTrigger", dst)
+						if    x[1] == "on": 
+							self.addToStatesUpdateDict(devID, "motionTrigger",     x[1], "Motion")
+							if not dev.states["onOffState"]: 
+								self.addToStatesUpdateDict(devID, "onOffState", True, "Motion", decimalPlaces="", force = True)
+							dev.updateStateImageOnServer(indigo.kStateImageSel.MotionSensorTripped)
+						else:
+							dev.updateStateImageOnServer(indigo.kStateImageSel.MotionSensor)
+							self.addToStatesUpdateDict(devID, "onOffState", False, "off", decimalPlaces="", force = True)
+						self.addToStatesUpdateDict(devID, "motionTrigger",     x[1], "off")
+
+					if trigger[0] == "tamper": # temaper overwrites motion ui value
+						if    x[1] == "on": 
+							dev.updateStateImageOnServer(indigo.kStateImageSel.MotionSensorTripped)
+							self.addToStatesUpdateDict(devID, "tamperTrigger", True, "Tamper", decimalPlaces="")
+							if self.decideMyLog(u"HTTPlistener"):self.indiLOG.log(10,u"doHTTPactionData setting onoffstate to tamper")
+							self.addToStatesUpdateDict(devID, "onOffState", True, "Tamper", decimalPlaces="", force = True)
+							if "previousTamperTrigger" in dev.states and "lastTamperTrigger" in dev.states:
+								self.addToStatesUpdateDict(devID, "previousTamperTrigger", dev.states["lastTamperTrigger"])
+							self.addToStatesUpdateDict(devID, "lastTamperTrigger", dst)
+						else:
+							self.addToStatesUpdateDict(devID, "tamperTrigger", False, "no", decimalPlaces="")
+							if dev.states["motionTrigger"]:
+								self.addToStatesUpdateDict(devID, "onOffState", True, "Motion", decimalPlaces="", force = True)
+							else:
+								self.addToStatesUpdateDict(devID, "onOffState", False, "off", decimalPlaces="", force = True)
+
 					if trigger[0] == "bright":
-						if "previousBright" in dev.states and "lastBright" in dev.states:
-							self.addToStatesUpdateDict(devID, "previousBright", dev.states["lastBright"])
-						self.addToStatesUpdateDict(devID, "lastBright", dst)
+						if "previousBrightTrigger" in dev.states and "lastBrightTrigger" in dev.states:
+							self.addToStatesUpdateDict(devID, "previousBrightTrigger", dev.states["lastBrightTrigger"])
+						self.addToStatesUpdateDict(devID, "lastBrightTrigger", dst)
+
 					if trigger[0] == "dark":
-						if "previousDark" in dev.states and "lastDark" in dev.states:
-							self.addToStatesUpdateDict(devID, "previousDark", dev.states["lastDark"])
-						self.addToStatesUpdateDict(devID, "lastDark", dst)
+						if "previousDarkTrigger" in dev.states and "lastDarkTrigger" in dev.states:
+							self.addToStatesUpdateDict(devID, "previousDarkTrigger", dev.states["lastDarkTrigger"])
+						self.addToStatesUpdateDict(devID, "lastDarkTrigger", dst)
+
 					if trigger[0] == "twilight":
-						if "previousDark" in dev.states and "lastTwilight" in dev.states:
-							self.addToStatesUpdateDict(devID, "previousTwilight", dev.states["lastTwilight"])
-						self.addToStatesUpdateDict(devID, "lastTwilight", dst)
+						if "previousTwilightTrigger" in dev.states and "lastTwilightTrigger" in dev.states:
+							self.addToStatesUpdateDict(devID, "previousTwilightTrigger", dev.states["lastTwilightTrigger"])
+						self.addToStatesUpdateDict(devID, "lastTwilightTrigger", dst)
 
 
 
@@ -3209,13 +3230,37 @@ class Plugin(indigo.PluginBase):
 
 			if "update"     in data  and "has_update" in data["update"] and \
 									"software_update_available" in dev.states: 		self.addToStatesUpdateDict(devID, "software_update_available", 		"YES" if data["update"]["has_update"]  else "is up to date", decimalPlaces="")
-			if "sleep_mode" in data and "sleep_mode" in dev.states: 	
-				if "period" in data["sleep_mode"] and "unit" in data["sleep_mode"]:	self.addToStatesUpdateDict(devID, "sleep_mode", 					"{}{}".format(data["sleep_mode"]["period"],data["sleep_mode"]["unit"]) )
+
+			if "sleep_mode" in data:
+					mapto = {"m":"minutes","h":"hours","s":"seconds","":"unknown"}
+					try: 	yy = mapto[data["sleep_mode"]["unit"]]
+					except: yy = "unknown"
+					xx = u"{:d} {:}".format(data["sleep_mode"]["period"],yy)
+					if True:
+																					self.addToStatesUpdateDict(devID, "sleepMode", 						xx, 								xx, 					decimalPlaces="")
 
 			if "set_volume" in data and "volume" in dev.states: 					self.addToStatesUpdateDict(devID, "volume", 						data["set_volume"])
 
 			if "wifi_sta"   in data and "ipv4_method" in data["wifi_sta"]:
 				if "WiFi_ipv4_method" in dev.states: 								self.addToStatesUpdateDict(devID, "WiFi_ipv4_method", 				data["wifi_sta"]["ipv4_method"])
+
+
+			if "uptime"   in data and "upFor" in dev.states:
+				upFor  = int(data["uptime"]/60)
+				upForM = upFor%60
+				upFor  = int(upFor/60.)  
+				upForH = upFor%24
+				upForD  = int(upFor/24.)  
+				upFor = ""
+				if upForD > 0: 
+					upFor += "{} Days, ".format(upForD)
+					upFor += "{} Hours, ".format(upForH)
+				else:
+					if upForH > 0: upFor += "{} Hours, ".format(upForH)
+				upFor += "{} Minutes".format(upForM)					
+				#self.indiLOG.log(10,u"uptime:{:.0f}  upFor:{} M:{}, H:{}, D:{}".format(data["uptime"]/60, upFor, upForM, upForH, upForD ))
+				if True:															self.addToStatesUpdateDict(devID, "upFor", 				upFor, 				upFor)
+
 
 			if "act_reasons" in data:
 				out =""
@@ -3252,7 +3297,7 @@ class Plugin(indigo.PluginBase):
 		try:
 			if  "lights" not in data: return 
 			devID = str(dev.id)
-			self.indiLOG.log(10,u"fillLight  dev:{}: {}".format(dev.name,data["lights"] ))
+			#self.indiLOG.log(10,u"fillLight  dev:{}: {}".format(dev.name,data["lights"] ))
 			for light in data["lights"]:
 				if "overPower" in dev.states and "overpower" in light:
 					self.addToStatesUpdateDict(devID, "overPower", light["overpower"])
@@ -3358,20 +3403,78 @@ class Plugin(indigo.PluginBase):
 		try:
 			if dev.deviceTypeId.find("shellymotionsensor") == -1: return 
 			devID = str(dev.id)		
+
 			if "lux" in data:
-				self.addToStatesUpdateDict(devID, "lux", 			data["lux"]["value"], str(data["lux"]["value"])+"[lux]", decimalPlaces=1)
+				self.addToStatesUpdateDict(devID, "lux", 			data["lux"]["value"], u"{:d} [Lux]".format(data["lux"]["value"]), decimalPlaces=1)
 				self.addToStatesUpdateDict(devID, "illumination", 	data["lux"]["illumination"])
+
 			if "sensor" in data:
-				self.addToStatesUpdateDict(devID, "motion", 		data["sensor"]["motion"], "no" if data["sensor"]["motion"]==0 else "YES",decimalPlaces="")
-				self.addToStatesUpdateDict(devID, "onOffState",		data["sensor"]["motion"], "no" if data["sensor"]["motion"]==0 else "YES", decimalPlaces="")
-				self.addToStatesUpdateDict(devID, "vibration", 		"no" if data["sensor"]["vibration"]==0 else "YES")
+				motion = data["sensor"]["motion"]
+				tamper = data["sensor"]["vibration"]
+				self.addToStatesUpdateDict(devID, "motionTrigger", 	motion, "off" if data["sensor"]["motion"]==0 else "Motion",decimalPlaces="")
+				self.addToStatesUpdateDict(devID, "tamperTrigger", 	tamper, "no" if tamper else "YES")
+
+				if tamper:
+					self.addToStatesUpdateDict(devID, "onOffState", True, "Tamper", decimalPlaces="", force = True)
+
+				else:
+					if motion:
+						self.addToStatesUpdateDict(devID, "onOffState", True, "Motion", decimalPlaces="", force = True)
+						dev.updateStateImageOnServer(indigo.kStateImageSel.MotionSensorTripped)
+					else:
+						self.addToStatesUpdateDict(devID, "onOffState",		False, "off" , decimalPlaces="", force = True)
+						dev.updateStateImageOnServer(indigo.kStateImageSel.MotionSensor)
+
+
+			## this is for settings:
+			if "motion" in data:
+				if "enabled" in data["motion"]:
+					self.addToStatesUpdateDict(devID, "motionTriggerEnabled", 	data["motion"]["enabled"],		data["motion"]["enabled"] ,decimalPlaces="")
+
+				if "blind_time_minutes" in data["motion"]:
+					xx = u"{:d} minutes".format(data["motion"]["blind_time_minutes"])
+					self.addToStatesUpdateDict(devID, "motionBlindTime", 		xx,							xx ,					decimalPlaces="")
+
+				if "sensitivity" in data["motion"]:
+					xx = data["motion"]["sensitivity"]
+					if  	xx > 168: 	hml = "high"
+					elif	xx > 84:  	hml = "med"
+					else:				hml = "low"
+					xx = u"{:d}/256 - {}".format(xx, hml)
+					self.addToStatesUpdateDict(devID, "motionThreshold", 		xx,							xx,						decimalPlaces="")
+
+				if "pulse_count" in data["motion"]:
+					xx = u"{:d} to trigger".format(data["motion"]["pulse_count"])
+					self.addToStatesUpdateDict(devID, "motionPulseCount", 		xx,							xx,					decimalPlaces=0)
+
+				if "operating_mode" in data["motion"]:
+					mapto = {"0":"any light","1":"only when dark","2":"only when twilight","3":"only when bright","":"unknown"}
+					try: 	xx = mapto[str(data["motion"]["operating_mode"])]
+					except: xx = "unknown"
+					self.addToStatesUpdateDict(devID, "motionOperationMode", 	xx,							xx,						decimalPlaces="")
+
+			if "tamper_sensitivity" in data:
+					xx = data["tamper_sensitivity"]
+					if   xx  > 84: 	hml = "high"
+					elif xx  > 42: 	hml = "med"
+					else:			hml = "low"
+					xx = u"{:d}/127 - {}".format(xx, hml)
+					self.addToStatesUpdateDict(devID, "tamperThreshold", 		xx,							xx,						decimalPlaces="")
+
+			if "twilight_threshold" in data:
+					xx = u"{:d} [lux]".format(data["twilight_threshold"])
+					self.addToStatesUpdateDict(devID, "twilightThreshold", 		xx,							xx,						decimalPlaces="")
+
+			if "dark_threshold" in data:
+					xx = u"{:d} [lux]".format(data["dark_threshold"])
+					self.addToStatesUpdateDict(devID, "darkThreshold", 			xx, 						xx,						decimalPlaces="")
+	
 
 		except Exception, e:
 			self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
 			self.indiLOG.log(40,u"{} data:{}".format(dev.id,data))
 		return 
 
-#
 
 ####-------------------------------------------------------------------------####
 	def fillSHWT(self, data, dev):
@@ -4827,7 +4930,7 @@ class Plugin(indigo.PluginBase):
 								if setting == "none":
 									if searchFor1 in currentActions and searchFor2 in currentActions: 
 										pushSuccessfull = True
-										if self.decideMyLog(u"SetupDevices"): self.indiLOG.log(10,u"action found: {};  >{}< >{}< ".format(dev.name, searchFor1, searchFor2) )
+										if self.decideMyLog(u"SetupDevices"): self.indiLOG.log(10,u"action already set: {};  >{}< >{}< ".format(dev.name, searchFor1, searchFor2) )
 										break
 									page = parameter+_urlPrefix[self.sensorApiVersion]+"="+pageBack +"/?"+ actionURLs[parameter][setting]
 									###  = eg settings/?report_url=ttp://ip:port/data?"
@@ -4836,14 +4939,14 @@ class Plugin(indigo.PluginBase):
 									searchFor1 = parameter
 									searchFor2 = "x"
 									if searchFor1 in currentActions and searchFor2 in currentActions: 
-										if self.decideMyLog(u"SetupDevices"): self.indiLOG.log(10,u"action found: {};  >{}< >{}< ".format(dev.name, searchFor1, searchFor2) )
+										if self.decideMyLog(u"SetupDevices"): self.indiLOG.log(10,u"action already set: {};  >{}< >{}< ".format(dev.name, searchFor1, searchFor2) )
 										pushSuccessfull = True
 										break
 									page = parameter +_urlPrefix[self.sensorApiVersion]+"="+ setting + "=x" 
 									###  = eg settings/relay/0?shortpush_url="
 								else:
 									if searchFor1 in currentActions and searchFor2 in currentActions: 
-										if self.decideMyLog(u"SetupDevices"): self.indiLOG.log(10,u"action found: {};  >{}< >{}< ".format(dev.name, searchFor1, searchFor2) )
+										if self.decideMyLog(u"SetupDevices"): self.indiLOG.log(10,u"action already set: {};  >{}< >{}< ".format(dev.name, searchFor1, searchFor2) )
 										pushSuccessfull = True
 										break
 									page = parameter + setting + _urlPrefix[self.sensorApiVersion]+ "=" + pageBack +"/?"+ actionURLs[parameter][setting]
@@ -4870,7 +4973,6 @@ class Plugin(indigo.PluginBase):
 					self.indiLOG.log(10,u"not successfull action_url push to devId:{}, send page:{}; device is offline".format(devId, page) )
 
 
-			pushSuccessfull = False
 			pushTried = False
 			retCode = "0"
 			for prop in props:
@@ -4926,7 +5028,7 @@ class Plugin(indigo.PluginBase):
 
 
 
-			if time.time() - self.SHELLY[devId]["lastSuccessfullConfigPush"]  < 400:
+			if pushSuccessfull:
 				self.addToStatesUpdateDict(str(devId),"lastSuccessfullConfigPush", datetime.datetime.now().strftime(_defaultDateStampFormat))
 
 		except Exception, e:
@@ -5085,12 +5187,14 @@ class Plugin(indigo.PluginBase):
 					dev = indigo.devices[devID]
 					props = dev.pluginProps
 					for state in local[devId]:
-						if state == "onOffState" and dev.states["onOffState"] != local[devId][state]["value"]: onOffStateNotChanged = False
+						if state == "onOffState" and dev.states["onOffState"] != local[devId][state]["value"]: 
+							onOffStateNotChanged = False
+							oneNew = True
 						if not local[devId][state]["force"]: 
 							if state not in dev.states:
 								self.indiLOG.log(40,u"executeUpdateStatesDict dev:{} state:{} not present ".format(dev.name,state) )
 								continue
-							if dev.states[state] == local[devId][state]["value"] : continue
+							if dev.states[state] == local[devId][state]["value"]: continue
 						dd = {u"key":state, "value":local[devId][state]["value"]}
 						if local[devId][state]["uiValue"]		!="": dd["uiValue"]			= local[devId][state]["uiValue"]
 						if local[devId][state]["decimalPlaces"]	!="": dd["decimalPlaces"]	= local[devId][state]["decimalPlaces"]
@@ -5367,7 +5471,7 @@ from BaseHTTPServer import HTTPServer
 
 class RequestHandler(BaseHTTPRequestHandler):
 	def do_HEAD(self):
-		if indigo.activePlugin.decideMyLog(u"HTTPlistener"): indigo.activePlugin.indiLOG.log(20, u"RequestHandler  doHead ip{} , path:{}".format(self.client_address, self.path))
+		if indigo.activePlugin.decideMyLog(u"HTTPlistener"): indigo.activePlugin.indiLOG.log(10, u"RequestHandler  doHead ip{} , path:{}".format(self.client_address, self.path))
 		return
 	
 	def do_GET(self):
@@ -5375,7 +5479,7 @@ class RequestHandler(BaseHTTPRequestHandler):
 		self.send_header('Content-type', 'text/plain')
 		self.wfile.flush()
 		try:
-			if indigo.activePlugin.decideMyLog(u"HTTPlistener"): indigo.activePlugin.indiLOG.log(20, u"RequestHandler  do_GET ..  ip{} , path:{}".format(self.client_address, self.path))
+			if indigo.activePlugin.decideMyLog(u"HTTPlistener"): indigo.activePlugin.indiLOG.log(10, u"RequestHandler  do_GET ..  ip{} , path:{}".format(self.client_address, self.path))
 			indigo.activePlugin.addtoAnalyzePollerQueue( {"ipNumber":self.client_address[0], "page":"httpAction", "data":{"path": self.path}}  )
 		except Exception, e:
 			indigo.activePlugin.indiLOG.log(40,"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
