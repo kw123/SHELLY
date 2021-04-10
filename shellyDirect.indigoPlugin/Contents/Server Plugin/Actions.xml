@@ -29,7 +29,7 @@
              <Label>select Device</Label>
             <Field id="devId" type="menu" >
                 <Label>Select SHELLY device:</Label>
-                <List class="self" filter="shellyswitch25" method="filterActiveShellyDevicesNotChild" dynamicReload="true"/>
+                <List class="self" filter="shellyswitch25-roller" method="filterActiveShellyDevicesNotChild" dynamicReload="true"/>
             </Field>
         </ConfigUI>
     </Action>
@@ -41,7 +41,7 @@
             </Field>
             <Field id="devId" type="menu" >
                 <Label>Select SHELLY-roller device:</Label>
-                <List class="self" filter="shellyswitch25" method="filterActiveShellyDevicesNotChild" dynamicReload="true"/>
+                <List class="self" filter="shellyswitch25-roller" method="filterActiveShellyDevicesNotChild" dynamicReload="true"/>
             </Field>
         </ConfigUI>
     </Action>         
@@ -54,7 +54,7 @@
             </Field>
             <Field id="devId" type="menu" >
                 <Label>Select ROLLER device:</Label>
-                <List class="self" filter="shellyswitch25" method="filterActiveShellyDevicesNotChild" dynamicReload="true"/>
+                <List class="self" filter="shellyswitch25-roller" method="filterActiveShellyDevicesNotChild" dynamicReload="true"/>
             </Field>
             <Field id="roller_pos" type="textfield" default="100">
                 <Label>set position (0..100):</Label>
@@ -70,7 +70,7 @@
             </Field>
             <Field id="devId" type="menu" >
                 <Label>Select ROLLER device:</Label>
-                <List class="self" filter="shellyswitch25" method="filterActiveShellyDevicesNotChild" dynamicReload="true"/>
+                <List class="self" filter="shellyswitch25-roller" method="filterActiveShellyDevicesNotChild" dynamicReload="true"/>
             </Field>
             <Field id="duration" type="textfield" default="5">
                 <Label>move for xx secs:</Label>

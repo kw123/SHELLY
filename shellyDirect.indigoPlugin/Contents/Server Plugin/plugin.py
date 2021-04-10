@@ -37,6 +37,39 @@ except ImportError:
 ##
 
 
+######### set new  pluginconfig defaults
+# this needs to be updated for each new property added to pluginprops. 
+# indigo ignores the defaults of new properties after first load of the plugin 
+kDefaultPluginPrefs = {
+				"indigoFolderName":			"Shelly",
+				"IndigoServerIPNumber":		"192.168.1.x",
+				"portOfIndigoServer":		"9780",
+				"userIDOfShellyDevices":	"",
+				"passwordOfShellyDevices":	"",
+				"portOfShellyDevices":		"80",
+				"sensorApiVersion":			"2",
+				"tempUnits":				"C",
+				"tempDigits":				"1",
+				"energyDigits":				"1",
+				"powerDigits":				"1",
+				"voltageDigits":			"1",
+				"currentDigits":			"1",
+				"unfiCurl":					"/usr/bin/curl",
+				"SQLLoggingEnable":			"on-on",
+				"debugSetupDevices":		False,
+				"debugHTTPlistener":		False,
+				"debugPolling":				False,
+				"debugPing":				False,
+				"debugActions":				False,
+				"debugSQLSuppresslog":		False,
+				"debugSpecial":				False,
+				"debugall":					False,
+				"logFileActive2":			"standard",
+				"do_cProfile":				"on/off/print"
+				}
+
+
+
 ## which child type 
 _externalSensorDevTypes			= ["ext_temperature","ext_humidity"]
 _childDevTypes					= {	"ext_temperature":{			"state":"Temperature",	"dataKey":"tC",	"nameExt":"_ext_Temp_"},
@@ -1293,7 +1326,6 @@ class Plugin(indigo.PluginBase):
 				dev = indigo.devices[devId]
 				props = dev.pluginProps
 				if  props["isChild"]: continue 
-				##self.indiLOG.log(10,u"forcing push menu {};  {}".format(devId, self.SHELLY[devId]["ipNumber"]) )
 				if filter != "" and filter != dev.deviceTypeId: continue
 				name= dev.name
 				xList.append([str(devId), name])
@@ -3048,7 +3080,6 @@ class Plugin(indigo.PluginBase):
 				for trigger in TRIGGERS:
 					if trigger[0] == "flood":
 						if trigger[1] == "1" and dev.states["Flood"] != "FLOOD": 
-							if self.decideMyLog(u"HTTPlistener"): self.indiLOG.log(10,u"doHTTPactionData setting flood state to ON" )
 							self.addToStatesUpdateDict(devID, "Flood", "FLOOD" )
 							self.addToStatesUpdateDict(devID, "onOffState", True)
 							if "previousAlarm" in dev.states and "lastAlarm" in dev.states:
@@ -3056,8 +3087,8 @@ class Plugin(indigo.PluginBase):
 							self.addToStatesUpdateDict(devID, "lastAlarm", dst)
 							useDev.updateStateImageOnServer(indigo.kStateImageSel.SensorTripped)
 							self.SHELLY[useDev.id]["lastAlarm"] = time.time()
+
 						if trigger[1] == "0" and dev.states["Flood"] == "FLOOD": 
-							if self.decideMyLog(u"HTTPlistener"): self.indiLOG.log(10,u"doHTTPactionData setting flood state to off" )
 							self.addToStatesUpdateDict(devID, "Flood", "dry" )
 							self.addToStatesUpdateDict(devID, "onOffState", False)
 							useDev.updateStateImageOnServer(indigo.kStateImageSel.SensorOn) # green
@@ -3067,82 +3098,78 @@ class Plugin(indigo.PluginBase):
 				# data:= /data?&hum=49&temp=29.00 
 				for trigger in TRIGGERS:
 					if trigger[0] == "Temperature":
-						self.fillSensor(useDev, {"Temperature": trigger[1]}, "Temperature", "Temperature",  decimalPlaces="")
+						self.fillSensor(useDev, {"Temperature": trigger[1]}, "Temperature", "Temperature")
+
 					if trigger[0] == "Humidity": # it goes to the child dev (devNo =1)
-						self.fillSensor(devs[1], {"Humidity": trigger[1]},    "Humidity",    "Humidity", decimalPlaces=0)
+						self.fillSensor(devs[1], {"Humidity": trigger[1]},    "Humidity",    "Humidity")
 
 
 			elif deviceTypeId.find("shellymotionsensor") >-1:
-				# data:= /data?&hum=49&temp=29.00 
 				for trigger in TRIGGERS:
-					if self.decideMyLog(u"HTTPlistener"):self.indiLOG.log(10,u"doHTTPactionData {}   TRIGGERS:{}; dst:{}, onState:{}".format(self.SHELLY[dev.id]["ipNumber"], TRIGGERS, dst, dev.states["onOffState"]) )
 					if trigger[0] == "motion":
-						if "previousMotionTrigger" in dev.states and "lastMotionTrigger" in dev.states:
-							self.addToStatesUpdateDict(devID, "previousMotionTrigger", dev.states["lastMotionTrigger"])
-						self.addToStatesUpdateDict(devID, "lastMotionTrigger", dst)
-						if    x[1] == "on": 
-							self.addToStatesUpdateDict(devID, "motionTrigger",     x[1], "Motion")
+						self.addToStatesUpdateDict(devID, "previousMotionTrigger",		dev.states["lastMotionTrigger"])
+						self.addToStatesUpdateDict(devID, "lastMotionTrigger", 			dst)
+						if x[1] == "on": 
+							self.addToStatesUpdateDict(devID, "motionTrigger",			x[1],								"Motion")
 							if not dev.states["onOffState"]: 
-								self.addToStatesUpdateDict(devID, "onOffState", True, "Motion", decimalPlaces="", force = True)
+								self.addToStatesUpdateDict(devID, "onOffState", 		True,								"Motion",	force = True)
 							dev.updateStateImageOnServer(indigo.kStateImageSel.MotionSensorTripped)
+
 						else:
 							dev.updateStateImageOnServer(indigo.kStateImageSel.MotionSensor)
-							self.addToStatesUpdateDict(devID, "onOffState", False, "off", decimalPlaces="", force = True)
-						self.addToStatesUpdateDict(devID, "motionTrigger",     x[1], "off")
+							self.addToStatesUpdateDict(devID, "onOffState", 			False,								"off",		force = True)
+							self.addToStatesUpdateDict(devID, "motionTrigger",			x[1],								"off")
 
 					if trigger[0] == "tamper": # temaper overwrites motion ui value
-						if    x[1] == "on": 
+						if x[1] == "on": 
+							self.addToStatesUpdateDict(devID, "tamperTrigger",			True,								"Tamper")
+							self.addToStatesUpdateDict(devID, "onOffState",				True,								"Tamper",	force = True)
+							self.addToStatesUpdateDict(devID, "previousTamperTrigger",	dev.states["lastTamperTrigger"])
+							self.addToStatesUpdateDict(devID, "lastTamperTrigger", 		dst)
 							dev.updateStateImageOnServer(indigo.kStateImageSel.MotionSensorTripped)
-							self.addToStatesUpdateDict(devID, "tamperTrigger", True, "Tamper", decimalPlaces="")
-							if self.decideMyLog(u"HTTPlistener"):self.indiLOG.log(10,u"doHTTPactionData setting onoffstate to tamper")
-							self.addToStatesUpdateDict(devID, "onOffState", True, "Tamper", decimalPlaces="", force = True)
-							if "previousTamperTrigger" in dev.states and "lastTamperTrigger" in dev.states:
-								self.addToStatesUpdateDict(devID, "previousTamperTrigger", dev.states["lastTamperTrigger"])
-							self.addToStatesUpdateDict(devID, "lastTamperTrigger", dst)
+
 						else:
-							self.addToStatesUpdateDict(devID, "tamperTrigger", False, "no", decimalPlaces="")
+							self.addToStatesUpdateDict(devID, "tamperTrigger",			False,								"no")
 							if dev.states["motionTrigger"]:
-								self.addToStatesUpdateDict(devID, "onOffState", True, "Motion", decimalPlaces="", force = True)
+								self.addToStatesUpdateDict(devID, "onOffState",			True,								"Motion",	force = True)
 							else:
-								self.addToStatesUpdateDict(devID, "onOffState", False, "off", decimalPlaces="", force = True)
+								self.addToStatesUpdateDict(devID, "onOffState",			False,								"off",		force = True)
+								dev.updateStateImageOnServer(indigo.kStateImageSel.MotionSensor)
 
 					if trigger[0] == "bright":
-						if "previousBrightTrigger" in dev.states and "lastBrightTrigger" in dev.states:
-							self.addToStatesUpdateDict(devID, "previousBrightTrigger", dev.states["lastBrightTrigger"])
-						self.addToStatesUpdateDict(devID, "lastBrightTrigger", dst)
+						self.addToStatesUpdateDict(devID, "previousBrightTrigger",		dev.states["lastBrightTrigger"])
+						self.addToStatesUpdateDict(devID, "lastBrightTrigger",			dst)
 
 					if trigger[0] == "dark":
-						if "previousDarkTrigger" in dev.states and "lastDarkTrigger" in dev.states:
-							self.addToStatesUpdateDict(devID, "previousDarkTrigger", dev.states["lastDarkTrigger"])
-						self.addToStatesUpdateDict(devID, "lastDarkTrigger", dst)
+						self.addToStatesUpdateDict(devID, "previousDarkTrigger",		dev.states["lastDarkTrigger"])
+						self.addToStatesUpdateDict(devID, "lastDarkTrigger",			dst)
 
 					if trigger[0] == "twilight":
-						if "previousTwilightTrigger" in dev.states and "lastTwilightTrigger" in dev.states:
-							self.addToStatesUpdateDict(devID, "previousTwilightTrigger", dev.states["lastTwilightTrigger"])
-						self.addToStatesUpdateDict(devID, "lastTwilightTrigger", dst)
+						self.addToStatesUpdateDict(devID, "previousTwilightTrigger", 	dev.states["lastTwilightTrigger"])
+						self.addToStatesUpdateDict(devID, "lastTwilightTrigger",		dst)
 
 
 
 			elif deviceTypeId.find("shellysmoke") >-1:
-				# data:= /data?&hum=49&temp=29.00 
 				for trigger in TRIGGERS:
 					if trigger[0] == "smoke":
 						if "previousAlarm" in dev.states and "lastAlarm" in dev.states:
 							self.addToStatesUpdateDict(devID, "previousAlarm", dev.states["lastAlarm"])
 						self.addToStatesUpdateDict(devID, "lastAlarm", dst)
 						self.addToStatesUpdateDict(devID, "Alarm",     x[1])
+
 					if    x[1] == "off": dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOn)
 					else: 				 dev.updateStateImageOnServer(indigo.kStateImageSel.SensorTripped)
 
 
 			elif deviceTypeId.find("shellygas") >-1:
-				# data:= /data?&hum=49&temp=29.00 
 				for trigger in TRIGGERS:
 					if trigger[0] == "alarm":
 						if "previousAlarm" in dev.states and "lastAlarm" in dev.states:
 							self.addToStatesUpdateDict(devID, "previousAlarm", dev.states["lastAlarm"])
 						self.addToStatesUpdateDict(devID, "lastAlarm", dst)
 						self.addToStatesUpdateDict(devID, "Alarm",     x[1])
+
 					if    x[1] == _alarmStates[0]: dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOn)
 					elif  x[1] == _alarmStates[1]: dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
 					elif  x[1] == _alarmStates[2]: dev.updateStateImageOnServer(indigo.kStateImageSel.SensorTripped)
@@ -3155,10 +3182,12 @@ class Plugin(indigo.PluginBase):
 						self.addToStatesUpdateDict(devID, "closedTriggered", datetime.datetime.now().strftime(_defaultDateStampFormat))
 						self.addToStatesUpdateDict(devID, "state", "close")
 						self.fillSwitch( useDev, {"onOffState":False}, "onOffState")
+
 					if trigger[0] == "action" and trigger[1] == "darkOpen":
 						self.addToStatesUpdateDict(devID, "darkOpen", datetime.datetime.now().strftime(_defaultDateStampFormat))
 						self.addToStatesUpdateDict(devID, "state", "open")
 						self.fillSwitch( useDev, {"onOffState":True}, "onOffState")
+
 					if trigger[0] == "action" and trigger[1] == "twilightOpen":
 						self.addToStatesUpdateDict(devID, "state", "open")
 						self.fillSwitch( useDev, {"onOffState":True}, "onOffState")
@@ -3229,15 +3258,15 @@ class Plugin(indigo.PluginBase):
 					if True:														self.addToStatesUpdateDict(devID, "cloud", 							info )
 
 			if "update"     in data  and "has_update" in data["update"] and \
-									"software_update_available" in dev.states: 		self.addToStatesUpdateDict(devID, "software_update_available", 		"YES" if data["update"]["has_update"]  else "is up to date", decimalPlaces="")
+									"software_update_available" in dev.states: 		self.addToStatesUpdateDict(devID, "software_update_available", 		"YES" if data["update"]["has_update"]  else "is up to date")
 
 			if "sleep_mode" in data:
-					mapto = {"m":"minutes","h":"hours","s":"seconds","":"unknown"}
+					mapto = {"m":"minutes", "h":"hours", "s":"seconds", "":"unknown"}
 					try: 	yy = mapto[data["sleep_mode"]["unit"]]
 					except: yy = "unknown"
 					xx = u"{:d} {:}".format(data["sleep_mode"]["period"],yy)
 					if True:
-																					self.addToStatesUpdateDict(devID, "sleepMode", 						xx, 								xx, 					decimalPlaces="")
+																					self.addToStatesUpdateDict(devID, "sleepMode", 						xx, 								xx)
 
 			if "set_volume" in data and "volume" in dev.states: 					self.addToStatesUpdateDict(devID, "volume", 						data["set_volume"])
 
@@ -3389,7 +3418,7 @@ class Plugin(indigo.PluginBase):
 				self.addToStatesUpdateDict(devID, "vibration", 		"no" if data["accel"]["vibration"]==0 else "YES")
 			if "sensor" in data:
 				self.addToStatesUpdateDict(devID, "state", 			data["sensor"]["state"])
-				self.addToStatesUpdateDict(devID, "onOffState",		data["sensor"]["state"] !="close", decimalPlaces="")
+				self.addToStatesUpdateDict(devID, "onOffState",		data["sensor"]["state"] !="close")
 
 		except Exception, e:
 			self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
@@ -3404,70 +3433,79 @@ class Plugin(indigo.PluginBase):
 			if dev.deviceTypeId.find("shellymotionsensor") == -1: return 
 			devID = str(dev.id)		
 
+			if  dev.displayStateImageSel == "SensorOff": forceupdateStateImage = True
+			else: 										 forceupdateStateImage = False
+
+			# for status info 
 			if "lux" in data:
-				self.addToStatesUpdateDict(devID, "lux", 			data["lux"]["value"], u"{:d} [Lux]".format(data["lux"]["value"]), decimalPlaces=1)
+				self.addToStatesUpdateDict(devID, "lux", 			data["lux"]["value"], 			u"{:d} [Lux]".format(data["lux"]["value"]), decimalPlaces=0)
 				self.addToStatesUpdateDict(devID, "illumination", 	data["lux"]["illumination"])
 
 			if "sensor" in data:
 				motion = data["sensor"]["motion"]
-				tamper = data["sensor"]["vibration"]
-				self.addToStatesUpdateDict(devID, "motionTrigger", 	motion, "off" if data["sensor"]["motion"]==0 else "Motion",decimalPlaces="")
+				tamper = data["sensor"]["vibration"] # == tamper
+				self.addToStatesUpdateDict(devID, "motionTrigger", 	motion, "no" if motion else "YES")
 				self.addToStatesUpdateDict(devID, "tamperTrigger", 	tamper, "no" if tamper else "YES")
+				forceupdateStateImage = False
 
 				if tamper:
-					self.addToStatesUpdateDict(devID, "onOffState", True, "Tamper", decimalPlaces="", force = True)
-
+						self.addToStatesUpdateDict(devID, "onOffState",	True, "Tamper", force = True)
+						dev.updateStateImageOnServer(indigo.kStateImageSel.MotionSensorTripped)
 				else:
 					if motion:
-						self.addToStatesUpdateDict(devID, "onOffState", True, "Motion", decimalPlaces="", force = True)
+						self.addToStatesUpdateDict(devID, "onOffState", True, "Motion", force = True)
 						dev.updateStateImageOnServer(indigo.kStateImageSel.MotionSensorTripped)
 					else:
-						self.addToStatesUpdateDict(devID, "onOffState",		False, "off" , decimalPlaces="", force = True)
+						self.addToStatesUpdateDict(devID, "onOffState",	False, "off",   force = True)
 						dev.updateStateImageOnServer(indigo.kStateImageSel.MotionSensor)
 
+			else:
+				if forceupdateStateImage:
+					dev.updateStateImageOnServer(indigo.kStateImageSel.MotionSensor)
 
-			## this is for settings:
+
+			## this is for settings only:
 			if "motion" in data:
 				if "enabled" in data["motion"]:
-					self.addToStatesUpdateDict(devID, "motionTriggerEnabled", 	data["motion"]["enabled"],		data["motion"]["enabled"] ,decimalPlaces="")
+					self.addToStatesUpdateDict(devID, "motionTriggerEnabled", 	data["motion"]["enabled"])
 
 				if "blind_time_minutes" in data["motion"]:
 					xx = u"{:d} minutes".format(data["motion"]["blind_time_minutes"])
-					self.addToStatesUpdateDict(devID, "motionBlindTime", 		xx,							xx ,					decimalPlaces="")
+					self.addToStatesUpdateDict(devID, "motionBlindTime", 		xx)
 
 				if "sensitivity" in data["motion"]:
 					xx = data["motion"]["sensitivity"]
-					if  	xx > 168: 	hml = "high"
+					if  	xx > 168: 	hml = "low"
 					elif	xx > 84:  	hml = "med"
-					else:				hml = "low"
+					else:				hml = "high"
 					xx = u"{:d}/256 - {}".format(xx, hml)
-					self.addToStatesUpdateDict(devID, "motionThreshold", 		xx,							xx,						decimalPlaces="")
+					self.addToStatesUpdateDict(devID, "motionThreshold", 		xx)
 
 				if "pulse_count" in data["motion"]:
 					xx = u"{:d} to trigger".format(data["motion"]["pulse_count"])
-					self.addToStatesUpdateDict(devID, "motionPulseCount", 		xx,							xx,					decimalPlaces=0)
+					self.addToStatesUpdateDict(devID, "motionPulseCount", 		xx)
 
 				if "operating_mode" in data["motion"]:
-					mapto = {"0":"any light","1":"only when dark","2":"only when twilight","3":"only when bright","":"unknown"}
+					mapto = {"0":"any light", "1":"only when dark", "2":"only when twilight", "3":"only when bright", "":"unknown"}
 					try: 	xx = mapto[str(data["motion"]["operating_mode"])]
 					except: xx = "unknown"
-					self.addToStatesUpdateDict(devID, "motionOperationMode", 	xx,							xx,						decimalPlaces="")
+					self.addToStatesUpdateDict(devID, "motionOperationMode", 	xx)
 
 			if "tamper_sensitivity" in data:
 					xx = data["tamper_sensitivity"]
-					if   xx  > 84: 	hml = "high"
+					if   xx  > 84: 	hml = "low"
 					elif xx  > 42: 	hml = "med"
-					else:			hml = "low"
+					else:			hml = "high"
 					xx = u"{:d}/127 - {}".format(xx, hml)
-					self.addToStatesUpdateDict(devID, "tamperThreshold", 		xx,							xx,						decimalPlaces="")
+					self.addToStatesUpdateDict(devID, "tamperThreshold", 		xx)
 
 			if "twilight_threshold" in data:
 					xx = u"{:d} [lux]".format(data["twilight_threshold"])
-					self.addToStatesUpdateDict(devID, "twilightThreshold", 		xx,							xx,						decimalPlaces="")
+					self.addToStatesUpdateDict(devID, "twilightThreshold", 		xx)
 
 			if "dark_threshold" in data:
 					xx = u"{:d} [lux]".format(data["dark_threshold"])
-					self.addToStatesUpdateDict(devID, "darkThreshold", 			xx, 						xx,						decimalPlaces="")
+					self.addToStatesUpdateDict(devID, "darkThreshold", 			xx)
 	
 
 		except Exception, e:
@@ -3486,14 +3524,14 @@ class Plugin(indigo.PluginBase):
 				flood = True if data["flood"]  else False
 				if flood and not dev.states["onOffState"]:
 						#self.indiLOG.log(40,u"flood: setting trip to green" )
-						self.addToStatesUpdateDict(devID, "Flood", "FLOOD" , decimalPlaces="")
-						self.addToStatesUpdateDict(devID, "onOffState",True, decimalPlaces="")
+						self.addToStatesUpdateDict(devID, "Flood", "FLOOD" )
+						self.addToStatesUpdateDict(devID, "onOffState",True)
 						self.addToStatesUpdateDict(devID, "previousAlarm", dev.states["lastAlarm"])
 						self.addToStatesUpdateDict(devID, "lastAlarm", datetime.datetime.now().strftime(_defaultDateStampFormat))
 						dev.updateStateImageOnServer(indigo.kStateImageSel.SensorTripped)
 				if not flood and dev.states["onOffState"]:
-						self.addToStatesUpdateDict(devID, "Flood", "dry" , decimalPlaces="")
-						self.addToStatesUpdateDict(devID, "onOffState",False, decimalPlaces="")
+						self.addToStatesUpdateDict(devID, "Flood", "dry" )
+						self.addToStatesUpdateDict(devID, "onOffState",False)
 						dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOn)
 
 		except Exception, e:
@@ -3513,14 +3551,14 @@ class Plugin(indigo.PluginBase):
 				smoke = data["smoke"]
 				if smoke and not dev.states["onOffState"]:
 						#self.indiLOG.log(40,u"flood: setting trip to green" )
-						self.addToStatesUpdateDict(devID, "Smoke", "smoke" , decimalPlaces="")
-						self.addToStatesUpdateDict(devID, "onOffState",True, decimalPlaces="")
+						self.addToStatesUpdateDict(devID, "Smoke", "smoke" )
+						self.addToStatesUpdateDict(devID, "onOffState",True)
 						self.addToStatesUpdateDict(devID, "previousAlarm", dev.states["lastAlarm"])
 						self.addToStatesUpdateDict(devID, "lastAlarm", datetime.datetime.now().strftime(_defaultDateStampFormat))
 						dev.updateStateImageOnServer(indigo.kStateImageSel.SensorTripped)
 				if not smoke and dev.states["onOffState"]:
-						self.addToStatesUpdateDict(devID, "Smoke", "clear" , decimalPlaces="")
-						self.addToStatesUpdateDict(devID, "onOffState",False, decimalPlaces="")
+						self.addToStatesUpdateDict(devID, "Smoke", "clear" )
+						self.addToStatesUpdateDict(devID, "onOffState",False)
 						dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOn)
 
 		except Exception, e:
@@ -3575,8 +3613,8 @@ class Plugin(indigo.PluginBase):
 				self.addToStatesUpdateDict(devID, "onOffState", False)
 
 
-			self.addToStatesUpdateDict(devID, "sensor_state", 	 GS["sensor_state"], 	decimalPlaces="")
-			self.addToStatesUpdateDict(devID, "self_test_state", GS["self_test_state"],	decimalPlaces="")
+			self.addToStatesUpdateDict(devID, "sensor_state", 	 GS["sensor_state"])
+			self.addToStatesUpdateDict(devID, "self_test_state", GS["self_test_state"])
 
 
 			if CO["is_valid"]:
@@ -3591,7 +3629,7 @@ class Plugin(indigo.PluginBase):
 			else:
 				if GS["sensor_state"] == "warm_up" and warmingUp != "normal":
 					self.addToStatesUpdateDict(devID, "Gas_concentration", -99 , uiValue = warmingUp, decimalPlaces=0)
-					self.addToStatesUpdateDict(devID, "sensorValue", -99, uiValue=warmingUp, decimalPlaces="")
+					self.addToStatesUpdateDict(devID, "sensorValue", -99, uiValue=warmingUp)
 
 				elif GS["sensor_state"] == "not_completed" and warmingUp != "normal":
 					self.addToStatesUpdateDict(devID, "Gas_concentration", -99 , uiValue = warmingUp, decimalPlaces=0)
@@ -3616,7 +3654,7 @@ class Plugin(indigo.PluginBase):
 					except:
 						self.indiLOG.log(30,'"Use for Alarm State.." in device edit not set')
 				
-			self.addToStatesUpdateDict(devID, "Alarm", alarmState, uiValue=alarmState, decimalPlaces="")
+			self.addToStatesUpdateDict(devID, "Alarm", alarmState, uiValue=alarmState)
 
 			if   alarmState == _alarmStates[0]: dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOn) # green
 			elif alarmState == _alarmStates[1]: dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)# grey
@@ -3817,7 +3855,7 @@ class Plugin(indigo.PluginBase):
 				if "power" 	in meter and	"power"				in devs[devNo].states:	self.addToStatesUpdateDict(devs[devNo].id, "power", 		 round(meter["power"],self.powerDigits), 	 uiValue="{:.{}f}[W]".format(meter["power"],self.powerDigits), 		decimalPlaces=self.powerDigits)
 				if "total"	in meter and	"energy" 			in devs[devNo].states:	self.addToStatesUpdateDict(devs[devNo].id, "energy", 		 round(meter["total"],self.energyDigits), 	 uiValue="{:.{}f}[Wmin]".format(meter["total"],self.energyDigits), 	decimalPlaces=self.energyDigits)
 				if "energy" in meter and 	"energy" 			in devs[devNo].states:	self.addToStatesUpdateDict(devs[devNo].id, "energy", 		 round(meter["energy"],self.energyDigits), 	 uiValue="{:.{}f}[Wmin]".format(meter["total"],self.energyDigits), 	decimalPlaces=self.energyDigits)
-				if "counters" in meter and	"energy_counters" 	in devs[devNo].states:	self.addToStatesUpdateDict(devs[devNo].id, "energy_counters",str(meter["counters"]).strip("[]"),																			decimalPlaces="")					
+				if "counters" in meter and	"energy_counters" 	in devs[devNo].states:	self.addToStatesUpdateDict(devs[devNo].id, "energy_counters",str(meter["counters"]).strip("[]"))					
 				devNo += 1
 
 		except Exception, e:
@@ -3884,7 +3922,7 @@ class Plugin(indigo.PluginBase):
 
 
 ####-------------------------------------------------------------------------####
-	def fillSensor(self, dev, data, token, state, decimalPlaces=""):
+	def fillSensor(self, dev, data, token, state):
 		try:
 			### we can get:
 			### :{u'tF': 72.84, u'tC': 22.69}

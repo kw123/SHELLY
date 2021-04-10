@@ -9,7 +9,7 @@
     <Field id="paramsLabel" type="label" >  
         <Label>Indigo plugin params</Label>
     </Field>
-  <Field id="indigoFolderName"   type="textfield" defaultValue="Shelly"  >
+  <Field id="indigoFolderName"   type="textfield"   >
         <Label>Folder name for NEW shelly devices:</Label> 
    </Field>
 
@@ -19,10 +19,10 @@ Next are the indigo IP# and port # that will be used on Shelly devices to connec
 see action field on Shelly device in shelly app:
 http://indigoIP#:port/command  </Label>
     </Field>
-   <Field id="IndigoServerIPNumber"   type="textfield" defaultValue="192.168.1.x"  >
+   <Field id="IndigoServerIPNumber"   type="textfield"   >
         <Label>Set ip number of indigo server:</Label> 
    </Field>
-   <Field id="portOfIndigoServer"   type="textfield" defaultValue="9780"  >
+   <Field id="portOfIndigoServer"   type="textfield"   >
         <Label>Set IP-PORT of http listener in PLUGIN:</Label> 
    </Field>
    <Field id="portOfIndigoServerLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">  
@@ -37,21 +37,21 @@ and NOT indigo ports: 8176 or 1176</Label>
         <Label>UserID, password, port of SHELLY devices</Label>
    </Field>
    
-   <Field id="userIDOfShellyDevices"   type="textfield" defaultValue=""  >
+   <Field id="userIDOfShellyDevices"   type="textfield"   >
         <Label>user id:</Label> 
    </Field>
    
-   <Field id="passwordOfShellyDevices"   type="textfield" defaultValue=""  >
+   <Field id="passwordOfShellyDevices"   type="textfield"  >
         <Label>password:</Label> 
    </Field>
 
-   <Field id="portOfShellyDevices"   type="textfield" defaultValue="80"  >
+   <Field id="portOfShellyDevices"   type="textfield"  >
         <Label>Set IP-PORT of http on SHELLY devices:</Label> 
    </Field>
    <Field id="portOfShellyDevicesLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">  
         <Label>if you have not setup anything, leave userid, passwd empty and set port to 80 - std http</Label>
     </Field>
-   <Field    id="sensorApiVersion"   type="menu" defaultValue="2">
+   <Field    id="sensorApiVersion"   type="menu" >
         <Label>Shelly devices api version:</Label>
         <List>
             <Option value="2" >2021: actions with SEVERAL http options </Option>
@@ -67,7 +67,7 @@ All devices must be on the same release</Label>
         <Label>Other parameters</Label>
    </Field>
 
-   <Field    id="tempUnits"   type="menu" defaultValue="Celsius">
+   <Field    id="tempUnits"   type="menu" >
         <Label>Temperature displayed in:</Label>
         <List>
             <Option value="C" >Celsius </Option>
@@ -77,7 +77,7 @@ All devices must be on the same release</Label>
    </Field>
 
 
-   <Field    id="tempDigits"   type="menu" defaultValue="1">
+   <Field    id="tempDigits"   type="menu" >
         <Label>Temperature digits to show:</Label>
         <List>
             <Option value="0" >0 </Option>
@@ -86,7 +86,7 @@ All devices must be on the same release</Label>
         </List>
    </Field>
 
-   <Field    id="energyDigits"   type="menu" defaultValue="1">
+   <Field    id="energyDigits"   type="menu" >
         <Label>Energy digits to show:</Label>
         <List>
             <Option value="0" >0 </Option>
@@ -96,7 +96,7 @@ All devices must be on the same release</Label>
    </Field>
 
 
-   <Field    id="powerDigits"   type="menu" defaultValue="1">
+   <Field    id="powerDigits"   type="menu" >
         <Label>Power digits to show:</Label>
         <List>
             <Option value="0" >0 </Option>
@@ -106,7 +106,7 @@ All devices must be on the same release</Label>
    </Field>
 
 
-   <Field    id="voltageDigits"   type="menu" defaultValue="1">
+   <Field    id="voltageDigits"   type="menu" >
         <Label>Voltage digits to show:</Label>
         <List>
             <Option value="0" >0 </Option>
@@ -116,7 +116,7 @@ All devices must be on the same release</Label>
    </Field>
 
 
-   <Field    id="currentDigits"   type="menu" defaultValue="1">
+   <Field    id="currentDigits"   type="menu" >
         <Label>Current digits to show:</Label>
         <List>
             <Option value="0" >0 </Option>
@@ -126,7 +126,7 @@ All devices must be on the same release</Label>
    </Field>
 
 
-    <Field    id="unfiCurl"              type="menu" defaultValue="/usr/bin/curl"  tooltip="To support different SSL standards: for elCapitan and lower use curl, for higher OS-X you can try python requests"  > 
+    <Field    id="unfiCurl"              type="menu" tooltip="To support different SSL standards: for elCapitan and lower use curl, for higher OS-X you can try python requests"  > 
     <Label>Use curl or python-requests for web page access:</Label> 
         <List>
             <Option value="/usr/bin/curl"			>/usr/bin/curl  (std install)</Option>
@@ -140,7 +140,7 @@ All devices must be on the same release</Label>
 
 
    
-    <Field    id="SQLLoggingEnable"   type="menu" defaultValue="on-on" tooltip="">
+    <Field    id="SQLLoggingEnable"   type="menu" >
         <Label>Configure SQL logger for device-States (not) to log</Label>
         <List>
             <Option value="on-on"   >log normal = log everything </Option>
@@ -153,23 +153,23 @@ All devices must be on the same release</Label>
 
     <Field id="infoLabel99" type="label"> <Label>Debug areas for plugin:</Label>  </Field>
  
-    <Field    id="debugSetupDevices"   type="checkbox"  defaultValue="false"       tooltip=""> <Label> Debug...                   ... (1)  SetupDevice:</Label>  </Field>
-    <Field    id="debugHTTPlistener"   type="checkbox"  defaultValue="false"       tooltip=""> <Label>     ... (2)  HTTP listener:</Label>  </Field>
-    <Field    id="debugPolling"        type="checkbox"  defaultValue="false"       tooltip=""> <Label>     ... (3)  polling of devices:</Label>  </Field>
-    <Field    id="debugPing"           type="checkbox"  defaultValue="false"       tooltip=""> <Label>     ... (4)  pinging:</Label>  </Field>
-    <Field    id="debugActions"        type="checkbox"  defaultValue="false"       tooltip=""> <Label>     ... (6)  Actions:</Label>  </Field>
-    <Field    id="debugSQLSuppresslog" type="checkbox"  defaultValue="false"       tooltip=""> <Label>     ..  (18) SQL-Suppress-logger:</Label>  </Field>
+    <Field    id="debugSetupDevices"   type="checkbox"  > <Label> Debug...                   ... (1)  SetupDevice:</Label>  </Field>
+    <Field    id="debugHTTPlistener"   type="checkbox"  > <Label>     ... (2)  HTTP listener:</Label>  </Field>
+    <Field    id="debugPolling"        type="checkbox"  > <Label>     ... (3)  polling of devices:</Label>  </Field>
+    <Field    id="debugPing"           type="checkbox"  > <Label>     ... (4)  pinging:</Label>  </Field>
+    <Field    id="debugActions"        type="checkbox"  > <Label>     ... (6)  Actions:</Label>  </Field>
+    <Field    id="debugSQLSuppresslog" type="checkbox"  > <Label>     ..  (18) SQL-Suppress-logger:</Label>  </Field>
 
-    <Field    id="debugSpecial"        type="checkbox"  defaultValue="false"       tooltip=""> <Label>     ... (S) special debug (only for development):</Label>  </Field>
-    <Field    id="debugall"            type="checkbox"  defaultValue="false"       tooltip=""> <Label>     ... (99) all of the above .. everything:</Label>  </Field>
+    <Field    id="debugSpecial"        type="checkbox"  > <Label>     ... (S) special debug (only for development):</Label>  </Field>
+    <Field    id="debugall"            type="checkbox"  > <Label>     ... (99) all of the above .. everything:</Label>  </Field>
 
-    <Field    id="logFileActive2"      type="menu"      defaultValue="standard"      > <Label> send logs to ..:</Label>
+    <Field    id="logFileActive2"      type="menu"      > <Label> send logs to ..:</Label>
         <List>
             <Option value="indigo"   > .. Perceptive Automation/Indigo x/Logs/com.karlwachs.shelly/plugin.log </Option>
         </List>
     </Field>
     <Field id="infoLabel227" type="label"> <Label>.                     for DETAILED time tracking set indigo variable "enableTimeTracking_shelly"</Label>  </Field>
-    <Field    id="do_cProfile" type="textfield"  defaultValue="on/off/print"  readonly="yes"     > 
+    <Field    id="do_cProfile" type="textfield"  readonly="yes"     > 
         <Label>... enable or stop or  print intermediate results use on/off/print:</Label>  
     </Field>
 

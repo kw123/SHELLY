@@ -5934,7 +5934,7 @@ for connection parameters check the parent (SHELLY host device)</Label>
 					<Option value="0">0</Option>
 				</List>
 			</Field>
-			<Field id="pollingFrequency" type="menu" defaultValue="-1">
+			<Field id="pollingFrequency" type="menu" defaultValue="180">
 				<Label>Polling frequency, how often the plugin requests status from the device:</Label>
 				<List>
 					<Option value="5"> every 5 sec</Option>
@@ -5972,17 +5972,17 @@ for connection parameters check the parent (SHELLY host device)</Label>
 		<States>
 			<!--   this is dev specific -->
 			<State id="motionThreshold">
-				<ValueType>number</ValueType>
+				<ValueType>String</ValueType>
 				<TriggerLabel>motionThreshold</TriggerLabel>
 				<ControlPageLabel>motionThreshold</ControlPageLabel>
 			</State>
 			<State id="motionPulseCount">
-				<ValueType>number</ValueType>
+				<ValueType>String</ValueType>
 				<TriggerLabel>motionPulseCount</TriggerLabel>
 				<ControlPageLabel>motionPulseCount</ControlPageLabel>
 			</State>
 			<State id="motionBlindTime">
-				<ValueType>number</ValueType>
+				<ValueType>String</ValueType>
 				<TriggerLabel>motionBlindTime</TriggerLabel>
 				<ControlPageLabel>motionBlindTime</ControlPageLabel>
 			</State>
