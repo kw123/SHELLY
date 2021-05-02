@@ -1,9 +1,15 @@
+Added features / changes in v7.14.34 @ 2021-05-01
+===================================================
+
+1.  added preliminary support for dimmer-2 devices 
+
+
 Added features / changes in v7.13.34 @ 2021-04-10
 ===================================================
 
-1.  fixed menu selection for shelly roller
-2.  converted to plugin setting of default values for pluginconfig.xml into plugin.py 
-    ( limitation of indigo, new config parametes do not see default values, only set at first start of plugin)
+1.  fixed menu selection for shelly roller  
+2.  converted to plugin setting of default values for pluginconfig.xml into plugin.py   
+    ( limitation of indigo, new config parameters do not see default values, only set at first start of plugin)  
 
 
 Added features / changes in v7.13.33 @ 2021-04-06

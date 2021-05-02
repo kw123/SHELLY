@@ -526,6 +526,30 @@ _emptyProps = {	# switches
 						"tempUnits":"C"
 						},
 
+				"shellydimmer2":{"props":{"isShellyDevice":True, "usesInputForOnOff":False, "isRelay":False, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False, 
+						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
+						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":6,  "expirationSeconds":180},
+						"rgbLimits":[0,255],
+						"setPageActionPageOnShellyDev":{"white":"light/0?","white":"light/0?"},
+						"action_url":   {
+										"2":{
+											"settings/actions?enabled=true&index=0&name=":	{
+												"btn1_on_url":"input_0=on", "btn1_off_url":"input_0=off", "btn1_longpush_url":"input_0=long", "btn1_shortpush_url":"input_0=short",  
+												"btn2_on_url":"input_1=on", "btn2_off_url":"input_1=off", "btn2_longpush_url":"input_1=long", "btn2_shortpush_url":"input_1=short",  
+												"out_on_url":"onOffState=1", "out_off_url":"onOffState=0"}
+											},
+										"1":{"settings/light/0?":							{
+												"btn1_on_url":"input_0=on", "btn1_off_url":"input_0=off", "btn1_longpush_url":"input_0=long", "btn1_shortpush_url":"input_0=short",  
+												"btn2_on_url":"input_1=on", "btn2_off_url":"input_1=off", "btn2_longpush_url":"input_1=long", "btn2_shortpush_url":"input_1=short",  
+												"out_on_url":"onOffState=1", "out_off_url":"onOffState=0"}
+											}
+										},
+						"childTypes_Sensors":[],
+						"childTypes_SplitDevices":[],
+						"tempUnits":"C"
+						},
+
+
 				"ShellyBulbDuo":{"props":{"isShellyDevice":True, "usesInputForOnOff":False, "isRelay":False, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False, 
 						"SupportsColor":True, "SupportsRGB":False, "SupportsWhite":True, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
 						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":6,  "expirationSeconds":180},
@@ -3745,11 +3769,12 @@ class Plugin(indigo.PluginBase):
 			devNo = 0
 			dts = datetime.datetime.now().strftime(_defaultDateStampFormat)
 			for input in data["inputs"]:
+				if len(devs) > (devNo+1): continue
 				try: devIDs = str(devs[devNo].id)
 				except:
 					self.indiLOG.log(40,u"fillInputs, devNo:{}, len(devs):{}, data {} ".format(devNo,len(devs), data))
-
 					continue
+
 				inp = "no"
 				useInput = False
 				usesInputForOnOff = False
@@ -3772,7 +3797,7 @@ class Plugin(indigo.PluginBase):
 				else: lastEvent = ""
 
 				if "event" in input and ( not useInput or (useInput and inp == "on") or usesInputForOnOff ):
-					for xxx in [["input_short","S","short"], ["input_short_double","SS","short_double"], ["input_short_tripple","SSS","short_tripple"], ["input_long","L","long"], ["input_long_short","LS","long_short"], ["input_short_long","SL","hort_long"]]:
+					for xxx in [["input_short","S","short"], ["input_short_double","SS","short_double"], ["input_short_tripple","SSS","short_tripple"], ["input_long","L","long"], ["input_long_short","LS","long_short"], ["input_short_long","SL","short_long"]]:
 						if input["event"] == xxx[1]  and xxx[0] in devs[devNo].states: 
 							self.addToStatesUpdateDict(devIDs, xxx[0], dts)
 							if "lastEvent" in devs[devNo].states: self.addToStatesUpdateDict(devIDs, "lastEvent",xxx[2]  )
