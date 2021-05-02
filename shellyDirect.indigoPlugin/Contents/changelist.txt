@@ -1,4 +1,4 @@
-Added features / changes in v7.14.34 @ 2021-05-01
+Added features / changes in v7.14.35 @ 2021-05-01
 ===================================================
 
 1.  added preliminary support for dimmer-2 devices 

@@ -3769,7 +3769,7 @@ class Plugin(indigo.PluginBase):
 			devNo = 0
 			dts = datetime.datetime.now().strftime(_defaultDateStampFormat)
 			for input in data["inputs"]:
-				if len(devs) > (devNo+1): continue
+				if len(devs) < devNo+1: continue
 				try: devIDs = str(devs[devNo].id)
 				except:
 					self.indiLOG.log(40,u"fillInputs, devNo:{}, len(devs):{}, data {} ".format(devNo,len(devs), data))
