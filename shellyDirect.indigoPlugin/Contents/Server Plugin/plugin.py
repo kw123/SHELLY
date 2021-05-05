@@ -56,6 +56,7 @@ kDefaultPluginPrefs = {
 				"currentDigits":			"1",
 				"unfiCurl":					"/usr/bin/curl",
 				"SQLLoggingEnable":			"on-on",
+				"logStateChanges":			"no",
 				"debugSetupDevices":		False,
 				"debugHTTPlistener":		False,
 				"debugPolling":				False,
@@ -1089,6 +1090,9 @@ class Plugin(indigo.PluginBase):
 			self.passwordOfShellyDevices	= self.pluginPrefs.get(u"passwordOfShellyDevices", u"")
 			self.IndigoServerIPNumber		= self.pluginPrefs.get(u"IndigoServerIPNumber", u"192.168.1.x")
 
+			self.logStateChanges			= self.pluginPrefs.get(u"logStateChanges", u"no")
+
+
 			self.useCurlOrPymethod				= self.pluginPrefs.get(u"useCurlOrPymethod", "/usr/bin/curl")
 			if self.useCurlOrPymethod == "curl" or len(self.useCurlOrPymethod) < 4:
 				self.useCurlOrPymethod = "/usr/bin/curl"
@@ -1150,6 +1154,7 @@ class Plugin(indigo.PluginBase):
 
 		self.setLogfile(valuesDict[u"logFileActive2"])
 	 
+		self.logStateChanges	= valuesDict[u"logStateChanges"]
 
 		self.indigoFolderName = valuesDict["indigoFolderName"]
 		self.indigoFolderId = indigo.devices.folders.getId(self.indigoFolderName)
@@ -3136,18 +3141,18 @@ class Plugin(indigo.PluginBase):
 						if x[1] == "on": 
 							self.addToStatesUpdateDict(devID, "motionTrigger",			x[1],								"Motion")
 							if not dev.states["onOffState"]: 
-								self.addToStatesUpdateDict(devID, "onOffState", 		True,								"Motion",	force = True)
+								self.addToStatesUpdateDict(devID, "onOffState", 		True,								"Motion",	force="ui")
 							dev.updateStateImageOnServer(indigo.kStateImageSel.MotionSensorTripped)
 
 						else:
 							dev.updateStateImageOnServer(indigo.kStateImageSel.MotionSensor)
-							self.addToStatesUpdateDict(devID, "onOffState", 			False,								"off",		force = True)
+							self.addToStatesUpdateDict(devID, "onOffState", 			False,								"off",		force="ui")
 							self.addToStatesUpdateDict(devID, "motionTrigger",			x[1],								"off")
 
 					if trigger[0] == "tamper": # temaper overwrites motion ui value
 						if x[1] == "on": 
 							self.addToStatesUpdateDict(devID, "tamperTrigger",			True,								"Tamper")
-							self.addToStatesUpdateDict(devID, "onOffState",				True,								"Tamper",	force = True)
+							self.addToStatesUpdateDict(devID, "onOffState",				True,								"Tamper",	force="ui")
 							self.addToStatesUpdateDict(devID, "previousTamperTrigger",	dev.states["lastTamperTrigger"])
 							self.addToStatesUpdateDict(devID, "lastTamperTrigger", 		dst)
 							dev.updateStateImageOnServer(indigo.kStateImageSel.MotionSensorTripped)
@@ -3155,9 +3160,9 @@ class Plugin(indigo.PluginBase):
 						else:
 							self.addToStatesUpdateDict(devID, "tamperTrigger",			False,								"no")
 							if dev.states["motionTrigger"]:
-								self.addToStatesUpdateDict(devID, "onOffState",			True,								"Motion",	force = True)
+								self.addToStatesUpdateDict(devID, "onOffState",			True,								"Motion",	force="ui")
 							else:
-								self.addToStatesUpdateDict(devID, "onOffState",			False,								"off",		force = True)
+								self.addToStatesUpdateDict(devID, "onOffState",			False,								"off",		force="ui")
 								dev.updateStateImageOnServer(indigo.kStateImageSel.MotionSensor)
 
 					if trigger[0] == "bright":
@@ -3473,14 +3478,14 @@ class Plugin(indigo.PluginBase):
 				forceupdateStateImage = False
 
 				if tamper:
-						self.addToStatesUpdateDict(devID, "onOffState",	True, "Tamper", force = True)
+						self.addToStatesUpdateDict(devID, "onOffState",	True, "Tamper", force = "ui")
 						dev.updateStateImageOnServer(indigo.kStateImageSel.MotionSensorTripped)
 				else:
 					if motion:
-						self.addToStatesUpdateDict(devID, "onOffState", True, "Motion", force = True)
+						self.addToStatesUpdateDict(devID, "onOffState", True, "Motion", force = "ui")
 						dev.updateStateImageOnServer(indigo.kStateImageSel.MotionSensorTripped)
 					else:
-						self.addToStatesUpdateDict(devID, "onOffState",	False, "off",   force = True)
+						self.addToStatesUpdateDict(devID, "onOffState",	False, "off",   force = "ui")
 						dev.updateStateImageOnServer(indigo.kStateImageSel.MotionSensor)
 
 			else:
@@ -4875,6 +4880,8 @@ class Plugin(indigo.PluginBase):
 				page = page.strip("&")
 				page = _emptyProps[dev.deviceTypeId]["setPageActionPageOnShellyDev"][channel]+page			
 				if self.decideMyLog(u"Actions"): self.indiLOG.log(10,u"ACTIONS: dev {} sending  channel:{};  page:{} deviceTypeId:{}".format(dev.name, channel, page, dev.deviceTypeId))
+				if self.logStateChanges == u"all" or (self.logStateChanges == u"onOff" and ("turn" in page )):
+					self.indiLOG.log(20,u'send "{}"  {}'.format(dev.name, page) )
 				now = True if  setThermometer == {} else False
 				getStatusDelay = 0 if  setThermometer == {} else time.time()+1
 				self.addToShellyPollerQueue( queueID, page, now=True, getStatusDelay=getStatusDelay)
@@ -5182,7 +5189,7 @@ class Plugin(indigo.PluginBase):
 ####-------------------------------------------------------------------------####
 
 
-	def addToStatesUpdateDict(self,devId,key,value,uiValue="",decimalPlaces="", force=False):
+	def addToStatesUpdateDict(self,devId,key,value,uiValue="",decimalPlaces="", force=""):
 		devId=unicode(devId)
 		#self.indiLOG.log(10,u"addToStatesUpdateDict devId:{}; key:{}, value:{}; uiValue:{}, decPlace:{}".format(devId,key,value,uiValue,decimalPlaces) )
 		try:
@@ -5250,18 +5257,31 @@ class Plugin(indigo.PluginBase):
 					dev = indigo.devices[devID]
 					props = dev.pluginProps
 					for state in local[devId]:
+						if state not in dev.states:
+							self.indiLOG.log(40,u"executeUpdateStatesDict dev:{} state:{} not present ".format(dev.name,state) )
+							continue
+
 						if state == "onOffState" and dev.states["onOffState"] != local[devId][state]["value"]: 
 							onOffStateNotChanged = False
 							oneNew = True
-						if not local[devId][state]["force"]: 
-							if state not in dev.states:
-								self.indiLOG.log(40,u"executeUpdateStatesDict dev:{} state:{} not present ".format(dev.name,state) )
-								continue
+
+						if local[devId][state]["force"] == "": 
 							if dev.states[state] == local[devId][state]["value"]: continue
-						dd = {u"key":state, "value":local[devId][state]["value"]}
+						elif local[devId][state]["force"] == "ui":
+							if state+".ui" in dev.states:
+								if dev.states[state+".ui"] == local[devId][state]["uiValue"]: continue
+
+						dd = {u"key":state, u"value":local[devId][state]["value"]}
 						if local[devId][state]["uiValue"]		!="": dd["uiValue"]			= local[devId][state]["uiValue"]
 						if local[devId][state]["decimalPlaces"]	!="": dd["decimalPlaces"]	= local[devId][state]["decimalPlaces"]
-						
+
+						if state.find("last") == -1 and state.find("previous") == -1 and state.find(u"upFor") == -1:
+							if self.logStateChanges == u"all" or (self.logStateChanges == u"onOff" and state == "onOffState") or (self.logStateChanges == u"all-noWiFi" and state != "WiFi_rssi"):
+								if state+'.ui' in dev.states:
+									self.indiLOG.log(20,u'received "{}" {} to "{}"; ui="{}"'.format(dev.name, state, local[devId][state]["value"], local[devId][state]["uiValue"]) )
+								else:
+									self.indiLOG.log(20,u'received "{}" {} to "{}"'.format(dev.name, state, local[devId][state]["value"]) )
+
 						changedOnly.append(dd)
 
 						#if dev.id == 422345573: self.indiLOG.log(10,u"adding status dev:{}; state:{} dd:{} to sensorValue".format(dev.name, state, dd ) )

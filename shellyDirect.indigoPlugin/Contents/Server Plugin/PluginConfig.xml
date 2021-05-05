@@ -1,176 +1,186 @@
 <?xml version="1.0"?>
 <PluginConfig>
 
-    <Field id="infoLabel1" type="label">
-        <Label>Shelly plugin           Developed by Karl Wachs</Label>
-    </Field>
+	<Field id="infoLabel1" type="label">
+		<Label>Shelly plugin		   Developed by Karl Wachs</Label>
+	</Field>
 
 
-    <Field id="paramsLabel" type="label" >  
-        <Label>Indigo plugin params</Label>
-    </Field>
+	<Field id="paramsLabel" type="label" >  
+		<Label>Indigo plugin params</Label>
+	</Field>
   <Field id="indigoFolderName"   type="textfield"   >
-        <Label>Folder name for NEW shelly devices:</Label> 
+		<Label>Folder name for NEW shelly devices:</Label> 
    </Field>
 
    <Field id="IndigoServerIPNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">  
-        <Label>
+		<Label>
 Next are the indigo IP# and port # that will be used on Shelly devices to connect to the plugin. On that ip:port the plugin will be listening to commands from the Shelly devices.
 see action field on Shelly device in shelly app:
 http://indigoIP#:port/command  </Label>
-    </Field>
+	</Field>
    <Field id="IndigoServerIPNumber"   type="textfield"   >
-        <Label>Set ip number of indigo server:</Label> 
+		<Label>Set ip number of indigo server:</Label> 
    </Field>
    <Field id="portOfIndigoServer"   type="textfield"   >
-        <Label>Set IP-PORT of http listener in PLUGIN:</Label> 
+		<Label>Set IP-PORT of http listener in PLUGIN:</Label> 
    </Field>
    <Field id="portOfIndigoServerLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">  
-        <Label>use port number GT 5000 that is NOT in use on the indigo server, 
+		<Label>use port number GT 5000 that is NOT in use on the indigo server, 
 and NOT indigo ports: 8176 or 1176</Label>
-    </Field>
+	</Field>
 
 
 
 
    <Field id="infoLabeluserID" type="label" fontSize="small" >
-        <Label>UserID, password, port of SHELLY devices</Label>
+		<Label>UserID, password, port of SHELLY devices</Label>
    </Field>
    
    <Field id="userIDOfShellyDevices"   type="textfield"   >
-        <Label>user id:</Label> 
+		<Label>user id:</Label> 
    </Field>
    
    <Field id="passwordOfShellyDevices"   type="textfield"  >
-        <Label>password:</Label> 
+		<Label>password:</Label> 
    </Field>
 
    <Field id="portOfShellyDevices"   type="textfield"  >
-        <Label>Set IP-PORT of http on SHELLY devices:</Label> 
+		<Label>Set IP-PORT of http on SHELLY devices:</Label> 
    </Field>
    <Field id="portOfShellyDevicesLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">  
-        <Label>if you have not setup anything, leave userid, passwd empty and set port to 80 - std http</Label>
-    </Field>
-   <Field    id="sensorApiVersion"   type="menu" >
-        <Label>Shelly devices api version:</Label>
-        <List>
-            <Option value="2" >2021: actions with SEVERAL http options </Option>
-            <Option value="1" >2020: actions with SINGLE http options</Option>
-        </List>
+		<Label>if you have not setup anything, leave userid, passwd empty and set port to 80 - std http</Label>
+	</Field>
+   <Field	id="sensorApiVersion"   type="menu" >
+		<Label>Shelly devices api version:</Label>
+		<List>
+			<Option value="2" >2021: actions with SEVERAL http options </Option>
+			<Option value="1" >2020: actions with SINGLE http options</Option>
+		</List>
    </Field>
    <Field id="sensorApiVersionLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">  
-        <Label>use option 2021 if shelly devices upgraded after 1/15/2021. 
+		<Label>use option 2021 if shelly devices upgraded after 1/15/2021. 
 All devices must be on the same release</Label>
-    </Field>
+	</Field>
 
   <Field id="otherLabel" type="label" fontSize="small" >
-        <Label>Other parameters</Label>
+		<Label>Other parameters</Label>
    </Field>
 
-   <Field    id="tempUnits"   type="menu" >
-        <Label>Temperature displayed in:</Label>
-        <List>
-            <Option value="C" >Celsius </Option>
-            <Option value="F" >Fahrenheit</Option>
-            <Option value="K" >Kelvin</Option>
-        </List>
-   </Field>
-
-
-   <Field    id="tempDigits"   type="menu" >
-        <Label>Temperature digits to show:</Label>
-        <List>
-            <Option value="0" >0 </Option>
-            <Option value="1" >1</Option>
-            <Option value="2" >2</Option>
-        </List>
-   </Field>
-
-   <Field    id="energyDigits"   type="menu" >
-        <Label>Energy digits to show:</Label>
-        <List>
-            <Option value="0" >0 </Option>
-            <Option value="1" >1</Option>
-            <Option value="2" >2</Option>
-        </List>
+   <Field	id="tempUnits"   type="menu" >
+		<Label>Temperature displayed in:</Label>
+		<List>
+			<Option value="C" >Celsius </Option>
+			<Option value="F" >Fahrenheit</Option>
+			<Option value="K" >Kelvin</Option>
+		</List>
    </Field>
 
 
-   <Field    id="powerDigits"   type="menu" >
-        <Label>Power digits to show:</Label>
-        <List>
-            <Option value="0" >0 </Option>
-            <Option value="1" >1</Option>
-            <Option value="2" >2</Option>
-        </List>
+   <Field	id="tempDigits"   type="menu" >
+		<Label>Temperature digits to show:</Label>
+		<List>
+			<Option value="0" >0 </Option>
+			<Option value="1" >1</Option>
+			<Option value="2" >2</Option>
+		</List>
+   </Field>
+
+   <Field	id="energyDigits"   type="menu" >
+		<Label>Energy digits to show:</Label>
+		<List>
+			<Option value="0" >0 </Option>
+			<Option value="1" >1</Option>
+			<Option value="2" >2</Option>
+		</List>
    </Field>
 
 
-   <Field    id="voltageDigits"   type="menu" >
-        <Label>Voltage digits to show:</Label>
-        <List>
-            <Option value="0" >0 </Option>
-            <Option value="1" >1</Option>
-            <Option value="2" >2</Option>
-        </List>
+   <Field	id="powerDigits"   type="menu" >
+		<Label>Power digits to show:</Label>
+		<List>
+			<Option value="0" >0 </Option>
+			<Option value="1" >1</Option>
+			<Option value="2" >2</Option>
+		</List>
    </Field>
 
 
-   <Field    id="currentDigits"   type="menu" >
-        <Label>Current digits to show:</Label>
-        <List>
-            <Option value="0" >0 </Option>
-            <Option value="1" >1</Option>
-            <Option value="2" >2</Option>
-        </List>
+   <Field	id="voltageDigits"   type="menu" >
+		<Label>Voltage digits to show:</Label>
+		<List>
+			<Option value="0" >0 </Option>
+			<Option value="1" >1</Option>
+			<Option value="2" >2</Option>
+		</List>
    </Field>
 
 
-    <Field    id="unfiCurl"              type="menu" tooltip="To support different SSL standards: for elCapitan and lower use curl, for higher OS-X you can try python requests"  > 
-    <Label>Use curl or python-requests for web page access:</Label> 
-        <List>
-            <Option value="/usr/bin/curl"			>/usr/bin/curl  (std install)</Option>
-            <Option value="/usr/local/bin/curl"		>/usr/local/bin/curl (eg homebrew upgrade)</Option>
-            <Option value="requests"  				>python requests</Option>
-        </List>
-    </Field>
+   <Field	id="currentDigits"   type="menu" >
+		<Label>Current digits to show:</Label>
+		<List>
+			<Option value="0" >0 </Option>
+			<Option value="1" >1</Option>
+			<Option value="2" >2</Option>
+		</List>
+   </Field>
+
+
+	<Field	id="unfiCurl"			  type="menu" tooltip="To support different SSL standards: for elCapitan and lower use curl, for higher OS-X you can try python requests"  > 
+	<Label>Use curl or python-requests for web page access:</Label> 
+		<List>
+			<Option value="/usr/bin/curl"			>/usr/bin/curl  (std install)</Option>
+			<Option value="/usr/local/bin/curl"		>/usr/local/bin/curl (eg homebrew upgrade)</Option>
+			<Option value="requests"  				>python requests</Option>
+		</List>
+	</Field>
    <Field id="unfiCurlLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">  
-        <Label>the plugin can use curl or python connect calls to connect to the shelly devices, if you have an older OSX use curl</Label>
-    </Field>
+		<Label>the plugin can use curl or python connect calls to connect to the shelly devices, if you have an older OSX use curl</Label>
+	</Field>
 
+
+	<Field	id="logStateChanges"   type="menu" >
+		<Label>Write dev received/send state changes to indigo logfile (no date stamps)</Label>
+		<List>
+			<Option value="no"     	 	>off</Option>
+			<Option value="onOff"		>only on/off changes</Option>
+			<Option value="all-noWiFi"	>all changes (no WiFi)</Option>
+			<Option value="all"	    	>all changes</Option>
+		</List>	
+	</Field>
 
    
-    <Field    id="SQLLoggingEnable"   type="menu" >
-        <Label>Configure SQL logger for device-States (not) to log</Label>
-        <List>
-            <Option value="on-on"   >log normal = log everything </Option>
-            <Option value="off-off"	>disable loggin for specific dev-states</Option>
-        </List>    
+	<Field	id="SQLLoggingEnable"   type="menu" >
+		<Label>Configure SQL logger for device-States (not) to log</Label>
+		<List>
+			<Option value="on-on"   >log normal = log everything </Option>
+			<Option value="off-off"	>disable loggin for specific dev-states</Option>
+		</List>	
    </Field>
    <Field id="SQLLoggingEnableLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">  
-        <Label>This is only for: dev/states = lastMessage etc,  There is no (good) reason to write them to the SQL logger</Label>
-    </Field>
+		<Label>This is only for: dev/states = lastMessage etc,  There is no (good) reason to write them to the SQL logger</Label>
+	</Field>
 
-    <Field id="infoLabel99" type="label"> <Label>Debug areas for plugin:</Label>  </Field>
+	<Field id="infoLabel99" type="label"> <Label>Debug areas for plugin:</Label>  </Field>
  
-    <Field    id="debugSetupDevices"   type="checkbox"  > <Label> Debug...                   ... (1)  SetupDevice:</Label>  </Field>
-    <Field    id="debugHTTPlistener"   type="checkbox"  > <Label>     ... (2)  HTTP listener:</Label>  </Field>
-    <Field    id="debugPolling"        type="checkbox"  > <Label>     ... (3)  polling of devices:</Label>  </Field>
-    <Field    id="debugPing"           type="checkbox"  > <Label>     ... (4)  pinging:</Label>  </Field>
-    <Field    id="debugActions"        type="checkbox"  > <Label>     ... (6)  Actions:</Label>  </Field>
-    <Field    id="debugSQLSuppresslog" type="checkbox"  > <Label>     ..  (18) SQL-Suppress-logger:</Label>  </Field>
+	<Field	id="debugSetupDevices"   type="checkbox"  > <Label> Debug...				   ... (1)  SetupDevice:</Label>  </Field>
+	<Field	id="debugHTTPlistener"   type="checkbox"  > <Label>	 ... (2)  HTTP listener:</Label>  </Field>
+	<Field	id="debugPolling"		type="checkbox"  > <Label>	 ... (3)  polling of devices:</Label>  </Field>
+	<Field	id="debugPing"		   type="checkbox"  > <Label>	 ... (4)  pinging:</Label>  </Field>
+	<Field	id="debugActions"		type="checkbox"  > <Label>	 ... (6)  Actions:</Label>  </Field>
+	<Field	id="debugSQLSuppresslog" type="checkbox"  > <Label>	 ..  (18) SQL-Suppress-logger:</Label>  </Field>
 
-    <Field    id="debugSpecial"        type="checkbox"  > <Label>     ... (S) special debug (only for development):</Label>  </Field>
-    <Field    id="debugall"            type="checkbox"  > <Label>     ... (99) all of the above .. everything:</Label>  </Field>
+	<Field	id="debugSpecial"		type="checkbox"  > <Label>	 ... (S) special debug (only for development):</Label>  </Field>
+	<Field	id="debugall"			type="checkbox"  > <Label>	 ... (99) all of the above .. everything:</Label>  </Field>
 
-    <Field    id="logFileActive2"      type="menu"      > <Label> send logs to ..:</Label>
-        <List>
-            <Option value="indigo"   > .. Perceptive Automation/Indigo x/Logs/com.karlwachs.shelly/plugin.log </Option>
-        </List>
-    </Field>
-    <Field id="infoLabel227" type="label"> <Label>.                     for DETAILED time tracking set indigo variable "enableTimeTracking_shelly"</Label>  </Field>
-    <Field    id="do_cProfile" type="textfield"  readonly="yes"     > 
-        <Label>... enable or stop or  print intermediate results use on/off/print:</Label>  
-    </Field>
+	<Field	id="logFileActive2"	  type="menu"	  > <Label> send logs to ..:</Label>
+		<List>
+			<Option value="indigo"   > .. Perceptive Automation/Indigo x/Logs/com.karlwachs.shelly/plugin.log </Option>
+		</List>
+	</Field>
+	<Field id="infoLabel227" type="label"> <Label>.					 for DETAILED time tracking set indigo variable "enableTimeTracking_shelly"</Label>  </Field>
+	<Field	id="do_cProfile" type="textfield"  readonly="yes"	 > 
+		<Label>... enable or stop or  print intermediate results use on/off/print:</Label>  
+	</Field>
 
 </PluginConfig>
