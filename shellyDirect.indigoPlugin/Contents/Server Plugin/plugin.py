@@ -3962,8 +3962,9 @@ class Plugin(indigo.PluginBase):
 			props = dev.pluginProps
 			#if dev.id == 1570076651:self.indiLOG.log(10,u":::::fillSensor  {}  data:{}, token:{}, state:{}".format( dev.id , data, token,  state ))
 
-
+			decimalPlaces = ""
 			internal = ""
+			unit = ""
 			if state.split("_internal")[0] in dev.states or state+"_internal" in dev.states:
 				
 				#if dev.id == 1570076651:self.indiLOG.log(10,u":::::fillSensor  passed 1")
@@ -4011,20 +4012,13 @@ class Plugin(indigo.PluginBase):
 				elif state == "Humidity":
 					if state in dev.states:
 						x , xui = self.convHum(x)
-						self.addToStatesUpdateDict(str(int(dev.id)), state, x, uiValue=xui, decimalPlaces=decimalPlaces)
+						self.addToStatesUpdateDict(str(int(dev.id)), state, x, uiValue=xui, decimalPlaces=0)
 						if "displaySelect" in props and props["displaySelect"] == "Humidity":
 							dev.updateStateImageOnServer(indigo.kStateImageSel.HumiditySensorOn)
-						self.fillMinMaxSensors(dev,"Humidity",x,decimalPlaces=decimalPlaces)
-
+						self.fillMinMaxSensors(dev,"Humidity",x,decimalPlaces=0)
 
 				else:
-					if state in dev.states:
-						if decimalPlaces == 0:	xui = "{:.0f}{}".format(x,unit)
-						if decimalPlaces == 1:	xui = "{:.1f}{}".format(x,unit)
-						if decimalPlaces == 2:	xui = "{:.2f}{}".format(x,unit)
-						else: 					xui = "{}{}".format(x,unit)
-						self.addToStatesUpdateDict(str(dev.id), state, x, uiValue=xui, decimalPlaces=decimalPlaces)
-						return dev
+					pass
 
 
 		except Exception, e:
