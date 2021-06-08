@@ -1,7 +1,7 @@
-Added features / changes in v7.14.38 @ 2021-06-08
+Added features / changes in v7.14.39 @ 2021-06-08
 ===================================================
 
-1. fixed:  print of device information w umlauts
+1. fixed: print of device information w umlauts
 2. fixed: shelly-dw2 setting as using shelly-dw
 
 
