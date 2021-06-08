@@ -1473,9 +1473,9 @@ class Plugin(indigo.PluginBase):
 		self.indiLOG.log(10,u"getting EM csv data for {}; with: {}".format(dev.name, page) )
 		cvsData = self.getJsonFromDevices(dev.address, page, noJson=True)
 		if len(cvsData) > 10:
-			valuesDict["MSG"] ="check  ...shellyDirect/plugin.log file "
+			valuesDict["MSG"] = "check  ...shellyDirect/plugin.log file "
 		else:
-			valuesDict["MSG"] ="no data returned"
+			valuesDict["MSG"] = "no data returned"
 		self.indiLOG.log(10,u"csv data from:{}:\n{}".format(dev.name, cvsData) )
 		return valuesDict
 
@@ -1500,7 +1500,7 @@ class Plugin(indigo.PluginBase):
 	def buttonPrintShellyDevInfoCALLBACK(self, valuesDict, typeId=""):
 
 		devIdSelect = int(valuesDict["devId"])
-		out =""
+		out = u""
 		for devId in self.SHELLY:
 			if devId == 0: continue
 			if devId == devIdSelect or devIdSelect ==0:
@@ -1511,18 +1511,21 @@ class Plugin(indigo.PluginBase):
 					deviceTypeId = dev.deviceTypeId
 					props = dev.pluginProps
 				except:
-					name = "dev does not exist"
+					name = u"dev does not exist"
 					deviceTypeId = "---"
-				out += "\n:::::::: dev:{:33s} ID:{:14}  type: {:10s}   ::::::::::\n".format(name, devId, deviceTypeId)
+				out += u"\n:::::::: dev:{:33s} ID:{:14}  type: {:10s}   ::::::::::\n".format(name, devId, deviceTypeId)
 				keys = sorted(self.SHELLY[devId])
 				for item in keys:
-					out+= "{:33s}:  {}\n".format(item, unicode(self.SHELLY[devId][item]))
+					out+= u"{:33s}:  {}\n".format(item, unicode(self.SHELLY[devId][item]))
+				out += u"states --------------------\n"
 				dev = indigo.devices[devId]
+				indigo.server.log(u"keys:"+ unicode(keys))
 				keys = sorted(dev.states)
 				for item in keys:
-					out+= "{:33s}:  {}\n".format(item, unicode(dev.states[item]))
+					out+= u"{:33s}:  {}\n".format(item, unicode(dev.states[item]))
 				keys = sorted(dev.states)
 				propList =[]
+				out += u"props --------------------\n "
 				for prop in props:
 					for xx in ["SENDTOSHELLYDEVICE-","children", "isParent", "isChild","displaySelect" ]:
 						if prop.find(xx) > -1:
@@ -1531,19 +1534,19 @@ class Plugin(indigo.PluginBase):
 					if item[0].find("SENDTOSHELLYDEVICE-") > -1:
 							if item[0] not in _settingCmds: continue
 							settings = _settingCmds[item[0]][0]+item[1]
-							out+= "{:33s}:  {}\n".format("set parameters",settings) 
+							out+= u"{:33s}:  {}\n".format("set parameters",settings) 
 					else:
-							out+= "{:33s}:  {}\n".format(item[0],item[1]) 
+							out+= u"{:33s}:  {}\n".format(item[0],item[1]) 
 
 
-				if "action_url" in _emptyProps[dev.deviceTypeId]:
+				if u"action_url" in _emptyProps[dev.deviceTypeId]:
 					for item in _emptyProps[dev.deviceTypeId]["action_url"][self.sensorApiVersion]:
 						action = unicode(_emptyProps[dev.deviceTypeId]["action_url"][self.sensorApiVersion][item]).replace("': '",":").replace("', '","   ").replace("{","").replace("}","").replace("'","")
-						out += "{:33s}:  {}\n".format(item, action) 
+						out += u"{:33s}:  {}\n".format(item, action) 
 		ignoredIPNumbers = self.pluginPrefs.get(u"ignoredIPNumbers", "")
 		if ignoredIPNumbers != "":
-			out += "\n---------------------------------------\n"
-			out += "{:33s}:  {}\n".format("ignored IP Numbers", ignoredIPNumbers) 
+			out += u"\n---------------------------------------\n"
+			out += u"{:33s}:  {}\n".format("ignored IP Numbers", ignoredIPNumbers) 
 
 
 		if out !="":
@@ -1596,7 +1599,7 @@ class Plugin(indigo.PluginBase):
 			if self.decideMyLog(u"SetupDevices"): 
 				self.indiLOG.log(10,u"deviceStartComm called for {}; dev={}".format(dev.id, dev.name) )
 
-			if dev.id == self.doNotrestartDev: return 
+			if False and dev.id == self.doNotrestartDev: return 
 			dev.stateListOrDisplayStateIdChanged()
 
 			if "brightness" in dev.states: 
@@ -2269,7 +2272,7 @@ class Plugin(indigo.PluginBase):
 ###-------------------------------------------------------------------------####
 	def checkIfPushToDevicesIsRequired(self, now, pushNow=False):
 		try:
-			self.indiLOG.log(10,u"checkIfPushToDevicesIsRequired dt min {}, push {}".format(time.time() - self.checkTimeIfPushToDevicesIsRequired, pushNow))
+			#self.indiLOG.log(10,u"checkIfPushToDevicesIsRequired dt min {}, push {}".format(time.time() - self.checkTimeIfPushToDevicesIsRequired, pushNow))
 			if time.time() - self.checkTimeIfPushToDevicesIsRequired < 0 : 
 				return 
 			if time.time() - self.checkTimeIfPushToDevicesIsRequired < 24*60*60 and not pushNow: 
@@ -2282,7 +2285,7 @@ class Plugin(indigo.PluginBase):
 
 				if time.time() - self.SHELLY[devId]["lastSuccessfullConfigPush"] > self.repeatConfigPush or (pushNow and time.time() - self.SHELLY[devId]["lastRequestedPush"] < 10 ):
 					if self.SHELLY[devId]["pushIdActive"] in ["enabled","waiting"]:
-						self.indiLOG.log(10,u"checkIfPushToDevicesIsRequired: {}; pushIdActive={}".format(devId, self.SHELLY[devId]["pushIdActive"]))
+						#self.indiLOG.log(10,u"checkIfPushToDevicesIsRequired: {}; pushIdActive={}".format(devId, self.SHELLY[devId]["pushIdActive"]))
 						self.addToPushConfigToShellyDeviceQueue(devId)
 		except Exception, e:
 			if len(unicode(e)) > 5 :
@@ -2921,7 +2924,7 @@ class Plugin(indigo.PluginBase):
 		
 			if "device" in data: 
 				deviceTypeId = data["device"]["hostname"].rsplit("-", 1)[0]
-				if deviceTypeId.find("shellydw") >-1: deviceTypeId = "shellydw"
+				if False and deviceTypeId.find("shellydw") >-1: deviceTypeId = "shellydw"
 				
 			else:
 				deviceTypeId = dev.deviceTypeId
@@ -5252,7 +5255,7 @@ class Plugin(indigo.PluginBase):
 					props = dev.pluginProps
 					for state in local[devId]:
 						if state not in dev.states:
-							self.indiLOG.log(40,u"executeUpdateStatesDict dev:{} state:{} not present ".format(dev.name,state) )
+							self.indiLOG.log(40,u"executeUpdateStatesDict dev:{} state:{} not present ".format(dev.name, state) )
 							continue
 
 						if state == "onOffState" and dev.states["onOffState"] != local[devId][state]["value"]: 

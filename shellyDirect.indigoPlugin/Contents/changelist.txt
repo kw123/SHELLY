@@ -1,7 +1,14 @@
-Added features / changes in v7.14.36 @ 2021-05-01
+Added features / changes in v7.14.38 @ 2021-06-08
 ===================================================
 
-1.  fixed: ine 4014 has error=local variable 'decimalPlaces' ...
+1. fixed:  print of device information w umlauts
+2. fixed: shelly-dw2 setting as using shelly-dw
+
+
+Added features / changes in v7.14.37 @ 2021-05-01
+===================================================
+
+1.  fixed: line 4014 has error=local variable 'decimalPlaces' ...
 
 
 

@@ -6869,6 +6869,11 @@ for connection parameters check the parent (SHELLY host device)</Label>
 				<TriggerLabel>action_from_device</TriggerLabel>
 				<ControlPageLabel>action_from_device</ControlPageLabel>
 			</State>
+			<State id="sleepMode">
+				<ValueType>String</ValueType>
+				<TriggerLabel>sleepMode</TriggerLabel>
+				<ControlPageLabel>sleepMode</ControlPageLabel>
+			</State>
 			<State id="MAC">
 				<ValueType>String</ValueType>
 				<TriggerLabel>MAC</TriggerLabel>
