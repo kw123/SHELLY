@@ -1827,6 +1827,14 @@ class Plugin(indigo.PluginBase):
 				errorDict[u"MSG"] = "bad IP Number"
 				return ( False, valuesDict, errorDict )
 
+
+			if valuesDict["MAC"] != self.SHELLY[devId]["MAC"]:
+				self.indiLOG.log(20,u" replacing mac#:{} with:{}".format(self.SHELLY[devId]["MAC"], valuesDict["MAC"]))
+				dev = indigo.devices[devId]
+				dev.updateStateOnServer("MAC",valuesDict["MAC"])
+				self.SHELLY[devId]["MAC"] = valuesDict["MAC"]
+
+
 			if "isParent" in props:
 				if valuesDict["ipNumber"] != self.SHELLY[dev.id]["ipNumber"]: self.SHELLY[dev.id]["ipNumber"] = valuesDict["ipNumber"]
 				if dev.address != self.SHELLY[dev.id]["ipNumber"]: valuesDict["address"] = valuesDict["ipNumber"]
@@ -3205,9 +3213,14 @@ class Plugin(indigo.PluginBase):
 						self.addToStatesUpdateDict(devID, "state", "open")
 						self.fillSwitch( useDev, {"onOffState":True}, "onOffState")
 						self.addToStatesUpdateDict(devID, "twilightOpen", datetime.datetime.now().strftime(_defaultDateStampFormat))
+
+					if trigger[0].find("onOffState") == 0:	
+						self.addToStatesUpdateDict(devID, "state", "open")
+						self.fillSwitch( useDev, {"onOffState":True}, "onOffState")
+						self.addToStatesUpdateDict(devID, "daylightOpen", datetime.datetime.now().strftime(_defaultDateStampFormat))
 				
 			## cover the rest of the defined devices w actions reporting
-			elif deviceTypeId in _definedShellyDeviceswAction:
+			if deviceTypeId in _definedShellyDeviceswAction:
 				for trigger in TRIGGERS:
 					if self.decideMyLog(u"HTTPlistener"):						self.indiLOG.log(10,u"doHTTPactionData   trigger:{}".format(trigger) )
 

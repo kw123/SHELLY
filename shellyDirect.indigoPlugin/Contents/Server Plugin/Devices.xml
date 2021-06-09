@@ -38,8 +38,8 @@
 			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey ">
 				<Label>Overwrite existing IP number</Label>
 			</Field>
-			<Field id="MAC" type="textfield" defaultValue="" readonly="yes">
-				<Label>Shelly device mac number</Label>
+			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
+				<Label>Shelly device mac number(only overwrite if you want to replace device, must be unique)</Label>
 			</Field>
 			<Field id="devNo" type="menu" defaultValue="0" readonly="yes" hidden="true">
 				<Label>Channel #/ relay</Label>
@@ -188,8 +188,8 @@
 			<Field id="ipNumber" type="textfield" defaultValue="192.168.1.x" readonly="yes">
 				<Label>Shelly device IP Number</Label>
 			</Field>
-			<Field id="MAC" type="textfield" defaultValue="" readonly="yes">
-				<Label>Shelly device mac number</Label>
+			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
+				<Label>Shelly device mac number(only overwrite if you want to replace device, must be unique)</Label>
 			</Field>
 			<Field id="devNo" type="menu" defaultValue="1" readonly="yes" hidden="true">
 				<Label>EM #</Label>
@@ -349,8 +349,8 @@
 			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey ">
 				<Label>Overwrite existing IP number</Label>
 			</Field>
-			<Field id="MAC" type="textfield" defaultValue="" readonly="yes">
-				<Label>Shelly device mac number</Label>
+			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
+				<Label>Shelly device mac number(only overwrite if you want to replace device, must be unique)</Label>
 			</Field>
 			<Field id="devNo" type="menu" defaultValue="0" hidden="true">
 				<Label>Channel #</Label>
@@ -587,8 +587,8 @@
 			<Field id="ipNumber" type="textfield" defaultValue="192.168.1.x" readonly="yes">
 				<Label>Shelly device IP Number</Label>
 			</Field>
-			<Field id="MAC" type="textfield" defaultValue="" readonly="yes">
-				<Label>Shelly device mac number</Label>
+			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
+				<Label>Shelly device mac number(only overwrite if you want to replace device, must be unique)</Label>
 			</Field>
 			<Field id="devNo" type="menu" defaultValue="1">
 				<Label>Channel #</Label>
@@ -839,8 +839,8 @@
 			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey ">
 				<Label>Overwrite existing IP number</Label>
 			</Field>
-			<Field id="MAC" type="textfield" defaultValue="" readonly="yes">
-				<Label>Shelly device mac number</Label>
+			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
+				<Label>Shelly device mac number(only overwrite if you want to replace device, must be unique)</Label>
 			</Field>
 			<Field id="devNo" type="menu" defaultValue="0" hidden="true">
 				<Label>Channel #</Label>
@@ -992,8 +992,8 @@
 			<Field id="ipNumber" type="textfield" defaultValue="192.168.1.x" readonly="yes">
 				<Label>Shelly device IP Number</Label>
 			</Field>
-			<Field id="MAC" type="textfield" defaultValue="" readonly="yes">
-				<Label>Shelly device mac number</Label>
+			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
+				<Label>Shelly device mac number(only overwrite if you want to replace device, must be unique)</Label>
 			</Field>
 			<Field id="devNo" type="menu" defaultValue="1">
 				<Label>Channel #</Label>
@@ -1161,8 +1161,8 @@
 			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
 				<Label>Overwrite existing IP number</Label>
 			</Field>
-			<Field id="MAC" type="textfield" defaultValue="" readonly="yes">
-				<Label>Shelly device mac number</Label>
+			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
+				<Label>Shelly device mac number(only overwrite if you want to replace device, must be unique)</Label>
 			</Field>
 			<Field id="pollingFrequency" type="menu" defaultValue="-1">
 				<Label>Polling frequency, how often the plugin requests status from the device:</Label>
@@ -1375,8 +1375,8 @@
 			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
 				<Label>Overwrite existing IP number</Label>
 			</Field>
-			<Field id="MAC" type="textfield" defaultValue="" readonly="yes">
-				<Label>Shelly device mac number</Label>
+			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
+				<Label>Shelly device mac number(only overwrite if you want to replace device, must be unique)</Label>
 			</Field>
 			<Field id="pollingFrequency" type="menu" defaultValue="-1">
 				<Label>Polling frequency, how often the plugin requests status from the device:</Label>
@@ -1590,8 +1590,8 @@
 			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
 				<Label>Overwrite existing IP number</Label>
 			</Field>
-			<Field id="MAC" type="textfield" defaultValue="" readonly="yes">
-				<Label>Shelly device mac number</Label>
+			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
+				<Label>Shelly device mac number(only overwrite if you want to replace device, must be unique)</Label>
 			</Field>
 			<Field id="pollingFrequency" type="menu" defaultValue="-1">
 				<Label>Polling frequency, how often the plugin requests status from the device:</Label>
@@ -1781,8 +1781,8 @@
 			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
 				<Label>Overwrite existing IP number</Label>
 			</Field>
-			<Field id="MAC" type="textfield" defaultValue="" readonly="yes">
-				<Label>Shelly device mac number</Label>
+			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
+				<Label>Shelly device mac number(only overwrite if you want to replace device, must be unique)</Label>
 			</Field>
 			<Field id="pollingFrequency" type="menu" defaultValue="-1">
 				<Label>Polling frequency, how often the plugin requests status from the device:</Label>
@@ -2004,8 +2004,8 @@
 			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
 				<Label>Overwrite existing IP number</Label>
 			</Field>
-			<Field id="MAC" type="textfield" defaultValue="" readonly="yes">
-				<Label>Shelly device mac number</Label>
+			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
+				<Label>Shelly device mac number(only overwrite if you want to replace device, must be unique)</Label>
 			</Field>
 			<Field id="pollingFrequency" type="menu" defaultValue="-1">
 				<Label>Polling frequency, how often the plugin requests status from the device:</Label>
@@ -2178,8 +2178,8 @@
 			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
 				<Label>Overwrite existing IP number</Label>
 			</Field>
-			<Field id="MAC" type="textfield" defaultValue="" readonly="yes">
-				<Label>Shelly device mac number</Label>
+			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
+				<Label>Shelly device mac number(only overwrite if you want to replace device, must be unique)</Label>
 			</Field>
 			<Field id="pollingFrequency" type="menu" defaultValue="-1">
 				<Label>Polling frequency, how often the plugin requests status from the device:</Label>
@@ -2371,8 +2371,8 @@
 					<Option value="0">0</Option>
 				</List>
 			</Field>
-			<Field id="MAC" type="textfield" defaultValue="" readonly="yes">
-				<Label>Shelly device mac number</Label>
+			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
+				<Label>Shelly device mac number(only overwrite if you want to replace device, must be unique)</Label>
 			</Field>
 			<Field id="SENDTOSHELLYDEVICE-mode" type="menu" defaultValue="roller">
 				<Label>Mode of device:</Label>
@@ -2716,8 +2716,8 @@ you can change the device type to roller below</Label>
 					<Option value="0">0</Option>
 				</List>
 			</Field>
-			<Field id="MAC" type="textfield" defaultValue="" readonly="yes">
-				<Label>Shelly device mac number</Label>
+			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
+				<Label>Shelly device mac number(only overwrite if you want to replace device, must be unique)</Label>
 			</Field>
 			<Field id="SENDTOSHELLYDEVICE-mode" type="menu" defaultValue="relay">
 				<Label>Mode of device:</Label>
@@ -2947,8 +2947,8 @@ you can change the device type to roller below</Label>
 			<Field id="ipNumber" type="textfield" defaultValue="192.168.1.x" readonly="yes" hidden="true">
 				<Label>Shelly device IP Number</Label>
 			</Field>
-			<Field id="MAC" type="textfield" defaultValue="" readonly="yes">
-				<Label>Shelly device mac number</Label>
+			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
+				<Label>Shelly device mac number(only overwrite if you want to replace device, must be unique)</Label>
 			</Field>
 			<Field id="pollingFrequency" type="textfield" defaultValue="-1" readonly="yes">
 				<Label>Polling frequency .. how often the plugin requests status from the device:</Label>
@@ -3146,8 +3146,8 @@ Parent and child share the same connection, the plugin creates two devices to be
 					<Option value="0">0</Option>
 				</List>
 			</Field>
-			<Field id="MAC" type="textfield" defaultValue="" readonly="yes">
-				<Label>Shelly device mac number</Label>
+			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
+				<Label>Shelly device mac number(only overwrite if you want to replace device, must be unique)</Label>
 			</Field>
 			<Field id="pollingFrequency" type="menu" defaultValue="-1">
 				<Label>Polling frequency .. how often the plugin requests status from the device:</Label>
@@ -3332,8 +3332,8 @@ Parent and child share the same connection, the plugin creates two devices to be
 			<Field id="ipNumber" type="textfield" defaultValue="192.168.1.x" readonly="yes" hidden="true">
 				<Label>Shelly device IP Number</Label>
 			</Field>
-			<Field id="MAC" type="textfield" defaultValue="" readonly="yes">
-				<Label>Shelly device mac number</Label>
+			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
+				<Label>Shelly device mac number(only overwrite if you want to replace device, must be unique)</Label>
 			</Field>
 			<Field id="pollingFrequency" type="textfield" defaultValue="-1" readonly="yes">
 				<Label>Polling frequency .. how often the plugin requests status from the device:</Label>
@@ -3552,8 +3552,8 @@ Parent and child share the same connection, the plugin creates two devices to be
 			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
 				<Label>Overwrite existing IP number</Label>
 			</Field>
-			<Field id="MAC" type="textfield" defaultValue="" readonly="yes">
-				<Label>Shelly device mac number</Label>
+			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
+				<Label>Shelly device mac number(only overwrite if you want to replace device, must be unique)</Label>
 			</Field>
 			<Field id="pollingFrequency" type="menu" defaultValue="-1">
 				<Label>Polling frequency, how often the plugin requests status from the device:</Label>
@@ -3746,8 +3746,8 @@ Parent and child share the same connection, the plugin creates two devices to be
 			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
 				<Label>Overwrite existing IP number</Label>
 			</Field>
-			<Field id="MAC" type="textfield" defaultValue="" readonly="yes">
-				<Label>Shelly device mac number</Label>
+			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
+				<Label>Shelly device mac number(only overwrite if you want to replace device, must be unique)</Label>
 			</Field>
 			<Field id="modelA" type="label">
 				<Label>Select device type ..</Label>
@@ -3939,8 +3939,8 @@ Parent and child share the same connection, the plugin creates two devices to be
 			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
 				<Label>Overwrite existing IP number</Label>
 			</Field>
-			<Field id="MAC" type="textfield" defaultValue="" readonly="yes">
-				<Label>Shelly device mac number</Label>
+			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
+				<Label>Shelly device mac number(only overwrite if you want to replace device, must be unique)</Label>
 			</Field>
 			<Field id="pollingFrequency" type="menu" defaultValue="-1">
 				<Label>Polling frequency, how often the plugin requests status from the device:</Label>
@@ -4244,8 +4244,8 @@ Parent and child share the same connection, the plugin creates two devices to be
 			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
 				<Label>Overwrite existing IP number</Label>
 			</Field>
-			<Field id="MAC" type="textfield" defaultValue="" readonly="yes">
-				<Label>Shelly device mac number</Label>
+			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
+				<Label>Shelly device mac number(only overwrite if you want to replace device, must be unique)</Label>
 			</Field>
 			<Field id="pollingFrequency" type="menu" defaultValue="-1">
 				<Label>Polling frequency, how often the plugin requests status from the device:</Label>
@@ -4555,8 +4555,8 @@ Parent and child share the same connection, the plugin creates two devices to be
 			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
 				<Label>Overwrite existing IP number</Label>
 			</Field>
-			<Field id="MAC" type="textfield" defaultValue="" readonly="yes">
-				<Label>Shelly device mac number</Label>
+			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
+				<Label>Shelly device mac number(only overwrite if you want to replace device, must be unique)</Label>
 			</Field>
 			<Field id="pollingFrequency" type="menu" defaultValue="-1">
 				<Label>Polling frequency, how often the plugin requests status from the device:</Label>
@@ -4735,8 +4735,8 @@ Parent and child share the same connection, the plugin creates two devices to be
 			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
 				<Label>Overwrite existing IP number</Label>
 			</Field>
-			<Field id="MAC" type="textfield" defaultValue="" readonly="yes">
-				<Label>Shelly device mac number</Label>
+			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
+				<Label>Shelly device mac number(only overwrite if you want to replace device, must be unique)</Label>
 			</Field>
 			<Field id="pollingFrequency" type="menu" defaultValue="-1">
 				<Label>Polling frequency, how often the plugin requests status from the device:</Label>
@@ -4882,8 +4882,8 @@ Parent and child share the same connection, the plugin creates two devices to be
 			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
 				<Label>Overwrite existing IP number</Label>
 			</Field>
-			<Field id="MAC" type="textfield" defaultValue="" readonly="yes">
-				<Label>Shelly device mac number</Label>
+			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
+				<Label>Shelly device mac number(only overwrite if you want to replace device, must be unique)</Label>
 			</Field>
 			<Field id="devNo" type="textfield" defaultValue="0" hidden="true">
 				<Label>devNo</Label>
@@ -5094,8 +5094,8 @@ Parent and child share the same connection, the plugin creates two devices to be
 			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
 				<Label>Overwrite existing IP number</Label>
 			</Field>
-			<Field id="MAC" type="textfield" defaultValue="" readonly="yes">
-				<Label>Shelly device mac number</Label>
+			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
+				<Label>Shelly device mac number(only overwrite if you want to replace device, must be unique)</Label>
 			</Field>
 			<Field id="devNo" type="textfield" defaultValue="0" hidden="true">
 				<Label>devNo</Label>
@@ -5296,8 +5296,8 @@ for connection parameters check the parent (SHELLY host device)</Label>
 			<Field id="ipNumber" type="textfield" defaultValue="192.168.1.x" readonly="yes">
 				<Label>Shelly device IP Number</Label>
 			</Field>
-			<Field id="MAC" type="textfield" defaultValue="" readonly="yes">
-				<Label>Shelly device mac number</Label>
+			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
+				<Label>Shelly device mac number(only overwrite if you want to replace device, must be unique)</Label>
 			</Field>
 			<Field id="displaySelect" type="menu" defaultValue="Temperature">
 				<Label>Property to display in the State Column:</Label>
@@ -5415,8 +5415,8 @@ for connection parameters check the parent (SHELLY host device)</Label>
 			<Field id="ipNumber" type="textfield" defaultValue="192.168.1.x" readonly="yes">
 				<Label>Shelly device IP Number</Label>
 			</Field>
-			<Field id="MAC" type="textfield" defaultValue="" readonly="yes">
-				<Label>Shelly device mac number</Label>
+			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
+				<Label>Shelly device mac number(only overwrite if you want to replace device, must be unique)</Label>
 			</Field>
 			<Field id="displaySelect" type="menu" defaultValue="Humidity">
 				<Label>Property to display in the State Column:</Label>
@@ -5531,8 +5531,8 @@ for connection parameters check the parent (SHELLY host device)</Label>
 			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
 				<Label>Overwrite existing IP number</Label>
 			</Field>
-			<Field id="MAC" type="textfield" defaultValue="" readonly="yes">
-				<Label>Shelly device mac number</Label>
+			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
+				<Label>Shelly device mac number(only overwrite if you want to replace device, must be unique)</Label>
 			</Field>
 			<Field id="devNo" type="menu" defaultValue="0" readonly="yes" hidden="true">
 				<Label>internal devNo</Label>
@@ -5774,8 +5774,8 @@ for connection parameters check the parent (SHELLY host device)</Label>
 			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
 				<Label>Overwrite existing IP number</Label>
 			</Field>
-			<Field id="MAC" type="textfield" defaultValue="" readonly="yes">
-				<Label>Shelly device mac number</Label>
+			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
+				<Label>Shelly device mac number(only overwrite if you want to replace device, must be unique)</Label>
 			</Field>
 			<Field id="devNo" type="menu" defaultValue="0" readonly="yes" hidden="true">
 				<Label>internal devNo</Label>
@@ -6004,8 +6004,8 @@ for connection parameters check the parent (SHELLY host device)</Label>
 			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
 				<Label>Overwrite existing IP number</Label>
 			</Field>
-			<Field id="MAC" type="textfield" defaultValue="" readonly="yes">
-				<Label>Shelly device mac number</Label>
+			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
+				<Label>Shelly device mac number(only overwrite if you want to replace device, must be unique)</Label>
 			</Field>
 			<Field id="devNo" type="menu" defaultValue="0" readonly="yes" hidden="true">
 				<Label>internal devNo</Label>
@@ -6235,8 +6235,8 @@ for connection parameters check the parent (SHELLY host device)</Label>
 			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
 				<Label>Overwrite existing IP number</Label>
 			</Field>
-			<Field id="MAC" type="textfield" defaultValue="" readonly="yes">
-				<Label>Shelly device mac number</Label>
+			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
+				<Label>Shelly device mac number(only overwrite if you want to replace device, must be unique)</Label>
 			</Field>
 			<Field id="devNo" type="menu" defaultValue="0" readonly="yes" hidden="true">
 				<Label>internal devNo</Label>
@@ -6502,8 +6502,8 @@ for connection parameters check the parent (SHELLY host device)</Label>
 			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
 				<Label>Overwrite existing IP number</Label>
 			</Field>
-			<Field id="MAC" type="textfield" defaultValue="" readonly="yes">
-				<Label>Shelly device mac number</Label>
+			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
+				<Label>Shelly device mac number(only overwrite if you want to replace device, must be unique)</Label>
 			</Field>
 			<Field id="pollingFrequency" type="menu" defaultValue="-1">
 				<Label>Polling frequency, how often the plugin requests status from the device:</Label>
@@ -6603,6 +6603,11 @@ for connection parameters check the parent (SHELLY host device)</Label>
 				<ValueType>String</ValueType>
 				<TriggerLabel>closedTriggered</TriggerLabel>
 				<ControlPageLabel>closedTriggered</ControlPageLabel>
+			</State>
+			<State id="dayOpen">
+				<ValueType>String</ValueType>
+				<TriggerLabel>dayOpen</TriggerLabel>
+				<ControlPageLabel>dayOpen</ControlPageLabel>
 			</State>
 			<State id="darkOpen">
 				<ValueType>String</ValueType>

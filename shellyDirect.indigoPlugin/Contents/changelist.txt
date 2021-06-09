@@ -1,3 +1,12 @@
+Added features / changes in v7.15.40 @ 2021-06-09
+===================================================
+
+1. fixed: print of device information w umlauts
+2. fixed: shelly-dw2 setting using shelly-dw
+3. added state dayOpen to shelly-dw(2) besides twiLightOpen ... is a time stamp of when the sensor was open last
+4. added option to change MAC # to eg replace existing device
+
+
 Added features / changes in v7.14.40 @ 2021-06-08
 ===================================================
 
