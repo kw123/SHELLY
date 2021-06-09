@@ -643,25 +643,6 @@ _emptyProps = {	# switches
 						"childTypes_SplitDevices":[],
 						"tempUnits":"C"
 						}, 
-				# sensors
-				"shellydw2":{"props":{"isShellyDevice":True, "usesInputForOnOff":False, "isRelay":False, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,  
-						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
-						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":60,  "expirationSeconds":50400,"displaySelect":"lux","SupportsBatteryLevel":True  },
-						"rgbLimits":[0,255],
-						"setPageActionPageOnShellyDev":{},
-						"action_url":	{
-										"2":{
-											"settings/actions?enabled=true&index=0&name=":	{"close_url":"onOffState=1","open_url":"onOffState=0", "twilight_url":"action=twilightOpen", "dark_url":"action=darkOpen", "close_url":"action=close", "vibration_url":"action=vibration"}
-											},
-										"1":{
-											"settings/?twilight_url": {"none":"action=twilightOpen"},"settings/?dark_url":{"none":"action=darkOpen"},"settings/?close_url":{"none":"action=close"},"settings/?vibration_url":{"none":"action=vibration"}
-											}
-										},
-						"childTypes_Sensors":[],
-						"childTypes_SplitDevices":[],
-						"tempUnits":"C"
-						}, 
-
 
 				"shellymotionsensor":{"props":{"isShellyDevice":True, "usesInputForOnOff":False, "isRelay":False, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":False, "SupportsStatusRequest":True, "AllowOnStateChange":False,  "SupportsBatteryLevel":True,
 						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
@@ -2924,7 +2905,7 @@ class Plugin(indigo.PluginBase):
 		
 			if "device" in data: 
 				deviceTypeId = data["device"]["hostname"].rsplit("-", 1)[0]
-				if False and deviceTypeId.find("shellydw") >-1: deviceTypeId = "shellydw"
+				if deviceTypeId.find("shellydw") >-1: deviceTypeId = "shellydw"
 				
 			else:
 				deviceTypeId = dev.deviceTypeId
