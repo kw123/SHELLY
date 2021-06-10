@@ -1780,8 +1780,8 @@ class Plugin(indigo.PluginBase):
 		try:
 			theDictList =  super(Plugin, self).getDeviceConfigUiValues(pluginProps, typeId, devId)
 			if devId not in self.SHELLY:
-				self.indiLOG.log(40,u"the shelly device is new, use menu / scan to create new shelly devices !!")
-				theDictList[0]["MSG"] = "ERROR: use menu/scan to create new shelly devices"
+				self.indiLOG.log(30,u"the shelly device is new, recommended to use menu / scan to create new shelly devices !!")
+				theDictList[0]["MSG"] = "use menu/scan to create new shelly devices"
 			try: ##Only if it exists already
 				if "isParent" in pluginProps:
 					if "sensorNo" in pluginProps and "sensorNo" in dev.states:
@@ -1815,29 +1815,44 @@ class Plugin(indigo.PluginBase):
 			devNo = "0"
 			newParameters = False
 			#self.indiLOG.log(10,u"valuesDict {}".format(valuesDict))
+			MAC = valuesDict["MAC"]
+			ipNumber = valuesDict["ipNumber"]
 
-
-			if devId not in self.SHELLY:
-				valuesDict[u"MSG"] = "ERROR: use menu/scan to create new shelly devices"
-				errorDict[u"MSG"] = "use menu/scan to create new shelly devices"
-				return ( False, valuesDict, errorDict )
-
-			if not self.isValidIP(valuesDict["ipNumber"]):
+			if not self.isValidIP(ipNumber):
 				valuesDict[u"MSG"] = "ERROR: bad IP Number"
 				errorDict[u"MSG"] = "bad IP Number"
 				return ( False, valuesDict, errorDict )
 
+			if not len(MAC):
+				valuesDict[u"MSG"] = "ERROR: bad MAC Number"
+				errorDict[u"MSG"] = "bad MAC Number"
+				return ( False, valuesDict, errorDict )
 
-			if valuesDict["MAC"] != self.SHELLY[devId]["MAC"]:
-				self.indiLOG.log(20,u" replacing mac#:{} with:{}".format(self.SHELLY[devId]["MAC"], valuesDict["MAC"]))
+
+
+			if devId not in self.SHELLY:
+				for prop in _emptyProps[typeId]["props"]:
+					if prop not in valuesDict:
+						valuesDict[prop] = _emptyProps[typeId]["props"][prop]
+				valuesDict["devNo"] = "0"
+				valuesDict["address"] = ipNumber
+				self.initShelly(dev, MAC, ipNumber, deviceTypeId=typeId)
+				self.deviceActionList.append({"devId":int(devId), "action":"states", "states":{"MAC":MAC,"created":datetime.datetime.now().strftime(_defaultDateStampFormat)} ,"notBefore":time.time() + 1})
+				#valuesDict[u"MSG"] = "ERROR: use menu/scan to create new shelly devices"
+				#errorDict[u"MSG"] = "use menu/scan to create new shelly devices"
+				return ( True, valuesDict, errorDict )
+
+
+			if MAC != self.SHELLY[devId]["MAC"]:
+				self.indiLOG.log(20,u" replacing mac#:{} with:{}".format(self.SHELLY[devId]["MAC"], MAC))
 				dev = indigo.devices[devId]
-				dev.updateStateOnServer("MAC",valuesDict["MAC"])
-				self.SHELLY[devId]["MAC"] = valuesDict["MAC"]
+				dev.updateStateOnServer("MAC",MAC)
+				self.SHELLY[devId]["MAC"] = MAC
 
 
 			if "isParent" in props:
-				if valuesDict["ipNumber"] != self.SHELLY[dev.id]["ipNumber"]: self.SHELLY[dev.id]["ipNumber"] = valuesDict["ipNumber"]
-				if dev.address != self.SHELLY[dev.id]["ipNumber"]: valuesDict["address"] = valuesDict["ipNumber"]
+				if valuesDict["ipNumber"] != self.SHELLY[dev.id]["ipNumber"]: self.SHELLY[dev.id]["ipNumber"] = ipNumber
+				if dev.address != self.SHELLY[dev.id]["ipNumber"]: valuesDict["address"] = ipNumber
 
 
 			for pp in["ipNumber", "pollingFrequency", "expirationSeconds"]:
@@ -2173,6 +2188,7 @@ class Plugin(indigo.PluginBase):
 			self.resetMinMaxSensors()
 
 
+
 		except Exception, e:
 			if len(unicode(e)) > 5 :
 				self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
@@ -2223,13 +2239,15 @@ class Plugin(indigo.PluginBase):
 						self.indiLOG.log(20,u"{} changed devtype to {}, need to edit device again and save".format(dev.name, action["value"]))
 						delAction.insert(0,ii)
 
-					if action["action"] == "checkStatus" and time.time() - action["value"] < 0:
-						if time.time() - action["value"] > -5: # not in the first 5 secs
-							self.addToShellyPollerQueue( action["devId"], "status", now=True)
-							self.indiLOG.log(10,u"{} checking status after roller open/close action".format(dev.name))
-						else:
-							delAction.insert(0,ii)
-				else:
+					if action["action"] == "checkStatus" and time.time() - action["notBefore"] < 0:
+						self.addToShellyPollerQueue( action["devId"], "status", now=True)
+						self.indiLOG.log(10,u"{} checking status after roller open/close action".format(dev.name))
+						delAction.insert(0,ii)
+
+					if action["action"] == "states" and time.time() - action["notBefore"] < 0:
+						for state in action["states"]:
+							dev.updateStateOnServer(state, action["states"][state])
+						self.indiLOG.log(10,u"{} adding missing states ".format(dev.name))
 						delAction.insert(0,ii)
 				ii += 1
 
@@ -4517,7 +4535,7 @@ class Plugin(indigo.PluginBase):
 		queueID	= int(valuesDict["devId"])
 		if self.decideMyLog(u"Actions"): self.indiLOG.log(10,u"ACTIONS: dev {} sending   page:{}".format(queueID, page))
 		self.addToShellyPollerQueue( queueID, page, now=True)
-		self.deviceActionList.append({"devId":int(queueID),"action":"checkStatus","value":time.time() + 20})
+		self.deviceActionList.append({"devId":int(queueID),"action":"checkStatus","notBefore":time.time() + 20})
 		return
 
 ####-------------------------------------------------------------------------####
@@ -4531,7 +4549,7 @@ class Plugin(indigo.PluginBase):
 		queueID	= int(valuesDict["devId"])
 		if self.decideMyLog(u"Actions"): self.indiLOG.log(10,u"ACTIONS: dev {} sending   page:{}".format(queueID, page))
 		self.addToShellyPollerQueue( queueID, page, now=True)
-		self.deviceActionList.append({"devId":int(queueID),"action":"checkStatus","value":time.time() + 20})
+		self.deviceActionList.append({"devId":int(queueID),"action":"checkStatus","notBefore":time.time() + 20})
 		return
 
 ####-------------------------------------------------------------------------####
@@ -4545,7 +4563,7 @@ class Plugin(indigo.PluginBase):
 		queueID	= int(valuesDict["devId"])
 		if self.decideMyLog(u"Actions"): self.indiLOG.log(10,u"ACTIONS: dev {} sending   page:{}".format(queueID, page))
 		self.addToShellyPollerQueue( queueID, page, now=True)
-		self.deviceActionList.append({"devId":int(queueID),"action":"checkStatus","value":time.time() + 20})
+		self.deviceActionList.append({"devId":int(queueID),"action":"checkStatus","notBefore":time.time() + 20})
 		return
 
 ####-------------------------------------------------------------------------####
@@ -4559,7 +4577,7 @@ class Plugin(indigo.PluginBase):
 		queueID	= int(valuesDict["devId"])
 		if self.decideMyLog(u"Actions"): self.indiLOG.log(10,u"ACTIONS: dev {} sending   page:{}".format(queueID, page))
 		self.addToShellyPollerQueue( queueID, page, now=True)
-		self.deviceActionList.append({"devId":int(queueID),"action":"checkStatus","value":time.time() + 20})
+		self.deviceActionList.append({"devId":int(queueID),"action":"checkStatus","notBefore":time.time() + 20})
 
 		return
 
@@ -4578,7 +4596,7 @@ class Plugin(indigo.PluginBase):
 			page = valuesDict["action"]
 			if self.decideMyLog(u"Actions"): self.indiLOG.log(10,u"ACTIONS: dev {} sending   page:{}".format(queueID, page))
 			self.addToShellyPollerQueue( queueID, page, now=True)
-			self.deviceActionList.append({"devId":queueID,"action":"checkStatus","value":time.time()+ 20})
+			self.deviceActionList.append({"devId":queueID,"action":"checkStatus","notBefore":time.time()+ 20})
 			if page.find("test") >-1:
 				self.SHELLY[queueID]["self_test_state"] 	= time.time()
 				self.SHELLY[queueID]["pollingFrequency"]	= 10	
@@ -4877,7 +4895,7 @@ class Plugin(indigo.PluginBase):
 				getStatusDelay = 0 if  setThermometer == {} else time.time()+1
 				self.addToShellyPollerQueue( queueID, page, now=True, getStatusDelay=getStatusDelay)
 				if checkStatusTime > 0:
-					self.deviceActionList.append({"devId":int(queueID),"action":"checkStatus","value":checkStatusTime})
+					self.deviceActionList.append({"devId":int(queueID),"action":"checkStatus","notBefore":checkStatusTime})
 
 			else:
 				self.indiLOG.log(10,u"ACTION not implemented: {}  action:{}".format(dev.name, unicode(action) ))

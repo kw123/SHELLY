@@ -1,3 +1,12 @@
+Added features / changes in v7.16.40 @ 2021-06-10
+===================================================
+
+1. added option to create shelly devices manually through normal indigo new device process
+   this will ONLY work for simple devices like relays etc. not for parent child devices eg Temp+ hum or shelly25 w 2 relays
+   you must enter IP number and MAC number 
+   then  after created wait 1 minute, then do a send status request update for device (in indigo device listing)
+   the do a push of setting to device (menu)
+
 Added features / changes in v7.15.40 @ 2021-06-09
 ===================================================
 
