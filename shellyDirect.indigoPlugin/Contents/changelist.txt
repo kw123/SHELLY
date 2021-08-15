@@ -1,3 +1,10 @@
+Added features / changes in v7.16.41 @ 2021-08-15
+===================================================
+
+1. fixed error msg action_from_device not present ..
+
+
+
 Added features / changes in v7.16.40 @ 2021-06-10
 ===================================================
 

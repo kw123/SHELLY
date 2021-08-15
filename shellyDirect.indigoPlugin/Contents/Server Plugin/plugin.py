@@ -3304,13 +3304,12 @@ class Plugin(indigo.PluginBase):
 			if "update"     in data  and "has_update" in data["update"] and \
 									"software_update_available" in dev.states: 		self.addToStatesUpdateDict(devID, "software_update_available", 		"YES" if data["update"]["has_update"]  else "is up to date")
 
-			if "sleep_mode" in data:
+			if "sleep_mode" in data and  "sleepMode" in dev.states:
 					mapto = {"m":"minutes", "h":"hours", "s":"seconds", "":"unknown"}
 					try: 	yy = mapto[data["sleep_mode"]["unit"]]
 					except: yy = "unknown"
 					xx = u"{:d} {:}".format(data["sleep_mode"]["period"],yy)
-					if True:
-																					self.addToStatesUpdateDict(devID, "sleepMode", 						xx, 								xx)
+					if True:														self.addToStatesUpdateDict(devID, "sleepMode", 						xx, 								xx)
 
 			if "set_volume" in data and "volume" in dev.states: 					self.addToStatesUpdateDict(devID, "volume", 						data["set_volume"])
 
@@ -3340,7 +3339,8 @@ class Plugin(indigo.PluginBase):
 				for xx in data["act_reasons"]:
 					out+=xx+";"
 
-				if len(out) >0:														self.addToStatesUpdateDict(devID, "action_from_device",				 out.strip(";"))
+				if len(out) >0:	
+					if "action_from_device" in dev.states:							self.addToStatesUpdateDict(devID, "action_from_device",				 out.strip(";"))
 
 
 
