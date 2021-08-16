@@ -2309,6 +2309,7 @@ class Plugin(indigo.PluginBase):
 					except: 
 						delShelly.append(devId) 
 						continue
+					if "expired" not in dev.states: continue
 					if time.time() - self.startTime > 300: # no expirtaion in first 5 minutes after start, give it time to receive messages
 						props = dev.pluginProps
 						if time.time() - self.SHELLY[devId]["lastMessageFromDevice"] > self.SHELLY[devId]["expirationSeconds"]:

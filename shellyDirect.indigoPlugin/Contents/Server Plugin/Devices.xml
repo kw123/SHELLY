@@ -4185,6 +4185,11 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<TriggerLabel>overload</TriggerLabel>
 				<ControlPageLabel>overload</ControlPageLabel>
 			</State>
+			<State id="expired">
+				<ValueType>String</ValueType>
+				<TriggerLabel>expired</TriggerLabel>
+				<ControlPageLabel>expired</ControlPageLabel>
+			</State>
 		</States>
 	</Device>
 
@@ -4492,6 +4497,11 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<ValueType>String</ValueType>
 				<TriggerLabel>overload</TriggerLabel>
 				<ControlPageLabel>overload</ControlPageLabel>
+			</State>
+			<State id="expired">
+				<ValueType>String</ValueType>
+				<TriggerLabel>expired</TriggerLabel>
+				<ControlPageLabel>expired</ControlPageLabel>
 			</State>
 		</States>
 	</Device>
