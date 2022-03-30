@@ -805,7 +805,7 @@ _debugAreas 					= ["SetupDevices","HTTPlistener","Polling","Ping","Actions","SQ
 
 ## this is devId --> ipnumber, copied to self.SHELLY[ip#] = copy.deepCopy(_emptyShelly)
 _emptyShelly 					= { "ipNumber":"", "MAC":"", "lastCheck":0, "state":"", "reset":False, "lastActive":0, "queue":0, "deviceEnabled":False, "pollingFrequency":10, 
-									"defaultTask":"status",  "expirationSeconds":100, "lastMessageFromDevice":0,  "lastMessage-Http":"",  "lastMessage-settings":"", "lastMessage-status":"","lastSuccessfullConfigPush":{"all":-10},
+									"defaultTask":"status",  "expirationSeconds":100, "lastMessageFromDevice":0,  "lastMessage-Http":"",  "lastMessage-settings":"", "lastMessage-status":"","lastSuccessfullConfigPush":{"started":-10,"finished":-10},
 									"isChild":False,"isParent":True,"parentIndigoId":0,"children":{}, "lastAlarm":0, "devTypeId":"", "now":False,"tempUnits":"C","threadNumber":0,"getStatusDelay":True}
 
 
@@ -1422,20 +1422,31 @@ class Plugin(indigo.PluginBase):
 ####-------------------------------------------------------------------------####
 	def buttonConfirmconfirmpPuschActionCALLBACK(self, valuesDict, typeId=""):
 		devIdSelect = int(valuesDict["devId"])
+		valuesDict["MSG"] = "not set: push of config to {}, try cancel first".format(devIdSelect)
+		oneOk = False
 		for devId in self.SHELLY:
 			if devId == 0: continue
 			if devId == devIdSelect or devIdSelect ==0:
-				if self.SHELLY[devId]["pushIdActive"] in ["enabled","waiting"]:
+				#self.indiLOG.log(20,u"forcing push of config to {}; test1 passed  pushIdActive:{}".format(devId, self.SHELLY[devId]["pushIdActive"]) )
+				if self.SHELLY[devId]["pushIdActive"] in ["enabled","waiting", "active"]:
 					if devId not in indigo.devices: continue
+					#self.indiLOG.log(20,u"forcing push of config to {}; test2 passed ".format(devId) )
 					try:	dev = indigo.devices[devId]
 					except:	continue
+					#self.indiLOG.log(20,u"forcing push of config to {}; test3 passed ".format(devId) )
 					if dev.enabled:
-						self.SHELLY[devId]["lastSuccessfullConfigPush"] = {"all":-10}
+						self.SHELLY[devId]["lastSuccessfullConfigPush"] = {"started":-10,"finished":-10}
 						self.SHELLY[devId]["lastRequestedPush"] = time.time()
 						self.pushRequest  = time.time()
 						self.checkTimeIfPushToDevicesIsRequired = -1
-						self.indiLOG.log(10,u"forcing push of config to {}; pushIdActive:{}".format(dev.name,  self.SHELLY[devId]["pushIdActive"]) )
-		valuesDict["MSG"] = "forcing push of config to {}".format(devIdSelect)
+						self.SHELLY[devId]["pushIdActive"] = "new"
+						self.indiLOG.log(20,u"forcing push of config to {}-{}; pushIdActive:{}".format(dev.name, dev.id,  self.SHELLY[devId]["pushIdActive"]) )
+						oneOk = True
+					else:
+						valuesDict["MSG"] = "dev not enabled"
+		if oneOk:
+			valuesDict["MSG"] = "forcing push of config to {}".format(devId)
+
 		return valuesDict
 ####-------------------------------------------------------------------------####
 	def buttonConfirmconfirmpPuschActionCancelCALLBACK(self, valuesDict, typeId=""):
@@ -1443,7 +1454,7 @@ class Plugin(indigo.PluginBase):
 		for devId in self.SHELLY:
 			if devId == 0: continue
 			if devId == devIdSelect or devIdSelect ==0:
-				self.SHELLY[devId]["lastSuccessfullConfigPush"] = time.time()
+				self.SHELLY[devId]["lastSuccessfullConfigPush"] = {"started":time.time(),"finished":time.time()}
 				self.SHELLY[devId]["lastRequestedPush"] = 0
 				self.SHELLY[devId]["pushIdActive"] = "stop"
 				self.pushRequest  = -1
@@ -1672,11 +1683,14 @@ class Plugin(indigo.PluginBase):
 			except: self.SHELLY[dev.id]["lastMessageFromDevice"]	= 0
 
 			try: 	
-				if "all" not in self.SHELLY[devId]["lastSuccessfullConfigPush"]:
-					self.SHELLY[dev.id]["lastSuccessfullConfigPush"] = {"all":-10}
-				if self.SHELLY[dev.id]["lastSuccessfullConfigPush"] != {"all":-10}:
-					self.SHELLY[dev.id]["lastSuccessfullConfigPush"] = {"all": time.mktime(datetime.datetime.strptime( dev.states["lastSuccessfullConfigPush"], _defaultDateStampFormat).timetuple() )}
-			except: self.SHELLY[dev.id]["lastSuccessfullConfigPush"] = {"all":-10}
+				if "started" not in self.SHELLY[dev.id]["lastSuccessfullConfigPush"]:
+					self.SHELLY[dev.id]["lastSuccessfullConfigPush"] = {"started":-10,"finished":-10}
+					self.indiLOG.log(10,u"resetting config push for devid:{:20} in renewShelly -1 ".format(dev.id) )
+			except Exception as e:
+				self.exceptionHandler(40,e)
+				self.indiLOG.log(10,u"resetting config push for devid:{:20} in renewShelly -2 ".format(dev.id) )
+				self.SHELLY[dev.id]["lastSuccessfullConfigPush"] = {"started":-10,"finished":-10}
+
 			if "lastRequestedPush" not in self.SHELLY[dev.id]:		self.SHELLY[dev.id]["lastRequestedPush"] = 0
 
 			self.SHELLY[dev.id]["devTypeId"] 					 	 = dev.deviceTypeId
@@ -1748,7 +1762,7 @@ class Plugin(indigo.PluginBase):
 						parentProps["children"] = json.dumps(children)
 						parentDev.replacePluginPropsOnServer(parentProps)
 				except Exception as e:
-					self.indiLOG.log(10,u"while deleting children devices is OK, was already deleted... Line {} has error={}".format(sys.exc_info()[2].tb_lineno, e))
+					self.exceptionHandler(20,e)
 
 
 		try:		del self.SHELLY[dev.id]
@@ -1958,13 +1972,14 @@ class Plugin(indigo.PluginBase):
 					self.SHELLY[devId][pp] = copy.copy(valuesDict[pp])
 				if newParameters:
 					parentDev.replacePluginPropsOnServer(parentProps)
-					self.SHELLY[parentDev.id]["lastSuccessfullConfigPush"] = {"all": -10}
+					self.indiLOG.log(20,u"start pushing config parameters to: {}".format(dev.name))
+					self.SHELLY[parentDev.id]["lastSuccessfullConfigPush"] = {"started":-10,"finished":-10}
 					self.SHELLY[devId]["lastRequestedPush"] = time.time()
 	
 
 			if newParameters:
-				self.indiLOG.log(10,u"start pushing config parameters to: {}".format(dev.name))
-				self.SHELLY[devId]["lastSuccessfullConfigPush"] = {"all": -10}
+				self.indiLOG.log(20,u"start pushing config parameters to: {}".format(dev.name))
+				self.SHELLY[devId]["lastSuccessfullConfigPush"] = {"started":-10,"finished":-10}
 				self.pushRequest = time.time()
 
 
@@ -2306,13 +2321,15 @@ class Plugin(indigo.PluginBase):
 
 
 				try: # just in case not properly defined
-					if self.SHELLY[devId]["lastSuccessfullConfigPush"]["all"] == 0: pass
+					self.SHELLY[devId]["lastSuccessfullConfigPush"]["finished"]
 				except:
-					self.SHELLY[devId]["lastSuccessfullConfigPush"] = {"all":-10}
+					self.SHELLY[devId]["lastSuccessfullConfigPush"] = {"started":-10,"finished":-10}
+					self.indiLOG.log(10,u"resetting config push for devid:{:20} in checkIfPushToDevicesIsRequired".format(devId) )
 
-				if time.time() - self.SHELLY[devId]["lastSuccessfullConfigPush"]["all"] > self.repeatConfigPush or (pushNow and time.time() - self.SHELLY[devId]["lastRequestedPush"] < 10 ):
-					if self.SHELLY[devId]["pushIdActive"] in ["enabled","waiting"]:
-						#self.indiLOG.log(10,u"checkIfPushToDevicesIsRequired: {}; pushIdActive={}".format(devId, self.SHELLY[devId]["pushIdActive"]))
+				self.indiLOG.log(10,u"checkIfPushToDevicesIsRequired: {}; pushIdActive={}".format(devId, self.SHELLY[devId]["pushIdActive"]))
+				if time.time() - self.SHELLY[devId]["lastSuccessfullConfigPush"]["finished"] > self.repeatConfigPush or (pushNow and time.time() - self.SHELLY[devId]["lastRequestedPush"] < 10 ):
+					if self.SHELLY[devId]["pushIdActive"] in ["enabled","waiting","new"]:
+						self.indiLOG.log(10,u"checkIfPushToDevicesIsRequired: {}; pushIdActive={}".format(devId, self.SHELLY[devId]["pushIdActive"]))
 						self.addToPushConfigToShellyDeviceQueue(devId)
 		except Exception as e:
 			self.exceptionHandler(40,e)
@@ -2587,8 +2604,9 @@ class Plugin(indigo.PluginBase):
 				self.addToShellyPollerQueue(devIdFound, "settings")
 				self.addToShellyPollerQueue(devIdFound, "status")
 				# check if we should push settings, good for battery devices, as they only wake up every x hours
-				if  time.time() - self.SHELLY[devId]["lastSuccessfullConfigPush"]["all"] > self.repeatConfigPush:
-					self.SHELLY[devId]["lastSuccessfullConfigPush"] = {"all": -10}
+				if  time.time() - self.SHELLY[devId]["lastSuccessfullConfigPush"]["finished"] > self.repeatConfigPush:
+					self.indiLOG.log(10,u"resetting config push for devid:{:20} in workOnActionMessage".format(dev.id) )
+					self.SHELLY[devId]["lastSuccessfullConfigPush"] = {"started":-10,"finished":-10}
 					self.addToPushConfigToShellyDeviceQueue(devId)
 				
 
@@ -2938,9 +2956,11 @@ class Plugin(indigo.PluginBase):
 		if page not in ["settings","status","init","httpAction"]: return 
 
 		try:
-			if  time.time() - self.SHELLY[dev.id]["lastSuccessfullConfigPush"]["all"] > self.repeatConfigPush-1200:
-				self.SHELLY[dev.id]["lastSuccessfullConfigPush"] = {"all":-10}
-				self.addToPushConfigToShellyDeviceQueue(dev.id)
+			if self.SHELLY[dev.id]["lastSuccessfullConfigPush"]["finished"] >0:
+				if  time.time() - self.SHELLY[dev.id]["lastSuccessfullConfigPush"]["finished"] > self.repeatConfigPush: # every 3 days
+					self.indiLOG.log(10,u"resetting config push for devid:{:15} in fillShellyDeviceStates".format(dev.id) )
+					self.SHELLY[dev.id]["lastSuccessfullConfigPush"] = {"started":-10,"finished":-10}
+					self.addToPushConfigToShellyDeviceQueue(dev.id)
 
 
 			if self.SHELLY[dev.id]["isParent"]:
@@ -4267,7 +4287,7 @@ class Plugin(indigo.PluginBase):
 			self.SHELLY[shellyIndigoDevNumber]["thread"] = threading.Thread(name=u'self.shellyPollerThread', target=self.shellyPollerThread, args=(shellyIndigoDevNumber,))
 			self.SHELLY[shellyIndigoDevNumber]["thread"].start()
 
-			self.SHELLY[shellyIndigoDevNumber]["pushIdActive"]	= "empty"
+			self.SHELLY[shellyIndigoDevNumber]["pushIdActive"]	= "enabled"
 			self.SHELLY[shellyIndigoDevNumber]["pushstate"]	= "start"
 			self.SHELLY[shellyIndigoDevNumber]["pushthread"] = threading.Thread(name=u'self.pushThreadLoop', target=self.pushThreadLoop, args=(shellyIndigoDevNumber,))
 			self.SHELLY[shellyIndigoDevNumber]["pushthread"].start()
@@ -4359,7 +4379,7 @@ class Plugin(indigo.PluginBase):
 				pollingFrequency = self.SHELLY[shellyIndigoDevNumber]["pollingFrequency"]
 				if pollingFrequency == -1:
 					pollingFrequency = 10
-					if self.SHELLY[shellyIndigoDevNumber]["lastSuccessfullConfigPush"]["all"] > 0 and time.time() - self.SHELLY[shellyIndigoDevNumber]["lastSuccessfullConfigPush"]["all"] < self.repeatConfigPush:
+					if self.SHELLY[shellyIndigoDevNumber]["lastSuccessfullConfigPush"]["finished"] > 0 and time.time() - self.SHELLY[shellyIndigoDevNumber]["lastSuccessfullConfigPush"]["finished"] < self.repeatConfigPush:
 						pollingFrequency = _emptyProps[self.SHELLY[shellyIndigoDevNumber]["devTypeId"]]["props"]["automaticPollingFrequency"]
 
 					
@@ -4688,7 +4708,7 @@ class Plugin(indigo.PluginBase):
 
 
 
-			if "redLevel" in dev.states or "brightnessLevel" in dev.states or  "whiteLevel" in dev.states:
+			if dev.deviceTypeId not in ["shellyswitch25-roller"] and ( "redLevel" in dev.states or "brightnessLevel" in dev.states or  "whiteLevel" in dev.states):
 				if action.deviceAction == indigo.kDeviceAction.SetColorLevels:
 					actionValues = action.actionValue
 					setAction = True
@@ -4699,6 +4719,7 @@ class Plugin(indigo.PluginBase):
 
 				if dev.deviceTypeId in ["shellydimmer","ShellyVintage","ShellyBulbDuo"]:	channel = "white"
 				elif "mode" in dev.states:													channel = dev.states["mode"] # == white or color
+				elif "brightnessLevel" in dev.states:										channel = "brightnessLevel"
 				else:																		channel = "white" 
 				
 				if "redLevel" in actionValues: 												channel = "color"
@@ -4906,8 +4927,8 @@ class Plugin(indigo.PluginBase):
 					time.sleep(0.2)
 
 				page = page.strip("&")
+				if self.decideMyLog(u"Actions"): self.indiLOG.log(10,u"ACTIONS: dev {} sending  channel:{};  page:{} deviceTypeId:{}, emptyProps:{}".format(dev.name, channel, page, dev.deviceTypeId, _emptyProps[dev.deviceTypeId]["setPageActionPageOnShellyDev"]))
 				page = _emptyProps[dev.deviceTypeId]["setPageActionPageOnShellyDev"][channel]+page			
-				if self.decideMyLog(u"Actions"): self.indiLOG.log(10,u"ACTIONS: dev {} sending  channel:{};  page:{} deviceTypeId:{}".format(dev.name, channel, page, dev.deviceTypeId))
 				if self.logStateChanges == u"all" or (self.logStateChanges == u"onOff" and ("turn" in page )):
 					self.indiLOG.log(20,u'send "{}"  {}'.format(dev.name, page) )
 				now = True if  setThermometer == {} else False
@@ -4930,8 +4951,9 @@ class Plugin(indigo.PluginBase):
 ####-------------------------------------------------------------------------####
 	def pushThreadLoop(self, devId):
 		try:
+			if self.SHELLY[devId]["pushstate"] == "running": return
+			self.indiLOG.log(10, u"pushThreadLoop starting for devId:{}, active:{}".format(devId, devId in self.SHELLY))
 			self.SHELLY[devId]["pushstate"] = "running"
-			if self.decideMyLog(u"SetupDevices"): self.indiLOG.log(10, u"pushThreadLoop starting for devId:{}".format(devId))
 			if devId not in self.SHELLY: return 
 
 			while self.SHELLY[devId]["pushstate"] == "running":
@@ -4940,6 +4962,7 @@ class Plugin(indigo.PluginBase):
 					if devId not in self.SHELLY: return 
 					continue
 				self.sleep(2)
+				if self.decideMyLog(u"SetupDevices"): self.indiLOG.log(10, u"pushThreadLoop looping for devId:{}, pushstate:{}, active:{}, lastfinish:{}".format(devId, self.SHELLY[devId]["pushstate"], self.SHELLY[devId]["pushIdActive"], time.time() - self.SHELLY[devId]["lastSuccessfullConfigPush"]["finished"]))
 
 				if self.SHELLY[devId]["pushIdActive"] == "new":
 					self.SHELLY[devId]["pushIdActive"] = "active"
@@ -4949,6 +4972,7 @@ class Plugin(indigo.PluginBase):
 
 				if self.SHELLY[devId]["pushIdActive"] == "stop":
 					self.SHELLY[devId]["pushIdActive"] = "waiting"
+					self.sleep(5)
 
 				if devId not in self.SHELLY: return 
 				
@@ -4968,10 +4992,13 @@ class Plugin(indigo.PluginBase):
 			if self.SHELLY[devId]["pushIdActive"] in ["active","stop"]: 										
 				if self.decideMyLog(u"SetupDevices"): self.indiLOG.log(10, u"addToPushConfigToShellyDeviceQueue devId:{} not adding, already in queue".format(devId))
 				return 
-			if time.time() - self.SHELLY[devId]["lastSuccessfullConfigPush"]["all"] < 200: 	
-				if self.decideMyLog(u"SetupDevices"): self.indiLOG.log(10, u"addToPushConfigToShellyDeviceQueue devId:{} not adding, just finsihed {:.0f} secs ago".format(devId,time.time() - self.SHELLY[devId]["lastSuccessfullConfigPush"]["all"]))
+			if time.time() - self.SHELLY[devId]["lastSuccessfullConfigPush"]["finished"] < 200: 	
+				if self.decideMyLog(u"SetupDevices"): self.indiLOG.log(10, u"addToPushConfigToShellyDeviceQueue devId:{} not adding, just finished {:.0f} secs ago".format(devId,time.time() - self.SHELLY[devId]["lastSuccessfullConfigPush"]["finished"]))
 				return 
-			if self.decideMyLog(u"SetupDevices"): self.indiLOG.log(10, u"addToPushConfigToShellyDeviceQueue adding dev:{}".format(dev.name) )
+			if time.time() - self.SHELLY[devId]["lastSuccessfullConfigPush"]["started"] < 3600: # redo only after 1 hour 	
+				if self.decideMyLog(u"SetupDevices"): self.indiLOG.log(10, u"addToPushConfigToShellyDeviceQueue devId:{} not adding, started {:.0f} secs ago".format(devId,time.time() - self.SHELLY[devId]["lastSuccessfullConfigPush"]["finished"]))
+				return 
+			if self.decideMyLog(u"SetupDevices"): self.indiLOG.log(10, u"addToPushConfigToShellyDeviceQueue adding dev:{}, lastfinish:{}".format(dev.name, time.time() - self.SHELLY[devId]["lastSuccessfullConfigPush"]["finished"] ) )
 			self.SHELLY[devId]["pushIdActive"] = "new"
 				
 		except Exception as e:
@@ -5000,8 +5027,16 @@ class Plugin(indigo.PluginBase):
 			self.addToShellyPollerQueue(devId, "settings")
 			self.sleep(1)
 			if self.decideMyLog(u"SetupDevices"): self.indiLOG.log(10,u"addToPushConfigToShellyDeviceQueue starting for :{}, last pushes:{} ".format(dev.name, self.SHELLY[devId]["lastSuccessfullConfigPush"]) )
-			if self.SHELLY[devId]["lastSuccessfullConfigPush"]["all"]  > 200: return  
-			
+
+			# if sucess full push in the last 5 minutes do not try again
+			if self.SHELLY[devId]["lastSuccessfullConfigPush"]["finished"]  > 0 and time.time() - self.SHELLY[devId]["lastSuccessfullConfigPush"]["finished"]  < 300: return  
+			# do not try longer than 5 minutes to push config
+			if self.SHELLY[devId]["lastSuccessfullConfigPush"]["started"]   > 0 and time.time() - self.SHELLY[devId]["lastSuccessfullConfigPush"]["started"]   > 300:
+				return  
+
+			# set starting time stamp for above test
+			if self.SHELLY[devId]["lastSuccessfullConfigPush"]["started"] < 0:
+				self.SHELLY[devId]["lastSuccessfullConfigPush"]["started"] = time.time() 
 
 			if "action_url" in _emptyProps[deviceTypeId]:  
 					pageBack = "http://"+self.IndigoServerIPNumber+":"+str(self.portOfIndigoServer)
@@ -5109,17 +5144,22 @@ class Plugin(indigo.PluginBase):
 						if page not in self.SHELLY[devId]["lastSuccessfullConfigPush"]:
 							self.SHELLY[devId]["lastSuccessfullConfigPush"][page]  = -10 
 
+
 						delayCounter += 1
 						if retCode != "0" and retCode.find("timeout") >-1: 
 							if self.decideMyLog(u"SetupDevices"): self.indiLOG.log(10,u"delaying send by {} due to retcode {}".format(sleepAfterTimeout, retCode[0:50]) )
 							for ii in range(int(sleepAfterTimeout)):
+								self.indiLOG.log(20,u"page:{}; tesL in Shelly:{};  loopc:{}".format(page, self.SHELLY[devId]["lastSuccessfullConfigPush"]), ii )
 								if self.testPing(ipNumber) == 0: break
 								self.sleep(0.5) 
-						elif 	delayCounter %delayEveryx == 0:
+						elif delayCounter %delayEveryx == 0:
 							if self.decideMyLog(u"SetupDevices"): self.indiLOG.log(10,u"delaying send by {} secs after {} sends".format(SleepFor, delayCounter) )
 							self.sleep(SleepFor +delayCounter/5)
 						else:
 							self.sleep(1.5)
+
+						if page not in self.SHELLY[devId]["lastSuccessfullConfigPush"]:
+							self.SHELLY[devId]["lastSuccessfullConfigPush"][page]  = -10 
 
 						if self.SHELLY[devId]["lastSuccessfullConfigPush"][page]  < 200:
 							if self.decideMyLog(u"SetupDevices"):self.indiLOG.log(10,u"{},  setting page >{}<".format(ipNumber, page) )
@@ -5144,17 +5184,16 @@ class Plugin(indigo.PluginBase):
 					break
 
 			if allPages:
-				self.SHELLY[devId]["lastSuccessfullConfigPush"]["all"] = time.time()
+				self.SHELLY[devId]["lastSuccessfullConfigPush"]["finished"] = time.time()
 				self.indiLOG.log(10,u"successfull action_url push to devId:{}, timer settings:{}".format(dev.name, self.SHELLY[devId]["lastSuccessfullConfigPush"]) )
 				self.pushRequest = -1
 			else:
-				self.SHELLY[devId]["lastSuccessfullConfigPush"]["all"] = -10
+				self.SHELLY[devId]["lastSuccessfullConfigPush"]["finished"] = -10
 
 
 
 		except Exception as e:
-			if unicode(e).find("None") == -1:
-				self.exceptionHandler(40,e)
+			self.exceptionHandler(40,e)
 		return 
 
 

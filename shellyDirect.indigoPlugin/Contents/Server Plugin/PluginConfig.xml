@@ -1,7 +1,8 @@
 <?xml version="1.0"?>
 <PluginConfig>
+	<SupportURL></SupportURL>
 
-	<Field id="infoLabel1" type="label">
+	<Field id="title" type="label">
 		<Label>Shelly plugin		   Developed by Karl Wachs</Label>
 	</Field>
 

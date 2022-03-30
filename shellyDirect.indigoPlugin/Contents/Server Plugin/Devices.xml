@@ -2056,14 +2056,6 @@
 					<Option value="0">off</Option>
 				</List>
 			</Field>
-			<Field id="SENDTOSHELLYDEVICE-led_power_disable" type="menu" defaultValue="none">
-				<Label>Set LED power disable:</Label>
-				<List>
-					<Option value="none">do not set</Option>
-					<Option value="1">on</Option>
-					<Option value="0">off</Option>
-				</List>
-			</Field>
 		</ConfigUI>
 		<States>
 			<!--   this is dev specific -->
@@ -2224,14 +2216,6 @@
 			</Field>
 			<Field id="SENDTOSHELLYDEVICE-led_status_disable" type="menu" defaultValue="none">
 				<Label>Set LED status disable:</Label>
-				<List>
-					<Option value="none">do not set</Option>
-					<Option value="1">on</Option>
-					<Option value="0">off</Option>
-				</List>
-			</Field>
-			<Field id="SENDTOSHELLYDEVICE-led_power_disable" type="menu" defaultValue="none">
-				<Label>Set LED power disable:</Label>
 				<List>
 					<Option value="none">do not set</Option>
 					<Option value="1">on</Option>
