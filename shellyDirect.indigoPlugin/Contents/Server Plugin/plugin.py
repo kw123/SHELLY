@@ -16,14 +16,27 @@ import copy
 import math
 import socket
 import threading
-import Queue
+try:
+	import queue as Queue
+except:
+	import Queue
 import cProfile
 import pstats
 import logging
 import urllib
+import requests
+
+import traceback
+
 
 #import pydevd_pycharm
 #pydevd_pycharm.settrace('localhost', port=5678, stdoutToServer=True, stderrToServer=True)
+
+try:
+	unicode("x")
+except:
+	unicode = str
+
 
 try:
 	# noinspection PyUnresolvedReferences
@@ -792,7 +805,7 @@ _debugAreas 					= ["SetupDevices","HTTPlistener","Polling","Ping","Actions","SQ
 
 ## this is devId --> ipnumber, copied to self.SHELLY[ip#] = copy.deepCopy(_emptyShelly)
 _emptyShelly 					= { "ipNumber":"", "MAC":"", "lastCheck":0, "state":"", "reset":False, "lastActive":0, "queue":0, "deviceEnabled":False, "pollingFrequency":10, 
-									"defaultTask":"status",  "expirationSeconds":100, "lastMessageFromDevice":0,  "lastMessage-Http":"",  "lastMessage-settings":"", "lastMessage-status":"","lastSuccessfullConfigPush":0,
+									"defaultTask":"status",  "expirationSeconds":100, "lastMessageFromDevice":0,  "lastMessage-Http":"",  "lastMessage-settings":"", "lastMessage-status":"","lastSuccessfullConfigPush":{"all":-10},
 									"isChild":False,"isParent":True,"parentIndigoId":0,"children":{}, "lastAlarm":0, "devTypeId":"", "now":False,"tempUnits":"C","threadNumber":0,"getStatusDelay":True}
 
 
@@ -947,11 +960,11 @@ class Plugin(indigo.PluginBase):
 
 			self.startHTTPListening()
 
- 			self.indiLOG.log(10, "..  startup(self): setting variables, debug ..   finished, doing dev init")
+			self.indiLOG.log(10, "..  startup(self): setting variables, debug ..   finished, doing dev init")
 
-		except Exception, e:
+		except Exception as e:
 			self.indiLOG.log(50,u"--------------------------------------------------------------------------------------------------------------")
-			self.indiLOG.log(50,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+			self.indiLOG.log(50,u"Line {} has error={}".format(sys.exc_info()[2].tb_lineno, e))
 			self.indiLOG.log(50,u"Error in startup of plugin, waiting for 2000 secs then restarting plugin")
 			self.indiLOG.log(50,u"--------------------------------------------------------------------------------------------------------------")
 			self.sleep(2000)
@@ -966,8 +979,8 @@ class Plugin(indigo.PluginBase):
 			if not os.path.exists(self.indigoPreferencesPluginDir):
 				os.mkdir(self.indigoPreferencesPluginDir)
 
-		except Exception, e:
-			self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			self.exceptionHandler(40,e)
 		return 
 
 	
@@ -975,8 +988,8 @@ class Plugin(indigo.PluginBase):
 	def startupFIXES(self): # change old names used
 		try:
 			return 
-		except Exception, e:
-			self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			self.exceptionHandler(40,e)
 		return 
 
 
@@ -986,8 +999,8 @@ class Plugin(indigo.PluginBase):
 	def setupBasicFiles(self):
 		try:
 			return 
-		except Exception, e:
-			self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			self.exceptionHandler(40,e)
 		return 
 
 
@@ -1000,9 +1013,9 @@ class Plugin(indigo.PluginBase):
 				if self.pluginPrefs.get(u"debug"+d, False): self.debugLevel.append(d)
 
 
-		except Exception, e:
+		except Exception as e:
 			self.indiLOG.log(50,u"--------------------------------------------------------------------------------------------------------------")
-			self.indiLOG.log(50,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e) )
+			self.indiLOG.log(50,u"Line {} has error={}".format(sys.exc_info()[2].tb_lineno, e) )
 			self.indiLOG.log(50,u"Error in startup of plugin, plugin prefs are wrong ")
 			self.indiLOG.log(50,u"--------------------------------------------------------------------------------------------------------------")
 		return
@@ -1085,20 +1098,22 @@ class Plugin(indigo.PluginBase):
 				try:
 					ff = indigo.devices.folder.create(self.indigoFolderName)
 					self.indigoFolderId = ff.id
-				except Exception, e:
-					self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+				except Exception as e:
+					self.exceptionHandler(40,e)
 					self.indigoFolderId =0
 			
 
-			self.pythonPath					= u"/usr/bin/python2.6"
-			if os.path.isfile(u"/usr/bin/python2.7"):
+			self.pythonPath					= u"/usr/bin/python2.7"
+			if os.path.isfile(u"/Library/Frameworks/Python.framework/Versions/Current/bin/python3"):
+				self.pythonPath				= u"/Library/Frameworks/Python.framework/Versions/Current/bin/python3"
+			elif os.path.isfile(u"/usr/bin/python2.7"):
 				self.pythonPath				= u"/usr/bin/python2.7"
 			elif os.path.isfile(u"/usr/bin/python2.6"):
 				self.pythonPath				= u"/usr/bin/python2.6"
 
-		except Exception, e:
+		except Exception as e:
 			self.indiLOG.log(50,u"--------------------------------------------------------------------------------------------------------------")
-			self.indiLOG.log(50,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+			self.indiLOG.log(50,u"Line {} has error={}".format(sys.exc_info()[2].tb_lineno, e))
 			self.indiLOG.log(50,u"Error in startup of plugin, waiting for 2000 secs then restarting plugin")
 			self.indiLOG.log(50,u"--------------------------------------------------------------------------------------------------------------")
 			self.sleep(2000)
@@ -1114,8 +1129,8 @@ class Plugin(indigo.PluginBase):
 	def readConfig(self):  ## only once at startup
 		try:
 			pass
-		except Exception, e:
-			self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			self.exceptionHandler(40,e)
 		return 
 #
 
@@ -1131,7 +1146,7 @@ class Plugin(indigo.PluginBase):
 		for d in _debugAreas:
 			if valuesDict[u"debug"+d]: self.debugLevel.append(d)
 
-		self.unfiCurl	= valuesDict[u"unfiCurl"]
+		self.useCurlOrPymethod	= valuesDict[u"useCurlOrPymethod"]
 
 		self.setLogfile(valuesDict[u"logFileActive2"])
 	 
@@ -1154,8 +1169,8 @@ class Plugin(indigo.PluginBase):
 			if yy != self.SQLLoggingEnable:
 				self.SQLLoggingEnable = yy
 				changeLogging = True
-		except Exception, e:
-			self.indiLOG.log(30,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			self.indiLOG.log(30,u"Line {} has error={}".format(sys.exc_info()[2].tb_lineno, e))
 			self.SQLLoggingEnable = {"devices":True, "variables":True}
 
 		if changeLogging: self.setSqlLoggerIgnoreStatesAndVariables()
@@ -1415,7 +1430,7 @@ class Plugin(indigo.PluginBase):
 					try:	dev = indigo.devices[devId]
 					except:	continue
 					if dev.enabled:
-						self.SHELLY[devId]["lastSuccessfullConfigPush"] = -10
+						self.SHELLY[devId]["lastSuccessfullConfigPush"] = {"all":-10}
 						self.SHELLY[devId]["lastRequestedPush"] = time.time()
 						self.pushRequest  = time.time()
 						self.checkTimeIfPushToDevicesIsRequired = -1
@@ -1471,8 +1486,8 @@ class Plugin(indigo.PluginBase):
 					dev = indigo.devices[devId]
 					self.indiLOG.log(10,u"sending status request to device:{}".format(dev.name) )
 					self.sendStatusRequest(dev)
-		except Exception, e:
-			self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			self.exceptionHandler(40,e)
 		return 
 
 		return valuesDict
@@ -1606,8 +1621,8 @@ class Plugin(indigo.PluginBase):
 					self.indiLOG.log(10,u"deviceStartComm .... props:{}".format(props) )
 					states = unicode(dev.states)
 					self.indiLOG.log(10,u"deviceStartComm  ... states:{}".format(states) )
-		except Exception, e:
-			self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			self.exceptionHandler(40,e)
 			self.indiLOG.log(40,u"for dev: {}".format(dev.name))
 		self.doNotrestartDev = ""
 		return 
@@ -1657,9 +1672,11 @@ class Plugin(indigo.PluginBase):
 			except: self.SHELLY[dev.id]["lastMessageFromDevice"]	= 0
 
 			try: 	
-				if self.SHELLY[dev.id]["lastSuccessfullConfigPush"] >=0:
-					self.SHELLY[dev.id]["lastSuccessfullConfigPush"] = time.mktime(datetime.datetime.strptime( dev.states["lastSuccessfullConfigPush"], _defaultDateStampFormat).timetuple() )
-			except: self.SHELLY[dev.id]["lastSuccessfullConfigPush"] = 0
+				if "all" not in self.SHELLY[devId]["lastSuccessfullConfigPush"]:
+					self.SHELLY[dev.id]["lastSuccessfullConfigPush"] = {"all":-10}
+				if self.SHELLY[dev.id]["lastSuccessfullConfigPush"] != {"all":-10}:
+					self.SHELLY[dev.id]["lastSuccessfullConfigPush"] = {"all": time.mktime(datetime.datetime.strptime( dev.states["lastSuccessfullConfigPush"], _defaultDateStampFormat).timetuple() )}
+			except: self.SHELLY[dev.id]["lastSuccessfullConfigPush"] = {"all":-10}
 			if "lastRequestedPush" not in self.SHELLY[dev.id]:		self.SHELLY[dev.id]["lastRequestedPush"] = 0
 
 			self.SHELLY[dev.id]["devTypeId"] 					 	 = dev.deviceTypeId
@@ -1677,8 +1694,8 @@ class Plugin(indigo.PluginBase):
 			if not dev.enabled: self.SHELLY[dev.id]["pushIdActive"] = "empty"
 			
 
-		except Exception, e:
-			self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			self.exceptionHandler(40,e)
 
 		return
 
@@ -1730,8 +1747,8 @@ class Plugin(indigo.PluginBase):
 						self.SHELLY[parentDev.id]["children"] = children
 						parentProps["children"] = json.dumps(children)
 						parentDev.replacePluginPropsOnServer(parentProps)
-				except Exception, e:
-					self.indiLOG.log(10,u"while deleting children devices is OK, was already deleted... Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+				except Exception as e:
+					self.indiLOG.log(10,u"while deleting children devices is OK, was already deleted... Line {} has error={}".format(sys.exc_info()[2].tb_lineno, e))
 
 
 		try:		del self.SHELLY[dev.id]
@@ -1793,13 +1810,13 @@ class Plugin(indigo.PluginBase):
 						theDictList[0]["ipNumber"]  = self.SHELLY[int(devId)]["ipNumber"]
 
 					
-			except Exception, e:
-				self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+			except Exception as e:
+				self.exceptionHandler(40,e)
 			#self.indiLOG.log(10,u"theDictList {}".format(unicode(theDictList[0])))
 			return theDictList
 
-		except Exception, e:
-			self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			self.exceptionHandler(40,e)
 			self.indiLOG.log(40,u"theDictList {}".format(theDictList[0]))
 		return theDictList
 
@@ -1858,8 +1875,8 @@ class Plugin(indigo.PluginBase):
 			for pp in["ipNumber", "pollingFrequency", "expirationSeconds"]:
 				try: 
 					self.SHELLY[devId][pp] = copy.copy(valuesDict[pp])
-				except Exception, e:
-					self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+				except Exception as e:
+					self.exceptionHandler(40,e)
 					self.indiLOG.log(40,u"deviceTypeId:  {}, pp::{}::".format(dev.deviceTypeId,pp))
 					self.indiLOG.log(40,u"replacing w default, valuesDict is: {}".format(valuesDict))
 					self.indiLOG.log(40,u"_emptyProps: {}".format(_emptyProps[dev.deviceTypeId]))
@@ -1941,19 +1958,19 @@ class Plugin(indigo.PluginBase):
 					self.SHELLY[devId][pp] = copy.copy(valuesDict[pp])
 				if newParameters:
 					parentDev.replacePluginPropsOnServer(parentProps)
-					self.SHELLY[parentDev.id]["lastSuccessfullConfigPush"] = -10
+					self.SHELLY[parentDev.id]["lastSuccessfullConfigPush"] = {"all": -10}
 					self.SHELLY[devId]["lastRequestedPush"] = time.time()
 	
 
 			if newParameters:
 				self.indiLOG.log(10,u"start pushing config parameters to: {}".format(dev.name))
-				self.SHELLY[devId]["lastSuccessfullConfigPush"] = -10
+				self.SHELLY[devId]["lastSuccessfullConfigPush"] = {"all": -10}
 				self.pushRequest = time.time()
 
 
 				
-		except Exception, e:
-			self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			self.exceptionHandler(40,e)
 			errorDict["MSG"] = unicode(e)
 			valuesDict["MSG"] = unicode(e)
 			return ( False, valuesDict, errorDict )
@@ -2028,7 +2045,7 @@ class Plugin(indigo.PluginBase):
 					pri  = ""
 				self.timeTrackWaitTime = 20
 				return cmd, pri
-		except Exception, e:
+		except Exception as e:
 			pass
 
 		self.timeTrackWaitTime = 60
@@ -2189,10 +2206,9 @@ class Plugin(indigo.PluginBase):
 
 
 
-		except Exception, e:
-			if len(unicode(e)) > 5 :
-				self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
-				self.indiLOG.log(40,u"devId {} ".format(devId))
+		except Exception as e:
+			self.exceptionHandler(40,e)
+			self.indiLOG.log(40,u"devId {} ".format(devId))
 
 		return anyChange
 
@@ -2256,10 +2272,9 @@ class Plugin(indigo.PluginBase):
 				del self.deviceActionList[delAction[jj]]
 
 			return 
-		except Exception, e:
-			if len(unicode(e)) > 5 :
-				self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
-		self.deviceActionList = []
+		except Exception as e:
+			self.exceptionHandler(40,e)
+			self.deviceActionList = []
 		return 
 
 ###-------------------------------------------------------------------------####
@@ -2271,9 +2286,8 @@ class Plugin(indigo.PluginBase):
 				else:
 					self.indiLOG.log(10,u"HTTPlisten test sucessfull")
 				self.testHTTPsuccess = 0
-		except Exception, e:
-			if len(unicode(e)) > 5 :
-				self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			self.exceptionHandler(40,e)
 		return 
 
 ###-------------------------------------------------------------------------####
@@ -2290,13 +2304,18 @@ class Plugin(indigo.PluginBase):
 				if devId == 0: continue
 				if self.SHELLY[devId]["isChild"]: continue
 
-				if time.time() - self.SHELLY[devId]["lastSuccessfullConfigPush"] > self.repeatConfigPush or (pushNow and time.time() - self.SHELLY[devId]["lastRequestedPush"] < 10 ):
+
+				try: # just in case not properly defined
+					if self.SHELLY[devId]["lastSuccessfullConfigPush"]["all"] == 0: pass
+				except:
+					self.SHELLY[devId]["lastSuccessfullConfigPush"] = {"all":-10}
+
+				if time.time() - self.SHELLY[devId]["lastSuccessfullConfigPush"]["all"] > self.repeatConfigPush or (pushNow and time.time() - self.SHELLY[devId]["lastRequestedPush"] < 10 ):
 					if self.SHELLY[devId]["pushIdActive"] in ["enabled","waiting"]:
 						#self.indiLOG.log(10,u"checkIfPushToDevicesIsRequired: {}; pushIdActive={}".format(devId, self.SHELLY[devId]["pushIdActive"]))
 						self.addToPushConfigToShellyDeviceQueue(devId)
-		except Exception, e:
-			if len(unicode(e)) > 5 :
-				self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			self.exceptionHandler(40,e)
 		return 
 
 ###-------------------------------------------------------------------------####
@@ -2323,9 +2342,8 @@ class Plugin(indigo.PluginBase):
 			for devId in delShelly:
 				self.indiLOG.log(10,u"deleting {} {}".format(devId, self.SHELLY[devId]))
 				del self.SHELLY[devId]
-		except Exception, e:
-			if len(unicode(e)) > 5 :
-				self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			self.exceptionHandler(40,e)
 		return 
 
 
@@ -2356,9 +2374,8 @@ class Plugin(indigo.PluginBase):
 					if self.nextIPSCAN == "": break
 			self.indiLOG.log(10,u"SHELLY discovery: finished")
 
-		except Exception, e:
-			if len(unicode(e)) > 5 :
-				self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			self.exceptionHandler(40,e)
 		return 
 
 ####-------------------------------------------------------------------------####
@@ -2368,9 +2385,8 @@ class Plugin(indigo.PluginBase):
 			self.testHTTPsuccess = time.time()
 			if self.decideMyLog(u"HTTPlistener"): self.indiLOG.log(10,u"..  starting http listener TEST @:http://{}:{}/test".format(self.HTTPlisternerTestIP, self.portOfIndigoServer) )
 			self.getJsonFromDevices( self.HTTPlisternerTestIP, "test", jsonAction="", port = str(self.portOfIndigoServer), testHTTP=True)
-		except Exception, e:
-			if len(unicode(e)) > 5 :
-				self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			self.exceptionHandler(40,e)
 		return
 
 
@@ -2393,8 +2409,8 @@ class Plugin(indigo.PluginBase):
 			if not self.queueActive: 
 				self.workOnQueue()
 
-		except Exception, e:
-			self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			self.exceptionHandler(40,e)
 			self.indiLOG.log(40,u"data:{}".format(data))
 		return 
 
@@ -2417,8 +2433,8 @@ class Plugin(indigo.PluginBase):
 			self.messagesQueue.task_done()
 			self.queueActive  = False
 			self.queueList = ""	 
-		except Exception, e:
-			self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			self.exceptionHandler(40,e)
 			self.indiLOG.log(40,u"data:{}".format(data))
 		return 
 
@@ -2442,8 +2458,8 @@ class Plugin(indigo.PluginBase):
 								
 			elif "page" in items and items["page"] == "httpAction":	self.workOnActionMessage(items)
 
-		except Exception, e:
-			self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			self.exceptionHandler(40,e)
 			self.indiLOG.log(40,u" data:{}".format(items) )
 		return 
 
@@ -2529,8 +2545,8 @@ class Plugin(indigo.PluginBase):
 						self.addToShellyPollerQueue(items["shellyIndigoDevNumber"] , "status", now=True)
 				if newDeviceCreated:
 					self.addToShellyPollerQueue(items["shellyIndigoDevNumber"] , "status", now=True)
-		except Exception, e:
-			self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			self.exceptionHandler(40,e)
 			self.indiLOG.log(40,u" data:{}".format(items) )
 	
 ####-------------------------------------------------------------------------####
@@ -2570,8 +2586,9 @@ class Plugin(indigo.PluginBase):
 				self.SHELLY[devIdFound]["now"] = True
 				self.addToShellyPollerQueue(devIdFound, "settings")
 				self.addToShellyPollerQueue(devIdFound, "status")
-				# check if we should push settings, good for battery devices, as thye only wake up every x hours
-				if time.time() - self.SHELLY[devId]["lastSuccessfullConfigPush"] > self.repeatConfigPush:
+				# check if we should push settings, good for battery devices, as they only wake up every x hours
+				if  time.time() - self.SHELLY[devId]["lastSuccessfullConfigPush"]["all"] > self.repeatConfigPush:
+					self.SHELLY[devId]["lastSuccessfullConfigPush"] = {"all": -10}
 					self.addToPushConfigToShellyDeviceQueue(devId)
 				
 
@@ -2590,8 +2607,8 @@ class Plugin(indigo.PluginBase):
 				self.indiLOG.log(10,u"execUpdate ..   httpAction has unexpected message,from ipNumber:{}, sending settings request;  data received:{}".format(ipNumber, data))
 				self.initShelly(0, "", ipNumber, startPoller=True)
 				self.addToShellyPollerQueue(0, "settings")
-		except Exception, e:
-			self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			self.exceptionHandler(40,e)
 			self.indiLOG.log(40,u" data:{}".format(items) )
 		return 
 
@@ -2618,8 +2635,8 @@ class Plugin(indigo.PluginBase):
 					childProps["address"] = ipNumber
 					childDev.replacePluginPropsOnServer(childProps)
 
-		except Exception, e:
-			self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			self.exceptionHandler(40,e)
 			self.indiLOG.log(40,u" data:{}".format(items) )
 		return 
 
@@ -2730,8 +2747,8 @@ class Plugin(indigo.PluginBase):
 			parentDev.replaceOnServer()
 
 
-		except Exception, e:
-			self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			self.exceptionHandler(40,e)
 			self.indiLOG.log(40,u" data:{}".format(data) )
 		return 
 
@@ -2802,8 +2819,8 @@ class Plugin(indigo.PluginBase):
 				self.indiLOG.log(10,u"==> created: {}".format(devParent.name))
 				devId = devParent.id
 
-			except Exception, e:
-				self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+			except Exception as e:
+				self.exceptionHandler(40,e)
 				self.indiLOG.log(40,u"name:{}, props:{}, ipNumber:{}, description:{}, deviceTypeId:>>{}<<\n ".format(name_Parent, props, ipNumber,description, useDevType))
 				return 0
 
@@ -2812,8 +2829,8 @@ class Plugin(indigo.PluginBase):
 				self.createShellyChildDevice( devParent, useDevType, MAC, ipNumber, name_Parent)
 				
 
-		except Exception, e:
-			self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			self.exceptionHandler(40,e)
 			self.indiLOG.log(40,u"data:{}".format(data))
 		return devId
 
@@ -2860,8 +2877,8 @@ class Plugin(indigo.PluginBase):
 			self.SHELLY[devParent.id]["children"] = children
 				
 
-		except Exception, e:
-			self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			self.exceptionHandler(40,e)
 		return 
 
 
@@ -2873,8 +2890,8 @@ class Plugin(indigo.PluginBase):
 			props["MAC"] 					= MAC
 			props["ipNumber"] 				= ipNumber
 				
-		except Exception, e:
-			self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			self.exceptionHandler(40,e)
 
 		return props
 
@@ -2904,8 +2921,8 @@ class Plugin(indigo.PluginBase):
 			if not self.SHELLY[devId]["isChild"] and startPoller:			self.startShellyDevicePoller("start", shellySelect=devId)
 			if "lastRequestedPush" not in self.SHELLY[devId]:				self.SHELLY[devId]["lastRequestedPush"] = 0
 
-		except Exception, e:
-			self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			self.exceptionHandler(40,e)
 
 		return 
 		
@@ -2921,7 +2938,8 @@ class Plugin(indigo.PluginBase):
 		if page not in ["settings","status","init","httpAction"]: return 
 
 		try:
-			if time.time() - self.SHELLY[dev.id]["lastSuccessfullConfigPush"] > self.repeatConfigPush-1200:
+			if  time.time() - self.SHELLY[dev.id]["lastSuccessfullConfigPush"]["all"] > self.repeatConfigPush-1200:
+				self.SHELLY[dev.id]["lastSuccessfullConfigPush"] = {"all":-10}
 				self.addToPushConfigToShellyDeviceQueue(dev.id)
 
 
@@ -3013,8 +3031,8 @@ class Plugin(indigo.PluginBase):
 						if tProp in data["sensors"] and tProp in dev.states:	
 							self.addToStatesUpdateDict(str(devX.id),tProp, data["sensors"][tProp])
 
-		except Exception, e:
-			self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			self.exceptionHandler(40,e)
 			self.indiLOG.log(40,u"data:{}".format(data))
 
 		self.executeUpdateStatesDict()
@@ -3262,8 +3280,8 @@ class Plugin(indigo.PluginBase):
 			else:
 				self.indiLOG.log(10,u"doHTTPactionData {};  not supported message:{}".format(self.SHELLY[dev.id]["ipNumber"], data) )
 
-		except Exception, e:
-			self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			self.exceptionHandler(40,e)
 			self.indiLOG.log(40,u"len(devs):{}".format(len(devs)))
 		return 
 
@@ -3361,8 +3379,8 @@ class Plugin(indigo.PluginBase):
 							dev.replacePluginPropsOnServer(props)
 							renew = True
 
-		except Exception, e:
-			self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			self.exceptionHandler(40,e)
 			self.indiLOG.log(40,u"data {} ".format(data))
 		return renew
 
@@ -3444,8 +3462,8 @@ class Plugin(indigo.PluginBase):
 					if light["ison"]:	dev.updateStateImageOnServer(indigo.kStateImageSel.DimmerOn)
 					else:				dev.updateStateImageOnServer(indigo.kStateImageSel.DimmerOff)
 				if "gain"       in light and "gain"       in dev.states: self.addToStatesUpdateDict(devID, "gain", 		light["gain"])
-		except Exception, e:
-			self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			self.exceptionHandler(40,e)
 		return 
 
 
@@ -3465,8 +3483,8 @@ class Plugin(indigo.PluginBase):
 				self.addToStatesUpdateDict(devID, "state", 			data["sensor"]["state"])
 				self.addToStatesUpdateDict(devID, "onOffState",		data["sensor"]["state"] !="close")
 
-		except Exception, e:
-			self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			self.exceptionHandler(40,e)
 			self.indiLOG.log(40,u"{} data:{}".format(dev.id,data))
 		return 
 
@@ -3553,8 +3571,8 @@ class Plugin(indigo.PluginBase):
 					self.addToStatesUpdateDict(devID, "darkThreshold", 			xx)
 	
 
-		except Exception, e:
-			self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			self.exceptionHandler(40,e)
 			self.indiLOG.log(40,u"{} data:{}".format(dev.id,data))
 		return 
 
@@ -3579,8 +3597,8 @@ class Plugin(indigo.PluginBase):
 						self.addToStatesUpdateDict(devID, "onOffState",False)
 						dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOn)
 
-		except Exception, e:
-			self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			self.exceptionHandler(40,e)
 			self.indiLOG.log(40,u"{} data:{}".format(dev.id,data))
 		return 
 
@@ -3606,8 +3624,8 @@ class Plugin(indigo.PluginBase):
 						self.addToStatesUpdateDict(devID, "onOffState",False)
 						dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOn)
 
-		except Exception, e:
-			self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			self.exceptionHandler(40,e)
 			self.indiLOG.log(40,u"{} data:{}".format(dev.id,data))
 		return 
 
@@ -3706,8 +3724,8 @@ class Plugin(indigo.PluginBase):
 			elif alarmState == _alarmStates[2]: dev.updateStateImageOnServer(indigo.kStateImageSel.SensorTripped) # red
 			else: 								dev.updateStateImageOnServer(indigo.kStateImageSel.PowerOff)
 
-		except Exception, e:
-			self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			self.exceptionHandler(40,e)
 			self.indiLOG.log(40,u"{} data:{}".format(dev.id,data))
 		return 
 
@@ -3747,8 +3765,8 @@ class Plugin(indigo.PluginBase):
 									else:  # if datestring, check if we have a no in front
 										if childDev.states["expired"].find("no") == -1:
 											self.addToStatesUpdateDict(childDev.id, "expired", "no, last expired: {}".format(childDev.states["expired"]) )
-		except Exception, e:
-			self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			self.exceptionHandler(40,e)
 		return 
 
 ####-------------------------------------------------------------------------####
@@ -3765,8 +3783,8 @@ class Plugin(indigo.PluginBase):
 						if deviceTypeId in _childDevTypes:
 							returnDevs.append(childDev)
 							devNos.append(childDevNo)
-		except Exception, e:
-			self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			self.exceptionHandler(40,e)
 			self.indiLOG.log(40,u"deviceTypeId:{}; children {}, devNos:{}".format(deviceTypeId, children, devNos))
 		return returnDevs, devNos
 ####-------------------------------------------------------------------------####
@@ -3779,8 +3797,8 @@ class Plugin(indigo.PluginBase):
 				for childDevNo in self.SHELLY[parentId]["children"][deviceTypeId]:
 					if childDevNo != "":
 						devIDs.append(self.SHELLY[parentId]["children"][deviceTypeId][childDevNo])
-		except Exception, e:
-			self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			self.exceptionHandler(40,e)
 		return devIDs
 
 ####-------------------------------------------------------------------------####
@@ -3836,8 +3854,8 @@ class Plugin(indigo.PluginBase):
 					self.addToStatesUpdateDict(devIDs, "event_cnt", input["event_cnt"], uiValue=uiText)
 				devNo += 1
 
-		except Exception, e:
-			self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			self.exceptionHandler(40,e)
 			self.indiLOG.log(40,u"data {} ".format(data))
 		return 
 
@@ -3853,8 +3871,8 @@ class Plugin(indigo.PluginBase):
 				devNo += 1
 
 
-		except Exception, e:
-			self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			self.exceptionHandler(40,e)
 			self.indiLOG.log(40,u"data {} ".format(data))
 		return 
 
@@ -3885,8 +3903,8 @@ class Plugin(indigo.PluginBase):
 
 # settings:[{"maxtime":10.00,"maxtime_open":10.00,"maxtime_close":10.00,"default_state":"stop","swap":false,"swap_inputs":false,"input_mode":"openclose","button_type":"toggle","btn_reverse":0,"state":"stop","power":0.00,"is_valid":false,"safety_switch":false,"roller_open_url":"http://192.168.1.50:7987/?roller=open","roller_close_url":"http://192.168.1.50:7987/?roller=close","roller_stop_url":"http://192.168.1.50:7987/?roller=stop","schedule":false,"schedule_rules":[],"obstacle_mode":"disabled","obstacle_action":"stop","obstacle_power":200,"obstacle_delay":1,"safety_mode":"while_opening","safety_action":"stop","safety_allowed_on_trigger":"none","off_power":2,"positioning":true}]
 # status [{"state":"stop","power":0.00,"is_valid":false,"safety_switch":false,"overtemperature":false,"stop_reason":"normal","last_direction":"open","current_pos":101,"calibrating":true,"positioning":true}],
-		except Exception, e:
-			self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			self.exceptionHandler(40,e)
 			self.indiLOG.log(40,u"data {} ".format(data))
 		return 
 
@@ -3904,8 +3922,8 @@ class Plugin(indigo.PluginBase):
 				if "counters" in meter and	"energy_counters" 	in devs[devNo].states:	self.addToStatesUpdateDict(devs[devNo].id, "energy_counters",str(meter["counters"]).strip("[]"))					
 				devNo += 1
 
-		except Exception, e:
-			self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			self.exceptionHandler(40,e)
 			self.indiLOG.log(40,u"data {} ".format(data))
 		return 
 
@@ -3933,8 +3951,8 @@ class Plugin(indigo.PluginBase):
 																					devs[devNo].updateStateImageOnServer(indigo.kStateImageSel.PowerOff)
 				devNo += 1
 
-		except Exception, e:
-			self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			self.exceptionHandler(40,e)
 			self.indiLOG.log(40,u"data {} ".format(data))
 		return 
 
@@ -3962,8 +3980,8 @@ class Plugin(indigo.PluginBase):
 			else:
 					self.addToStatesUpdateDict(dev.id, token, data[token])
 	
-		except Exception, e:
-			self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			self.exceptionHandler(40,e)
 		return 
 
 
@@ -4037,8 +4055,8 @@ class Plugin(indigo.PluginBase):
 					pass
 
 
-		except Exception, e:
-			self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			self.exceptionHandler(40,e)
 			self.indiLOG.log(40,u" token:{}, data:{}".format(token, data ))
 		return dev
 
@@ -4079,8 +4097,8 @@ class Plugin(indigo.PluginBase):
 			uiValue = (cString % temp).strip()+suff
 			#self.indiLOG.log(10,u"convTemp temp:{}, devUnits:{} ui:{}".format(temp, devUnits , uiValue ))
 			return round(temp,self.tempDigits) , uiValue 
-		except Exception, e:
-			self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			self.exceptionHandler(40,e)
 		return -99, u""
 
 
@@ -4137,8 +4155,8 @@ class Plugin(indigo.PluginBase):
 									self.addToStatesUpdateDict(dev.id,ttx+u"MinToday",		dev.states[ttx], decimalPlaces = decimalPlaces)
 			self.executeUpdateStatesDict()
 
-		except Exception, e:
-			self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			self.exceptionHandler(40,e)
 		return
 ####----------------------reset sensor min max at midnight -----------------------------------####
 	def fillMinMaxSensors(self,dev,stateName,value,decimalPlaces):
@@ -4151,8 +4169,8 @@ class Plugin(indigo.PluginBase):
 					self.addToStatesUpdateDict(str(dev.id),stateName+u"MaxToday",	 val, decimalPlaces=decimalPlaces)
 				if val < float(dev.states[stateName+u"MinToday"]):
 					self.addToStatesUpdateDict(str(dev.id),stateName+u"MinToday",	 val, decimalPlaces=decimalPlaces)
-		except Exception, e:
-			self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			self.exceptionHandler(40,e)
 		return
 
 #
@@ -4176,13 +4194,13 @@ class Plugin(indigo.PluginBase):
 				if getStatusDelay >0: self.SHELLY[shellyIndigoDevNumber]["getStatusDelay"] = getStatusDelay	
 				self.SHELLY[shellyIndigoDevNumber]["queue"].put(page)
 				if self.decideMyLog(u"Polling"): self.indiLOG.log(10,u"addToShellyPollerQueue ip#:{}; page:{}; now:{};  getStatusDelay:{}".format(self.SHELLY[shellyIndigoDevNumber]["ipNumber"], page, now, time.time()-self.SHELLY[shellyIndigoDevNumber]["getStatusDelay"]))
-			except Exception, e:
-				self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+			except Exception as e:
+				self.exceptionHandler(40,e)
 				self.indiLOG.log(10,u"addToShellyPollerQueue error for  devid:{} in shelly:{}".format(shellyIndigoDevNumber,self.SHELLY[shellyIndigoDevNumber]))
 
 			#self.indiLOG.log(10,u"addToShellyPollerQueue added devid:{} page:{} to queue:{}".format(shellyIndigoDevNumber, page, list(self.SHELLY[shellyIndigoDevNumber]["queue"].queue)))
-		except Exception, e:
-			self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			self.exceptionHandler(40,e)
 		return
 
 
@@ -4196,8 +4214,8 @@ class Plugin(indigo.PluginBase):
 					try:
 						if not self.SHELLY[shellyIndigoDevNumber][u"deviceEnabled"]: 
 							continue
-					except Exception, e:
-						self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+					except Exception as e:
+						self.exceptionHandler(40,e)
 						self.indiLOG.log(40,u"shellyIndigoDevNumber:{};  SHELLY:{}".format(shellyIndigoDevNumber, self.SHELLY))
 						continue
 
@@ -4221,8 +4239,8 @@ class Plugin(indigo.PluginBase):
 							elif self.SHELLY[shellyIndigoDevNumber]["state"] != "running":
 								self.indiLOG.log(10, u"re - starting UpdateshellyQueues for devId:{} ".format(shellySelect) )
 								self.startOneShellyDevicePoller(shellyIndigoDevNumber, reason="not running")
-		except Exception, e:
-			self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			self.exceptionHandler(40,e)
 			self.indiLOG.log(40,u"self.SHELLY:{}".format(self.SHELLY))
 		return 
 
@@ -4254,8 +4272,8 @@ class Plugin(indigo.PluginBase):
 			self.SHELLY[shellyIndigoDevNumber]["pushthread"] = threading.Thread(name=u'self.pushThreadLoop', target=self.pushThreadLoop, args=(shellyIndigoDevNumber,))
 			self.SHELLY[shellyIndigoDevNumber]["pushthread"].start()
 			time.sleep(0.2) # give other procs time to finish
-		except Exception, e:
-			self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			self.exceptionHandler(40,e)
 		return 
 ###-------------------------------------------------------------------------####
 	def stopShellyDevicePoller(self, shellySelect="all"):
@@ -4341,7 +4359,7 @@ class Plugin(indigo.PluginBase):
 				pollingFrequency = self.SHELLY[shellyIndigoDevNumber]["pollingFrequency"]
 				if pollingFrequency == -1:
 					pollingFrequency = 10
-					if self.SHELLY[shellyIndigoDevNumber]["lastSuccessfullConfigPush"] > 0 and time.time() - self.SHELLY[shellyIndigoDevNumber]["lastSuccessfullConfigPush"] < self.repeatConfigPush:
+					if self.SHELLY[shellyIndigoDevNumber]["lastSuccessfullConfigPush"]["all"] > 0 and time.time() - self.SHELLY[shellyIndigoDevNumber]["lastSuccessfullConfigPush"]["all"] < self.repeatConfigPush:
 						pollingFrequency = _emptyProps[self.SHELLY[shellyIndigoDevNumber]["devTypeId"]]["props"]["automaticPollingFrequency"]
 
 					
@@ -4417,9 +4435,9 @@ class Plugin(indigo.PluginBase):
 						self.SHELLY[shellyIndigoDevNumber]["queue"].put(nxt)
 				self.SHELLY[shellyIndigoDevNumber]["reset"]=False
 
-		except Exception, e:
+		except Exception as e:
 			if unicode(e).find("None") == -1:
-				self.indiLOG.log(10,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+				self.indiLOG.log(10,u"Line {} has error={}".format(sys.exc_info()[2].tb_lineno, e))
 		try: 
 			if shellyIndigoDevNumber != 0: self.indiLOG.log(10, u"shellyPollerThread: ip#:{}  devId:{}; update thread stopped".format(ipNumber, shellyIndigoDevNumber) )
 		except: pass
@@ -4442,9 +4460,9 @@ class Plugin(indigo.PluginBase):
 			retJson,  err = self.getJsonFromDevices(ipNumber, page, timeoutMax=timeoutMax)
 			return  retJson, err
 
-		except Exception, e:
+		except Exception as e:
 			if unicode(e).find("None") == -1:
-				self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+				self.exceptionHandler(40,e)
 		return  ret, "err"
 
 
@@ -4464,9 +4482,9 @@ class Plugin(indigo.PluginBase):
 
 			if int(ret) == 0:  return 0
 			return 1
-		except Exception, e:
+		except Exception as e:
 			if unicode(e).find("None") == -1:
-				self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+				self.exceptionHandler(40,e)
 
 		#indigo.server.log(  ipN+"-3  "+ unicode(ret) +"  "+ unicode(time.time() - ss)  )
 		return 1
@@ -4514,8 +4532,8 @@ class Plugin(indigo.PluginBase):
 			if self.decideMyLog(u"Actions"): self.indiLOG.log(10,u"sending to dev {} page={}".format(dev.name, page))
 			self.addToShellyPollerQueue( queueID, page)
 			return
-		except Exception, e:
-			self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			self.exceptionHandler(40,e)
 		return
 
 
@@ -4904,8 +4922,8 @@ class Plugin(indigo.PluginBase):
 
 
 			return
-		except Exception, e:
-			self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			self.exceptionHandler(40,e)
 		return
 
 
@@ -4914,23 +4932,30 @@ class Plugin(indigo.PluginBase):
 		try:
 			self.SHELLY[devId]["pushstate"] = "running"
 			if self.decideMyLog(u"SetupDevices"): self.indiLOG.log(10, u"pushThreadLoop starting for devId:{}".format(devId))
+			if devId not in self.SHELLY: return 
+
 			while self.SHELLY[devId]["pushstate"] == "running":
 				if devId not in indigo.devices: 
 					self.sleep(20)
+					if devId not in self.SHELLY: return 
 					continue
 				self.sleep(2)
+
 				if self.SHELLY[devId]["pushIdActive"] == "new":
 					self.SHELLY[devId]["pushIdActive"] = "active"
 					if self.decideMyLog(u"SetupDevices"): self.indiLOG.log(10, u"pushThreadLoop adding devId: {} to execPush".format(devId))
 					self.execPush(devId, delay = 0)
 					self.SHELLY[devId]["pushIdActive"] = "waiting"
+
 				if self.SHELLY[devId]["pushIdActive"] == "stop":
 					self.SHELLY[devId]["pushIdActive"] = "waiting"
+
+				if devId not in self.SHELLY: return 
 				
 			if self.decideMyLog(u"SetupDevices"): self.indiLOG.log(10, u"pushThreadLoop stopped ")
-		except Exception, e:
+		except Exception as e:
 			if unicode(e).find("None") == -1:
-				self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+				self.exceptionHandler(40,e)
 		return
 
 
@@ -4943,15 +4968,15 @@ class Plugin(indigo.PluginBase):
 			if self.SHELLY[devId]["pushIdActive"] in ["active","stop"]: 										
 				if self.decideMyLog(u"SetupDevices"): self.indiLOG.log(10, u"addToPushConfigToShellyDeviceQueue devId:{} not adding, already in queue".format(devId))
 				return 
-			if time.time() - self.SHELLY[devId]["lastSuccessfullConfigPush"] < 200: 	
-				if self.decideMyLog(u"SetupDevices"): self.indiLOG.log(10, u"addToPushConfigToShellyDeviceQueue devId:{} not adding, just finsihed {:.0f} secs ago".format(devId,time.time() - self.SHELLY[devId]["lastSuccessfullConfigPush"]))
+			if time.time() - self.SHELLY[devId]["lastSuccessfullConfigPush"]["all"] < 200: 	
+				if self.decideMyLog(u"SetupDevices"): self.indiLOG.log(10, u"addToPushConfigToShellyDeviceQueue devId:{} not adding, just finsihed {:.0f} secs ago".format(devId,time.time() - self.SHELLY[devId]["lastSuccessfullConfigPush"]["all"]))
 				return 
 			if self.decideMyLog(u"SetupDevices"): self.indiLOG.log(10, u"addToPushConfigToShellyDeviceQueue adding dev:{}".format(dev.name) )
 			self.SHELLY[devId]["pushIdActive"] = "new"
 				
-		except Exception, e:
+		except Exception as e:
 			if unicode(e).find("None") == -1:
-				self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+				self.exceptionHandler(40,e)
 		return
 
 ####-------------------------------------------------------------------------####
@@ -4974,19 +4999,56 @@ class Plugin(indigo.PluginBase):
 			retCode 			= "0"
 			self.addToShellyPollerQueue(devId, "settings")
 			self.sleep(1)
-			if self.decideMyLog(u"SetupDevices"): self.indiLOG.log(10,u"addToPushConfigToShellyDeviceQueue starting for :{} ".format(dev.name) )
-			if deviceTypeId in _emptyProps:  
-				if "action_url" in _emptyProps[deviceTypeId]:  
+			if self.decideMyLog(u"SetupDevices"): self.indiLOG.log(10,u"addToPushConfigToShellyDeviceQueue starting for :{}, last pushes:{} ".format(dev.name, self.SHELLY[devId]["lastSuccessfullConfigPush"]) )
+			if self.SHELLY[devId]["lastSuccessfullConfigPush"]["all"]  > 200: return  
+			
+
+			if "action_url" in _emptyProps[deviceTypeId]:  
 					pageBack = "http://"+self.IndigoServerIPNumber+":"+str(self.portOfIndigoServer)
 					actionURLs = _emptyProps[deviceTypeId]["action_url"][self.sensorApiVersion]
-					if self.decideMyLog(u"SetupDevices"): self.indiLOG.log(10,u"action actionURLs :{} ".format(actionURLs) )
 
-					currentActions, retCode = self.execShellySend(ipNumber, _statusActionPage[self.sensorApiVersion], timeoutMax=10)
-					currentActions = unicode(currentActions)
+					existingActionSettings, retCode = self.execShellySend(ipNumber, _statusActionPage[self.sensorApiVersion], timeoutMax=10)
+					currentActions = "" # unicode(currentActions)
+					if self.decideMyLog(u"SetupDevices"): self.indiLOG.log(10,u"action actionURLs :{}\n exitings Actions:{}".format(actionURLs, existingActionSettings) )
 
 					for parameter in actionURLs: # eg parameter = settings/actions?report_url="
 						if self.decideMyLog(u"SetupDevices"): self.indiLOG.log(10,u"action parameter :{}<".format(parameter) )
-						for setting in actionURLs[parameter]: # eg settings = "none"  ;actionURLs[parameter][setting] = "data?"
+						for setting in actionURLs[parameter]: 
+							searchFor1 = actionURLs[parameter][setting]
+							searchFor2 = pageBack
+
+							## define page to be send to shelly device 
+							# eg settings = "none"  ;actionURLs[parameter][setting] = "data?"
+							if setting == "none":
+								if searchFor1 in currentActions and searchFor2 in currentActions: 
+									pushSuccessfull = True
+									if self.decideMyLog(u"SetupDevices"): self.indiLOG.log(10,u"action already set: {};  >{}< >{}< ".format(dev.name, searchFor1, searchFor2) )
+									break
+								page = parameter+_urlPrefix[self.sensorApiVersion]+"="+pageBack +"/?"+ actionURLs[parameter][setting]
+								###  = eg settings/?report_url=ttp://ip:port/data?"
+							elif actionURLs[parameter][setting] == "disable":
+								searchFor1 = parameter
+								searchFor2 = "x"
+								if searchFor1 in currentActions and searchFor2 in currentActions: 
+									if self.decideMyLog(u"SetupDevices"): self.indiLOG.log(10,u"action already set: {};  >{}< >{}< ".format(dev.name, searchFor1, searchFor2) )
+									pushSuccessfull = True
+									break
+								page = parameter +_urlPrefix[self.sensorApiVersion]+"="+ setting + "=x" 
+								###  = eg settings/relay/0?shortpush_url="
+							else:
+								if searchFor1 in currentActions and searchFor2 in currentActions: 
+									if self.decideMyLog(u"SetupDevices"): self.indiLOG.log(10,u"action already set: {};  >{}< >{}< ".format(dev.name, searchFor1, searchFor2) )
+									self.SHELLY[devId]["lastSuccessfullConfigPush"][currentActions] = time.time()
+									break
+								page = parameter + setting + _urlPrefix[self.sensorApiVersion]+ "=" + pageBack +"/?"+ actionURLs[parameter][setting]
+								###  = eg settings/relay/0?btn_on_url=http://ip:port/input=on"
+
+							# allready done?
+							if page not in self.SHELLY[devId]["lastSuccessfullConfigPush"]:
+								self.SHELLY[devId]["lastSuccessfullConfigPush"][page] = -10 
+							if self.SHELLY[devId]["lastSuccessfullConfigPush"][page] > 200: continue
+
+							# if not try twice 
 							for tries in range(2):
 								if self.SHELLY[devId]["pushIdActive"] == "stop": 	return 
 								if self.SHELLY[devId]["pushstate"]    != "running": return 
@@ -5003,117 +5065,96 @@ class Plugin(indigo.PluginBase):
 									self.sleep(1.5)
 
 								if self.decideMyLog(u"SetupDevices"): self.indiLOG.log(10,u"action setting tries:{}; :{}< parm[][]:{}< ".format(tries, setting,actionURLs[parameter][setting]) )
-								searchFor1 = actionURLs[parameter][setting]
-								searchFor2 = pageBack
+								searchFor1 = unicode(actionURLs[parameter][setting])
+								searchFor2 = unicode(pageBack)
 
 
-								if setting == "none":
-									if searchFor1 in currentActions and searchFor2 in currentActions: 
-										pushSuccessfull = True
-										if self.decideMyLog(u"SetupDevices"): self.indiLOG.log(10,u"action already set: {};  >{}< >{}< ".format(dev.name, searchFor1, searchFor2) )
-										break
-									page = parameter+_urlPrefix[self.sensorApiVersion]+"="+pageBack +"/?"+ actionURLs[parameter][setting]
-									###  = eg settings/?report_url=ttp://ip:port/data?"
-
-								elif actionURLs[parameter][setting] == "disable":
-									searchFor1 = parameter
-									searchFor2 = "x"
-									if searchFor1 in currentActions and searchFor2 in currentActions: 
-										if self.decideMyLog(u"SetupDevices"): self.indiLOG.log(10,u"action already set: {};  >{}< >{}< ".format(dev.name, searchFor1, searchFor2) )
-										pushSuccessfull = True
-										break
-									page = parameter +_urlPrefix[self.sensorApiVersion]+"="+ setting + "=x" 
-									###  = eg settings/relay/0?shortpush_url="
-								else:
-									if searchFor1 in currentActions and searchFor2 in currentActions: 
-										if self.decideMyLog(u"SetupDevices"): self.indiLOG.log(10,u"action already set: {};  >{}< >{}< ".format(dev.name, searchFor1, searchFor2) )
-										pushSuccessfull = True
-										break
-									page = parameter + setting + _urlPrefix[self.sensorApiVersion]+ "=" + pageBack +"/?"+ actionURLs[parameter][setting]
-									###  = eg settings/relay/0?btn_on_url=http://ip:port/input=on"
 
 								if self.decideMyLog(u"SetupDevices"): self.indiLOG.log(10,u"{}, sending action page:{}".format(ipNumber, page) )
 								pushTried = True
 								jData, retCode = self.execShellySend(ipNumber, page, timeoutMax=2)
 								udata = unicode(jData)
-								if udata.find( searchFor1 ) == -1 or udata.find(searchFor2) == -1:
+								s1 = udata.find(searchFor1) >-1
+								s2 = udata.find(searchFor2) >-1
+								if  not s1 or not s2: # not successfull
 									if udata.find("offline") == -1:
-										self.indiLOG.log(10,u"send action_url to devId:{}, send page:{}; answer not ok:>{}<".format(devId, page, udata) )
+										self.indiLOG.log(10,u"send action_url to devId:{},  search1:>>{}<< ok?:{}, search2:>>{}<< ok?:{}\nanswer not ok:>{}<".format(devId, searchFor1, s1, searchFor2, s2, udata) )
 									continue
 								else:
-									self.SHELLY[devId]["lastSuccessfullConfigPush"] = time.time()
-									pushSuccessfull = True
-									self.pushRequest = -1
-									break
+									self.indiLOG.log(10,u"send action_url to devId:{}\nanswer ok:>{}<".format(devId, udata) )
+									self.SHELLY[devId]["lastSuccessfullConfigPush"][page] = time.time()
 
-			if pushTried:
-				if pushSuccessfull:
-					self.indiLOG.log(10,u"successfull action_url push to devId:{}".format(devId) )
-				else:
-					self.indiLOG.log(10,u"not successfull action_url push to devId:{}, send page:{}; device is offline".format(devId, page) )
-
-
-			pushTried = False
 			retCode = "0"
 			for prop in props:
 				if prop.find("SENDTOSHELLYDEVICE-") > -1:
+					if props[prop] == "none": break
+					if prop not in _settingCmds: 
+						self.indiLOG.log(30,u"props devId:{} , prop:{} not defined, check code".format(devId, prop) )
+						break
+
 					for tries in range(2):
 						if self.SHELLY[devId]["pushIdActive"] == "stop": 	return 
 						if self.SHELLY[devId]["pushstate"]   != "running":	return 
+						self.indiLOG.log(10,u"props devId:{} , prop:{}, props[prop]:{}".format(devId, prop, props[prop]) )
+
+
+						## remove tag then 
+						##  replace -.- with / and QqQ with ?  ..  /? do not work in XML tag name
+						## should be come something like:  settings/relay/1?btn_type=toggle
+
+						cmd 			= _settingCmds[prop][0]
+						setTo 			= props[prop]
+						findItem 		= _settingCmds[prop][1]
+						page 			= cmd + setTo
+						if page not in self.SHELLY[devId]["lastSuccessfullConfigPush"]:
+							self.SHELLY[devId]["lastSuccessfullConfigPush"][page]  = -10 
+
 						delayCounter += 1
 						if retCode != "0" and retCode.find("timeout") >-1: 
 							if self.decideMyLog(u"SetupDevices"): self.indiLOG.log(10,u"delaying send by {} due to retcode {}".format(sleepAfterTimeout, retCode[0:50]) )
 							for ii in range(int(sleepAfterTimeout)):
 								if self.testPing(ipNumber) == 0: break
 								self.sleep(0.5) 
-						elif 	delayCounter %delayEveryx ==0:
+						elif 	delayCounter %delayEveryx == 0:
 							if self.decideMyLog(u"SetupDevices"): self.indiLOG.log(10,u"delaying send by {} secs after {} sends".format(SleepFor, delayCounter) )
 							self.sleep(SleepFor +delayCounter/5)
 						else:
 							self.sleep(1.5)
 
+						if self.SHELLY[devId]["lastSuccessfullConfigPush"][page]  < 200:
+							if self.decideMyLog(u"SetupDevices"):self.indiLOG.log(10,u"{},  setting page >{}<".format(ipNumber, page) )
+							pushTried = True
+							jData, retCode = self.execShellySend(ipNumber, page, timeoutMax=2)
+							udata = unicode(jData)
+							if udata.find( findItem ) == -1:
+								if udata.find("offline")  == -1:
+									self.indiLOG.log(10,u"send config to devId:{} not successfull for page:{}\nanswer not ok:>{}<".format(devId, page, udata) )
+								continue
+							else:
+								self.SHELLY[devId]["lastSuccessfullConfigPush"][page] = time.time()
+								self.indiLOG.log(10,u"send action_url to devId:{}\nanswer ok:>{}<".format(devId, udata) )
+								break
 
-						self.indiLOG.log(10,u"props devId:{} , prop:{}, props[prop]:{}".format(devId, prop, props[prop]) )
-						if props[prop] == "none": break
-						## remove tag then 
-						##  replace -.- with / and QqQ with ?  ..  /? do not work in XML tag name
-						## should be come something like:  settings/relay/1?btn_type=toggle
-						if prop not in _settingCmds: 
-							self.indiLOG.log(10,u"props devId:{} , prop:{} not passed".format(devId, prop) )
-							break
-						cmd 			= _settingCmds[prop][0]
-						setTo 			= props[prop]
-						findItem 		= _settingCmds[prop][1]
-						page 			= cmd + setTo
-						checkFeedBack 	= True
-						if self.decideMyLog(u"SetupDevices"):self.indiLOG.log(10,u"{},  setting page >{}<".format(ipNumber, page) )
-						pushTried = True
-						jData, retCode = self.execShellySend(ipNumber, page, timeoutMax=2)
-						udata = unicode(jData)
-						if checkFeedBack and (udata.find( findItem ) == -1):
-							if udata.find("offline")  == -1:
-								self.indiLOG.log(10,u"send config to devId:{} not successfull for page:{}; answer not ok:>{}<".format(devId, page, udata) )
-							continue
-						else:
-							self.SHELLY[devId]["lastSuccessfullConfigPush"] = time.time()
-							pushSuccessfull = True
-							self.pushRequest = -1
-							break
 
-			if pushTried:
-				if pushSuccessfull:
-					self.indiLOG.log(10,u"successfull config push to devId:{}".format(devId) )
-				else:
-					self.indiLOG.log(10,u"not successfull config push to devId:{}, send page:{}; device is offline".format(devId, page) )
+			allPages = True
+			for xx in self.SHELLY[devId]["lastSuccessfullConfigPush"]:
+				if xx == "all": continue
+				if self.SHELLY[devId]["lastSuccessfullConfigPush"][xx]  < 200:
+					allPages = False
+					break
+
+			if allPages:
+				self.SHELLY[devId]["lastSuccessfullConfigPush"]["all"] = time.time()
+				self.indiLOG.log(10,u"successfull action_url push to devId:{}, timer settings:{}".format(dev.name, self.SHELLY[devId]["lastSuccessfullConfigPush"]) )
+				self.pushRequest = -1
+			else:
+				self.SHELLY[devId]["lastSuccessfullConfigPush"]["all"] = -10
 
 
 
-			if pushSuccessfull:
-				self.addToStatesUpdateDict(str(devId),"lastSuccessfullConfigPush", datetime.datetime.now().strftime(_defaultDateStampFormat))
-
-		except Exception, e:
+		except Exception as e:
 			if unicode(e).find("None") == -1:
-				self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+				self.exceptionHandler(40,e)
 		return 
 
 
@@ -5132,38 +5173,36 @@ class Plugin(indigo.PluginBase):
 			if port !="": usePort = str(port)
 			if self.useCurlOrPymethod.find("curl") > -1:
 				if len(self.userIDOfShellyDevices) >0:
-					UID= " -u "+self.userIDOfShellyDevices+":"+self.passwordOfShellyDevices
-				else: UID =""
+					UID = " -u "+self.userIDOfShellyDevices+":"+self.passwordOfShellyDevices
+				else: UID = ""
 				#usepage = page.replace("[","\[").replace("]","\]")
 				usepage = page
-				cmdR  = self.unfiCurl+UID+" -m "+str(timeoutMax)+" --globoff 'http://"+ipNumber+":"+usePort+"/"+usepage+"'"
+				cmdR  = self.useCurlOrPymethod+" -m "+str(timeoutMax)+" --globoff 'http://"+ipNumber+":"+usePort+"/"+usepage+"'"
 
 				if self.decideMyLog(u"Polling"): self.indiLOG.log(10,u"Connection: "+cmdR )
 				try:
-					ret = subprocess.Popen(cmdR, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).communicate()
+					ret, err = self.readPopen(cmdR)
 					if testHTTP: return {}, "0"
 					if noJson: return {}, "0"
 					try:
-						jj = json.loads(ret[0])
+						jj = json.loads(ret)
 					except :
-						retCode = "timeout" if ret[1].find("timed out")>-1 else ret[1][0:50]
+						retCode = "timeout" if err.find("timed out") >-1 else err[0:50]
 						if ipNumber != self.HTTPlisternerTestIP:
-							self.indiLOG.log(10,u"Shelly repose from {}  no json object returned: >{}<>{}<".format(ipNumber, ret[0], retCode) )
+							self.indiLOG.log(10,u"Shelly curl response from {}  no json object returned: >{}<>{}<".format(ipNumber, ret, retCode) )
 						return {}, retCode
 					if  jsonAction == "print":
 						self.indiLOG.log(10,u" Connection  info\n{}".format( json.dumps(jj, sort_keys=True, indent=2)) )
 
 					return jj, "0"
 
-				except	Exception, e:
-					self.indiLOG.log(40,u"Connection: in Line {} has error={}   Connection".format(sys.exc_traceback.tb_lineno, e) )
+				except	Exception as e:
+					self.indiLOG.log(40,u"Connection: in Line {} has error={}   Connection".format(sys.exc_info()[2].tb_lineno, e) )
 				return {}, "1"
 
 			############# does not work on OSX	el capitan ssl lib too old	##########
 			elif self.useCurlOrPymethod == "requests":
 
-				if data =={}: dataDict = ""
-				else:		  dataDict = json.dumps(data)
 				url = "http://"+ipNumber+":"+usePort+"/"+page
 
 				request = requests.Session()
@@ -5172,14 +5211,15 @@ class Plugin(indigo.PluginBase):
 							resp = request.get(url,auth=(self.userIDOfShellyDevices, self.passwordOfShellyDevices))
 						else:
 							resp = request.get(url)
-  						if testHTTP: return {}, "0"
+						if testHTTP: return {}, "0"
 
 						try:
 							jj = resp.json()
 						except :
+							if noJson: return {}, "0"
 							r = unicode(resp)
 							r =  "timeout" if r.find("timed out")>-1 else rr[0:50]
-							self.indiLOG.log(40,u"Shelly reponse from {}  no json object returned:".format(ipNumber, r) )
+							self.indiLOG.log(40,u"Shelly reponse from {} url:{},  no json object returned:>{}<".format(ipNumber, url, resp) )
 							return {}, r
  
 						if  jsonAction == "print":
@@ -5187,11 +5227,13 @@ class Plugin(indigo.PluginBase):
 
 						return jj, "0"
 
-				except	Exception, e:
-					self.indiLOG.log(40,u"in Line {} has error={}   Connection".format(sys.exc_traceback.tb_lineno, e) )
-
-		except	Exception, e:
-			self.indiLOG.log(40,u"in Line {} has error={}   Connection".format(sys.exc_traceback.tb_lineno, e))
+				except	Exception as e:
+					if testHTTP: return {}, "0"
+					self.exceptionHandler(40,e)
+					self.indiLOG.log(40,u"url testHTTP:{}, used: {}".format(testHTTP, url))
+		
+		except	Exception as e:
+			self.exceptionHandler(40,e)
 		return {}, "1"
 
 
@@ -5210,9 +5252,9 @@ class Plugin(indigo.PluginBase):
 				self.updateStatesDict[devId][key] = {"value":value,"decimalPlaces":decimalPlaces,"uiValue":uiValue, "force":force}
 
 			#self.updateStatesDict = local	  
-		except Exception, e:
+		except Exception as e:
 			if	unicode(e).find(u"UnexpectedNullErrorxxxx") >-1: return newStates
-			self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+			self.exceptionHandler(40,e)
 		return 
 
 ####-------------------------------------------------------------------------####
@@ -5229,7 +5271,7 @@ class Plugin(indigo.PluginBase):
 					try: 
 						local = copy.deepcopy(self.updateStatesDict)
 						break
-					except Exception, e:
+					except Exception as e:
 						self.sleep(0.05)
 				self.updateStatesDict={} 
 
@@ -5238,12 +5280,12 @@ class Plugin(indigo.PluginBase):
 					try: 
 						local = {onlyDevID: copy.deepcopy(self.updateStatesDict[onlyDevID])}
 						break
-					except Exception, e:
+					except Exception as e:
 						self.sleep(0.05)
 
 				try: 
 					del self.updateStatesDict[onlyDevID]
-				except Exception, e:
+				except Exception as e:
 					pass
 			else:
 				return 
@@ -5256,7 +5298,7 @@ class Plugin(indigo.PluginBase):
 				if onlyDevID !="0" and onlyDevID != devId: continue
 				if devId == "0": continue
 				try: devID = int(devId)
-				except Exception, e:
+				except Exception as e:
 					self.indiLOG.log(40,u"executeUpdateStatesDict bad devID:{}, local:{}".format(unicode(devId)[0:25], unicode(local[devId])[0:40]) )
 
 					continue
@@ -5309,9 +5351,9 @@ class Plugin(indigo.PluginBase):
 					
 					self.execUpdateStatesList(dev,changedOnly)
 
-		except Exception, e:
+		except Exception as e:
 				if	unicode(e).find(u"UnexpectedNullErrorxxxx") >-1: return 
-				self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+				self.exceptionHandler(40,e)
 		self.executeUpdateStatesDictActive = ""
 		return
 
@@ -5329,8 +5371,8 @@ class Plugin(indigo.PluginBase):
 					dev.updateStateOnServer(uu[u"key"],uu[u"value"])
 
 
-		except Exception, e:
-			self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			self.exceptionHandler(40,e)
 			self.indiLOG.log(40,u"chList: "+ unicode(chList))
 
 
@@ -5360,8 +5402,8 @@ class Plugin(indigo.PluginBase):
 				return out
 			except: pass
 
-		except Exception, e:
-			self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			self.exceptionHandler(40,e)
 		return ""
 
 
@@ -5419,8 +5461,8 @@ class Plugin(indigo.PluginBase):
 						os.remove(fn + "-1.log")
 					os.rename(fn + ".log", fn + "-1.log")
 					indigo.server.log(" reset logfile due to size > %.1f [MB]" %(self.maxLogFileSize/1024./1024.) )
-		except	Exception, e:
-				self.indiLOG.log(50, u"checkLogFiles Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except	Exception as e:
+				self.indiLOG.log(50, u"checkLogFiles Line {} has error={}".format(sys.exc_info()[2].tb_lineno, e))
 			
 			
 	####-----------------	 ---------
@@ -5430,9 +5472,8 @@ class Plugin(indigo.PluginBase):
 			if msgLevel	 == ""	 and u"all" not in self.debugLevel:	 return False
 			if msgLevel in self.debugLevel:							 return True
 			return False
-		except	Exception, e:
-			if len(unicode(e)) > 5:
-				indigo.server.log( u"decideMyLog Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except	Exception as e:
+			self.exceptionHandler(40,e)
 		return False
 
 
@@ -5504,9 +5545,36 @@ class Plugin(indigo.PluginBase):
 
 
 
-		except Exception, e:
-			self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			self.exceptionHandler(40,e)
 		return 
+
+####-------------------------------------------------------------------------####
+	def readPopen(self, cmd):
+		try:
+			ret, err = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+			return ret.decode('utf_8'), err.decode('utf_8')
+		except Exception as e:
+			self.exceptionHandler(40,e)
+
+####-----------------  exception logging ---------
+	def exceptionHandler(self, level, exception_error_message):
+
+		try:
+			try: 
+				if u"{}".format(exception_error_message).find("None") >-1: return exception_error_message
+			except: 
+				pass
+
+			filename, line_number, method, statement = traceback.extract_tb(sys.exc_info()[2])[-1]
+			#module = filename.split('/')
+			log_message = "'{}'".format(exception_error_message )
+			log_message +=  "\n{} @line {}: '{}'".format(method, line_number, statement)
+			if level > 0:
+				self.indiLOG.log(level, log_message)
+			return "'{}'".format(log_message )
+		except Exception as e:
+			indigo.server.log( "{}".format(e))
 
 
 ##################################################################################################################
@@ -5546,8 +5614,8 @@ class Plugin(indigo.PluginBase):
 			self.httpThread.start()
 
 
-		except Exception, e:
-			self.indiLOG.log(40,u"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			self.exceptionHandler(40,e)
 
 ####-------------------------------------------------------------------------####
 	def start_HTTP_server(self, port):
@@ -5558,8 +5626,17 @@ class Plugin(indigo.PluginBase):
 ####-------------------------------------------------------------------------####
 ####-------------------------------------------------------------------------####
 ####-------------------------------------------------------------------------####
-from BaseHTTPServer import BaseHTTPRequestHandler
-from BaseHTTPServer import HTTPServer
+
+## try = python 2.7 ;  except:  python3 
+try:
+	from BaseHTTPServer import BaseHTTPRequestHandler
+except:
+	from http.server import BaseHTTPRequestHandler
+try:
+	from BaseHTTPServer import HTTPServer
+except:
+	from http.server import HTTPServer
+
 
 
 class RequestHandler(BaseHTTPRequestHandler):
@@ -5574,8 +5651,8 @@ class RequestHandler(BaseHTTPRequestHandler):
 		try:
 			if indigo.activePlugin.decideMyLog(u"HTTPlistener"): indigo.activePlugin.indiLOG.log(10, u"RequestHandler  do_GET ..  ip{} , path:{}".format(self.client_address, self.path))
 			indigo.activePlugin.addtoAnalyzePollerQueue( {"ipNumber":self.client_address[0], "page":"httpAction", "data":{"path": self.path}}  )
-		except Exception, e:
-			indigo.activePlugin.indiLOG.log(40,"Line {} has error={}".format(sys.exc_traceback.tb_lineno, e))
+		except Exception as e:
+			indigo.activePlugin.indiLOG.log(40,"Line {} has error={}".format(sys.exc_info()[2].tb_lineno, e))
 		return
 
 

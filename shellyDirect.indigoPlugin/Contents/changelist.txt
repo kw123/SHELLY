@@ -1,4 +1,10 @@
-Added features / changes in v7.16.42 @ 2021-08-16
+Added features / changes in v7.17.43 @ 2022-03030
+===================================================
+
+1. added support for py3
+
+
+Added features / changes in v7.16.43 @ 2021-08-16
 ===================================================
 
 1. fixed error msg key expired not found ..

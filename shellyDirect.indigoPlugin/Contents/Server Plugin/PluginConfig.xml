@@ -126,7 +126,7 @@ All devices must be on the same release</Label>
    </Field>
 
 
-	<Field	id="unfiCurl"			  type="menu" tooltip="To support different SSL standards: for elCapitan and lower use curl, for higher OS-X you can try python requests"  > 
+	<Field	id="useCurlOrPymethod"			  type="menu" tooltip="To support different SSL standards: for elCapitan and lower use curl, for higher OS-X you can try python requests"  > 
 	<Label>Use curl or python-requests for web page access:</Label> 
 		<List>
 			<Option value="/usr/bin/curl"			>/usr/bin/curl  (std install)</Option>
@@ -134,7 +134,7 @@ All devices must be on the same release</Label>
 			<Option value="requests"  				>python requests</Option>
 		</List>
 	</Field>
-   <Field id="unfiCurlLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">  
+   <Field id="CurlLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">  
 		<Label>the plugin can use curl or python connect calls to connect to the shelly devices, if you have an older OSX use curl</Label>
 	</Field>
 
