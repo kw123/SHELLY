@@ -115,6 +115,66 @@
 			</Field>
 		</ConfigUI>
 	</MenuItem>
+
+	<MenuItem id="setThermostatValues">
+		<Name>Set  Thermostat Values</Name>
+		<ConfigUI>
+			<Field id="devId" type="menu">
+				<Label>Select device:</Label>
+				<List class="self" filter="shellytrv" method="filterActiveShellyDevicesNotChild" dynamicReload="false" />
+			</Field>
+
+			<Field id="action" type="menu" default="x">
+				<Label>Action:</Label>
+				<List>
+					<Option value="target_temperatureValue">set target temperature</Option>
+					<Option value="target_temperatureEnable">enable target temperature</Option>
+					<Option value="schedule_enable">enable schedule</Option>
+					<Option value="schedule_profile">select schedule</Option>
+					<Option value="boost_minutes">boost minutes</Option>
+				</List>
+			</Field>
+
+			<Field id="temperature" type="textfield"  			default="20" 	visibleBindingId="action" visibleBindingValue="target_temperatureValue" >
+				<Label>Enter target temperature:</Label>
+			</Field>
+
+			<Field id="targetTemperatureEnable" type="menu" default="false"	visibleBindingId="action" visibleBindingValue="target_temperatureEnable" >
+				<List>
+					<Option value="false">disable</Option>
+					<Option value="true">enable</Option>
+				</List>
+				<Label>Enter target temperature enable/disable:</Label>
+			</Field>
+
+			<Field id="schedule_enable" type="menu" 		default="false"	visibleBindingId="action" visibleBindingValue="schedule_enable" >
+				<List>
+					<Option value="false">disable</Option>
+					<Option value="true">enable</Option>
+				</List>
+				<Label>Enter target temperature enable:</Label>
+			</Field>
+
+			<Field id="schedule_profile" type="textfield" 		default="1" 	visibleBindingId="action" visibleBindingValue="schedule_profile" >
+				<Label>Enter schedule profile:</Label>
+			</Field>
+
+			<Field id="boost_minutes" type="textfield" 			default="0" 	visibleBindingId="action" visibleBindingValue="boost_minutes" >
+				<Label>Enter boost minutes:</Label>
+			</Field>
+
+
+			<Field id="confirm" type="button">
+				<Label>CLICK to</Label>
+				<Title>EXECUTE</Title>
+				<CallbackMethod>thermostatCALLBACKmenu</CallbackMethod>
+			</Field>
+			<Field id="MSG" type="textfield" defaultValue="">
+				<Label>message from Plugin:</Label>
+			</Field>
+		</ConfigUI>
+	</MenuItem>
+
 	<MenuItem id="calibrateShell25Roller">
 		<Name>Start CALIBRATION process on shelly-25 ROLLER device</Name>
 		<ConfigUI>

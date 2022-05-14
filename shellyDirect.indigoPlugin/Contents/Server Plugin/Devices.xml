@@ -3677,7 +3677,7 @@ Parent and child share the same connection, the plugin creates two devices to be
 			<Field id="isRGBWDevice" type="checkbox" defaultValue="true" hidden="true">
 				<Label>isRGBWDevice</Label>
 			</Field>
-			<Field id="SupportsOnState" type="checkbox" defaultValue="true" hidden="true">
+			<Field id="SupportsOnState" type="checkbox" defaultValue="false" hidden="true">
 				<Label>SupportsOnState</Label>
 			</Field>
 			<Field id="SupportsSensorValue" type="checkbox" defaultValue="true" hidden="true">
@@ -3867,6 +3867,213 @@ Parent and child share the same connection, the plugin creates two devices to be
 			</State>
 		</States>
 	</Device>
+
+
+	<Device type="dimmer" id="shellytrv">
+		<Name>Shelly-Thermostat (TVR)</Name>
+		<ConfigUI>
+			<Field id="isShellyDevice" type="checkbox" defaultValue="true" hidden="yes" />
+			<Field id="MSG" type="textfield" defaultValue="">
+				<Label>message from plugin:</Label>
+			</Field>
+			<Field id="SupportsOnState" type="checkbox" defaultValue="true" hidden="false">
+				<Label>SupportsOnState</Label>
+			</Field>
+			<Field id="SupportsSensorValue" type="checkbox" defaultValue="true" hidden="true">
+				<Label>SupportsSensorValue</Label>
+			</Field>
+			<Field id="SupportsStatusRequest" type="checkbox" defaultValue="true" hidden="true">
+				<Label>SupportsStatusRequest</Label>
+			</Field>
+			<Field id="AllowOnStateChange" type="checkbox" defaultValue="false" hidden="true">
+				<Label>AllowOnStateChange</Label>
+			</Field>
+			<Field id="AllowSensorValueChange" type="checkbox" defaultValue="false" hidden="true">
+				<Label>AllowSensorValueChange</Label>
+			</Field>
+			<Field id="usesInputForOnOff" type="checkbox" defaultValue="false" hidden="true">
+				<Label>usesInputForOnOff</Label>
+			</Field>
+			<Field id="SupportsColor" type="checkbox" defaultValue="false" hidden="true">
+				<Label>SupportsColor</Label>
+			</Field>
+			<Field id="SupportsRGB" type="checkbox" defaultValue="false" hidden="true">
+				<Label>SupportsRGB</Label>
+			</Field>
+			<Field id="SupportsWhite" type="checkbox" defaultValue="false" hidden="true">
+				<Label>SupportsWhite</Label>
+			</Field>
+			<Field id="SupportsWhiteTemperature" type="checkbox" defaultValue="false" hidden="true">
+				<Label>SupportsWhiteTemperature</Label>
+			</Field>
+			<Field id="SupportsRGBandWhiteSimultaneously" type="checkbox" defaultValue="false" hidden="true">
+				<Label>SupportsRGBandWhiteSimultaneously</Label>
+			</Field>
+			<Field id="SupportsTwoWhiteLevels" type="checkbox" defaultValue="false" hidden="true">
+				<Label>SupportsTwoWhiteLevels</Label>
+			</Field>
+			<Field id="SupportsTwoWhiteLevelsSimultaneously" type="checkbox" defaultValue="false" hidden="true">
+				<Label>SupportsTwoWhiteLevelsSimultaneously</Label>
+			</Field>
+			<Field id="SupportsBatteryLevel" type="checkbox" defaultValue="true" hidden="true" />
+
+			<Field id="label1" type="label">
+				<Label>Parameters for Shelly-Thermostat/trv device</Label>
+			</Field>
+			<Field id="ipNumber" type="textfield" defaultValue="192.168.1.x">
+				<Label>Shelly device IP Number</Label>
+			</Field>
+			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
+				<Label>Overwrite existing IP number</Label>
+			</Field>
+			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
+				<Label>Shelly device mac number(only overwrite if you want to replace device, must be unique)</Label>
+			</Field>
+			<Field id="pollingFrequency" type="menu" defaultValue="-1">
+				<Label>Polling frequency, how often the plugin requests status from the device:</Label>
+				<List>
+					<Option value="10">every 10 sec</Option>
+					<Option value="15">every 15 sec</Option>
+					<Option value="20">every 20 sec</Option>
+					<Option value="30">every 30 sec</Option>
+					<Option value="40">every 40 sec</Option>
+					<Option value="80">every 80 sec</Option>
+					<Option value="120">every 2 minutes</Option>
+					<Option value="180">every 3 minutes</Option>
+					<Option value="-1">automatic adaptive</Option>
+				</List>
+			</Field>
+			<Field id="pollingFrequencyLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
+				<Label>can be higher/adaptive if actions are setup on the devices</Label>
+			</Field>
+			<Field id="expirationSeconds" type="menu" defaultValue="600">
+				<Label>Device goes to EXPIRED w no message or answer after:</Label>
+				<List>
+					<Option value="180">after 3 minutes</Option>
+					<Option value="300">after 5 minutes</Option>
+					<Option value="600">after 10 minutes</Option>
+					<Option value="1800">after 30 minutes</Option>
+					<Option value="3600">after 1 hour</Option>
+				</List>
+			</Field>
+		</ConfigUI>
+		<States>
+			<!--   this is dev specific -->
+			<State id="Temperature_Target">
+				<ValueType>Float</ValueType>
+				<TriggerLabel>Temperature_target</TriggerLabel>
+				<ControlPageLabel>Temperature_target</ControlPageLabel>
+			</State>
+			<State id="Temperature">
+				<ValueType>Float</ValueType>
+				<TriggerLabel>Temperature</TriggerLabel>
+				<ControlPageLabel>Temperature</ControlPageLabel>
+			</State>
+			<State id="Target_Temperature">
+				<ValueType>String</ValueType>
+				<TriggerLabel>Target_Temperature</TriggerLabel>
+				<ControlPageLabel>Target_Temperature</ControlPageLabel>
+			</State>
+			<State id="boost_minutes">
+				<ValueType>String</ValueType>
+				<TriggerLabel>boost_minutes</TriggerLabel>
+				<ControlPageLabel>boost_minutes</ControlPageLabel>
+			</State>
+			<State id="schedule">
+				<ValueType>String</ValueType>
+				<TriggerLabel>schedule</TriggerLabel>
+				<ControlPageLabel>schedule</ControlPageLabel>
+			</State>
+			<State id="schedule_profile">
+				<ValueType>string</ValueType>
+				<TriggerLabel>schedule_profile</TriggerLabel>
+				<ControlPageLabel>schedule_profile</ControlPageLabel>
+			</State>
+			<!--   this is same for all: -->
+			<State id="calibrated">
+				<ValueType>String</ValueType>
+				<TriggerLabel>calibrated</TriggerLabel>
+				<ControlPageLabel>calibrated</ControlPageLabel>
+			</State>
+			<State id="charger">
+				<ValueType>string</ValueType>
+				<TriggerLabel>charger</TriggerLabel>
+				<ControlPageLabel>charger</ControlPageLabel>
+			</State>
+			<State id="batteryVoltage">
+				<ValueType>Float</ValueType>
+				<TriggerLabel>batteryVoltage</TriggerLabel>
+				<ControlPageLabel>batteryVoltage</ControlPageLabel>
+			</State>
+			<State id="lastSuccessfullConfigPush">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastSuccessfullConfigPush</TriggerLabel>
+				<ControlPageLabel>lastSuccessfullConfigPush</ControlPageLabel>
+			</State>
+			<State id="action_from_device">
+				<ValueType>String</ValueType>
+				<TriggerLabel>action_from_device</TriggerLabel>
+				<ControlPageLabel>action_from_device</ControlPageLabel>
+			</State>
+			<State id="MAC">
+				<ValueType>String</ValueType>
+				<TriggerLabel>MAC</TriggerLabel>
+				<ControlPageLabel>MAC</ControlPageLabel>
+			</State>
+			<State id="lastMessageFromDevice">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastMessageFromDevice</TriggerLabel>
+				<ControlPageLabel>lastMessageFromDevice</ControlPageLabel>
+			</State>
+			<State id="created">
+				<ValueType>String</ValueType>
+				<TriggerLabel>created</TriggerLabel>
+				<ControlPageLabel>created</ControlPageLabel>
+			</State>
+			<State id="lastStatusChange">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastStatusChange</TriggerLabel>
+				<ControlPageLabel>lastStatusChange</ControlPageLabel>
+			</State>
+			<State id="WiFi_rssi">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>WiFi_rssi</TriggerLabel>
+				<ControlPageLabel>WiFi_rssi</ControlPageLabel>
+			</State>
+			<State id="WiFi_ipv4_method">
+				<ValueType>String</ValueType>
+				<TriggerLabel>WiFi_ipv4_method</TriggerLabel>
+				<ControlPageLabel>WiFi_ipv4_method</ControlPageLabel>
+			</State>
+			<State id="cloud">
+				<ValueType>String</ValueType>
+				<TriggerLabel>cloud</TriggerLabel>
+				<ControlPageLabel>cloud</ControlPageLabel>
+			</State>
+			<State id="software_update_available">
+				<ValueType>String</ValueType>
+				<TriggerLabel>software_update_available</TriggerLabel>
+				<ControlPageLabel>software_update_available</ControlPageLabel>
+			</State>
+			<State id="expired">
+				<ValueType>String</ValueType>
+				<TriggerLabel>expired</TriggerLabel>
+				<ControlPageLabel>expired</ControlPageLabel>
+			</State>
+			<State id="upFor">
+				<ValueType>String</ValueType>
+				<TriggerLabel>upFor</TriggerLabel>
+				<ControlPageLabel>upFor</ControlPageLabel>
+			</State>
+			<State id="expired">
+				<ValueType>String</ValueType>
+				<TriggerLabel>expired</TriggerLabel>
+				<ControlPageLabel>expired</ControlPageLabel>
+			</State>
+		</States>
+	</Device>
+
+
 
 	<Device type="dimmer" id="shellydimmer">
 		<Name>Shelly-Dimmer (DM1)</Name>
