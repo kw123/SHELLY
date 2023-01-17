@@ -11,42 +11,38 @@
 				<List class="self" filter="shellytrv" method="filterActiveShellyDevicesNotChild" dynamicReload="true" />
 			</Field>
 
-			<Field id="action" type="menu" default="x">
+			<Field id="action" type="menu" default="target_t">
 				<Label>Action:</Label>
 				<List>
-					<Option value="target_temperatureValue">set target temperature</Option>
-					<Option value="target_temperatureEnable">enable target temperature</Option>
+					<Option value="target_t">set target temperature, disables valve position</Option>
+					<Option value="pos">set valve position, disables target temperature</Option>
 					<Option value="schedule_enable">enable schedule</Option>
 					<Option value="schedule_profile">select schedule</Option>
 					<Option value="boost_minutes">boost minutes</Option>
 				</List>
 			</Field>
 
-			<Field id="temperature" type="textfield"  			default="20" 	visibleBindingId="action" visibleBindingValue="target_temperatureValue" >
+			<Field id="target_t_Value" type="textfield"  			default="20" 	visibleBindingId="action" visibleBindingValue="target_t" >
 				<Label>Enter target temperature:</Label>
 			</Field>
 
-			<Field id="targetTemperatureEnable" type="menu" default="false"	visibleBindingId="action" visibleBindingValue="target_temperatureEnable" >
+			<Field id="pos_Value" type="textfield" 					default="50" 	visibleBindingId="action" visibleBindingValue="pos" >
+				<Label>Enter valve position(0-100):</Label>
+			</Field>
+
+			<Field id="schedule_enable_Value" type="menu" 			default="false"	visibleBindingId="action" visibleBindingValue="schedule_enable" >
 				<List>
 					<Option value="false">disable</Option>
 					<Option value="true">enable</Option>
 				</List>
-				<Label>Enter target temperature enable/disable:</Label>
+				<Label>Enable schedule:</Label>
 			</Field>
 
-			<Field id="schedule_enable" type="menu" 		default="false"	visibleBindingId="action" visibleBindingValue="schedule_enable" >
-				<List>
-					<Option value="false">disable</Option>
-					<Option value="true">enable</Option>
-				</List>
-				<Label>Enter target temperature enable:</Label>
-			</Field>
-
-			<Field id="schedule_profile" type="textfield" 		default="1" 	visibleBindingId="action" visibleBindingValue="schedule_profile" >
+			<Field id="schedule_profile_Value" type="textfield" 	default="1" 	visibleBindingId="action" visibleBindingValue="schedule_profile" >
 				<Label>Enter schedule profile:</Label>
 			</Field>
 
-			<Field id="boost_minutes" type="textfield" 			default="0" 	visibleBindingId="action" visibleBindingValue="boost_minutes" >
+			<Field id="boost_minutes_Value" type="textfield" 		default="0" 	visibleBindingId="action" visibleBindingValue="boost_minutes" >
 				<Label>Enter boost minutes:</Label>
 			</Field>
 

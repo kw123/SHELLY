@@ -1,4 +1,27 @@
-Added features / changes in v7.18.44 @ 2022-05-14
+Added features / changes in v7.19.47 @ 2023-01-16
+===================================================
+1. added some debug statements for shelly 2.5 roller/relay 
+2. some minor beautifications  in menus and dev edit
+
+
+Added features / changes in v7.19.46 @ 2022-09-01
+===================================================
+1. removed all u"xxx"  --> "xxx", not supported in python future versions, left over from py2
+
+
+Added features / changes in v7.19.45 @ 2022-05-27
+===================================================
+
+1. added support for Thermostat Shelly-TRV
+   support setting target temp, open close valve, set boost time (actions and menus)
+   dev states : temp, target temp, valve position, battery level, calibrated  etc 
+   is now a thermostat device type 
+
+===> requires indigo 2022.1 or higher = runs under py3  <===
+
+
+
+Added features / changes in v7.18.45 @ 2022-05-14
 ===================================================
 
 1. added support for Thermostat Shelly-TRV
