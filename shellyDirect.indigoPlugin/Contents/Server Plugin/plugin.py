@@ -94,6 +94,7 @@ _childDevTypes					= {	"ext_temperature":{			"state":"Temperature",	"dataKey":"t
 									"shellyswitch25-child":{	"state":"",				"dataKey":"",	"nameExt":"_relay-2"},
 									"shellyix3-child":{			"state":"",				"dataKey":"",	"nameExt":"_input-2"},
 									"shelly4pro-child":{		"state":"",				"dataKey":"",	"nameExt":"_relay-2"},
+									"shellytrv-child":{			"state":"",				"dataKey":"",	"nameExt":""},
 									"shellyem-child":{			"state":"",				"dataKey":"",	"nameExt":"_EM"}
 								}
 _relayDevices					= ["shelly1","shelly1l","shelly1pm","shellyswitch25","shellyswitch25-child","shellyem","shelly4pro","shelly4pro-child","shellyplug","shellyplug-s"]
@@ -297,7 +298,6 @@ _emptyProps = {	# switches
 											}
 										},
 						"childTypes_Sensors":["ext_temperature","ext_humidity"],
-						"childTypes_SplitDevices":[],
 						"tempUnits":"C"
 						},
 
@@ -521,9 +521,23 @@ _emptyProps = {	# switches
 				# thermostat like dimmer
 				"shellytrv":{"props":{"isShellyDevice":True, "usesInputForOnOff":False, "isRelay":False, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,
 						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
-						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":6,  "expirationSeconds":180,"SupportsBatteryLevel":True,
+						"parentIndigoId":0,"children":"{}","isParent":True,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":6,  "expirationSeconds":180,"SupportsBatteryLevel":True,
 						"SupportsHvacFanMode":False, "SupportsCoolSetpoint":False, "SupportsCoolSetpoint":False, "SupportsHeatSetpoint":True, "NumHumidityInputs":0, "NumTemperatureInputs":1},
-						"setPageActionPageOnShellyDev":{"pos":"thermostats/0/?"},
+						"setPageActionPageOnShellyDev":{},
+						"action_url":   {
+										"2":{},
+										"1":{}
+										},
+						"childTypes_Sensors":[],
+						"childTypes_SplitDevices":["shellytrv-child"],
+						"tempUnits":"C"
+						},
+				# dimmers
+				"shellytrv-child":{"props":{"isShellyDevice":True, "usesInputForOnOff":False, "isRelay":False, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,
+						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
+						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":True,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":6,  "expirationSeconds":180},
+						"rgbLimits":[0,255],
+						"setPageActionPageOnShellyDev":{"pos":"thermostats/0/?pos="},
 						"action_url":   {
 										"2":{},
 										"1":{}
@@ -808,6 +822,9 @@ for kk in _emptyProps:
 		if "2" in _emptyProps[kk]["action_url"]:
 			if _emptyProps[kk]["action_url"]["2"] != {}:
 				_definedShellyDeviceswAction.append(kk)
+
+
+_hvacOpMode = {"cool":0, "heat":1, "cool":2, "auto":3, "off":4 }
 
 #_definedShellyDeviceswAction	= ["shelly1","shelly1l","shelly1pm","shellyswitch25","shellyswitch25-roller","shellyem","shellydimmer","shellyflood","shellyht", "shellyem3","shellyplug","shellyplug-s","shelly4pro","shellydw","shellydw2","shellygas","shellybutton1","shellyix3"]
 
@@ -1653,7 +1670,7 @@ class Plugin(indigo.PluginBase):
 				if self.decideMyLog("SetupDevices"):
 					self.indiLOG.log(10, "deviceStartComm finished for {}; dev={}".format(dev.id, dev.name) )
 					self.indiLOG.log(10, "deviceStartComm .... props:{}".format(props) )
-					states = unicode(dev.states)
+					states = "{}".format(dev.states)
 					self.indiLOG.log(10, "deviceStartComm  ... states:{}".format(states) )
 		except Exception:
 			self.indiLOG.log(40, "", exc_info=True)
@@ -1663,7 +1680,7 @@ class Plugin(indigo.PluginBase):
 
 
 ####-------------------------------------------------------------------------####
-	def renewShelly(self, dev, startCom=False):
+	def renewShelly(self, dev):
 		try:
 
 			props = dev.pluginProps
@@ -1721,7 +1738,9 @@ class Plugin(indigo.PluginBase):
 			if not props["isChild"]:
 				self.SHELLY[dev.id]["queue"] 						 = Queue.Queue()
 
-			if updateProps: dev.replacePluginPropsOnServer(props)
+			if updateProps: 
+				dev.replacePluginPropsOnServer(props)		
+				dev = indigo.devices[dev.id]
 
 			if not self.SHELLY[dev.id]["isChild"]: self.startShellyDevicePoller("start", shellySelect=dev.id)
 			#self.indiLOG.log(10, "shelly at startdev  {} ".format(self.SHELLY))
@@ -1729,6 +1748,13 @@ class Plugin(indigo.PluginBase):
 			if "pushIdActive" not in self.SHELLY[dev.id]:
 				if dev.enabled: self.SHELLY[dev.id]["pushIdActive"] = "enabled"
 			if not dev.enabled: self.SHELLY[dev.id]["pushIdActive"] = "empty"
+
+
+
+			if self.pluginState == "init":
+				if dev.deviceTypeId == "shellytrv":
+					if dev.pluginProps.get("children","{}") == "{}" or not dev.pluginProps.get("isParent",False):
+						self.createShellyChildDevice(dev, "shellytrv", dev.states["MAC"], dev.pluginProps["ipNumber"], dev.name)
 
 
 		except Exception:
@@ -2065,7 +2091,7 @@ class Plugin(indigo.PluginBase):
 
 		self.indiLOG.log(10, "..  setting up internal dev tables")
 		for dev in indigo.devices.iter(self.pluginId):
-			self.renewShelly(dev, startCom=False)
+			self.renewShelly(dev)
 			if not dev.enabled:
 				if dev.id in self.SHELLY: self.SHELLY[dev.id]["deviceEnabled"] = False
 
@@ -2263,11 +2289,12 @@ class Plugin(indigo.PluginBase):
 ###-------------------------------------------------------------------------####
 	def checkForDeviceAction(self):
 		try:
-			if self.deviceActionList == []: return
+			if self.deviceActionList == []: 
+				self.sleep(0.1) # wait for any late updates
+				if self.deviceActionList == []:  return 
 			copydeviceActionList = copy.copy(self.deviceActionList)
 			delAction =[]
 			ii = 0
-			self.sleep(0.1) # wait for any late updates
 			for action in copydeviceActionList:
 				if "devId" in action:
 					dev = indigo.devices[action["devId"]]
@@ -2562,7 +2589,7 @@ class Plugin(indigo.PluginBase):
 								self.indiLOG.log(10, "execUpdate .. msg dev:{}  is unexpected message, will NOT create new one; ipNumber:{}, data:{}".format(dd.name, ipNumber, data))
 							doNotCreate = True
 
-						#self.renewShelly(dd, startCom=False)
+						#self.renewShelly(dd)
 					if doNotCreate: return
 
 					if "device" not in data:
@@ -2755,7 +2782,7 @@ class Plugin(indigo.PluginBase):
 						indigo.devices[baseName+nameX]
 						self.indiLOG.log(10, "... device, already exist, disabled? name:{}".format((baseName+nameX)))
 						for dd in indigo.devices.iter(self.pluginId):
-							self.renewShelly(dd, startCom=False)
+							self.renewShelly(dd)
 						nameX += "_r_"+str(int(time.time()))
 						self.indiLOG.log(10, "... changing name to: {}".format((baseName+nameX)))
 					except: pass
@@ -2840,7 +2867,7 @@ class Plugin(indigo.PluginBase):
 					indigo.devices[name_Parent]
 					self.indiLOG.log(10, "trying to create new SHELLY device, already exist, disabled? name:{}, ipNumber:{}".format(name_Parent, ipNumber))
 					for dd in indigo.devices.iter(self.pluginId):
-						self.renewShelly(dd, startCom=False)
+						self.renewShelly(dd)
 					name_Parent += "_r_"+str(int(time.time()))
 					self.indiLOG.log(10, "... changing name to: {}".format((name_Parent)))
 				except: pass
@@ -2892,6 +2919,7 @@ class Plugin(indigo.PluginBase):
 				props["parentIndigoId"] = devParent.id
 				name = "{}-{}-{}".format(name_Parent, childType, devNo)
 				props["devNo"]   	=  str(devNo) # this can be 1/2/3/4/5 eg shell25 has 1, EM has 2 EM3 has 3 pro has 3
+				self.indiLOG.log(20, "creating: name:{}, props:{}, ipNumber:{}, description:{}, childType:>>{}<<\n ".format(name, props, ipNumber,description, childType))
 				devChild = indigo.device.create(
 					protocol		= indigo.kProtocol.Plugin,
 					address			= ipNumber,
@@ -2915,6 +2943,7 @@ class Plugin(indigo.PluginBase):
 					nextNo = max( nextNo, int(dd) )
 				children[childType][str(nextNo+1)] = devChild.id
 			parentProps = devParent.pluginProps
+			parentProps["isParent"] = True
 			parentProps["children"] = json.dumps(children)
 			devParent.replacePluginPropsOnServer(parentProps)
 			self.SHELLY[devParent.id]["isParent"] = True
@@ -2936,6 +2965,7 @@ class Plugin(indigo.PluginBase):
 
 		except Exception:
 			self.indiLOG.log(40, "", exc_info=True)
+			self.indiLOG.log(40, "devTypeId: {}".format(deviceTypeId))
 
 		return props
 
@@ -3028,16 +3058,12 @@ class Plugin(indigo.PluginBase):
 
 			# now for devices with children
 			devs, devNos = self.getChildDevices(children)
-			if False and len(children) >0:
-				devids = [dd.id for dd in devs]
-				self.indiLOG.log(10, "{};   children:{};  childrenfromProps:{};  devids:{}, devNos:{}".format(dev.name, children, dev.pluginProps["children"], devids, devNos))
 
 			if len(devs) ==0: devs = [dev, dev]
 			else:
 				dev0 = [dev]
 				dev0.extend(devs)
 				devs = dev0
-
 
 			self.fillInputs(data, devs )
 
@@ -3917,7 +3943,7 @@ class Plugin(indigo.PluginBase):
 			if "relays" not in data: return
 			devNo = 0
 			for relay in data["relays"]:
-				if "ison" in relay:												self.fillSwitch(devs[devNo], relay, "ison")
+				if "ison" in relay:													self.fillSwitch(devs[devNo], relay, "ison")
 				if "overPower" in devs[devNo].states and "overpower" in relay:		self.addToStatesUpdateDict(str(devs[devNo].id), "overPower", relay["overpower"])
 				devNo += 1
 
@@ -3970,25 +3996,41 @@ class Plugin(indigo.PluginBase):
 			#status           --> "charger":false,
 			if "thermostats" not in data: return
 			devNo = 0
+			if False and devs[0].name.find(".131") >-1: self.indiLOG.log(20, "fillThermostat Ndevs:{}, data:{}".format(len(devs), data["thermostats"]))
 			for therm in data["thermostats"]:
-				if devNo > len(devs)-1: continue
-				#self.indiLOG.log(20, "fillThermostat dev {} \nstates:{},\n therm:{}, \nprops:{}".format(devs[devNo].name, devs[devNo].states, therm, devs[devNo].pluginProps))
-				if "tmp" 				in therm and	"temperatureInput1"		in devs[devNo].states:	self.fillSensor(devs[devNo], 				therm, "tmp", 			"temperatureInput1")
-				if "tmp" 				in therm and	"Temperature"			in devs[devNo].states:	self.fillSensor(devs[devNo], 				therm, "tmp", 			"Temperature")
-				if "target_t"			in therm:
-					if 									"setpointHeat" 			in devs[devNo].states:	self.fillSensor(devs[devNo], 				therm, "target_t", 		"setpointHeat")
-					if 									"heatIsOn" 				in devs[devNo].states:	self.addToStatesUpdateDict(devs[devNo].id, "heatIsOn",				therm["target_t"]["enabled"])
+				isOn = False
+				if "target_t" in therm:
+					if therm["target_t"]["enabled"] and "tmp" in therm:
+						if therm["tmp"]["value"] < float(devs[0].states.get("setpointHeat",-1)):
+							isOn= True
+					elif "pos" in therm:
+						if int(therm["pos"]) > 5: 
+							isOn= True
 
-				if "pos" 				in therm and	"Position"				in devs[devNo].states:
-																										self.addToStatesUpdateDict(devs[devNo].id, "Position", 				int(therm["pos"]+0.5), uiValue="{:d}%".format(int(therm["pos"]+0.5)))
-																										if therm["pos"] >2.: 				devs[devNo].updateStateImageOnServer(indigo.kStateImageSel.HvacHeating)
-																										else:							 	devs[devNo].updateStateImageOnServer(indigo.kStateImageSel.HvacHeatMode)
+			
+				for devNo in range(len(devs)):
+					if "tmp" 				in therm and	"temperatureInput1"		in devs[devNo].states:	self.fillSensor(devs[devNo], 				therm, "tmp", 			"temperatureInput1")
+					if "tmp" 				in therm and	"Temperature"			in devs[devNo].states:	self.fillSensor(devs[devNo], 				therm, "tmp", 			"Temperature")
+					if "target_t"			in therm:
+						if 									"setpointHeat" 			in devs[devNo].states:	self.fillSensor(devs[devNo], 				therm, "target_t", 		"setpointHeat")
+						if 									"hvacHeaterIsOn" 		in devs[devNo].states:	self.addToStatesUpdateDict(devs[devNo].id, "hvacHeaterIsOn",		isOn)
+					if "pos" 				in therm:	
+											if 				"valvePosition"			in devs[devNo].states:
+																											self.addToStatesUpdateDict(devs[devNo].id, "valvePosition", 		int(therm["pos"]+0.5), uiValue="{:d}%".format(int(therm["pos"]+0.5)))
+																											if therm["pos"] >2.: 				devs[devNo].updateStateImageOnServer(indigo.kStateImageSel.HvacHeating)
+																											else:							 	devs[devNo].updateStateImageOnServer(indigo.kStateImageSel.HvacHeatMode)
+											if 				"brightnessLevel"			in devs[devNo].states:
+																											self.addToStatesUpdateDict(devs[devNo].id, "brightnessLevel", 		int(therm["pos"]+0.5), uiValue="{:d}%".format(int(therm["pos"]+0.5)) )
+																											if therm["pos"] >2.: 				devs[devNo].updateStateImageOnServer(indigo.kStateImageSel.HvacHeating)
+																											else:							 	devs[devNo].updateStateImageOnServer(indigo.kStateImageSel.HvacHeatMode)
 
-				if "schedule" 			in therm and	"schedule" 				in devs[devNo].states:	self.addToStatesUpdateDict(devs[devNo].id, "schedule", 				"On" if therm["schedule"] else "Off" )
-				if "schedule_profile" 	in therm and	"schedule_profile" 		in devs[devNo].states:	self.addToStatesUpdateDict(devs[devNo].id, "schedule_profile", 		therm["schedule_profile"])
-				if "boost_minutes" 		in therm and	"boost_minutes" 		in devs[devNo].states:	self.addToStatesUpdateDict(devs[devNo].id, "boost_minutes", 		therm["boost_minutes"])
-				if "window_open" 		in therm and	"window_open" 			in devs[devNo].states:	self.addToStatesUpdateDict(devs[devNo].id, "window_open", 			"Yes" if therm["window_open"] else "No")
-				devNo += 1
+					if "schedule" 			in therm and	"schedule" 				in devs[devNo].states:	self.addToStatesUpdateDict(devs[devNo].id, "schedule", 				"On" if therm["schedule"] else "Off" )
+					if "schedule_profile" 	in therm and	"schedule_profile" 		in devs[devNo].states:	self.addToStatesUpdateDict(devs[devNo].id, "schedule_profile", 		therm["schedule_profile"])
+					if "boost_minutes" 		in therm and	"boost_minutes" 		in devs[devNo].states:	self.addToStatesUpdateDict(devs[devNo].id, "boost_minutes", 		therm["boost_minutes"])
+					if "window_open" 		in therm and	"window_open" 			in devs[devNo].states:	self.addToStatesUpdateDict(devs[devNo].id, "window_open", 			"Yes" if therm["window_open"] else "No")
+
+					if "SupportsHvacOperationMode"		in devs[devNo].states:								self.addToStatesUpdateDict(devs[devNo].id, "SupportsHvacOperationMode", True)
+					if "hvacOperationMode"				in devs[devNo].states:								self.addToStatesUpdateDict(devs[devNo].id, "hvacOperationMode", _hvacOpMode["heat"])
 
 		except Exception:
 			self.indiLOG.log(40, "", exc_info=True)
@@ -4081,12 +4123,12 @@ class Plugin(indigo.PluginBase):
 
 			if token not in data: 		return dev
 			props = dev.pluginProps
-			#if dev.id == 1570076651:self.indiLOG.log(10, ":::::fillSensor  {}  data:{}, token:{}, state:{}".format( dev.id , data, token,  state ))
+			if dev.id in[0,0]: self.indiLOG.log(10, ":::::fillSensor1  {}, token:{}, state:{}  data:{}".format( dev.name, token,  state,  data ))
 
 			decimalPlaces = ""
 			internal = ""
 			unit = ""
-			if state.split("_internal")[0] in dev.states or state+"_internal" in dev.states:
+			if state.split("_internal")[0] in dev.states or state+"_internal" in dev.states or state in dev.states:
 
 				#if dev.id == 1570076651:self.indiLOG.log(10, ":::::fillSensor  passed 1")
 				devUnits = self.tempUnits
@@ -4103,9 +4145,9 @@ class Plugin(indigo.PluginBase):
 							self.indiLOG.log(40, "fillSensor error  token:{}, data:{} ".format(token, data, dev.name ))
 							return dev
 
-				#self.indiLOG.log(10, "fillSensor token:{}, data:{} T:{} {}".format(token, data, x , dev.name ))
-				if state.lower().find("temperature") > -1 or state.lower().find("setpointHeat"):
-					#if dev.id == 1715122746:self.indiLOG.log(10, ":::::fillSensor  passed 2")
+				if dev.id in [0,0]: self.indiLOG.log(10, "fillSensor2 token:{}, state:{}, x:{}, id:{}".format(token, state, x, dev.id ))
+				if state.lower().find("temperature") > -1 or state == "setpointHeat":
+					if dev.id in [0,0]: self.indiLOG.log(10, ":::::fillSensor2T  passed ")
 					decimalPlaces = self.tempDigits
 					try:
 						devUnits = self.SHELLY[dev.id]["tempUnits"]
@@ -4140,7 +4182,8 @@ class Plugin(indigo.PluginBase):
 						self.addToStatesUpdateDict(str(dev.id), "Temperature_internal", x, uiValue=xui, decimalPlaces=decimalPlaces)
 					return dev
 
-				elif state == "Humidity":
+				elif state.lower() == "humidity":
+					if dev.id in [0,0]: self.indiLOG.log(10, "fillSensor3H token:{},  H:{},  id:{}".format(token, x,  dev.id))
 					if state in dev.states:
 						x , xui = self.convHum(x)
 						self.addToStatesUpdateDict(str(int(dev.id)), state, x, uiValue=xui, decimalPlaces=0)
@@ -4149,7 +4192,7 @@ class Plugin(indigo.PluginBase):
 						self.fillMinMaxSensors(dev,"Humidity",x,decimalPlaces=0)
 
 				else:
-					pass
+					self.indiLOG.log(10, "fillSensorxx state:{}, not found, token:{}, dev:{}, data:{}".format(state, token, dev.name, data))
 
 
 		except Exception:
@@ -4190,7 +4233,7 @@ class Plugin(indigo.PluginBase):
 				cString = "%d"
 				useFormat ="{:d}"
 			else:
-				cString = "%."+unicode(self.tempDigits)+"f"
+				cString = "%.{}f".format(self.tempDigits)
 			uiValue = (cString % temp).strip()+suff
 			#self.indiLOG.log(10, "convTemp temp:{}, devUnits:{} ui:{}".format(temp, devUnits , uiValue ))
 			return round(temp,self.tempDigits) , uiValue
@@ -4203,8 +4246,7 @@ class Plugin(indigo.PluginBase):
 ####-------------------------------------------------------------------------####
 	def convHum(self, hum):
 		try:
-			humU = ("%3d" %float(hum)).strip()
-			return int(float(hum)), humU + "%"
+			return int(float(hum)), "{:.0f}%".format(hum)
 		except:
 			return -99, ""
 
@@ -4734,15 +4776,26 @@ class Plugin(indigo.PluginBase):
 ####-------------------------------------------------------------------------####
 	def thermostatCALLBACKmenu(self, valuesDict, typeId=""):
 
-		theAction = str(valuesDict["action"])
-		allowedActions = ["target_t","target_temperatureEnable", "pos",  "schedule_profile", "boost_minutes"]
+		theAction = valuesDict["action"].strip("X")  # added "X" at teh end of some action to disdinguis between visible tag 
+		theAction = valuesDict["action"].strip("Y")  # added "Y" at teh end of some action to disdinguis between visible tag 
+
+		allowedActions = ["target_t","target_t_enabled", "pos", "accelerated_heating", "schedule", "schedule_profile", "schedule_profile", "valve_min_percent", "boost_minutes", "force_close", "calibrate", "reboot", "update", "discoverable", "display_brightness","display_flipped","child_lock"]
 		if theAction  in allowedActions:
 			queueID	= int(valuesDict["devId"])
 		else:
 			self.indiLOG.log(30, "thermostatCALLBACKmenu:  action not in allow options {}".format(allowedActions))
 			return
 
-		page = "thermostats/0/?{}={}".format(theAction, valuesDict[theAction+"_Value"])
+		if   theAction in ["accelerated_heating", "force_close", "valve_min_percent"]:			page0 = "/settings/thermostat/0/?"
+		elif theAction in ["discoverable","display_brightness","display_flipped","child_lock"]:	page0 = "/settings?"
+		elif theAction in ["update"]:	 														page0 = "/ota?"
+		elif theAction in ["calibrate", "reboot"]: 												page0 = "/"
+		else:																					page0 = "/thermostat/0/?"
+
+		if theAction   == "target_t": 															page = page0+"target_t_enabled=1&target_t={}".format(valuesDict[theAction+"_Value"])
+		elif theAction in ["calibrate", "reboot"]:												page = page0+theAction
+		elif theAction == "update":																page = page0+"update=1"
+		else:																					page = page0+"{}={}".format(theAction, valuesDict[theAction+"_Value"])
 
 		queueID	= int(valuesDict["devId"])
 		if self.decideMyLog("Actions"): self.indiLOG.log(10, "ACTIONS: dev {} sending   page:{}".format(queueID, page))
@@ -4758,21 +4811,22 @@ class Plugin(indigo.PluginBase):
 		theAction = str(action.thermostatAction)
 		actionValue = action.actionValue
 		actionMode = action.actionMode
-		allowedActions = ["IncreaseHeatSetpoint","DecreaseHeatSetpoint", "SetHvacMode"]
-		if  theAction in allowedActions:
-			queueID	= dev.id
-		else:
+		allowedActions = ["IncreaseHeatSetpoint","DecreaseHeatSetpoint"]
+		if  theAction not in allowedActions:
 			self.indiLOG.log(30, "actionControlThermostat:  action not in allow options {}".format(allowedActions))
 			return
 
 		self.indiLOG.log(10, "ACTIONS:  pass 1")
-		if theAction 	== "IncreaseHeatSetpoint":	page = "thermostats/0/?{}={}".format("target_t",	float(dev.states["setpointHeat"]) + actionValue )
-		elif theAction	== "DecreaseHeatSetpoint":	page = "thermostats/0/?{}={}".format("target_t",	float(dev.states["setpointHeat"]) - actionValue )
-		elif theAction	== "SetHvacMode":			page = "thermostats/0/?{}={}".format("pos",			max(0,min(100,100* actionMode))) # actionMode can be  0 1 2 = off/heat/cool
 
-		if self.decideMyLog("Actions"): self.indiLOG.log(10, "ACTIONS: dev {} sending   page:{}".format(queueID, page))
-		self.addToShellyPollerQueue( queueID, page, now=True, calledFrom="actionControlThermostat")
-		self.deviceActionList.append({"devId":int(queueID),"action":"checkStatus","notBefore":time.time() + 5})
+		if theAction in allowedActions:	
+			targetT = float(dev.states["setpointHeat"])
+			if theAction 	== "IncreaseHeatSetpoint":	targetT += actionValue 
+			elif theAction 	== "DecreaseHeatSetpoint":	targetT -= actionValue 
+			page = "thermostats/0/?target_t_enabled=1&target_t={:.1f}".format(targetT)
+
+		if self.decideMyLog("Actions"): self.indiLOG.log(10, "ACTIONS: dev {} sending   page:{}".format(dev.id, page))
+		self.addToShellyPollerQueue( dev.id, page, now=True, calledFrom="actionControlThermostat")
+		self.deviceActionList.append({"devId":dev.id,"action":"checkStatus","notBefore":time.time() + 5})
 		return
 
 #
@@ -4842,14 +4896,12 @@ class Plugin(indigo.PluginBase):
 			setThermometer = {}
 
 
-			if dev.deviceTypeId not in ["shellyswitch25-roller"] and ( "redLevel" in dev.states or "brightnessLevel" in dev.states or  "whiteLevel" in dev.states  ):
+			if dev.deviceTypeId not in ["shellyswitch25-roller", "shellytrv-child"] and ( "redLevel" in dev.states or "brightnessLevel" in dev.states or  "whiteLevel" in dev.states  ):
 				if action.deviceAction == indigo.kDeviceAction.SetColorLevels:
 					actionValues = action.actionValue
 					setAction = True
 
 				setThermometer["lights"] = [{}]
-
-
 
 				if dev.deviceTypeId in ["shellydimmer","ShellyVintage","ShellyBulbDuo"]:	channel = "white"
 				elif "mode" in dev.states:													channel = dev.states["mode"] # == white or color
@@ -5066,9 +5118,26 @@ class Plugin(indigo.PluginBase):
 				elif  action.deviceAction == "mute": 		channel 	= "mute"
 				elif  action.deviceAction == "unmute": 		channel 	= "unmute"
 
-			else:
-				self.indiLOG.log(10, "ACTION not implemented: {}  action:{}".format(dev.name, unicode(action) ))
 
+			elif dev.deviceTypeId == "shellytrv-child":
+				if action.deviceAction == indigo.kDimmerRelayAction.SetBrightness: 				newBrightness = action.actionValue
+				elif action.deviceAction == indigo.kDimmerRelayAction.DimBy:					newBrightness = dev.brightness - action.actionValue
+				elif action.deviceAction == indigo.kDimmerRelayAction.BrightenBy:				newBrightness = dev.brightness + action.actionValue
+				elif action.deviceAction == indigo.kDimmerRelayAction.TurnOn:					newBrightness = 100
+				elif action.deviceAction == indigo.kDimmerRelayAction.TurnOff:					newBrightness = 0
+				else:
+					self.indiLOG.log(10, "ACTION not implemented: {}  action:{}".format(dev.name, action) )
+					return 
+					
+
+				checkStatusTime = time.time() + 20
+				channel = "pos"
+				page = 	"{}".format(newBrightness)
+
+
+			else:
+				self.indiLOG.log(10, "ACTION not implemented: {}  action:{}".format(dev.name, action) )
+				return 
 
 			if len(page) > 0:
 
@@ -5091,7 +5160,7 @@ class Plugin(indigo.PluginBase):
 					self.deviceActionList.append({"devId":int(queueID),"action":"checkStatus","notBefore":checkStatusTime})
 
 			else:
-				self.indiLOG.log(10, "ACTION not implemented: {}  action:{}".format(dev.name, unicode(action) ))
+				self.indiLOG.log(10, "ACTION not implemented: {}  action:{}".format(dev.name, action ))
 				return
 
 

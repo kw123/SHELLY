@@ -124,18 +124,29 @@
 				<List class="self" filter="shellytrv" method="filterActiveShellyDevicesNotChild" dynamicReload="false" />
 			</Field>
 
-			<Field id="action" type="menu" default="target_t">
+			<Field id="action" type="menu" default="target_tX">
 				<Label>Action:</Label>
 				<List>
-					<Option value="target_t">set target temperature, disables valve position</Option>
+					<Option value="target_tX">set target temperature, disables valve position</Option>
+					<Option value="target_t_enabled">enable set temperature, disables valve position</Option>
 					<Option value="pos">set valve position, disables target temperature</Option>
-					<Option value="schedule_enable">enable schedule</Option>
+					<Option value="accelerated_heating">enable accelerated heating</Option>
+					<Option value="valve_min_percent">set valve min in percent</Option>
+					<Option value="scheduleX">enable schedule</Option>
 					<Option value="schedule_profile">select schedule</Option>
-					<Option value="boost_minutes">boost minutes</Option>
+					<Option value="boost_minutes">set boost minutes</Option>
+					<Option value="force_close">enable extra force at close</Option>
+					<Option value="display_brightness">set display brightness</Option>
+					<Option value="display_flipped">set display flipped</Option>
+					<Option value="child_lock">set child lock</Option>
+					<Option value="discoverable">make device discoverable</Option>
+					<Option value="calibrate">calibrate device</Option>
+					<Option value="reboot">reboot device</Option>
+					<Option value="update">update firmware</Option>
 				</List>
 			</Field>
 
-			<Field id="target_t_Value" type="textfield"  			default="20" 	visibleBindingId="action" visibleBindingValue="target_t" >
+			<Field id="target_t_Value" type="textfield"  			default="20" 	visibleBindingId="action" visibleBindingValue="target_tX" >
 				<Label>Enter target temperature:</Label>
 			</Field>
 
@@ -143,15 +154,87 @@
 				<Label>Enter valve position(0-100):</Label>
 			</Field>
 
-			<Field id="schedule_enable_Value" type="menu" 			default="false"	visibleBindingId="action" visibleBindingValue="schedule_enable" >
+			<Field id="valve_min_percent_Value" type="textfield" 	default="0" 	visibleBindingId="action" visibleBindingValue="valve_min_percent" >
+				<Label>Enter valve min %(0-100):</Label>
+			</Field>
+
+			<Field id="display_brightness_Value" type="menu" 		default="4"	visibleBindingId="action" visibleBindingValue="display_brightness" >
 				<List>
-					<Option value="false">disable</Option>
-					<Option value="true">enable</Option>
+					<Option value="1">low</Option>
+					<Option value="4">medium</Option>
+					<Option value="7">high</Option>
+				</List>
+				<Label>display brightness value:</Label>
+			</Field>
+
+			<Field id="display_flipped_Value" type="menu" 		default="0"	visibleBindingId="action" visibleBindingValue="display_flipped" >
+				<List>
+					<Option value="1">normal</Option>
+					<Option value="0">flipped</Option>
+				</List>
+				<Label>display flipped:</Label>
+			</Field>
+
+			<Field id="child_lock_Value" type="menu" 				default="0"	visibleBindingId="action" visibleBindingValue="child_lock" >
+				<List>
+					<Option value="0">disable</Option>
+					<Option value="1">enable</Option>
+				</List>
+				<Label>Child lock:</Label>
+			</Field>
+
+			<Field id="discoverable_Value" type="menu" 				default="1"	visibleBindingId="action" visibleBindingValue="discoverable" >
+				<List>
+					<Option value="0">disable</Option>
+					<Option value="1">enable</Option>
+				</List>
+				<Label>Device discoverable:</Label>
+			</Field>
+
+			<Field id="accelerated_heating_Value" type="menu" 		default="0"	visibleBindingId="action" visibleBindingValue="accelerated_heating" >
+				<List>
+					<Option value="0">disable</Option>
+					<Option value="1">enable</Option>
+				</List>
+				<Label>Enable accelerated heating:</Label>
+			</Field>
+
+			<Field id="schedule_Value" type="menu" 					default="0"	visibleBindingId="action" visibleBindingValue="scheduleX" >
+				<List>
+					<Option value="0">disable</Option>
+					<Option value="1">enable</Option>
 				</List>
 				<Label>Enable schedule:</Label>
 			</Field>
 
-			<Field id="schedule_profile_Value" type="textfield" 	default="1" 	visibleBindingId="action" visibleBindingValue="schedule_profile" >
+			<Field id="force_close_Value" type="menu" 			default="1"	visibleBindingId="action" visibleBindingValue="force_close" >
+				<List>
+					<Option value="0">disable</Option>
+					<Option value="1">enable</Option>
+				</List>
+				<Label>Enable extra force:</Label>
+			</Field>
+
+			<Field id="target_t_enabled_Value" type="menu" 			default="1"	visibleBindingId="action" visibleBindingValue="target_t_enabled" >
+				<List>
+					<Option value="0">disable</Option>
+					<Option value="1">enable</Option>
+				</List>
+				<Label>Enable target Temperature:</Label>
+			</Field>
+
+			<Field id="schedule_profile_Value" type="menu" 	default="1" 	visibleBindingId="action" visibleBindingValue="schedule_profile" >
+				<List>
+					<Option value="0">0</Option>
+					<Option value="1">1</Option>
+					<Option value="2">2</Option>
+					<Option value="3">3</Option>
+					<Option value="4">4</Option>
+					<Option value="5">5</Option>
+					<Option value="6">6</Option>
+					<Option value="7">7</Option>
+					<Option value="8">8</Option>
+				</List>
 				<Label>Enter schedule profile:</Label>
 			</Field>
 

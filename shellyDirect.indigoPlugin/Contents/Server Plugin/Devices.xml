@@ -4019,18 +4019,14 @@ Parent and child share the same connection, the plugin creates two devices to be
 			<Field id="MAClabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
 				<Label>Only overwrite if you want to replace device, must be unique</Label>
 			</Field>
-			<Field id="pollingFrequency" type="menu" defaultValue="-1">
+			<Field id="pollingFrequency" type="menu" defaultValue="60">
 				<Label>Polling frequency, how often the plugin requests status from the device:</Label>
 				<List>
-					<Option value="10">every 10 sec</Option>
-					<Option value="15">every 15 sec</Option>
-					<Option value="20">every 20 sec</Option>
-					<Option value="30">every 30 sec</Option>
 					<Option value="40">every 40 sec</Option>
+					<Option value="60">every 40 sec</Option>
 					<Option value="80">every 80 sec</Option>
 					<Option value="120">every 2 minutes</Option>
 					<Option value="180">every 3 minutes</Option>
-					<Option value="-1">automatic adaptive</Option>
 				</List>
 			</Field>
 			<Field id="pollingFrequencyLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
@@ -4046,7 +4042,6 @@ Parent and child share the same connection, the plugin creates two devices to be
 					<Option value="3600">after 1 hour</Option>
 				</List>
 			</Field>
-
 
 		</ConfigUI>
 		<States>
@@ -4076,10 +4071,10 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<TriggerLabel>schedule_profile</TriggerLabel>
 				<ControlPageLabel>schedule_profile</ControlPageLabel>
 			</State>
-			<State id="Position">
+			<State id="valvePosition">
 				<ValueType>number</ValueType>
-				<TriggerLabel>Position</TriggerLabel>
-				<ControlPageLabel>Position</ControlPageLabel>
+				<TriggerLabel>valvePosition</TriggerLabel>
+				<ControlPageLabel>valvePosition</ControlPageLabel>
 			</State>
 			<!--   this is same for all: -->
 			<State id="calibrated">
@@ -4164,6 +4159,155 @@ Parent and child share the same connection, the plugin creates two devices to be
 			</State>
 		</States>
 	</Device>
+
+
+
+
+	<Device type="dimmer" id="shellytrv-child">
+		<Name>Shelly-TRV (TRV) ValvePosition</Name>
+		<ConfigUI>
+			<Field id="isShellyDevice" type="checkbox" defaultValue="true" hidden="yes" />
+			<Field id="MSG" type="textfield" defaultValue="">
+				<Label>message from plugin:</Label>
+			</Field>
+			<Field id="SupportsOnState" type="checkbox" defaultValue="true" hidden="true">
+				<Label>SupportsOnState</Label>
+			</Field>
+			<Field id="SupportsSensorValue" type="checkbox" defaultValue="true" hidden="true">
+				<Label>SupportsSensorValue</Label>
+			</Field>
+			<Field id="SupportsStatusRequest" type="checkbox" defaultValue="true" hidden="true">
+				<Label>SupportsStatusRequest</Label>
+			</Field>
+			<Field id="AllowOnStateChange" type="checkbox" defaultValue="false" hidden="true">
+				<Label>AllowOnStateChange</Label>
+			</Field>
+			<Field id="AllowSensorValueChange" type="checkbox" defaultValue="false" hidden="true">
+				<Label>AllowSensorValueChange</Label>
+			</Field>
+			<Field id="usesInputForOnOff" type="checkbox" defaultValue="false" hidden="true">
+				<Label>usesInputForOnOff</Label>
+			</Field>
+			<Field id="SupportsBatteryLevel" type="checkbox" defaultValue="true" hidden="true" />
+			<Field id="label1" type="label">
+				<Label>Parameters for Shelly-TRV dimmer</Label>
+			</Field>
+			<Field id="ipNumber" type="textfield" defaultValue="192.168.1.x">
+				<Label>Shelly device IP Number</Label>
+			</Field>
+			<Field id="ipNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
+				<Label>Overwrite existing IP number</Label>
+			</Field>
+			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
+				<Label>Shelly device mac number</Label>
+			</Field>
+			<Field id="MAClabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
+				<Label>Only overwrite if you want to replace device, must be unique</Label>
+			</Field>
+			<Field id="devNo" type="textfield" defaultValue="0" hidden="true">
+				<Label>devNo</Label>
+			</Field>
+			<Field id="pollingFrequency" type="menu" defaultValue="60">
+				<Label>Polling frequency, how often the plugin requests status from the device:</Label>
+				<List>
+					<Option value="40">every 40 sec</Option>
+					<Option value="60">every 60 sec</Option>
+					<Option value="80">every 80 sec</Option>
+					<Option value="120">every 2 minutes</Option>
+					<Option value="180">every 3 minutes</Option>
+				</List>
+			</Field>
+			<Field id="pollingFrequencyLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
+				<Label>can be higher/adaptive if actions are setup on the devices</Label>
+			</Field>
+			<Field id="expirationSeconds" type="menu" defaultValue="43600">
+				<Label>Device goes to EXPIRED w no message or answer after:</Label>
+				<List>
+					<Option value="14400">after 4 hour</Option>
+					<Option value="21600">after 6 hour</Option>
+					<Option value="36000">after 10 hour</Option>
+					<Option value="43600">after 12 hour</Option>
+					<Option value="50400">after 14 hour</Option>
+					<Option value="57600">after 16 hour</Option>
+				</List>
+			</Field>
+		</ConfigUI>
+		<States>
+			<!--   this is dev specific -->
+			<State id="valvePosition">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>valvePosition</TriggerLabel>
+				<ControlPageLabel>valvePosition</ControlPageLabel>
+			</State>
+			<State id="childNo">
+				<ValueType>String</ValueType>
+				<TriggerLabel>childNo</TriggerLabel>
+				<ControlPageLabel>childNo</ControlPageLabel>
+			</State>
+			<!--   this is same for all: -->
+			<State id="lastSuccessfullConfigPush">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastSuccessfullConfigPush</TriggerLabel>
+				<ControlPageLabel>lastSuccessfullConfigPush</ControlPageLabel>
+			</State>
+			<State id="action_from_device">
+				<ValueType>String</ValueType>
+				<TriggerLabel>action_from_device</TriggerLabel>
+				<ControlPageLabel>action_from_device</ControlPageLabel>
+			</State>
+			<State id="MAC">
+				<ValueType>String</ValueType>
+				<TriggerLabel>MAC</TriggerLabel>
+				<ControlPageLabel>MAC</ControlPageLabel>
+			</State>
+			<State id="lastMessageFromDevice">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastMessageFromDevice</TriggerLabel>
+				<ControlPageLabel>lastMessageFromDevice</ControlPageLabel>
+			</State>
+			<State id="created">
+				<ValueType>String</ValueType>
+				<TriggerLabel>created</TriggerLabel>
+				<ControlPageLabel>created</ControlPageLabel>
+			</State>
+			<State id="lastStatusChange">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastStatusChange</TriggerLabel>
+				<ControlPageLabel>lastStatusChange</ControlPageLabel>
+			</State>
+			<State id="WiFi_rssi">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>WiFi_rssi</TriggerLabel>
+				<ControlPageLabel>WiFi_rssi</ControlPageLabel>
+			</State>
+			<State id="WiFi_ipv4_method">
+				<ValueType>String</ValueType>
+				<TriggerLabel>WiFi_ipv4_method</TriggerLabel>
+				<ControlPageLabel>WiFi_ipv4_method</ControlPageLabel>
+			</State>
+			<State id="cloud">
+				<ValueType>String</ValueType>
+				<TriggerLabel>cloud</TriggerLabel>
+				<ControlPageLabel>cloud</ControlPageLabel>
+			</State>
+			<State id="software_update_available">
+				<ValueType>String</ValueType>
+				<TriggerLabel>software_update_available</TriggerLabel>
+				<ControlPageLabel>software_update_available</ControlPageLabel>
+			</State>
+			<State id="expired">
+				<ValueType>String</ValueType>
+				<TriggerLabel>expired</TriggerLabel>
+				<ControlPageLabel>expired</ControlPageLabel>
+			</State>
+			<State id="upFor">
+				<ValueType>String</ValueType>
+				<TriggerLabel>upFor</TriggerLabel>
+				<ControlPageLabel>upFor</ControlPageLabel>
+			</State>
+		</States>
+	</Device>
+
 
 
 

@@ -1,3 +1,32 @@
+Added features / changes in v7.20.47 @ 2023-03-19
+===================================================
+1. added several options for actions for Shelly TRV devices :
+
+	set target temperature, disables valve position
+	enable set temperature, disables valve position
+	set valve position, disables target temperature
+	enable accelerated heating
+	set valve min in percent
+	enable schedule
+	select schedule
+	set boost minutes
+	enable extra force at close
+	set display brightness
+	set display flipped
+	set child lock
+	make device discoverable
+	calibrate device
+	reboot device
+	update firmware
+	
+
+2. added child device for TRV: samename-child is a dimemr device.
+   with this you can now set the valve position to a fixed value (0-100) 
+
+3. TRV child - dimmer devices are automatically cretaed when the TRV device gets created
+
+
+
 Added features / changes in v7.19.47 @ 2023-01-16
 ===================================================
 1. added some debug statements for shelly 2.5 roller/relay 
