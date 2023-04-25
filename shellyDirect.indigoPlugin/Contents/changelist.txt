@@ -1,6 +1,6 @@
 Added features / changes in v7.20.48 @ 2023-04-25
 ===================================================
-1. bug fix in error handling when no json gets returned
+1. bug fix in error handling when no json gets returned from shelly device 
    this is the error recovery of an error recovery  situation. not very common.
 
 
