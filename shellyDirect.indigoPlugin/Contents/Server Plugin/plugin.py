@@ -34,11 +34,6 @@ import traceback
 #import pydevd_pycharm
 #pydevd_pycharm.settrace('localhost', port=5678, stdoutToServer=True, stderrToServer=True)
 
-try:
-	unicode("x")
-except:
-	unicode = str
-
 
 try:
 	# noinspection PyUnresolvedReferences
@@ -1563,13 +1558,13 @@ class Plugin(indigo.PluginBase):
 				out += "\n:::::::: dev:{:33s} ID:{:14}  type: {:10s}   ::::::::::\n".format(name, devId, deviceTypeId)
 				keys = sorted(self.SHELLY[devId])
 				for item in keys:
-					out+= "{:33s}:  {}\n".format(item, unicode(self.SHELLY[devId][item]))
+					out+= "{:33s}:  {}\n".format(item, self.SHELLY[devId][item])
 				out += "states --------------------\n"
 				dev = indigo.devices[devId]
-				indigo.server.log("keys:"+ unicode(keys))
+				indigo.server.log("keys: {}".format(keys))
 				keys = sorted(dev.states)
 				for item in keys:
-					out+= "{:33s}:  {}\n".format(item, unicode(dev.states[item]))
+					out+= "{:33s}:  {}\n".format(item, dev.states[item])
 				keys = sorted(dev.states)
 				propList =[]
 				out += "props --------------------\n"
@@ -1588,7 +1583,7 @@ class Plugin(indigo.PluginBase):
 
 				if "action_url" in _emptyProps[dev.deviceTypeId]  and self.sensorApiVersion in _emptyProps[deviceTypeId]["action_url"]:
 					for item in _emptyProps[dev.deviceTypeId]["action_url"][self.sensorApiVersion]:
-						action = unicode(_emptyProps[dev.deviceTypeId]["action_url"][self.sensorApiVersion][item]).replace("': '",":").replace("', '","   ").replace("{","").replace("}","").replace("'","")
+						action = "{}".format(  (_emptyProps[dev.deviceTypeId]["action_url"][self.sensorApiVersion][item]).replace("': '",":").replace("', '","   ").replace("{","").replace("}","").replace("'","") )
 						out += "{:33s}:  {}\n".format(item, action)
 		ignoredIPNumbers = self.pluginPrefs.get("ignoredIPNumbers", "")
 		if ignoredIPNumbers != "":
@@ -1875,7 +1870,7 @@ class Plugin(indigo.PluginBase):
 
 			except Exception:
 				self.indiLOG.log(40, "", exc_info=True)
-			#self.indiLOG.log(10, "theDictList {}".format(unicode(theDictList[0])))
+			#self.indiLOG.log(10, "theDictList {}".format(theDictList[0]))
 			return theDictList
 
 		except Exception:
@@ -2044,8 +2039,8 @@ class Plugin(indigo.PluginBase):
 
 		except Exception:
 			self.indiLOG.log(40, "", exc_info=True)
-			errorDict["MSG"] = unicode(e)
-			valuesDict["MSG"] = unicode(e)
+			errorDict["MSG"] = "{}".format(e)
+			valuesDict["MSG"] =  "{}".format(e)
 			return ( False, valuesDict, errorDict )
 
 		return ( True, valuesDict )
@@ -2208,7 +2203,7 @@ class Plugin(indigo.PluginBase):
 			serverPlugin = indigo.server.getPlugin(self.pluginId)
 			serverPlugin.restart(waitUntilDone=False)
 
-		subprocess.call("/bin/kill -9 "+unicode(self.myPID), shell=True )
+		subprocess.call("/bin/kill -9 {}".format(self.myPID), shell=True )
 
 		return
 
@@ -2505,7 +2500,6 @@ class Plugin(indigo.PluginBase):
 					time.sleep(0.05)
 				self.execUpdate(items)
 				self.queueList = "update"
-				#### indigo.server.log(unicode(item[1])+"  "+ unicode(beaconUpdatedIds)+" "+ item[3])
 			self.messagesQueue.task_done()
 			self.queueActive  = False
 			self.queueList = ""
@@ -3724,7 +3718,7 @@ class Plugin(indigo.PluginBase):
 			#self.indiLOG.log(40, "flood: setting trip to green" )
 			GS = data["gas_sensor"]
 			CO = data["concentration"]
-			alarmState = unicode(GS["alarm_state"])
+			alarmState =  "{}".format(GS["alarm_state"])
 			if alarmState == "heavy": alarmState = "high"
 			props = dev.pluginProps
 
@@ -3810,7 +3804,6 @@ class Plugin(indigo.PluginBase):
 	def fillExternalSensors(self, data, parentDev, children):
 		try:
 			#   structure: "ext_temperature":{"0":{"tC":22.88,"tF":73.175000},"1":{"tC":23.25,"tF":73.850000}}
-			#self.indiLOG.log(10, "===fillExternalSensors==== parentDev:{} data:{}".format(parentDev.id, unicode(data)[0:50]))
 			for childDevType in _childDevTypes:
 				#self.indiLOG.log(10, "===fillExternalSensors childDevType:{}".format(childDevType))
 				if childDevType in data and type(data[childDevType]) == type({}) and data[childDevType] !={}:
@@ -4263,7 +4256,7 @@ class Plugin(indigo.PluginBase):
 							try:	val = float(dev.states[ttx])
 							except: val = 0
 							try:
-								xxx = unicode(dev.states[ttx]).split(".")
+								xxx =  "{}".format(dev.states[ttx]).split(".")
 								if len(xxx) ==1:
 									decimalPlaces = 1
 								else:
@@ -4579,7 +4572,7 @@ class Plugin(indigo.PluginBase):
 				self.SHELLY[shellyIndigoDevNumber]["reset"]=False
 
 		except Exception as e:
-			if unicode(e).find("None") == -1:
+			if  "{}".format(e).find("None") == -1:
 				self.indiLOG.log(10, exc_info=True)
 		try:
 			if shellyIndigoDevNumber != 0: self.indiLOG.log(10, "shellyPollerThread: ip#:{}  devId:{}; update thread stopped".format(ipNumber, shellyIndigoDevNumber) )
@@ -4604,7 +4597,7 @@ class Plugin(indigo.PluginBase):
 			return  retJson, err
 
 		except Exception as e:
-			if unicode(e).find("None") == -1:
+			if  "{}".format(e).find("None") == -1:
 				self.indiLOG.log(40, "", exc_info=True)
 		return  ret, "err"
 
@@ -4621,15 +4614,12 @@ class Plugin(indigo.PluginBase):
 			ret = subprocess.call("/sbin/ping  -c 1 -W 400 -o " + ipN, shell=True)
 			if self.decideMyLog("Ping"): self.indiLOG.log(10, "/sbin/ping  -c 1 -W 400 -o {} ret-code: {}".format(ipN, ret) )
 
-			#indigo.server.log(  ipN+"-2  "+ unicode(ret) +"  "+ unicode(time.time() - ss)  )
-
 			if int(ret) == 0:  return 0
 			return 1
 		except Exception as e:
-			if unicode(e).find("None") == -1:
+			if  "{}".format(e).find("None") == -1:
 				self.indiLOG.log(40, "", exc_info=True)
 
-		#indigo.server.log(  ipN+"-3  "+ unicode(ret) +"  "+ unicode(time.time() - ss)  )
 		return 1
 
 
@@ -5200,7 +5190,7 @@ class Plugin(indigo.PluginBase):
 
 			if self.decideMyLog("SetupDevices"): self.indiLOG.log(10, "pushThreadLoop stopped ")
 		except Exception as e:
-			if unicode(e).find("None") == -1:
+			if  "{}".format(e).find("None") == -1:
 				self.indiLOG.log(40, "", exc_info=True)
 		return
 
@@ -5224,7 +5214,7 @@ class Plugin(indigo.PluginBase):
 			self.SHELLY[devId]["pushIdActive"] = "new"
 
 		except Exception as e:
-			if unicode(e).find("None") == -1:
+			if  "{}".format(e).find("None") == -1:
 				self.indiLOG.log(40, "", exc_info=True)
 		return
 
@@ -5311,7 +5301,7 @@ class Plugin(indigo.PluginBase):
 							if self.decideMyLog("SetupDevices"):self.indiLOG.log(10, "{},  setting page >{}<".format(ipNumber, page) )
 							pushTried = True
 							jData, retCode = self.execShellySend(ipNumber, page, timeoutMax=2)
-							udata = unicode(jData)
+							udata =  "{}".format(jData)
 							if udata.find( findItem ) == -1:
 								if udata.find("offline")  == -1:
 									self.indiLOG.log(10, "send config to devId:{} not successfull for http://{}/{}, answer not ok:>{}<".format(devId, ipNumber, page, udata) )
@@ -5327,7 +5317,7 @@ class Plugin(indigo.PluginBase):
 					actionURLs = _emptyProps[deviceTypeId]["action_url"][self.sensorApiVersion]
 
 					existingActionSettings, retCode = self.execShellySend(ipNumber, _statusActionPage[self.sensorApiVersion], timeoutMax=10)
-					currentActions = "" # unicode(currentActions)
+					currentActions = "" #  "{}".format(currentActions)
 					if self.decideMyLog("SetupDevices"): self.indiLOG.log(10, "action actionURLs :{}\n exitings Actions:{}".format(actionURLs, existingActionSettings) )
 
 					for parameter in actionURLs: # eg parameter = settings/actions?report_url="
@@ -5383,15 +5373,15 @@ class Plugin(indigo.PluginBase):
 									self.sleep(1.5)
 
 								if self.decideMyLog("SetupDevices"): self.indiLOG.log(10, "action setting tries:{}; :{}< parm[]:{}< ".format(tries, setting,actionURLs[parameter][setting]) )
-								searchFor1 = unicode(actionURLs[parameter][setting])
-								searchFor2 = unicode(pageBack)
+								searchFor1 =  "{}".format(actionURLs[parameter][setting])
+								searchFor2 =  "{}".format(pageBack)
 
 
 
 								if self.decideMyLog("SetupDevices"): self.indiLOG.log(10, "{}, sending action page:{}".format(ipNumber, page) )
 								pushTried = True
 								jData, retCode = self.execShellySend(ipNumber, page, timeoutMax=2)
-								udata = unicode(jData)
+								udata =  "{}".format(jData)
 								s1 = udata.find(searchFor1) >-1
 								s2 = udata.find(searchFor2) >-1
 								if  not s1 or not s2: # not successfull
@@ -5483,8 +5473,8 @@ class Plugin(indigo.PluginBase):
 							jj = resp.json()
 						except :
 							if noJson: return {}, "0"
-							r = unicode(resp)
-							r =  "timeout" if r.find("timed out")>-1 else rr[0:50]
+							r = "{}".format(resp)
+							r =  "timeout" if r.find("timed out")>-1 else r[0:50]
 							self.indiLOG.log(40, "Shelly reponse from {} url:{},  no json object returned:>{}<".format(ipNumber, url, resp) )
 							return {}, r
 
@@ -5507,7 +5497,7 @@ class Plugin(indigo.PluginBase):
 
 
 	def addToStatesUpdateDict(self,devId,key,value,uiValue="",decimalPlaces="", force=""):
-		devId=unicode(devId)
+		devId= "{}".format(devId)
 		#self.indiLOG.log(10, "addToStatesUpdateDict devId:{}; key:{}, value:{}; uiValue:{}, decPlace:{}".format(devId,key,value,uiValue,decimalPlaces) )
 		try:
 				if devId not in self.updateStatesDict:
@@ -5518,7 +5508,7 @@ class Plugin(indigo.PluginBase):
 
 			#self.updateStatesDict = local
 		except Exception as e:
-			if	unicode(e).find("UnexpectedNullErrorxxxx") >-1: return newStates
+			if	 "{}".format(e).find("UnexpectedNullErrorxxxx") >-1: return newStates
 			self.indiLOG.log(40, "", exc_info=True)
 		return
 
@@ -5527,7 +5517,7 @@ class Plugin(indigo.PluginBase):
 		try:
 			if len(self.updateStatesDict) ==0: return
 			#self.indiLOG.log(10, "executeUpdateStatesList  updateStatesList: {}".format(self.updateStatesDict))
-			onlyDevID = unicode(onlyDevID)
+			onlyDevID =  "{}".format(onlyDevID)
 
 			local ={}
 			#
@@ -5564,7 +5554,7 @@ class Plugin(indigo.PluginBase):
 				if devId == "0": continue
 				try: devID = int(devId)
 				except Exception:
-					self.indiLOG.log(40, "executeUpdateStatesDict bad devID:{}, local:{}".format(unicode(devId)[0:25], unicode(local[devId])[0:40]) )
+					self.indiLOG.log(40, "executeUpdateStatesDict bad devID:{}, local:{}".format(devId, local[devId] ))
 
 					continue
 				oneNew = False
@@ -5620,7 +5610,7 @@ class Plugin(indigo.PluginBase):
 					self.execUpdateStatesList(dev,changedOnly)
 
 		except Exception as e:
-				if	unicode(e).find("UnexpectedNullErrorxxxx") >-1: return
+				if	"{}".format(e).find("UnexpectedNullErrorxxxx") >-1: return
 				self.indiLOG.log(40, "", exc_info=True)
 		self.executeUpdateStatesDictActive = ""
 		return
@@ -5641,7 +5631,7 @@ class Plugin(indigo.PluginBase):
 
 		except Exception:
 			self.indiLOG.log(40, "", exc_info=True)
-			self.indiLOG.log(40, "chList: "+ unicode(chList))
+			self.indiLOG.log(40, "chList: {}".format(chList))
 
 
 

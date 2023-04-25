@@ -1,3 +1,11 @@
+Added features / changes in v7.20.48 @ 2023-04-25
+===================================================
+1. bug fix in error handling when no json gets returned
+   this is the error recovery of an error recovery  situation. not very common.
+
+
+	
+
 Added features / changes in v7.20.47 @ 2023-03-19
 ===================================================
 1. added several options for actions for Shelly TRV devices :
