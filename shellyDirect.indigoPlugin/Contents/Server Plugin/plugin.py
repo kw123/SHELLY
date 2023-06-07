@@ -310,7 +310,6 @@ _emptyProps = {	# switches
 										"1":{}
 										},
 						"childTypes_Sensors":["ext_temperature","ext_humidity"],
-						"childTypes_SplitDevices":[],
 						"tempUnits":"C"
 						},
 
@@ -517,7 +516,7 @@ _emptyProps = {	# switches
 				"shellytrv":{"props":{"isShellyDevice":True, "usesInputForOnOff":False, "isRelay":False, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,
 						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
 						"parentIndigoId":0,"children":"{}","isParent":True,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":6,  "expirationSeconds":180,"SupportsBatteryLevel":True,
-						"SupportsHvacFanMode":False, "SupportsCoolSetpoint":False, "SupportsCoolSetpoint":False, "SupportsHeatSetpoint":True, "NumHumidityInputs":0, "NumTemperatureInputs":1},
+						"SupportsHvacFanMode":False, "SupportsCoolSetpoint":False, "SupportsHeatSetpoint":True, "NumHumidityInputs":0, "NumTemperatureInputs":1},
 						"setPageActionPageOnShellyDev":{},
 						"action_url":   {
 										"2":{},
@@ -548,7 +547,7 @@ _emptyProps = {	# switches
 						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
 						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":6,  "expirationSeconds":180},
 						"rgbLimits":[0,255],
-						"setPageActionPageOnShellyDev":{"white":"light/0?","white":"light/0?"},
+						"setPageActionPageOnShellyDev":{"white":"light/0?"},
 						"action_url":   {
 										"2":{
 											"settings/actions?enabled=true&index=0&name=":	{
@@ -571,7 +570,7 @@ _emptyProps = {	# switches
 						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
 						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":6,  "expirationSeconds":180},
 						"rgbLimits":[0,255],
-						"setPageActionPageOnShellyDev":{"white":"light/0?","white":"light/0?"},
+						"setPageActionPageOnShellyDev":{"white":"light/0?"},
 						"action_url":   {
 										"2":{
 											"settings/actions?enabled=true&index=0&name=":	{
@@ -605,7 +604,7 @@ _emptyProps = {	# switches
 											}
 										},
 						"childTypes_Sensors":[],
-						"setPageActionPageOnShellyDev":{"white":"light/0?","white":"light/0?"},
+						"setPageActionPageOnShellyDev":{"white":"light/0?"},
 						"childTypes_SplitDevices":[],
 						"tempUnits":"C"
 						},
@@ -673,7 +672,7 @@ _emptyProps = {	# switches
 						"setPageActionPageOnShellyDev":{},
 						"action_url":	{
 										"2":{
-											"settings/actions?enabled=true&index=0&name=":	{"close_url":"onOffState=1","open_url":"onOffState=0", "twilight_url":"action=twilightOpen", "dark_url":"action=darkOpen", "close_url":"action=close", "vibration_url":"action=vibration"}
+											"settings/actions?enabled=true&index=0&name=":	{"close_url":"onOffState=1","open_url":"onOffState=0", "twilight_url":"action=twilightOpen", "dark_url":"action=darkOpen", "vibration_url":"action=vibration"}
 											},
 										"1":{
 											"settings/?twilight_url":{"none":"action=twilightOpen"},"settings/?dark_url":{"none":"action=darkOpen"},"settings/?close_url":{"none":"action=close"},"settings/?vibration_url":{"none":"action=vibration"}
@@ -686,7 +685,7 @@ _emptyProps = {	# switches
 
 				"shellymotionsensor":{"props":{"isShellyDevice":True, "usesInputForOnOff":False, "isRelay":False, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":False, "SupportsStatusRequest":True, "AllowOnStateChange":False,  "SupportsBatteryLevel":True,
 						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
-						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":60,  "expirationSeconds":50400,"SupportsBatteryLevel":True },
+						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":60,  "expirationSeconds":50400},
 						"setPageActionPageOnShellyDev":{},
 						"action_url":	{
 										"2":{
@@ -819,7 +818,7 @@ for kk in _emptyProps:
 				_definedShellyDeviceswAction.append(kk)
 
 
-_hvacOpMode = {"cool":0, "heat":1, "cool":2, "auto":3, "off":4 }
+_hvacOpMode = {"xxx":0, "heat":1, "cool":2, "auto":3, "off":4 }
 
 #_definedShellyDeviceswAction	= ["shelly1","shelly1l","shelly1pm","shellyswitch25","shellyswitch25-roller","shellyem","shellydimmer","shellyflood","shellyht", "shellyem3","shellyplug","shellyplug-s","shelly4pro","shellydw","shellydw2","shellygas","shellybutton1","shellyix3"]
 
@@ -1930,7 +1929,8 @@ class Plugin(indigo.PluginBase):
 				if dev.address != self.SHELLY[dev.id]["ipNumber"]: valuesDict["address"] = ipNumber
 
 
-			for pp in["ipNumber", "pollingFrequency", "expirationSeconds"]:
+			self.SHELLY[devId]["ipNumber"] = copy.copy(valuesDict["ipNumber"])
+			for pp in["pollingFrequency", "expirationSeconds"]:
 				try:
 					self.SHELLY[devId][pp] = copy.copy(valuesDict[pp])
 				except Exception:
@@ -1997,8 +1997,11 @@ class Plugin(indigo.PluginBase):
 					childDevs, devNos = self.getChildDevices(children)
 					for childDev in childDevs:
 						childProps = childDev.pluginProps
-						for pp in["ipNumber", "pollingFrequency", "expirationSeconds"]:
+						for pp in["ipNumber"]:
 							childProps[pp] = copy.copy(valuesDict[pp])
+							self.SHELLY[childDev.id][pp] = copy.copy(valuesDict[pp])
+						for pp in[ "pollingFrequency", "expirationSeconds"]:
+							childProps[pp] = float(copy.copy(valuesDict[pp]))
 							self.SHELLY[childDev.id][pp] = copy.copy(valuesDict[pp])
 						childProps["address"] = copy.copy(valuesDict["ipNumber"])
 						childDev.replacePluginPropsOnServer(childProps)
@@ -2400,9 +2403,9 @@ class Plugin(indigo.PluginBase):
 						delShelly.append(devId)
 						continue
 					if "expired" not in dev.states: continue
-					if time.time() - self.startTime > 300: # no expirtaion in first 5 minutes after start, give it time to receive messages
+					if time.time() - self.startTime > 300: # no expiration in first 5 minutes after start, give it time to receive messages
 						props = dev.pluginProps
-						if time.time() - self.SHELLY[devId]["lastMessageFromDevice"] > self.SHELLY[devId]["expirationSeconds"]:
+						if time.time() - self.SHELLY[devId]["lastMessageFromDevice"] > float(self.SHELLY[devId]["expirationSeconds"]):
 							if dev.states["expired"].find("no") == 0 or len(dev.states["expired"]) < 10: # either "no ...  datestring" or  (empty or junk, must have datestring if not simply "no" )
 								self.indiLOG.log(10, "setting dev:{} to expired; minutes since last contact:{:.0f};  expiration Setting:{:.0f}[Min]".format(dev.name, (time.time() - self.SHELLY[devId]["lastMessageFromDevice"])/60, self.SHELLY[devId]["expirationSeconds"]/60))
 								dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
@@ -4338,7 +4341,7 @@ class Plugin(indigo.PluginBase):
 			except:
 				devName = "does not exist"
 
-			self.indiLOG.log(40, "devid:{} {},  w page called:{} please do print all devices and check for that dev id , called from:{}".format(shellyIndigoDevNumber), devName, page, calledFrom)
+			self.indiLOG.log(40, "devid:{} {},  w page called:{} please do print all devices and check for that dev id , called from:{}".format(shellyIndigoDevNumber, devName, page, calledFrom))
 		return
 
 
@@ -5285,7 +5288,7 @@ class Plugin(indigo.PluginBase):
 						if retCode != "0" and retCode.find("timeout") >-1:
 							if self.decideMyLog("SetupDevices"): self.indiLOG.log(10, "delaying send by {} due to retcode {}".format(sleepAfterTimeout, retCode[0:50]) )
 							for ii in range(int(sleepAfterTimeout)):
-								self.indiLOG.log(20, "page:{}; tesL in Shelly:{};  loopc:{}".format(page, self.SHELLY[devId]["lastSuccessfullConfigPush"]), ii )
+								self.indiLOG.log(20, "page:{}; tesL in Shelly:{};  loopc:{}".format(page, self.SHELLY[devId]["lastSuccessfullConfigPush"], ii ))
 								if self.testPing(ipNumber) == 0: break
 								self.sleep(0.5)
 						elif delayCounter %delayEveryx == 0:

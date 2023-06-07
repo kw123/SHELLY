@@ -1,3 +1,12 @@
+Added features / changes in v7.20.49 @ 2023-006-07
+===================================================
+1. bug fix for:
+File "plugin.py", line 2405, in checkForExpiredDevices
+if time.time() - self.SHELLY[devId]["lastMessageFromDevice"] > self.SHELLY[devId]["expirationSeconds"]:
+  TypeError: '>' not supported between instances of 'float' and 'str'
+
+
+
 Added features / changes in v7.20.48 @ 2023-04-25
 ===================================================
 1. bug fix in error handling when no json gets returned from shelly device 
