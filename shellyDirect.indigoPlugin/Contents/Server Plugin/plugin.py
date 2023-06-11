@@ -1582,7 +1582,7 @@ class Plugin(indigo.PluginBase):
 
 				if "action_url" in _emptyProps[dev.deviceTypeId]  and self.sensorApiVersion in _emptyProps[deviceTypeId]["action_url"]:
 					for item in _emptyProps[dev.deviceTypeId]["action_url"][self.sensorApiVersion]:
-						action = "{}".format(  (_emptyProps[dev.deviceTypeId]["action_url"][self.sensorApiVersion][item]).replace("': '",":").replace("', '","   ").replace("{","").replace("}","").replace("'","") )
+						action = "{}".format(  str((_emptyProps[dev.deviceTypeId]["action_url"][self.sensorApiVersion][item])).replace("': '",":").replace("', '","   ").replace("{","").replace("}","").replace("'","") )
 						out += "{:33s}:  {}\n".format(item, action)
 		ignoredIPNumbers = self.pluginPrefs.get("ignoredIPNumbers", "")
 		if ignoredIPNumbers != "":
