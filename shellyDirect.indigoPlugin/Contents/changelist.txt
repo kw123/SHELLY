@@ -1,8 +1,10 @@
-Added features / changes in v7.20.51 @ 2023-06-12
+Added features / changes in v7.20.52 @ 2023-06-12
 ===================================================
 1. bug fix for:
 line 5045, in actionControlDimmerRelay
 page += "{}={}&".format(IndigoStateMapToShellyDev[colorAction ...
+
+
 
 Added features / changes in v7.20.49 @ 2023-006-07
 ===================================================
