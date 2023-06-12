@@ -1,9 +1,8 @@
-Added features / changes in v7.20.50 @ 2023-06-11
+Added features / changes in v7.20.51 @ 2023-06-12
 ===================================================
 1. bug fix for:
-line 1585, in buttonPrintShellyDevInfoCALLBACK
-type: 'dict' object has no attribute 'replace'
-
+line 5045, in actionControlDimmerRelay
+page += "{}={}&".format(IndigoStateMapToShellyDev[colorAction ...
 
 Added features / changes in v7.20.49 @ 2023-006-07
 ===================================================
