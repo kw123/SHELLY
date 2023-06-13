@@ -5007,17 +5007,18 @@ class Plugin(indigo.PluginBase):
 						for colorAction in IndigoStateMapToShellyDev:
 							if colorAction in actionValues:
 
-								if actionValues[colorAction] == "on": actionValues[colorAction] = 100
-								if actionValues[colorAction] == "off": actionValues[colorAction] = 0
+								#if actionValues[colorAction] == "on": actionValues[colorAction] = 100
+								#if actionValues[colorAction] == "off": actionValues[colorAction] = 0
 
 								try: 	actionValues[colorAction] = int(actionValues[colorAction] )
 								except: pass
 
 								if colorAction in ["TurnOff","TurnOn"]:
-									if "TurnOff" in actionValues and actionValues["TurnOff"] == "off":
+									if self.decideMyLog("Actions"): self.indiLOG.log(10, "colorAction:{}".format(colorAction))
+									if "TurnOff" in actionValues and actionValues["TurnOff"] in ["off",0]:
 										ison = False
 										page += "{}={}&".format("turn", "off")
-									else:
+									if "TurnOn" in actionValues and actionValues["TurnOn"] in ["on",100]:
 										ison = True
 										page += "{}={}&".format("turn", "on")
 

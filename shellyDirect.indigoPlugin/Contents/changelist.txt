@@ -1,3 +1,8 @@
+Added features / changes in v7.20.54 @ 2023-06-13
+===================================================
+1. light bulb off not working properly, was introduced in v .52/53
+
+
 Added features / changes in v7.20.53 @ 2023-06-13
 ===================================================
 1. bug fix for:
