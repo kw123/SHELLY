@@ -5007,43 +5007,53 @@ class Plugin(indigo.PluginBase):
 						for colorAction in IndigoStateMapToShellyDev:
 							if colorAction in actionValues:
 
-									if colorAction in ["TurnOff","TurnOn"]:
-										if "TurnOff" in actionValues and actionValues["TurnOff"] == "off":
-											ison = False
-											page += "{}={}&".format("turn", "off")
-										else:
-											ison = True
-											page += "{}={}&".format("turn", "on")
+								if actionValues[colorAction] == "on": actionValues[colorAction] = 100
+								if actionValues[colorAction] == "off": actionValues[colorAction] = 0
+
+								try: 	actionValues[colorAction] = int(actionValues[colorAction] )
+								except: pass
+
+								if colorAction in ["TurnOff","TurnOn"]:
+									if "TurnOff" in actionValues and actionValues["TurnOff"] == "off":
+										ison = False
+										page += "{}={}&".format("turn", "off")
 									else:
-										if actionValues[colorAction] > 0 and not ison and dev.deviceTypeId != "shellytrv":
-											ison = True
-											page += "{}={}&".format("turn", "on")
+										ison = True
+										page += "{}={}&".format("turn", "on")
 
-									if True: # actionValues[colorAction] != dev.states[colorAction]:
-										if colorAction == "whiteTemperature": # this requires to be in white channel
-											page += "{}={}&".format(IndigoStateMapToShellyDev[colorAction], int(min(int(WhiteTemperatureMax),max(int(WhiteTemperatureMin),int(actionValues[colorAction])))))
-											setThermometer["lights"][0]["temp"] = int(min(int(WhiteTemperatureMax),max(int(WhiteTemperatureMin),int(actionValues[colorAction]))))
-										elif colorAction == "whiteLevel":
-											if actionValues[colorAction] ==0:
-												ison = False
-												page += "{}={}&".format("turn", "off")
-											page += "{}={}&".format(IndigoStateMapToShellyDev[colorAction], int(min(int(rgbLimits[1]),max(int(rgbLimits[0]),int(actionValues[colorAction])*255/100.))))
-											setThermometer["lights"][0]["white"] = int(min(int(rgbLimits[1]),max(int(rgbLimits[0]),int(actionValues[colorAction])*255/100.)))
-										elif colorAction == "brightnessLevel":
-											if actionValues[colorAction] == 0:
-												ison = False
-												if dev.deviceTypeId != "shellytrv":
-													page += "{}={}&".format("turn", "off")
-											else:
-												ison = True
+								else:
+									if actionValues[colorAction] > 0 and not ison and dev.deviceTypeId != "shellytrv":
+										ison = True
+										page += "{}={}&".format("turn", "on")
+
+								if colorAction == "whiteTemperature": # this requires to be in white channel
+									page += "{}={}&".format(IndigoStateMapToShellyDev[colorAction], int(min(int(WhiteTemperatureMax),max(int(WhiteTemperatureMin),int(actionValues[colorAction])))))
+									setThermometer["lights"][0]["temp"] = int(min(int(WhiteTemperatureMax),max(int(WhiteTemperatureMin),int(actionValues[colorAction]))))
+
+								elif colorAction == "whiteLevel":
+									if actionValues[colorAction] ==0:
+										ison = False
+										page += "{}={}&".format("turn", "off")
+									page += "{}={}&".format(IndigoStateMapToShellyDev[colorAction], int(min(int(rgbLimits[1]),max(int(rgbLimits[0]),int(actionValues[colorAction])*255/100.))))
+									setThermometer["lights"][0]["white"] = int(min(int(rgbLimits[1]),max(int(rgbLimits[0]),int(actionValues[colorAction])*255/100.)))
+
+								elif colorAction == "brightnessLevel":
+									if actionValues[colorAction] == 0:
+										ison = False
+										if dev.deviceTypeId != "shellytrv":
+											page += "{}={}&".format("turn", "off")
+									else:
+										ison = True
+									page += "{}={}&".format(IndigoStateMapToShellyDev[colorAction], int(min(100,         max(0,int(actionValues[colorAction])))))
+									setThermometer["lights"][0]["brightness"] = int(actionValues[colorAction])
+									if self.decideMyLog("Actions"): self.indiLOG.log(10, "setting brightnesLevel page: {}, colorAction:{}, actionValues:{}".format(page, colorAction, actionValues[colorAction]))
+
+								else:
+									if not( isinstance(actionValues[colorAction], str)):
+										page += "{}={}&".format(IndigoStateMapToShellyDev[colorAction], int(min(int(rgbLimits[1]),max(int(rgbLimits[0]),int(actionValues[colorAction])*255/100.))))
+										setThermometer["lights"][0][IndigoStateMapToShellyDev[colorAction]] = int(min(int(rgbLimits[1]),max(int(rgbLimits[0]),int(actionValues[colorAction])*255/100.)))
 
 
-											page += "{}={}&".format(IndigoStateMapToShellyDev[colorAction], int(min(100,         max(0,int(actionValues[colorAction])))))
-											setThermometer["lights"][0]["brightness"] = int(actionValues[colorAction])
-											if self.decideMyLog("Actions"): self.indiLOG.log(10, "setting brightnesLevel page: {}, colorAction:{}, actionValues:{}".format(page, colorAction, actionValues[colorAction]))
-										else:
-											page += "{}={}&".format(IndigoStateMapToShellyDev[colorAction], int(min(int(rgbLimits[1]),max(int(rgbLimits[0]),int(actionValues[colorAction])*255/100.))))
-											setThermometer["lights"][0][IndigoStateMapToShellyDev[colorAction]] = int(min(int(rgbLimits[1]),max(int(rgbLimits[0]),int(actionValues[colorAction])*255/100.)))
 						setThermometer["lights"][0]["ison"] = ison
 						setThermometer["lights"][0]["mode"] = channel
 

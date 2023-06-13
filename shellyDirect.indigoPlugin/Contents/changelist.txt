@@ -1,3 +1,9 @@
+Added features / changes in v7.20.53 @ 2023-06-13
+===================================================
+1. bug fix for:
+ValueError: invalid literal for int() with base 10: 'on'
+
+
 Added features / changes in v7.20.52 @ 2023-06-12
 ===================================================
 1. bug fix for:
