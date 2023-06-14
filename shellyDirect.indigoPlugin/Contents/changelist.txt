@@ -1,3 +1,11 @@
+Added features / changes in v7.20.55 @ 2023-06-14
+===================================================
+1. enabled manual add of shelly devices,  discovery add through menu
+   create new shelly device, select proper dev type
+   enter ip# and mac number w ":"
+   save
+
+
 Added features / changes in v7.20.54 @ 2023-06-13
 ===================================================
 1. light bulb off not working properly, was introduced in v .52/53

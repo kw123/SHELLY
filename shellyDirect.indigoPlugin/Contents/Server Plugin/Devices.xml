@@ -39,7 +39,7 @@
 				<Label>Overwrite existing IP number</Label>
 			</Field>
 			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
-				<Label>Shelly device mac number</Label>
+				<Label>Shelly device mac number (w ":")</Label>
 			</Field>
 			<Field id="MAClabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
 				<Label>Only overwrite if you want to replace device, must be unique</Label>
@@ -192,7 +192,7 @@
 				<Label>Shelly device IP Number</Label>
 			</Field>
 			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
-				<Label>Shelly device mac number</Label>
+				<Label>Shelly device mac number (w ":")</Label>
 			</Field>
 			<Field id="MAClabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
 				<Label>Only overwrite if you want to replace device, must be unique</Label>
@@ -356,7 +356,7 @@
 				<Label>Overwrite existing IP number</Label>
 			</Field>
 			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
-				<Label>Shelly device mac number</Label>
+				<Label>Shelly device mac number (w ":")</Label>
 			</Field>
 			<Field id="MAClabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
 				<Label>Only overwrite if you want to replace device, must be unique</Label>
@@ -597,7 +597,7 @@
 				<Label>Shelly device IP Number</Label>
 			</Field>
 			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
-				<Label>Shelly device mac number</Label>
+				<Label>Shelly device mac number (w ":")</Label>
 			</Field>
 			<Field id="MAClabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
 				<Label>Only overwrite if you want to replace device, must be unique</Label>
@@ -852,7 +852,7 @@
 				<Label>Overwrite existing IP number</Label>
 			</Field>
 			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
-				<Label>Shelly device mac number</Label>
+				<Label>Shelly device mac number (w ":")</Label>
 			</Field>
 			<Field id="MAClabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
 				<Label>Only overwrite if you want to replace device, must be unique</Label>
@@ -1008,7 +1008,7 @@
 				<Label>Shelly device IP Number</Label>
 			</Field>
 			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
-				<Label>Shelly device mac number</Label>
+				<Label>Shelly device mac number (w ":")</Label>
 			</Field>
 			<Field id="MAClabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
 				<Label>Only overwrite if you want to replace device, must be unique</Label>
@@ -1180,7 +1180,7 @@
 				<Label>Overwrite existing IP number</Label>
 			</Field>
 			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
-				<Label>Shelly device mac number</Label>
+				<Label>Shelly device mac number (w ":")</Label>
 			</Field>
 			<Field id="MAClabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
 				<Label>Only overwrite if you want to replace device, must be unique</Label>
@@ -1397,7 +1397,7 @@
 				<Label>Overwrite existing IP number</Label>
 			</Field>
 			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
-				<Label>Shelly device mac number</Label>
+				<Label>Shelly device mac number (w ":")</Label>
 			</Field>
 			<Field id="MAClabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
 				<Label>Only overwrite if you want to replace device, must be unique</Label>
@@ -1615,7 +1615,7 @@
 				<Label>Overwrite existing IP number</Label>
 			</Field>
 			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
-				<Label>Shelly device mac number</Label>
+				<Label>Shelly device mac number (w ":")</Label>
 			</Field>
 			<Field id="MAClabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
 				<Label>Only overwrite if you want to replace device, must be unique</Label>
@@ -1809,7 +1809,7 @@
 				<Label>Overwrite existing IP number</Label>
 			</Field>
 			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
-				<Label>Shelly device mac number</Label>
+				<Label>Shelly device mac number (w ":")</Label>
 			</Field>
 			<Field id="MAClabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
 				<Label>Only overwrite if you want to replace device, must be unique</Label>
@@ -2035,7 +2035,7 @@
 				<Label>Overwrite existing IP number</Label>
 			</Field>
 			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
-				<Label>Shelly device mac number</Label>
+				<Label>Shelly device mac number (w ":")</Label>
 			</Field>
 			<Field id="MAClabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
 				<Label>Only overwrite if you want to replace device, must be unique</Label>
@@ -2204,7 +2204,7 @@
 				<Label>Overwrite existing IP number</Label>
 			</Field>
 			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
-				<Label>Shelly device mac number</Label>
+				<Label>Shelly device mac number (w ":")</Label>
 			</Field>
 			<Field id="MAClabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
 				<Label>Only overwrite if you want to replace device, must be unique</Label>
@@ -2392,7 +2392,7 @@
 				</List>
 			</Field>
 			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
-				<Label>Shelly device mac number</Label>
+				<Label>Shelly device mac number (w ":")</Label>
 			</Field>
 			<Field id="MAClabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
 				<Label>Only overwrite if you want to replace device, must be unique</Label>
@@ -2741,7 +2741,7 @@ you can change the device type to roller below</Label>
 				</List>
 			</Field>
 			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
-				<Label>Shelly device mac number</Label>
+				<Label>Shelly device mac number (w ":")</Label>
 			</Field>
 			<Field id="MAClabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
 				<Label>Only overwrite if you want to replace device, must be unique</Label>
@@ -2976,7 +2976,7 @@ you can change the device type to roller below</Label>
 				<Label>Shelly device IP Number</Label>
 			</Field>
 			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
-				<Label>Shelly device mac number</Label>
+				<Label>Shelly device mac number (w ":")</Label>
 			</Field>
 			<Field id="MAClabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
 				<Label>Only overwrite if you want to replace device, must be unique</Label>
@@ -3178,7 +3178,7 @@ Parent and child share the same connection, the plugin creates two devices to be
 				</List>
 			</Field>
 			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
-				<Label>Shelly device mac number</Label>
+				<Label>Shelly device mac number (w ":")</Label>
 			</Field>
 			<Field id="MAClabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
 				<Label>Only overwrite if you want to replace device, must be unique</Label>
@@ -3367,7 +3367,7 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<Label>Shelly device IP Number</Label>
 			</Field>
 			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
-				<Label>Shelly device mac number</Label>
+				<Label>Shelly device mac number (w ":")</Label>
 			</Field>
 			<Field id="MAClabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
 				<Label>Only overwrite if you want to replace device, must be unique</Label>
@@ -3590,7 +3590,7 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<Label>Overwrite existing IP number</Label>
 			</Field>
 			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
-				<Label>Shelly device mac number</Label>
+				<Label>Shelly device mac number (w ":")</Label>
 			</Field>
 			<Field id="MAClabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
 				<Label>Only overwrite if you want to replace device, must be unique</Label>
@@ -3787,7 +3787,7 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<Label>Overwrite existing IP number</Label>
 			</Field>
 			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
-				<Label>Shelly device mac number</Label>
+				<Label>Shelly device mac number (w ":")</Label>
 			</Field>
 			<Field id="MAClabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
 				<Label>Only overwrite if you want to replace device, must be unique</Label>
@@ -4014,7 +4014,7 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<Label>Overwrite existing IP number</Label>
 			</Field>
 			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
-				<Label>Shelly device mac number</Label>
+				<Label>Shelly device mac number (w ":")</Label>
 			</Field>
 			<Field id="MAClabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
 				<Label>Only overwrite if you want to replace device, must be unique</Label>
@@ -4199,7 +4199,7 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<Label>Overwrite existing IP number</Label>
 			</Field>
 			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
-				<Label>Shelly device mac number</Label>
+				<Label>Shelly device mac number (w ":")</Label>
 			</Field>
 			<Field id="MAClabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
 				<Label>Only overwrite if you want to replace device, must be unique</Label>
@@ -4367,7 +4367,7 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<Label>Overwrite existing IP number</Label>
 			</Field>
 			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
-				<Label>Shelly device mac number</Label>
+				<Label>Shelly device mac number (w ":")</Label>
 			</Field>
 			<Field id="MAClabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
 				<Label>Only overwrite if you want to replace device, must be unique</Label>
@@ -4680,7 +4680,7 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<Label>Overwrite existing IP number</Label>
 			</Field>
 			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
-				<Label>Shelly device mac number</Label>
+				<Label>Shelly device mac number (w ":")</Label>
 			</Field>
 			<Field id="MAClabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
 				<Label>Only overwrite if you want to replace device, must be unique</Label>
@@ -4999,7 +4999,7 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<Label>Overwrite existing IP number</Label>
 			</Field>
 			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
-				<Label>Shelly device mac number</Label>
+				<Label>Shelly device mac number (w ":")</Label>
 			</Field>
 			<Field id="MAClabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
 				<Label>Only overwrite if you want to replace device, must be unique</Label>
@@ -5182,7 +5182,7 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<Label>Overwrite existing IP number</Label>
 			</Field>
 			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
-				<Label>Shelly device mac number</Label>
+				<Label>Shelly device mac number (w ":")</Label>
 			</Field>
 			<Field id="MAClabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
 				<Label>Only overwrite if you want to replace device, must be unique</Label>
@@ -5332,7 +5332,7 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<Label>Overwrite existing IP number</Label>
 			</Field>
 			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
-				<Label>Shelly device mac number</Label>
+				<Label>Shelly device mac number (w ":")</Label>
 			</Field>
 			<Field id="MAClabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
 				<Label>Only overwrite if you want to replace device, must be unique</Label>
@@ -5547,7 +5547,7 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<Label>Overwrite existing IP number</Label>
 			</Field>
 			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
-				<Label>Shelly device mac number</Label>
+				<Label>Shelly device mac number (w ":")</Label>
 			</Field>
 			<Field id="MAClabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
 				<Label>Only overwrite if you want to replace device, must be unique</Label>
@@ -5752,7 +5752,7 @@ for connection parameters check the parent (SHELLY host device)</Label>
 				<Label>Shelly device IP Number</Label>
 			</Field>
 			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
-				<Label>Shelly device mac number</Label>
+				<Label>Shelly device mac number (w ":")</Label>
 			</Field>
 			<Field id="MAClabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
 				<Label>Only overwrite if you want to replace device, must be unique</Label>
@@ -5874,7 +5874,7 @@ for connection parameters check the parent (SHELLY host device)</Label>
 				<Label>Shelly device IP Number</Label>
 			</Field>
 			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
-				<Label>Shelly device mac number</Label>
+				<Label>Shelly device mac number (w ":")</Label>
 			</Field>
 			<Field id="MAClabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
 				<Label>Only overwrite if you want to replace device, must be unique</Label>
@@ -5993,7 +5993,7 @@ for connection parameters check the parent (SHELLY host device)</Label>
 				<Label>Overwrite existing IP number</Label>
 			</Field>
 			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
-				<Label>Shelly device mac number</Label>
+				<Label>Shelly device mac number (w ":")</Label>
 			</Field>
 			<Field id="MAClabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
 				<Label>Only overwrite if you want to replace device, must be unique</Label>
@@ -6239,7 +6239,7 @@ for connection parameters check the parent (SHELLY host device)</Label>
 				<Label>Overwrite existing IP number</Label>
 			</Field>
 			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
-				<Label>Shelly device mac number</Label>
+				<Label>Shelly device mac number (w ":")</Label>
 			</Field>
 			<Field id="MAClabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
 				<Label>Only overwrite if you want to replace device, must be unique</Label>
@@ -6472,7 +6472,7 @@ for connection parameters check the parent (SHELLY host device)</Label>
 				<Label>Overwrite existing IP number</Label>
 			</Field>
 			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
-				<Label>Shelly device mac number</Label>
+				<Label>Shelly device mac number (w ":")</Label>
 			</Field>
 			<Field id="MAClabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
 				<Label>Only overwrite if you want to replace device, must be unique</Label>
@@ -6706,7 +6706,7 @@ for connection parameters check the parent (SHELLY host device)</Label>
 				<Label>Overwrite existing IP number</Label>
 			</Field>
 			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
-				<Label>Shelly device mac number</Label>
+				<Label>Shelly device mac number (w ":")</Label>
 			</Field>
 			<Field id="MAClabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
 				<Label>Only overwrite if you want to replace device, must be unique</Label>
@@ -6976,7 +6976,7 @@ for connection parameters check the parent (SHELLY host device)</Label>
 				<Label>Overwrite existing IP number</Label>
 			</Field>
 			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
-				<Label>Shelly device mac number</Label>
+				<Label>Shelly device mac number (w ":")</Label>
 			</Field>
 			<Field id="MAClabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
 				<Label>Only overwrite if you want to replace device, must be unique</Label>

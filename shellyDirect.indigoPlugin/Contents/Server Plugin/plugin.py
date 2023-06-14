@@ -2427,7 +2427,7 @@ class Plugin(indigo.PluginBase):
 			if self.ipNumberRangeToTest == []: return
 
 			rangestart = int(self.ipNumberRangeToTest[0].split(".")[3])
-			rangeEnd   = int( self.ipNumberRangeToTest[1].split(".")[3]) + 1
+			rangeEnd   = int(self.ipNumberRangeToTest[1].split(".")[3]) + 1
 			ip0        = self.ipNumberRangeToTest[1].split(".")
 			ip0        = ip0[0]+"."+ip0[1]+"."+ip0[2]+"."
 			self.ipNumberRangeToTest = []
@@ -2553,7 +2553,7 @@ class Plugin(indigo.PluginBase):
 			# no indigo dev number, must be new
 			if items["shellyIndigoDevNumber"]  == 0:
 				data = items["data"]
-				self.indiLOG.log(10, "execUpdate checking for new device received, ipNumber:{}; data:{} ".format( items["shellyIndigoDevNumber"], ipNumber, data) )
+				self.indiLOG.log(10, "execUpdate checking for new device received, ipNumber:{}; data:{} ".format( ipNumber, data) )
 				devIdFound = 0
 				if "mac" in data: MAC = data["mac"]
 				if "device" in data and "mac" in data["device"]: MAC = data["device"]["mac"]
@@ -3037,6 +3037,7 @@ class Plugin(indigo.PluginBase):
 
 				return
 
+
 			self.fillExternalSensors(data, dev, children)
 
 			self.fillLight(data, dev)
@@ -3380,6 +3381,11 @@ class Plugin(indigo.PluginBase):
 
 			if "calibrated" in data :
 				if "calibrated" in dev.states: 										self.addToStatesUpdateDict(devID, "calibrated", 					"Yes" if data["calibrated"] else "No"  )
+
+
+			if "mac" in data :
+				if "MAC" in dev.states: 											self.addToStatesUpdateDict(devID, "MAC", 								data["mac"])
+
 
 
 			if "cloud" in data and "enabled" in data["cloud"]:
