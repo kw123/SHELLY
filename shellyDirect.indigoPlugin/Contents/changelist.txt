@@ -1,4 +1,4 @@
-Added features / changes in v7.20.56 @ 2023-12-20
+Added features / changes in v7.20.57 @ 2023-12-20
 ===================================================
 1. added check if device is not properly defined / setup
 

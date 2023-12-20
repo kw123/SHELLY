@@ -2408,8 +2408,8 @@ class Plugin(indigo.PluginBase):
 						if time.time() - self.SHELLY[devId]["lastMessageFromDevice"] > float(self.SHELLY[devId]["expirationSeconds"]):
 							try:
 								if dev.states["expired"].find("no") == 0 or len(dev.states["expired"]) < 10: # either "no ...  datestring" or  (empty or junk, must have datestring if not simply "no" )
-									if type(self.SHELLY[devId]["lastMessageFromDevice"])) == type("") or type(self.SHELLY[devId]["expirationSeconds"]) == type(""): 
-										self.indiLOG.log(20,f"device not properly defined: devId {devid}/{dev.name} info:{self.SHELLY[devId])}")
+									if type(self.SHELLY[devId]["lastMessageFromDevice"]) == type("") or type(self.SHELLY[devId]["expirationSeconds"]) == type(""): 
+										self.indiLOG.log(20,f"device not properly defined: devId {devid}/{dev.name} info:{self.SHELLY[devId]}")
 										continue
 
 									self.indiLOG.log(10, "setting dev:{} to expired; minutes since last contact:{:.0f};  expiration Setting:{:.0f}[Min]".format(dev.name, (time.time() - self.SHELLY[devId]["lastMessageFromDevice"])/60, self.SHELLY[devId]["expirationSeconds"]/60))
@@ -2417,7 +2417,7 @@ class Plugin(indigo.PluginBase):
 									dev.updateStateOnServer("expired", now.strftime(_defaultDateStampFormat))
 							except Exception:
 								self.indiLOG.log(40, "", exc_info=True)
-								self.indiLOG.log(20,f"devId {devid} dev info:{}".format(devId, self.SHELLY[devId]))
+								self.indiLOG.log(20,f"devId {devid} dev info:{ self.SHELLY[devId]}")
 								continue
 
 					self.SHELLY[devId]["deviceEnabled"]  = dev.enabled
