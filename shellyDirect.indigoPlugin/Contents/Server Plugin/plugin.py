@@ -2406,10 +2406,19 @@ class Plugin(indigo.PluginBase):
 					if time.time() - self.startTime > 300: # no expiration in first 5 minutes after start, give it time to receive messages
 						props = dev.pluginProps
 						if time.time() - self.SHELLY[devId]["lastMessageFromDevice"] > float(self.SHELLY[devId]["expirationSeconds"]):
-							if dev.states["expired"].find("no") == 0 or len(dev.states["expired"]) < 10: # either "no ...  datestring" or  (empty or junk, must have datestring if not simply "no" )
-								self.indiLOG.log(10, "setting dev:{} to expired; minutes since last contact:{:.0f};  expiration Setting:{:.0f}[Min]".format(dev.name, (time.time() - self.SHELLY[devId]["lastMessageFromDevice"])/60, self.SHELLY[devId]["expirationSeconds"]/60))
-								dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
-								dev.updateStateOnServer("expired", now.strftime(_defaultDateStampFormat))
+							try:
+								if dev.states["expired"].find("no") == 0 or len(dev.states["expired"]) < 10: # either "no ...  datestring" or  (empty or junk, must have datestring if not simply "no" )
+									if type(self.SHELLY[devId]["lastMessageFromDevice"])) == type("") or type(self.SHELLY[devId]["expirationSeconds"]) == type(""): 
+										self.indiLOG.log(20,f"device not properly defined: devId {devid}/{dev.name} info:{self.SHELLY[devId])}")
+										continue
+
+									self.indiLOG.log(10, "setting dev:{} to expired; minutes since last contact:{:.0f};  expiration Setting:{:.0f}[Min]".format(dev.name, (time.time() - self.SHELLY[devId]["lastMessageFromDevice"])/60, self.SHELLY[devId]["expirationSeconds"]/60))
+									dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
+									dev.updateStateOnServer("expired", now.strftime(_defaultDateStampFormat))
+							except Exception:
+								self.indiLOG.log(40, "", exc_info=True)
+								self.indiLOG.log(20,f"devId {devid} dev info:{}".format(devId, self.SHELLY[devId]))
+								continue
 
 					self.SHELLY[devId]["deviceEnabled"]  = dev.enabled
 
