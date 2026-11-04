@@ -64,6 +64,51 @@ and NOT indigo ports: 8176 or 1176</Label>
 All devices must be on the same release</Label>
 	</Field>
 
+  <Field id="gen2Label" type="label" fontSize="small" >
+		<Label>Gen2 devices (eg Pro 3EM): subscribe to messages from the devices</Label>
+   </Field>
+   <Field	id="gen2SubscribeWs"   type="menu" defaultValue="on">
+		<Label>Subscribe via websocket:</Label>
+		<List>
+			<Option value="on" >on, device sends changes (ws://ip/rpc), polling only as backup</Option>
+			<Option value="off">off, polling only</Option>
+		</List>
+   </Field>
+   <Field	id="gen2WsMinUpdateSeconds"   type="menu" defaultValue="2">
+		<Label>Update indigo states from subscription at most every:</Label>
+		<List>
+			<Option value="1" >1 sec</Option>
+			<Option value="2" >2 secs</Option>
+			<Option value="5" >5 secs</Option>
+			<Option value="10">10 secs</Option>
+		</List>
+   </Field>
+   <Field id="gen2Label2" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
+		<Label>gen2 devices use the password above with user "admin" (digest auth), user id is ignored</Label>
+	</Field>
+   <Field	id="gen2MqttBroker"   type="menu" defaultValue="off">
+		<Label>Built in MQTT broker for shelly devices:</Label>
+		<List>
+			<Option value="off">off</Option>
+			<Option value="on" >on, devices connect to indigo-ip:port and publish their changes</Option>
+		</List>
+   </Field>
+   <Field id="gen2MqttPort"   type="textfield" defaultValue="1883" visibleBindingId="gen2MqttBroker" visibleBindingValue="on">
+		<Label>.. MQTT broker port:</Label>
+   </Field>
+   <Field id="gen2MqttUser"   type="textfield" defaultValue="" visibleBindingId="gen2MqttBroker" visibleBindingValue="on">
+		<Label>.. MQTT user (empty = no login):</Label>
+   </Field>
+   <Field id="gen2MqttPassword"   type="textfield" defaultValue="" visibleBindingId="gen2MqttBroker" visibleBindingValue="on">
+		<Label>.. MQTT password:</Label>
+   </Field>
+   <Field id="gen2MqttLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey" visibleBindingId="gen2MqttBroker" visibleBindingValue="on">
+		<Label>on each shelly device (web ui / Settings / MQTT): enable, server = indigo-ip:port, same user/password,
+"RPC status notifications over MQTT" on (gen2). or use menu "Point device MQTT to the plugin broker".
+gen1 devices: shelly cloud is off while MQTT is on.
+Unknown devices that connect are probed and created like a scan finds them.</Label>
+	</Field>
+
   <Field id="otherLabel" type="label" fontSize="small" >
 		<Label>Other parameters</Label>
    </Field>
@@ -164,6 +209,7 @@ All devices must be on the same release</Label>
 
 	<Field id="infoLabel99" type="label"> <Label>Debug areas for plugin:</Label>  </Field>
  
+	<Field  id="showLoginTest"       type="checkbox"         > <Label> show logging test at startup:</Label>  </Field>
 	<Field	id="debugSetupDevices"   type="checkbox"  > <Label> Debug...				   ... (1)  SetupDevice:</Label>  </Field>
 	<Field	id="debugHTTPlistener"   type="checkbox"  > <Label>	 ... (2)  HTTP listener:</Label>  </Field>
 	<Field	id="debugPolling"		type="checkbox"  > <Label>	 ... (3)  polling of devices:</Label>  </Field>
@@ -171,6 +217,8 @@ All devices must be on the same release</Label>
 	<Field	id="debugActions"		type="checkbox"  > <Label>	 ... (6)  Actions:</Label>  </Field>
 	<Field	id="debugSQLSuppresslog" type="checkbox"  > <Label>	 ..  (18) SQL-Suppress-logger:</Label>  </Field>
 
+	<Field	id="debugMQTT"		 type="checkbox"  > <Label>	 ... (8)  gen2 MQTT broker:</Label>  </Field>
+	<Field	id="debugWebSocket"	 type="checkbox"  > <Label>	 ... (7)  gen2 websocket subscription:</Label>  </Field>
 	<Field	id="debugSpecial"		type="checkbox"  > <Label>	 ... (S) special debug (only for development):</Label>  </Field>
 	<Field	id="debugall"			type="checkbox"  > <Label>	 ... (99) all of the above .. everything:</Label>  </Field>
 

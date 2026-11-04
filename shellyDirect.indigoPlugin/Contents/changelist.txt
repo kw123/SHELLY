@@ -1,3 +1,97 @@
+Added features / changes in v2026.1.1 @ 2026-11-04
+===================================================
+1. subscribe to messages sent from gen2 shelly devices:
+   plugin opens a websocket to ws://ip/rpc and sends one rpc request, the device then pushes
+   NotifyStatus / NotifyFullStatus / NotifyEvent on that channel.
+   changes are merged into the last full status and update the indigo states (at most every x secs, config)
+   reconnects automatically, ping keep alive, digest auth w user admin + password from config
+   while subscribed http polling is only a backup (max every 5 minutes)
+   config: "Subscribe via websocket" on/off, "update at most every" ; debug option "gen2 websocket"
+2. prep for Shelly Pro 3EM (v2):  new device types shellypro3em (totals) + 3 x shellypro3em-child
+   triphase profile: children = phase A/B/C ; monophase profile: children = channel 1/2/3, parent = sum
+   states: power, apparentPower, voltage, current, powerFactor, frequency, energy, energyReturned [Wh] ..
+   gen2 polling uses rpc/Shelly.GetStatus and rpc/Shelly.GetDeviceInfo, digest auth
+   add manually: create new shelly device, type Shelly-Pro-3EM, enter ip# and mac, save. children are created w first status
+3. discovery (scan) finds gen2 devices: if /settings does not answer, /shelly is tried ("gen":2)
+   supported gen2 types get created, others are logged as "not supported yet"
+   known device at new ip# is found by mac (w or w/o ":") and its ip# is changed
+4. built in mini MQTT broker for gen2 devices (miniMqttBroker.py, nothing to install, no external broker needed)
+   config: on/off (default off), port (1883), optional user/password ; debug option "gen2 MQTT broker"
+   on the shelly: MQTT enable, server = indigo-ip:port, "RPC status notifications over MQTT" on
+   receives <prefix>/events/rpc (NotifyStatus/NotifyEvent, same as websocket) and <prefix>/status/<component>
+   device found by ip# of the connection or by mac in the client id; unknown devices are probed and created
+   new state mqttConnection; while connected http polling is only a backup (max every 5 minutes)
+5. added Shelly Plus H&T (gen2, shellyplusht): temperature + min/max on parent, humidity + min/max on child,
+   battery level / voltage, external power. the device sleeps most of the time, use the MQTT broker so it reports on wake up
+6. gen2/gen3 energy meters: the shellypro3em type now covers Pro 3EM (120A and 400A), 3EM-63 Gen3, EM Gen3, Pro EM-50
+   number of children from the device: 3 phases (em:0) or one per channel (em1:n). Pro EM-50 contactor output in state "relay"
+7. new gen2/gen3 relay type shellygen2switch (Plus 1PM, Plus Plug S, 1PM Gen3, Pro 4PM ..): on/off/toggle via rpc Switch.Set,
+   power, voltage, current, pf, frequency, energy [Wh], internal temperature, input state. one child per additional switch
+   (devices in cover mode are not supported yet)
+8. gen2 device ids the plugin does not know are typed by the parts in their status (em/em1, switch, temperature+humidity)
+9. gen1 Shelly 3EM fix: now 3 children of type shellyem3-child (was 2 of type shellyem-child, phase C was missing), power factor added
+   existing 3EM devices: delete and re-create (scan) to get the 3rd phase
+10. menu "Gen2: point device MQTT to the plugin broker": one or all gen2 devices.
+   sets MQTT on, server = indigo ip:broker port, broker user/password, RPC status notifications on, restarts the device if needed.
+   devices already set are not touched. sleeping devices are tried for 15 minutes (press button to wake up)
+11. "created new device: name, type, ip#" is now logged as info (was debug only, so nothing showed in the log)
+12. config push (action urls) to gen1 devices that the device does not accept is now logged as warning w hint to "Shelly devices api version" (was debug only)
+13. MQTT for gen1 devices: the built in broker now also takes the gen1 topics (shellies/<id>/...)
+   shellies/<id>/info (= full /status, every 30 secs) updates the states like a poll, relay/input on/off changes trigger a status poll
+   while connected polling slows down to max every 5 minutes. device found by ip# or by the mac in the client id (gen1: last 6 of mac)
+   menu renamed "Point device MQTT to the plugin broker (gen1 + gen2)": gen1 = settings?mqtt_enable=true&mqtt_server=.. + reboot
+   NOTE: gen1 firmware turns the shelly cloud off while MQTT is on
+14. lastOnOffChange added to the states the SQL logger ignores (config "disable loggin for specific dev-states"), date strings can clash w timestamp columns
+15. every state value is converted to its type in Devices.xml before it is written (int 0 for a Float state --> 0.0, "" for a Boolean state --> False ..)
+   the sql logger creates the columns of a new device from the first values, a wrong type there gave sql errors later
+16. states overtemperature, overload, safety_switch, calibrating, positioning are now Boolean (were String, got true/false from the device)
+   a new device started w "" in these, the sql logger made a text column and then failed to change it to boolean
+17. new devices: right after creation all Boolean / Float / Number / Integer states are set to False / 0.0 / 0 instead of the "" indigo starts with
+   so the first write the sql logger sees has the right type
+18. all device types checked: state types in Devices.xml now match what is written
+   overPower (shellyem, shellyem3, shelly1pm, shelly4pro + child) --> Boolean, schedule_profile (trv) --> Number,
+   power / energy (shelly1, shelly1l, shelly1pm) Integer --> Float, motionTrigger (motion sensor http action) writes True/False not "on"/"off"
+   meters: power / energy written as float, energy uiValue used "total" when only "energy" was sent
+19. device edit: button "PRINT" writes all properties and states of the device w value types to the indigo log
+20. fix: Devices.xml for the state types is read from the plugin folder (__file__ is not set in indigo)
+21. new device types for gen2 / gen3 / gen4, the type is picked from the parts the device reports (so new models w the same parts work too):
+   shellygen2cover (+child)  covers / rollers: Plus 2PM cover mode, Pro Dual Cover, 2PM Gen3 .. brightness = position 0 closed..100 open, on = open, off = close
+   shellygen2light (+child)  dimmers: Plus Wall Dimmer, Dimmer Gen3, Pro Dimmer, Plus RGBW PM in light mode (4 channels)
+   shellygen2rgbw            color lights: Plus RGBW PM in rgb / rgbw mode, set color levels
+   shellygen2input (+child)  input only: Plus i4, i4 Gen3. switch mode = on/off, button mode = lastEvent single_push/double_push/long_push ..
+   shellygen2pm              power meter only: Plus PM Mini, PM Mini Gen3
+   shellygen2alarm           battery alarms: Plus Smoke, Flood Gen4. on = alarm, mute, battery
+   actions: on / off / toggle / set brightness / brighten / dim (cover: open / close / go to position), rpc Light.Set, Cover.*, RGB(W).Set
+22. gen1 models w the same api as an existing type are now created: Plug US, Plug E, Color Bulb, Motion 2, Shelly 2, UNI, Door/Window 2, Button 2
+23. reload / stop: no more error tracebacks for StopThread, indigo ends the plugin threads that way. a log filter drops them, real errors still show
+24. new device type "Sum of meters" (shellySumMeters): adds up power, current and energy of other devices
+   in device edit: number of sources per kind (0-8), then for each source a device + one of its numeric states
+   any indigo device works (shelly or other plugins), the state list shows the current values
+   states power1..8, current1..8, energy1..8 (the source values), powerSum, currentSum, energySum, source_Power, source_Current, source_Energy (source dev ids in slot order), lastSumUpdate
+   updates right when one of the source states changes (indigo device change subscription), missing source counts as 0 w warning
+   unit menu for each source (power mW/W/kW, current mA/A, energy Ws/Wh/kWh/MWh) and one for each sum, defaults are the shelly units W, A, Wh
+   source values are converted to the unit of the sum; picking a state named eg energy_kWh preselects kWh
+   fix: "UI dynamic list function returned illegal ID string" in device edit, empty state menu entries now have id "0"
+   number of sources defaults to 1 (was 0, which hid all device/state menus), slots without a device are skipped
+   device menus are static now (no dynamic reload), the device scan is done once per dialog (cached 30 secs): menus open fast
+   min / max (w date time) / average states for power, current, energy sums: <x>SumMinToday(At), <x>SumMaxToday(At), <x>SumAveToday
+   + same for Yesterday, rolled over at midnight. average is time weighted (each value counts for as long as it lasted)
+   after a plugin restart today's values continue from the states
+   sum device w/o update for 5 minutes rereads all sources and writes its states (incl. lastSumUpdate)
+   sum of sums: a sum device can be the source of another sum device (any depth). picking a sum device preselects
+   its <kind>Sum state and its sum unit. loops (A uses B, B uses A) are refused on save, the loop is shown in the message
+25. TRV: plugin sets the valve_open / valve_close actions of the device (api version 2021, trv fw needs urls[0][url]= instead of urls[]=) -> new states valveState (open/closed),
+   lastValveChange, action_from_device = valve_open / valve_close. a status poll follows right away (valvePosition)
+26. TRV menu / action "set thermostat values": set target temperature and enable schedule were refused ("not in allowed options"),
+   the "X" at the end of the option was not removed. fixed
+27. TRV: not calibrated (device reports pos -1): valvePosition = -1 with ui "not calibrated", child level 0 with ui "not calibrated" (was 0%)
+28. plugin menu: the items that write to the device now all start with "Set on device:" (MQTT server, action URLs + settings, gas alarm, thermostat)
+29. plugin menu: "ignore" and "accept again" IP numbers combined into one item "(Un) ignore IP numbers", the dialog shows the current list
+30. plugin menu: the 4 roller items (calibrate, stop, go to position, move for xx secs) combined into "Manage roller device", actions unchanged
+31. plugin menu: discovery for one device and for an IP range combined into "Start Shelly device discovery Process"
+
+
+
 Added features / changes in v7.20.57 @ 2023-12-20
 ===================================================
 1. added check if device is not properly defined / setup

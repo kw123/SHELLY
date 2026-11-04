@@ -5,40 +5,21 @@
 		<CallbackMethod>inpDummy</CallbackMethod>
 	</MenuItem>
 	<MenuItem id="setipNumberToAdd">
-		<Name>Start Shelly device discovery Process for ONE device</Name>
+		<Name>Start Shelly device discovery Process</Name>
 		<ConfigUI>
 			<Field id="infoLabel11" type="label">
-				<Label>Initial setup of device, give IP number and click confirm</Label>
-			</Field>
-			<Field id="ipNumber" type="textfield" defaultValue="192.168.1.x">
-				<Label>ipNumber:</Label>
-			</Field>
-			<Field id="confirmIpNumberSetup" type="button">
-				<Label>CLICK to</Label>
-				<Title>EXECUTE</Title>
-				<CallbackMethod>buttonConfirmconfirmIpNumberSetupCALLBACK</CallbackMethod>
-			</Field>
-			<Field id="MSG" type="textfield" defaultValue="">
-				<Label>message from Plugin:</Label>
-			</Field>
-		</ConfigUI>
-	</MenuItem>
-	<MenuItem id="setipNumberRangeToAdd">
-		<Name>Start Shelly device discovery Process for an IP RANGE</Name>
-		<ConfigUI>
-			<Field id="infoLabel11" type="label">
-				<Label>Initial setup of device, give an ip number range IP  and the plugin will try to contact each. If it is a shelly device and does not exist yet, it will create one</Label>
+				<Label>the plugin contacts each IP number. If it is a shelly device and does not exist yet, it creates one. For ONE device leave "to" empty</Label>
 			</Field>
 			<Field id="ipNumberFrom" type="textfield" defaultValue="192.168.1.x">
-				<Label>ipNumber from :</Label>
+				<Label>IP number (from):</Label>
 			</Field>
-			<Field id="ipNumberTo" type="textfield" defaultValue="192.168.1.y">
-				<Label>ipNumber to:</Label>
+			<Field id="ipNumberTo" type="textfield" defaultValue="">
+				<Label>to (empty = only one):</Label>
 			</Field>
 			<Field id="confirmIpNumberSetup" type="button">
 				<Label>CLICK to</Label>
-				<Title>EXECUTE</Title>
-				<CallbackMethod>buttonConfirmconfirmIpNumberRangeSetupCALLBACK</CallbackMethod>
+				<Title>START DISCOVERY</Title>
+				<CallbackMethod>discoveryMenuCALLBACK</CallbackMethod>
 			</Field>
 			<Field id="MSG" type="textfield" defaultValue="">
 				<Label>message from Plugin:</Label>
@@ -65,11 +46,35 @@
 			</Field>
 		</ConfigUI>
 	</MenuItem>
-	<MenuItem id="pushAction">
-		<Name>Push settings to Shelly Device</Name>
+	<MenuItem id="gen2PushMqtt">
+		<Name>Set on device: MQTT server = plugin broker (gen1 + gen2)</Name>
 		<ConfigUI>
 			<Field id="infoLabel11" type="label">
-				<Label>Force an sending an update of the action and button settngs to the SHELLY device</Label>
+				<Label>sets on the device: MQTT on, server = indigo ip:broker port (plugin config), broker user/password.
+gen2: RPC status notifications on. gen1: status every 30 secs.
+The device restarts if it needs to. Devices already set are not touched.
+Sleeping devices (Plus H&amp;T) are tried for 15 minutes, press their button to wake them up.
+!! gen1 devices: the shelly cloud (shelly app away from home) is OFF while MQTT is on !!</Label>
+			</Field>
+			<Field id="devId" type="menu">
+				<Label>Select SHELLY device:</Label>
+				<List class="self" filter="" method="filterGen2Devices" dynamicReload="false" />
+			</Field>
+			<Field id="confirmPush" type="button">
+				<Label>CLICK to</Label>
+				<Title>EXECUTE</Title>
+				<CallbackMethod>buttonGen2PushMqttCALLBACK</CallbackMethod>
+			</Field>
+			<Field id="MSG" type="textfield" defaultValue="">
+				<Label>message from Plugin:</Label>
+			</Field>
+		</ConfigUI>
+	</MenuItem>
+	<MenuItem id="pushAction">
+		<Name>Set on device: action URLs + settings (gen1)</Name>
+		<ConfigUI>
+			<Field id="infoLabel11" type="label">
+				<Label>sends the action URLs (buttons, inputs, events) and device settings to the SHELLY device again</Label>
 			</Field>
 			<Field id="devId" type="menu">
 				<Label>Select SHELLY device:</Label>
@@ -91,7 +96,7 @@
 		</ConfigUI>
 	</MenuItem>
 	<MenuItem id="setGasAlarmParameters">
-		<Name>Set gas alarm device parameters</Name>
+		<Name>Set on device: gas alarm (self test, mute)</Name>
 		<ConfigUI>
 			<Field id="devId" type="menu">
 				<Label>Select gas alarm device:</Label>
@@ -117,7 +122,7 @@
 	</MenuItem>
 
 	<MenuItem id="setThermostatValues">
-		<Name>Set  Thermostat Values</Name>
+		<Name>Set on device: thermostat (TRV) values</Name>
 		<ConfigUI>
 			<Field id="devId" type="menu">
 				<Label>Select device:</Label>
@@ -253,83 +258,29 @@
 		</ConfigUI>
 	</MenuItem>
 
-	<MenuItem id="calibrateShell25Roller">
-		<Name>Start CALIBRATION process on shelly-25 ROLLER device</Name>
+	<MenuItem id="manageShell25Roller">
+		<Name>Manage roller device (shelly-25 roller)</Name>
 		<ConfigUI>
-			<Field id="infoLabel11" type="label">
-				<Label>Start calibration process on shelly-25 roller device</Label>
-			</Field>
-			<Field id="devId" type="menu">
-				<Label>Select ROLLER device:</Label>
-				<List class="self" filter="shellyswitch25-roller" method="filterActiveShellyDevicesNotChild" dynamicReload="false" />
-			</Field>
-			<Field id="confirm" type="button">
-				<Label>CLICK to</Label>
-				<Title>EXECUTE</Title>
-				<CallbackMethod>startShelly25CalibrationCALLBACKmenu</CallbackMethod>
-			</Field>
-			<Field id="MSG" type="textfield" defaultValue="">
-				<Label>message from Plugin:</Label>
-			</Field>
-		</ConfigUI>
-	</MenuItem>
-	<MenuItem id="stopShell25Roller">
-		<Name>STOP shelly-25 ROLLER device</Name>
-		<ConfigUI>
-			<Field id="infoLabel11" type="label">
-				<Label>STOP shelly-25 ROLLER device</Label>
-			</Field>
-			<Field id="devId" type="menu">
-				<Label>Select ROLLER device:</Label>
-				<List class="self" filter="shellyswitch25-roller" method="filterActiveShellyDevicesNotChild" dynamicReload="false" />
-			</Field>
-			<Field id="confirm" type="button">
-				<Label>CLICK to</Label>
-				<Title>EXECUTE</Title>
-				<CallbackMethod>startShelly25StopCALLBACKmenu</CallbackMethod>
-			</Field>
-			<Field id="MSG" type="textfield" defaultValue="">
-				<Label>message from Plugin:</Label>
-			</Field>
-		</ConfigUI>
-	</MenuItem>
-	<MenuItem id="positionShell25Roller">
-		<Name>GOTO position shelly-25 ROLLER device</Name>
-		<ConfigUI>
-			<Field id="infoLabel11" type="label">
-				<Label>GOTO positionshelly-25 roller device</Label>
-			</Field>
 			<Field id="devId" type="menu">
 				<Label>Select roller device:</Label>
 				<List class="self" filter="shellyswitch25-roller" method="filterActiveShellyDevicesNotChild" dynamicReload="false" />
 			</Field>
-			<Field id="roller_pos" type="textfield" default="100">
-				<Label>set position (0..100):</Label>
+			<Field id="rollerAction" type="menu" defaultValue="to_pos">
+				<Label>Action:</Label>
+				<List>
+					<Option value="to_pos">go to position</Option>
+					<Option value="duration">move for xx secs</Option>
+					<Option value="stop">stop</Option>
+					<Option value="calibrate">start calibration</Option>
+				</List>
 			</Field>
-			<Field id="confirm" type="button">
-				<Label>CLICK to</Label>
-				<Title>EXECUTE</Title>
-				<CallbackMethod>startShelly25roller_posCALLBACKmenu</CallbackMethod>
+			<Field id="roller_pos" type="textfield" defaultValue="100" visibleBindingId="rollerAction" visibleBindingValue="to_pos">
+				<Label>position (0..100):</Label>
 			</Field>
-			<Field id="MSG" type="textfield" defaultValue="">
-				<Label>message from Plugin:</Label>
-			</Field>
-		</ConfigUI>
-	</MenuItem>
-	<MenuItem id="positionwTimerShell25Roller">
-		<Name>Move for xx secs shelly-25 ROLLER device</Name>
-		<ConfigUI>
-			<Field id="infoLabel11" type="label">
-				<Label>Move for xx secs roller device</Label>
-			</Field>
-			<Field id="devId" type="menu">
-				<Label>Select roller device:</Label>
-				<List class="self" filter="shellyswitch25-roller" method="filterActiveShellyDevicesNotChild" dynamicReload="false" />
-			</Field>
-			<Field id="duration" type="textfield" default="5">
+			<Field id="duration" type="textfield" defaultValue="5" visibleBindingId="rollerAction" visibleBindingValue="duration">
 				<Label>move for xx secs:</Label>
 			</Field>
-			<Field id="direction" type="menu" default="open">
+			<Field id="direction" type="menu" defaultValue="open" visibleBindingId="rollerAction" visibleBindingValue="duration">
 				<Label>direction:</Label>
 				<List>
 					<Option value="open">open</Option>
@@ -339,7 +290,7 @@
 			<Field id="confirm" type="button">
 				<Label>CLICK to</Label>
 				<Title>EXECUTE</Title>
-				<CallbackMethod>startShelly25roller_poswTimerCALLBACKmenu</CallbackMethod>
+				<CallbackMethod>rollerMenuCALLBACK</CallbackMethod>
 			</Field>
 			<Field id="MSG" type="textfield" defaultValue="">
 				<Label>message from Plugin:</Label>
@@ -368,37 +319,27 @@
 		</ConfigUI>
 	</MenuItem>
 	<MenuItem id="ignoreIPNumber">
-		<Name>Ignore messsages from certain IP numbers</Name>
+		<Name>(Un) ignore IP numbers</Name>
 		<ConfigUI>
 			<Field id="infoLabel11" type="label">
-				<Label>add an IP numebr to be ignored</Label>
+				<Label>messages from ignored IP numbers are dropped, no devices are created for them</Label>
 			</Field>
-			<Field id="ipNumber" type="textfield" defaultValue="192.168.1.x">
-				<Label>ipNumber to be ignored:</Label>
+			<Field id="ipNumberIgnore" type="textfield" defaultValue="192.168.1.x">
+				<Label>IP number to ignore:</Label>
 			</Field>
-			<Field id="confirmPush" type="button">
+			<Field id="confirmIgnore" type="button">
 				<Label>CLICK to</Label>
 				<Title>IGNORE</Title>
 				<CallbackMethod>buttonConfirmconfirmpIgnoreIPNumberCALLBACK</CallbackMethod>
 			</Field>
-			<Field id="MSG" type="textfield" defaultValue="">
-				<Label>message from Plugin:</Label>
-			</Field>
-		</ConfigUI>
-	</MenuItem>
-	<MenuItem id="unIgnoreIPNumber">
-		<Name>Accept again messsages from certain IP numbers</Name>
-		<ConfigUI>
-			<Field id="infoLabel11" type="label">
-				<Label>add an IP numebr to be ignored</Label>
-			</Field>
-			<Field id="ipNumber" type="menu">
-				<Label>Select IP numebr to be used again:</Label>
-				<List class="self" filter="" method="filterignoredIPNumbers" dynamicReload="false" />
+			<Field id="sep1" type="separator"/>
+			<Field id="ipNumberUnIgnore" type="menu" defaultValue="0">
+				<Label>ignored IP number to accept again:</Label>
+				<List class="self" filter="" method="filterignoredIPNumbers" dynamicReload="true" />
 			</Field>
 			<Field id="confirmUnIgnore" type="button">
 				<Label>CLICK to</Label>
-				<Title>ADD BACK</Title>
+				<Title>ACCEPT AGAIN</Title>
 				<CallbackMethod>buttonConfirmconfirmpUnIgnoreIPNumberCALLBACK</CallbackMethod>
 			</Field>
 			<Field id="MSG" type="textfield" defaultValue="">
