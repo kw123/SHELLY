@@ -1,4 +1,4 @@
-Added features / changes in v2026.1.1 @ 2026-11-04
+Added features / changes in v2026.1.1 @ 2026-11-07
 ===================================================
 1. subscribe to messages sent from gen2 shelly devices:
    plugin opens a websocket to ws://ip/rpc and sends one rpc request, the device then pushes
@@ -89,6 +89,25 @@ Added features / changes in v2026.1.1 @ 2026-11-04
 29. plugin menu: "ignore" and "accept again" IP numbers combined into one item "(Un) ignore IP numbers", the dialog shows the current list
 30. plugin menu: the 4 roller items (calibrate, stop, go to position, move for xx secs) combined into "Manage roller device", actions unchanged
 31. plugin menu: discovery for one device and for an IP range combined into "Start Shelly device discovery Process"
+32. sensorValue (shown state, eg door/window lux or tilt) is always written as a real number. fixes "device value type for state key sensorValue must be real"
+33. door/window: action url close set the device to open (close_url sent onOffState=1), the next poll set it back -> flapping triggers. fixed, close_url = onOffState=0, open_url = onOffState=1
+   push the settings again (menu "Set on device: action URLs + settings") so the device gets the new urls. onOffState.ui = open / closed, open in daylight fills dayOpen (was a missing state "daylightOpen")
+34. door/window: new display option "open / closed (on/off only)", default for new devices, no sensorValue then. lux / tilt still selectable. existing devices: edit + save to switch
+35. "dictionary changed size during iteration" when a new device was created while the pollers were checked: all loops over the device list use a copy. the error log no longer prints the full device dict (it held all device settings)
+36. sensors (temperature, humidity, lux, pressure, gas concentration): min / max with time and time weighted average for today and yesterday,
+   new states <state>MinTodayAt, MaxTodayAt, AveToday, MinYesterdayAt, MaxYesterdayAt, AveYesterday (MinToday .. MaxYesterday existed for temperature / humidity / gas).
+   was: min / max only, reset in the hour after midnight. now same logic as the sum device, continues after a restart
+   states are dynamic (getDeviceStateList), one device edit checkbox per measurement "<state>_EnableMinMax" (default on), off = no states
+37. sum device: states are created dynamically, only for the kinds (power / current / energy) and slots in use (was all 61 states)
+38. sum device: checkbox per kind (power / current / energy) "daily min / max / ave", default on; unticked = no statistics states for that kind
+39. new device type shellygen2presence: Shelly Presence Gen4 (mmWave). on = presence in main zone, numObjects, zones, illumination. polled and read over websocket with Shelly.GetComponents (zones are dynamic components, missing in Shelly.GetStatus)
+40. gen2 discovery: if Shelly.GetStatus answers with an error ({code, message}, eg right after a reboot) the plugin tries Shelly.GetComponents instead of logging "not supported yet, components:['code', 'message']"
+41. new devices from the scan: MQTT settings are pushed automatically when the built-in broker is on. plugin config "new devices from scan: set their MQTT to this broker": gen2/3/4 only (default) / gen1 + gen2/3/4 / off. gen1: 90 secs after the action url push, shelly cloud goes off while MQTT is on
+42. plugin config: python requests is now the default (was curl). existing curl installs are switched once at the first start after the upgrade; choosing curl again afterwards is kept. requests calls now have a timeout (a device that did not answer could block its poller). gen1 action url pushes always use /usr/bin/curl: requests encodes [ ] and gen1 firmware then ignores urls[]= / urls[0][url]=
+43. plugin config grouped in sections: indigo server / plugin, shelly devices, gen2/3/4 websocket, MQTT broker, other parameters, logging, debug
+44. removed time tracking (cProfile, variable enableTimeTracking_shelly) from config and code
+45. fixed errors in error paths: device edit of a parent with sensorNo logged an error, expired check / ip change / queue / validate error logs used undefined names; removed 2 unused functions
+46. gen2/3/4: websocket is closed while the device is connected over MQTT (state wsSubscription = "off, using MQTT"), restarts when MQTT disconnects. no more double traffic. plugin config section headings in green
 
 
 

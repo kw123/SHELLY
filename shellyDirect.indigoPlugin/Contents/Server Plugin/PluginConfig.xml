@@ -6,185 +6,190 @@
 		<Label>Shelly plugin		   Developed by Karl Wachs</Label>
 	</Field>
 
-
-	<Field id="paramsLabel" type="label" >  
-		<Label>Indigo plugin params</Label>
+<!-- ============================ Indigo server / plugin ============================ -->
+	<Field id="sepIndigo" type="separator"/>
+	<Field id="paramsLabel" type="label" fontColor="green">
+		<Label>INDIGO SERVER / PLUGIN</Label>
 	</Field>
-  <Field id="indigoFolderName"   type="textfield"   >
-		<Label>Folder name for NEW shelly devices:</Label> 
-   </Field>
-
-   <Field id="IndigoServerIPNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">  
-		<Label>
-Next are the indigo IP# and port # that will be used on Shelly devices to connect to the plugin. On that ip:port the plugin will be listening to commands from the Shelly devices.
+	<Field id="indigoFolderName"   type="textfield"   >
+		<Label>Folder name for NEW shelly devices:</Label>
+	</Field>
+	<Field id="IndigoServerIPNumberLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
+		<Label>Next are the indigo IP# and port # that will be used on Shelly devices to connect to the plugin. On that ip:port the plugin will be listening to commands from the Shelly devices.
 see action field on Shelly device in shelly app:
 http://indigoIP#:port/command  </Label>
 	</Field>
-   <Field id="IndigoServerIPNumber"   type="textfield"   >
-		<Label>Set ip number of indigo server:</Label> 
-   </Field>
-   <Field id="portOfIndigoServer"   type="textfield"   >
-		<Label>Set IP-PORT of http listener in PLUGIN:</Label> 
-   </Field>
-   <Field id="portOfIndigoServerLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">  
-		<Label>use port number GT 5000 that is NOT in use on the indigo server, 
+	<Field id="IndigoServerIPNumber"   type="textfield"   >
+		<Label>Set ip number of indigo server:</Label>
+	</Field>
+	<Field id="portOfIndigoServer"   type="textfield"   >
+		<Label>Set IP-PORT of http listener in PLUGIN:</Label>
+	</Field>
+	<Field id="portOfIndigoServerLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
+		<Label>use port number GT 5000 that is NOT in use on the indigo server,
 and NOT indigo ports: 8176 or 1176</Label>
 	</Field>
 
-
-
-
-   <Field id="infoLabeluserID" type="label" fontSize="small" >
-		<Label>UserID, password, port of SHELLY devices</Label>
-   </Field>
-   
-   <Field id="userIDOfShellyDevices"   type="textfield"   >
-		<Label>user id:</Label> 
-   </Field>
-   
-   <Field id="passwordOfShellyDevices"   type="textfield"  >
-		<Label>password:</Label> 
-   </Field>
-
-   <Field id="portOfShellyDevices"   type="textfield"  >
-		<Label>Set IP-PORT of http on SHELLY devices:</Label> 
-   </Field>
-   <Field id="portOfShellyDevicesLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">  
+<!-- ============================ Shelly devices: login, port, connection ============================ -->
+	<Field id="sepShelly" type="separator"/>
+	<Field id="infoLabeluserID" type="label" fontColor="green">
+		<Label>SHELLY DEVICES: LOGIN, PORT, CONNECTION</Label>
+	</Field>
+	<Field id="userIDOfShellyDevices"   type="textfield"   >
+		<Label>user id:</Label>
+	</Field>
+	<Field id="passwordOfShellyDevices"   type="textfield"  >
+		<Label>password:</Label>
+	</Field>
+	<Field id="gen2Label2" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
+		<Label>gen2/3/4 devices use the password with user "admin" (digest auth), user id is ignored</Label>
+	</Field>
+	<Field id="portOfShellyDevices"   type="textfield"  >
+		<Label>Set IP-PORT of http on SHELLY devices:</Label>
+	</Field>
+	<Field id="portOfShellyDevicesLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
 		<Label>if you have not setup anything, leave userid, passwd empty and set port to 80 - std http</Label>
 	</Field>
-   <Field	id="sensorApiVersion"   type="menu" >
-		<Label>Shelly devices api version:</Label>
+	<Field	id="sensorApiVersion"   type="menu" >
+		<Label>Shelly gen1 devices api version:</Label>
 		<List>
 			<Option value="2" >2021: actions with SEVERAL http options </Option>
 			<Option value="1" >2020: actions with SINGLE http options</Option>
 		</List>
-   </Field>
-   <Field id="sensorApiVersionLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">  
-		<Label>use option 2021 if shelly devices upgraded after 1/15/2021. 
+	</Field>
+	<Field id="sensorApiVersionLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
+		<Label>use option 2021 if shelly devices upgraded after 1/15/2021.
 All devices must be on the same release</Label>
 	</Field>
+	<Field	id="useCurlOrPymethod"			  type="menu" defaultValue="requests" tooltip="python requests is the default; curl is the fallback if requests has problems on your system">
+		<Label>Use curl or python-requests for web page access:</Label>
+		<List>
+			<Option value="requests"  				>python requests (default)</Option>
+			<Option value="/usr/bin/curl"			>/usr/bin/curl  (std install)</Option>
+			<Option value="/usr/local/bin/curl"		>/usr/local/bin/curl (eg homebrew upgrade)</Option>
+		</List>
+	</Field>
+	<Field id="CurlLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
+		<Label>how the plugin talks to the shelly devices. gen1 action url pushes always use /usr/bin/curl (python requests changes the [ ] in those urls)</Label>
+	</Field>
 
-  <Field id="gen2Label" type="label" fontSize="small" >
-		<Label>Gen2 devices (eg Pro 3EM): subscribe to messages from the devices</Label>
-   </Field>
-   <Field	id="gen2SubscribeWs"   type="menu" defaultValue="on">
+<!-- ============================ gen2/3/4 websocket ============================ -->
+	<Field id="sepWs" type="separator"/>
+	<Field id="gen2Label" type="label" fontColor="green">
+		<Label>GEN2/3/4 DEVICES: WEBSOCKET</Label>
+	</Field>
+	<Field	id="gen2SubscribeWs"   type="menu" defaultValue="on">
 		<Label>Subscribe via websocket:</Label>
 		<List>
 			<Option value="on" >on, device sends changes (ws://ip/rpc), polling only as backup</Option>
 			<Option value="off">off, polling only</Option>
 		</List>
-   </Field>
-   <Field	id="gen2WsMinUpdateSeconds"   type="menu" defaultValue="2">
-		<Label>Update indigo states from subscription at most every:</Label>
+	</Field>
+	<Field	id="gen2WsMinUpdateSeconds"   type="menu" defaultValue="2">
+		<Label>Update indigo states from websocket / MQTT at most every:</Label>
 		<List>
 			<Option value="1" >1 sec</Option>
 			<Option value="2" >2 secs</Option>
 			<Option value="5" >5 secs</Option>
 			<Option value="10">10 secs</Option>
 		</List>
-   </Field>
-   <Field id="gen2Label2" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
-		<Label>gen2 devices use the password above with user "admin" (digest auth), user id is ignored</Label>
 	</Field>
-   <Field	id="gen2MqttBroker"   type="menu" defaultValue="off">
+
+<!-- ============================ MQTT ============================ -->
+	<Field id="sepMqtt" type="separator"/>
+	<Field id="mqttSectionLabel" type="label" fontColor="green">
+		<Label>MQTT BROKER (built in)</Label>
+	</Field>
+	<Field	id="gen2MqttBroker"   type="menu" defaultValue="off">
 		<Label>Built in MQTT broker for shelly devices:</Label>
 		<List>
 			<Option value="off">off</Option>
 			<Option value="on" >on, devices connect to indigo-ip:port and publish their changes</Option>
 		</List>
-   </Field>
-   <Field id="gen2MqttPort"   type="textfield" defaultValue="1883" visibleBindingId="gen2MqttBroker" visibleBindingValue="on">
+	</Field>
+	<Field id="gen2MqttPort"   type="textfield" defaultValue="1883" visibleBindingId="gen2MqttBroker" visibleBindingValue="on">
 		<Label>.. MQTT broker port:</Label>
-   </Field>
-   <Field id="gen2MqttUser"   type="textfield" defaultValue="" visibleBindingId="gen2MqttBroker" visibleBindingValue="on">
+	</Field>
+	<Field id="gen2MqttUser"   type="textfield" defaultValue="" visibleBindingId="gen2MqttBroker" visibleBindingValue="on">
 		<Label>.. MQTT user (empty = no login):</Label>
-   </Field>
-   <Field id="gen2MqttPassword"   type="textfield" defaultValue="" visibleBindingId="gen2MqttBroker" visibleBindingValue="on">
+	</Field>
+	<Field id="gen2MqttPassword"   type="textfield" defaultValue="" visibleBindingId="gen2MqttBroker" visibleBindingValue="on">
 		<Label>.. MQTT password:</Label>
-   </Field>
-   <Field id="gen2MqttLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey" visibleBindingId="gen2MqttBroker" visibleBindingValue="on">
+	</Field>
+	<Field	id="autoPushMqttNew"   type="menu" defaultValue="gen2" visibleBindingId="gen2MqttBroker" visibleBindingValue="on">
+		<Label>.. new devices from scan: set their MQTT to this broker:</Label>
+		<List>
+			<Option value="gen2">gen2/3/4 only</Option>
+			<Option value="all">gen1 + gen2/3/4 (gen1: shelly cloud goes off)</Option>
+			<Option value="off">off, use the menu</Option>
+		</List>
+	</Field>
+	<Field id="gen2MqttLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey" visibleBindingId="gen2MqttBroker" visibleBindingValue="on">
 		<Label>on each shelly device (web ui / Settings / MQTT): enable, server = indigo-ip:port, same user/password,
-"RPC status notifications over MQTT" on (gen2). or use menu "Point device MQTT to the plugin broker".
+"RPC status notifications over MQTT" on (gen2). or use menu "Set on device: MQTT server = plugin broker".
 gen1 devices: shelly cloud is off while MQTT is on.
 Unknown devices that connect are probed and created like a scan finds them.</Label>
 	</Field>
 
-  <Field id="otherLabel" type="label" fontSize="small" >
-		<Label>Other parameters</Label>
-   </Field>
-
-   <Field	id="tempUnits"   type="menu" >
+<!-- ============================ other parameters ============================ -->
+	<Field id="sepOther" type="separator"/>
+	<Field id="otherLabel" type="label" fontColor="green">
+		<Label>OTHER PARAMETERS</Label>
+	</Field>
+	<Field	id="tempUnits"   type="menu" >
 		<Label>Temperature displayed in:</Label>
 		<List>
 			<Option value="C" >Celsius </Option>
 			<Option value="F" >Fahrenheit</Option>
 			<Option value="K" >Kelvin</Option>
 		</List>
-   </Field>
-
-
-   <Field	id="tempDigits"   type="menu" >
+	</Field>
+	<Field	id="tempDigits"   type="menu" >
 		<Label>Temperature digits to show:</Label>
 		<List>
 			<Option value="0" >0 </Option>
 			<Option value="1" >1</Option>
 			<Option value="2" >2</Option>
 		</List>
-   </Field>
-
-   <Field	id="energyDigits"   type="menu" >
+	</Field>
+	<Field	id="energyDigits"   type="menu" >
 		<Label>Energy digits to show:</Label>
 		<List>
 			<Option value="0" >0 </Option>
 			<Option value="1" >1</Option>
 			<Option value="2" >2</Option>
 		</List>
-   </Field>
-
-
-   <Field	id="powerDigits"   type="menu" >
+	</Field>
+	<Field	id="powerDigits"   type="menu" >
 		<Label>Power digits to show:</Label>
 		<List>
 			<Option value="0" >0 </Option>
 			<Option value="1" >1</Option>
 			<Option value="2" >2</Option>
 		</List>
-   </Field>
-
-
-   <Field	id="voltageDigits"   type="menu" >
+	</Field>
+	<Field	id="voltageDigits"   type="menu" >
 		<Label>Voltage digits to show:</Label>
 		<List>
 			<Option value="0" >0 </Option>
 			<Option value="1" >1</Option>
 			<Option value="2" >2</Option>
 		</List>
-   </Field>
-
-
-   <Field	id="currentDigits"   type="menu" >
+	</Field>
+	<Field	id="currentDigits"   type="menu" >
 		<Label>Current digits to show:</Label>
 		<List>
 			<Option value="0" >0 </Option>
 			<Option value="1" >1</Option>
 			<Option value="2" >2</Option>
 		</List>
-   </Field>
-
-
-	<Field	id="useCurlOrPymethod"			  type="menu" tooltip="To support different SSL standards: for elCapitan and lower use curl, for higher OS-X you can try python requests"  > 
-	<Label>Use curl or python-requests for web page access:</Label> 
-		<List>
-			<Option value="/usr/bin/curl"			>/usr/bin/curl  (std install)</Option>
-			<Option value="/usr/local/bin/curl"		>/usr/local/bin/curl (eg homebrew upgrade)</Option>
-			<Option value="requests"  				>python requests</Option>
-		</List>
-	</Field>
-   <Field id="CurlLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">  
-		<Label>the plugin can use curl or python connect calls to connect to the shelly devices, if you have an older OSX use curl</Label>
 	</Field>
 
-
+<!-- ============================ logging ============================ -->
+	<Field id="sepLogging" type="separator"/>
+	<Field id="loggingLabel" type="label" fontColor="green">
+		<Label>LOGGING</Label>
+	</Field>
 	<Field	id="logStateChanges"   type="menu" >
 		<Label>Write dev received/send state changes to indigo logfile (no date stamps)</Label>
 		<List>
@@ -192,44 +197,37 @@ Unknown devices that connect are probed and created like a scan finds them.</Lab
 			<Option value="onOff"		>only on/off changes</Option>
 			<Option value="all-noWiFi"	>all changes (no WiFi)</Option>
 			<Option value="all"	    	>all changes</Option>
-		</List>	
+		</List>
 	</Field>
-
-   
 	<Field	id="SQLLoggingEnable"   type="menu" >
 		<Label>Configure SQL logger for device-States (not) to log</Label>
 		<List>
 			<Option value="on-on"   >log normal = log everything </Option>
 			<Option value="off-off"	>disable loggin for specific dev-states</Option>
-		</List>	
-   </Field>
-   <Field id="SQLLoggingEnableLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">  
+		</List>
+	</Field>
+	<Field id="SQLLoggingEnableLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
 		<Label>This is only for: dev/states = lastMessage etc,  There is no (good) reason to write them to the SQL logger</Label>
 	</Field>
+	<Field	id="logFileActive2"	  type="menu"	  > <Label> send logs to ..:</Label>
+		<List>
+			<Option value="indigo"   > .. Perceptive Automation/Indigo x/Logs/com.karlwachs.shellyDirect/plugin.log </Option>
+		</List>
+	</Field>
 
-	<Field id="infoLabel99" type="label"> <Label>Debug areas for plugin:</Label>  </Field>
- 
-	<Field  id="showLoginTest"       type="checkbox"         > <Label> show logging test at startup:</Label>  </Field>
+<!-- ============================ debug ============================ -->
+	<Field id="sepDebug" type="separator"/>
+	<Field id="infoLabel99" type="label" fontColor="green"> <Label>DEBUG AREAS</Label>  </Field>
+	<Field  id="showLoginTest"       type="checkbox"  > <Label> show logging test at startup:</Label>  </Field>
 	<Field	id="debugSetupDevices"   type="checkbox"  > <Label> Debug...				   ... (1)  SetupDevice:</Label>  </Field>
 	<Field	id="debugHTTPlistener"   type="checkbox"  > <Label>	 ... (2)  HTTP listener:</Label>  </Field>
 	<Field	id="debugPolling"		type="checkbox"  > <Label>	 ... (3)  polling of devices:</Label>  </Field>
 	<Field	id="debugPing"		   type="checkbox"  > <Label>	 ... (4)  pinging:</Label>  </Field>
 	<Field	id="debugActions"		type="checkbox"  > <Label>	 ... (6)  Actions:</Label>  </Field>
-	<Field	id="debugSQLSuppresslog" type="checkbox"  > <Label>	 ..  (18) SQL-Suppress-logger:</Label>  </Field>
-
-	<Field	id="debugMQTT"		 type="checkbox"  > <Label>	 ... (8)  gen2 MQTT broker:</Label>  </Field>
 	<Field	id="debugWebSocket"	 type="checkbox"  > <Label>	 ... (7)  gen2 websocket subscription:</Label>  </Field>
+	<Field	id="debugMQTT"		 type="checkbox"  > <Label>	 ... (8)  MQTT broker:</Label>  </Field>
+	<Field	id="debugSQLSuppresslog" type="checkbox"  > <Label>	 ..  (18) SQL-Suppress-logger:</Label>  </Field>
 	<Field	id="debugSpecial"		type="checkbox"  > <Label>	 ... (S) special debug (only for development):</Label>  </Field>
 	<Field	id="debugall"			type="checkbox"  > <Label>	 ... (99) all of the above .. everything:</Label>  </Field>
-
-	<Field	id="logFileActive2"	  type="menu"	  > <Label> send logs to ..:</Label>
-		<List>
-			<Option value="indigo"   > .. Perceptive Automation/Indigo x/Logs/com.karlwachs.shelly/plugin.log </Option>
-		</List>
-	</Field>
-	<Field id="infoLabel227" type="label"> <Label>.					 for DETAILED time tracking set indigo variable "enableTimeTracking_shelly"</Label>  </Field>
-	<Field	id="do_cProfile" type="textfield"  readonly="yes"	 > 
-		<Label>... enable or stop or  print intermediate results use on/off/print:</Label>  
-	</Field>
 
 </PluginConfig>

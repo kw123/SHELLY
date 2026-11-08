@@ -52,6 +52,7 @@ The device type is chosen from the parts (components) the device reports, not fr
 | shellypro3em (+ child) | Pro 3EM (incl. 3×120 A), 3EM-63 Gen3, EM Gen3, Pro EM-50 | totals on the parent; phases A/B/C, or channels 1–3 in single-phase mode, on the children |
 | shellyplusht (+ child) | Plus H&T, H&T Gen3 | temperature on the parent, humidity on the child |
 | shellygen2alarm | Plus Smoke, Flood Gen4 | sensor: on = alarm, plus mute and battery |
+| shellygen2presence | Presence Gen4 (mmWave) | sensor: on = someone in the main zone; `numObjects`, `zones` (all zones: id:present/absent(persons)), `illumination` dark / twilight / bright. Uses `Shelly.GetComponents`, because the zones are not in `Shelly.GetStatus` |
 
 Plus one device type that is not a Shelly:
 
@@ -64,27 +65,29 @@ Not supported: Bluetooth (BLU) devices, and the light sensor and voltmeter of th
 ## Setup
 
 1. **Install:** double-click `shellyDirect.indigoPlugin`. Indigo copies it to its plugin folder and enables it.
-2. **Open the plugin config** (Plugins → shellyDirect → Configure…) and set:
+2. **Open the plugin config** (Plugins → shellyDirect → Configure…). It has sections: Indigo server / plugin, Shelly devices (login, port, connection), Gen2/3/4 websocket, MQTT broker, other parameters, logging and debug. Set:
    - **IP number of the Indigo server.** The devices use it to reach the plugin, for both action URLs and MQTT.
    - **IP port of the HTTP listener**, default 7980. Use a free port above 5000; the Gen1 action URLs point here.
    - **User ID / password / port of the Shelly devices:** leave empty with port 80 if you did not set a login on the devices. Gen2+ devices always use the user `admin` with this password.
-   - **Shelly devices API version:** choose **2021**. All current Gen1 firmware needs it; with 2020 the action URLs are silently ignored.
+   - **Shelly gen1 devices api version:** choose **2021**. All current Gen1 firmware needs it; with 2020 the action URLs are silently ignored.
    - **Folder** for new devices (optional).
+   - **Curl or Python requests:** Python requests is the default; on the first start after the upgrade, installs set to curl are switched to it once (the Indigo log says so). Picking curl again afterwards is kept. Gen1 action URL pushes always go through `/usr/bin/curl`, because Python requests encodes the `[ ]` in those URLs and the Gen1 firmware then ignores them.
 3. **Gen2/3/4 options:**
    - **Subscribe via websocket:** on by default. You get instant updates from mains-powered Gen2+ devices with nothing to set up on the device.
+     While a device is connected to the plugin's MQTT broker, its websocket is closed (`wsSubscription` = "off, using MQTT") so updates do not arrive twice; if MQTT drops, the websocket opens again.
    - **Update at most every … seconds:** limits how often fast changes, like power, are written to Indigo.
 4. **Built-in MQTT broker (optional):** turn it on and set its port (default 1883) and, if you want, a user and password. Use it for:
    - battery devices that sleep (Plus H&T, Plus Smoke, Flood), which can't keep a websocket open;
    - Gen1 devices, if you want their full status every 30 seconds without polling.
    The broker only receives messages, and only from Shelly devices; it does not pass anything on.
-5. **Other options:** temperature unit, number of digits shown, curl or Python requests, writing state changes to the Indigo log, SQL Logger handling, and debug areas.
+5. **Other options:** temperature unit, number of digits shown, writing state changes to the Indigo log, SQL Logger handling, and debug areas.
 
 ## Connecting devices
 
 ### Find devices automatically
 
 - **Plugins → shellyDirect → Start Shelly device discovery Process**: enter a range, or only the first IP number for one device.
-- The plugin asks each IP number for its type, creates the device and its children, and pushes its settings (Gen1).
+- The plugin asks each IP number for its type, creates the device and its children, and pushes its action URLs and settings (Gen1). With the MQTT broker on, it also sets the device's MQTT to the plugin; see [MQTT](#mqtt-point-devices-at-the-plugin).
 - A log line `created new device: name, type, ip#` confirms each one.
 - **Battery devices only answer while awake.** Press their button during the scan, or let them connect over MQTT (below).
 - **A device that changed its IP number** is recognized by its MAC address and moved to the new IP.
@@ -98,7 +101,7 @@ Use a DHCP reservation in your router, or a static IP in the device's own web pa
 - After creating a Gen1 device, the plugin writes the action URLs into it, e.g. `out_on_url`, `out_off_url`, `btn_on_url` → `http://<indigo-ip>:7980/?…`.
 - **To push them again:** Plugins → shellyDirect → **Set on device: action URLs + settings (gen1)**.
 - **To check them:** open `http://<device-ip>/settings/actions`; the `urls` must point to your Indigo IP and port.
-- **If the device does not accept them,** the log shows a warning. Check the "Shelly devices api version" setting first.
+- **If the device does not accept them,** the log shows a warning. Check the "Shelly gen1 devices api version" setting first.
 
 ### MQTT: point devices at the plugin
 
@@ -110,6 +113,7 @@ Use a DHCP reservation in your router, or a static IP in the device's own web pa
 - **Sleeping devices** are retried for 15 minutes; press their button to wake them.
 - **Gen1: the Shelly cloud is switched off while MQTT is on.** The Shelly app then only works on your home Wi-Fi. Gen2+ devices keep the cloud.
 - **Not needed:** "Enable RPC over MQTT". The plugin sends commands over HTTP.
+- **New devices get it automatically:** when the scan creates a device and the broker is on (and the Indigo IP is set), the plugin pushes the MQTT settings. Plugin config *new devices from scan: set their MQTT to this broker* picks which: **gen2/3/4 only** (default), **gen1 + gen2/3/4**, or **off**. Gen2+ devices get it right away; gen1 devices first get their action URLs, then MQTT 90 seconds later (and their Shelly cloud goes off). Sleeping devices are retried for 15 minutes.
 - **Unknown devices:** a device that connects to the broker but has no Indigo device yet is probed and created like a scan would.
 
 ### Add a device by hand
@@ -139,7 +143,7 @@ Adds up power, current (amps) and energy from other devices, for example all pha
 
 Units: power mW, W, kW; current mA, A; energy Ws (J), Wh, kWh, MWh. The defaults are the Shelly units: W, A and Wh. Each source value is converted to the unit of its sum. If a state name ends in a unit, such as `energy_kWh`, that unit is preselected.
 
-States: `power1`…`power8`, `current1`…`current8` and `energy1`…`energy8` hold the source values, converted to the unit of the sum. `powerSum`, `currentSum` and `energySum` hold the totals. `source_Power`, `source_Current` and `source_Energy` list the source device ids in slot order, for example `1378652208, 51092918`, and `lastSumUpdate` is the time of the last change.
+States: `power1`…`power8`, `current1`…`current8` and `energy1`…`energy8` hold the source values, converted to the unit of the sum. `powerSum`, `currentSum` and `energySum` hold the totals. `source_Power`, `source_Current` and `source_Energy` list the source device ids in slot order, for example `1378652208, 51092918`, and `lastSumUpdate` is the time of the last change. The plugin creates these states only for the kinds and slots in use: a sum of 3 power sources has `power1`…`power3`, `powerSum`, its statistics and `source_Power`, and no current or energy states. Change the sources and save, and the states follow.
 
 For each sum (`powerSum`, `currentSum`, `energySum`) there are daily statistics, for example for power:
 
@@ -151,6 +155,8 @@ For each sum (`powerSum`, `currentSum`, `energySum`) there are daily statistics,
 | `…Yesterday`, `…YesterdayAt` | the same for yesterday, moved over at midnight |
 
 After a plugin restart, today's values continue from the states.
+
+Each kind has a checkbox *power sum: daily min / max / ave* (and the same for current and energy) under its unit, on by default. Unticked, that kind gets no statistics states; the sum, the slot values and `source_…` stay.
 
 **Sum of sums:** a sum device can be a source of another sum device, for example phases → floor → building → site. Picking a sum device as a source preselects its `powerSum`, `currentSum` or `energySum` and its unit. A change goes up through all levels within moments. Saving refuses a loop, such as A adding up B while B adds up A, and the message shows the loop. Don't add the same meter both directly and through a lower-level sum, or it is counted twice.
 
@@ -182,10 +188,28 @@ The sums update as soon as a source state changes. If nothing has changed for 5 
 | Gen2+ inputs (i4) | `onOffState` and `input` (switch mode), `lastEvent` and `lastEventTime` (button mode), `analogPercent` |
 | Temperature / humidity | `Temperature` or `Humidity`, with min/max for today and yesterday, `batteryVoltage` |
 | Alarms | Flood / Smoke / Gas (Gen1): `Flood` / `Smoke` / `Alarm`, `lastAlarm`, `previousAlarm`; Gen2+ alarms: `onOffState` = alarm, `alarmType`, `mute`, `batteryLevel` |
+| Presence (Gen4) | `onOffState` = someone in the main zone, `numObjects`, `zones`, `illumination` |
 | Motion, Door/Window | motion / tamper / vibration triggers with their last times, `lux`, `illumination`, `tilt`, `state` (open/close), `batteryVoltage` |
 | TRV | `Temperature`, setpoint, `valvePosition`, `valveState` + `lastValveChange` (from the device's valve_open / valve_close actions), `window_open`, `schedule`, `schedule_profile`, `boost_minutes`, `batteryVoltage` |
 
 Energy units: Gen1 devices report `energy` in Wmin, Gen2+ devices in Wh.
+
+### Daily statistics of sensors
+
+Devices with a temperature, humidity, light (`lux`), pressure or gas concentration state also get its daily statistics, for example for `Temperature`:
+
+| State | Meaning |
+|---|---|
+| `TemperatureMinToday`, `TemperatureMinTodayAt` | lowest value today and when |
+| `TemperatureMaxToday`, `TemperatureMaxTodayAt` | highest value today and when |
+| `TemperatureAveToday` | time-weighted average since midnight |
+| `…Yesterday`, `…YesterdayAt` | the same for yesterday |
+
+- **Average:** each value counts for as long as it was valid, so a sensor that reports rarely is not under-weighted.
+- **At midnight:** today moves to yesterday. Today then starts with the last value, at "YYYY-MM-DD 00:00:00".
+- **Updates:** with every new value, and at least once an hour.
+- **After a plugin restart:** today's values continue from the states.
+- **Turn off per measurement:** each device has a checkbox per measurement in its edit dialog, for example *temperature: daily min / max / ave*. Unticked, the device does not get these states. The states are created by the plugin when the device starts, they are not fixed in the device definition.
 
 ### Actions from Indigo
 

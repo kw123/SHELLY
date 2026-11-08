@@ -14,6 +14,7 @@ import time
 import json
 import copy
 import math
+import re
 import socket
 import threading
 import codecs
@@ -27,8 +28,6 @@ try:
 	import queue as Queue
 except:
 	import Queue
-import cProfile
-import pstats
 import logging
 import urllib
 import requests
@@ -88,6 +87,7 @@ kDefaultPluginPrefs = {
 				"gen2MqttPort":				"1883",
 				"gen2MqttUser":				"",
 				"gen2MqttPassword":			"",
+				"autoPushMqttNew":			"gen2",
 				"debugSetupDevices":		False,
 				"debugHTTPlistener":		False,
 				"debugPolling":				False,
@@ -98,8 +98,7 @@ kDefaultPluginPrefs = {
 				"debugWebSocket":			False,
 				"debugMQTT":				False,
 				"debugall":					False,
-				"logFileActive2":			"standard",
-				"do_cProfile":				"on/off/print"
+				"logFileActive2":			"standard"
 				}
 
 
@@ -683,6 +682,15 @@ _emptyProps = {	# switches
 						"tempUnits":"C"
 						},
 
+				# gen2+ mmwave presence sensor (presence gen4): presence + presencezone:200.., illuminance:0. zones are dynamic components, not in Shelly.GetStatus
+				"shellygen2presence":{"gen":2, "gen2StatusMethod":"Shelly.GetComponents", "props":{"isShellyDevice":True, "usesInputForOnOff":False, "isRelay":False, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":False, "SupportsStatusRequest":True, "AllowOnStateChange":False,
+						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
+						"parentIndigoId":0,"children":"{}","isParent":True,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":60,  "expirationSeconds":180 },
+						"childTypes_Sensors":[],
+						"childTypes_SplitDevices":[],
+						"tempUnits":"C"
+						},
+
 				# thermostat like dimmer
 				"shellytrv":{"props":{"isShellyDevice":True, "usesInputForOnOff":False, "isRelay":False, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,
 						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
@@ -837,14 +845,14 @@ _emptyProps = {	# switches
 						},
 
 				# sensors
-				"shellydw":{"props":{"isShellyDevice":True, "usesInputForOnOff":False, "isRelay":False, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":True, "SupportsStatusRequest":True, "AllowOnStateChange":False,
+				"shellydw":{"props":{"isShellyDevice":True, "usesInputForOnOff":False, "isRelay":False, "devNo":0, "SupportsOnState":True, "SupportsSensorValue":False, "SupportsStatusRequest":True, "AllowOnStateChange":False,
 						"SupportsColor":False, "SupportsRGB":False, "SupportsWhite":False, "SupportsWhiteTemperature":False, "SupportsRGBandWhiteSimultaneously":False, "SupportsTwoWhiteLevels":False, "SupportsTwoWhiteLevelsSimultaneously":False,
-						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":60,  "expirationSeconds":50400,"displaySelect":"lux","SupportsBatteryLevel":True  },
+						"parentIndigoId":0,"children":"{}","isParent":False,"isChild":False,"ipNumber":"", "MAC":"","pollingFrequency":-1, "automaticPollingFrequency":60,  "expirationSeconds":50400,"displaySelect":"onOff","SupportsBatteryLevel":True  },
 						"rgbLimits":[0,255],
 						"setPageActionPageOnShellyDev":{},
 						"action_url":	{
 										"2":{
-											"settings/actions?enabled=true&index=0&name=":	{"close_url":"onOffState=1","open_url":"onOffState=0", "twilight_url":"action=twilightOpen", "dark_url":"action=darkOpen", "vibration_url":"action=vibration"}
+											"settings/actions?enabled=true&index=0&name=":	{"close_url":"onOffState=0","open_url":"onOffState=1", "twilight_url":"action=twilightOpen", "dark_url":"action=darkOpen", "vibration_url":"action=vibration"}
 											},
 										"1":{
 											"settings/?twilight_url":{"none":"action=twilightOpen"},"settings/?dark_url":{"none":"action=darkOpen"},"settings/?close_url":{"none":"action=close"},"settings/?vibration_url":{"none":"action=vibration"}
@@ -1005,6 +1013,7 @@ _sumUnitDecimals = {"mW":0, "W":1, "kW":3, "mA":0, "A":3, "Ws":0, "Wh":1, "kWh":
 
 _urlPrefix			= {"1":"", "2":"&urls[]"}
 _gen2Pages			= {"status":"rpc/Shelly.GetStatus", "settings":"rpc/Shelly.GetDeviceInfo"}
+_gen2ComponentsPage	= 'rpc/Shelly.GetComponents?include=["status"]'
 _wsGUID				= "258EAFA5-E914-47DA-95CA-C5AB0DC85B11"
 _statusActionPage	= {"1":"settings", "2":"settings/actions"}
 ####  "children":{devtypeOfChild:{n:devidOfchild,n2:devIdofChild2}}"
@@ -1022,7 +1031,8 @@ _emptyShelly 					= { "ipNumber":"", "MAC":"", "lastCheck":0, "state":"", "reset
 									"wsState":"", "wsConnected":False, "wsThreadNumber":0, "mqttConnected":False}
 
 
-_GlobalConst_fillMinMaxStates 	= ["Temperature","Pressure","Humidity","Gas_concentration"]
+_GlobalConst_fillMinMaxStates 	= {"Temperature":1, "Pressure":1, "Humidity":0, "Gas_concentration":0, "lux":0} # sensor state: decimals of min / max / ave
+_minMaxSuffixes					= ["MinToday", "MinTodayAt", "MaxToday", "MaxTodayAt", "AveToday", "MinYesterday", "MinYesterdayAt", "MaxYesterday", "MaxYesterdayAt", "AveYesterday"]
 _defaultDateStampFormat			= "%Y-%m-%d %H:%M:%S"
 
 ################################################################################
@@ -1160,8 +1170,6 @@ class Plugin(indigo.PluginBase):
 
 			self.setVariables()
 
-			self.checkcProfile()
-
 			self.indiLOG.log(2, " --V {}   initializing  -- ".format(self.pluginVersion))
 
 			self.setupBasicFiles()
@@ -1249,6 +1257,7 @@ class Plugin(indigo.PluginBase):
 			self.pushRequest 				= -1
 			self.queueActive	  			= False
 			self.SHELLY						= {}
+			self.MINMAX						= {}  # sensor statistics: {devId:{state:{day, min, minAt, max, maxAt, integral, seconds, lastValue, lastTime}}}
 			self.SUMDEVS					= {}  # sum devices: {sumDevId:{"sources":{slot:(srcDevId, state)}, "values":{slot:value}}}
 			self.sumSourceIndex				= {}  # {srcDevId:[sumDevIds]}
 			self.subscribedToDevChanges		= False
@@ -1316,14 +1325,22 @@ class Plugin(indigo.PluginBase):
 			except:	self.gen2MqttPort		= 1883
 			self.gen2MqttUser				= self.pluginPrefs.get("gen2MqttUser", "")
 			self.gen2MqttPassword			= self.pluginPrefs.get("gen2MqttPassword", "")
+			self.autoPushMqttNew			= self.pluginPrefs.get("autoPushMqttNew", "gen2")
 			self.mqttBroker					= None
 			self.mqttUnknownProbed			= {}	# ip# --> time.time() of last discovery probe for an unknown mqtt client
 
 
-			self.useCurlOrPymethod				= self.pluginPrefs.get("useCurlOrPymethod", "/usr/bin/curl")
+			self.useCurlOrPymethod				= self.pluginPrefs.get("useCurlOrPymethod", "requests")
 			if self.useCurlOrPymethod == "curl" or len(self.useCurlOrPymethod) < 4:
-				self.useCurlOrPymethod = "/usr/bin/curl"
+				self.useCurlOrPymethod = "requests"
 				self.pluginPrefs["useCurlOrPymethod"] = self.useCurlOrPymethod
+			if not self.pluginPrefs.get("switchedToRequests", False):
+				# one time on upgrade: requests is the new default, curl installs switch too. picking curl again in config afterwards is kept
+				if self.useCurlOrPymethod != "requests":
+					self.indiLOG.log(20, "connection method changed from {} to python requests (new default), can be set back in plugin config".format(self.useCurlOrPymethod))
+				self.useCurlOrPymethod = "requests"
+				self.pluginPrefs["useCurlOrPymethod"]	= "requests"
+				self.pluginPrefs["switchedToRequests"]	= True
 
 			self.indigoFolderName		= self.pluginPrefs.get("indigoFolderName", "shelly")
 			self.indigoFolderId = indigo.devices.folders.getId(self.indigoFolderName)
@@ -1426,7 +1443,7 @@ class Plugin(indigo.PluginBase):
 		try:	self.gen2WsMinUpdateSeconds	= float(valuesDict.get("gen2WsMinUpdateSeconds", "2"))
 		except:	self.gen2WsMinUpdateSeconds	= 2.
 		if self.gen2SubscribeWs: # (re)start listeners, threads stop by themselves when switched off
-			for devId in self.SHELLY:
+			for devId in list(self.SHELLY):
 				self.startGen2WsListener(devId)
 
 		oldMqtt = (self.gen2MqttBroker, self.gen2MqttPort, self.gen2MqttUser, self.gen2MqttPassword)
@@ -1435,6 +1452,7 @@ class Plugin(indigo.PluginBase):
 		except:	self.gen2MqttPort		= 1883
 		self.gen2MqttUser				= valuesDict.get("gen2MqttUser", "")
 		self.gen2MqttPassword			= valuesDict.get("gen2MqttPassword", "")
+		self.autoPushMqttNew			= valuesDict.get("autoPushMqttNew", "gen2")
 		if oldMqtt != (self.gen2MqttBroker, self.gen2MqttPort, self.gen2MqttUser, self.gen2MqttPassword):
 			self.startMqttBroker()
 
@@ -1566,7 +1584,7 @@ class Plugin(indigo.PluginBase):
 ####-------------------------------------------------------------------------####
 	def filterEmeterDevices(self, filter="", valuesDict=None, typeId=""):
 		xList=[]
-		for devId in self.SHELLY:
+		for devId in list(self.SHELLY):
 			if devId == 0: continue
 			if not self.SHELLY[devId]["deviceEnabled"]: continue
 			dev =  indigo.devices[devId]
@@ -1582,7 +1600,7 @@ class Plugin(indigo.PluginBase):
 ####-------------------------------------------------------------------------####
 	def filterActiveShellyDevices(self, filter="", valuesDict=None, typeId=""):
 		xList=[]
-		for devId in self.SHELLY:
+		for devId in list(self.SHELLY):
 			if devId != 0:
 				if self.SHELLY[devId]["deviceEnabled"]:
 					##self.indiLOG.log(10, "forcing push menu {};  {}".format(devId, self.SHELLY[devId]["ipNumber"]) )
@@ -1596,7 +1614,7 @@ class Plugin(indigo.PluginBase):
 ####-------------------------------------------------------------------------####
 	def filterActiveShellyDevicesNotChild(self, filter="", valuesDict=None, typeId="", xx=""):
 		xList=[]
-		for devId in self.SHELLY:
+		for devId in list(self.SHELLY):
 			if devId != 0:
 				if not self.SHELLY[devId]["deviceEnabled"]: continue
 				if     self.SHELLY[devId]["isChild"]: 		continue
@@ -1702,7 +1720,7 @@ class Plugin(indigo.PluginBase):
 		devIdSelect = int(valuesDict["devId"])
 		valuesDict["MSG"] = "not set: push of config to {}, try cancel first".format(devIdSelect)
 		oneOk = False
-		for devId in self.SHELLY:
+		for devId in list(self.SHELLY):
 			if devId == 0: continue
 			if devId == devIdSelect or devIdSelect ==0:
 				self.indiLOG.log(20, "forcing push of config to {};  pushIdActive:{}".format(devId, self.SHELLY[devId]["pushIdActive"]) )
@@ -1730,7 +1748,7 @@ class Plugin(indigo.PluginBase):
 ####-------------------------------------------------------------------------####
 	def buttonConfirmconfirmpPuschActionCancelCALLBACK(self, valuesDict, typeId=""):
 		devIdSelect = 0
-		for devId in self.SHELLY:
+		for devId in list(self.SHELLY):
 			if devId == 0: continue
 			if devId == devIdSelect or devIdSelect ==0:
 				self.SHELLY[devId]["lastSuccessfullConfigPush"] = {"started":time.time(),"finished":time.time()}
@@ -1770,7 +1788,7 @@ class Plugin(indigo.PluginBase):
 	def buttonConfirmconfirmpRequestStatusCALLBACK(self, valuesDict, typeId=""):
 		try:
 			devIdSelect = int(valuesDict["devId"])
-			for devId in self.SHELLY:
+			for devId in list(self.SHELLY):
 				if devId == 0: continue
 				if devId == devIdSelect or devIdSelect ==0:
 					dev = indigo.devices[devId]
@@ -1785,7 +1803,7 @@ class Plugin(indigo.PluginBase):
 ####-------------------------------------------------------------------------####
 	def filterGen2Devices(self, filter="", valuesDict=None, typeId=""):
 		xList=[]
-		for devId in self.SHELLY:
+		for devId in list(self.SHELLY):
 			if devId == 0 or self.SHELLY[devId]["isChild"] or not self.SHELLY[devId]["deviceEnabled"]: continue
 			try:	xList.append([str(devId), indigo.devices[devId].name + ("" if self.isGen2(devId) else "  (gen1)")])
 			except:	pass
@@ -1821,7 +1839,23 @@ class Plugin(indigo.PluginBase):
 		return valuesDict
 
 ####-------------------------------------------------------------------------####
-	def gen2PushMqttThread(self, devId):
+	def autoPushMqtt(self, devId):
+		# new device from discovery: point its MQTT to the plugin broker (gen1: action urls are pushed by the regular config push, MQTT after that)
+		try:
+			if self.mqttBroker is None or not self.isValidIP(self.IndigoServerIPNumber): return
+			if devId not in self.SHELLY or self.SHELLY[devId].get("mqttPushActive", False): return
+			gen2 = self.isGen2(devId)
+			if self.autoPushMqttNew == "off" or (self.autoPushMqttNew == "gen2" and not gen2): return
+			self.SHELLY[devId]["mqttPushActive"] = True
+			self.indiLOG.log(20, "new device {}: pushing MQTT settings to device{}".format(indigo.devices[devId].name, "" if gen2 else " in 90 secs, after the action urls"))
+			target = self.gen2PushMqttThread if gen2 else self.gen1PushMqttThread
+			threading.Thread(name=u'self.pushMqttThread', target=target, args=(devId, 0 if gen2 else 90), daemon=True).start()
+		except Exception:
+			self.indiLOG.log(40, "", exc_info=True)
+		return
+
+####-------------------------------------------------------------------------####
+	def gen2PushMqttThread(self, devId, delay=0):
 		# point the device mqtt to the plugin broker. sleeping devices (plus h&t) only answer while awake, keep trying for 15 minutes
 		try:
 			name	= indigo.devices[devId].name
@@ -1830,6 +1864,8 @@ class Plugin(indigo.PluginBase):
 			config	= copy.copy(wanted)
 			if self.gen2MqttUser != "": config["pass"] = self.gen2MqttPassword
 			setPage	= "rpc/MQTT.SetConfig?config=" + urlQuote(json.dumps(config, separators=(",",":")))
+			waitUntil = time.time() + delay
+			while time.time() < waitUntil and self.quitNow == "": time.sleep(1)
 			waitUntil = time.time() + 15*60
 			lastLog	= 0
 			while time.time() < waitUntil and devId in self.SHELLY and self.quitNow == "":
@@ -1863,13 +1899,15 @@ class Plugin(indigo.PluginBase):
 		return
 
 ####-------------------------------------------------------------------------####
-	def gen1PushMqttThread(self, devId):
+	def gen1PushMqttThread(self, devId, delay=0):
 		# gen1: /settings?mqtt_enable=true&mqtt_server=.. then /reboot. NOTE: gen1 firmware turns the shelly cloud off while MQTT is on
 		try:
 			name	= indigo.devices[devId].name
 			server	= "{}:{}".format(self.IndigoServerIPNumber, self.gen2MqttPort)
 			setPage	= "settings?mqtt_enable=true&mqtt_server={}&mqtt_update_period=30".format(urlQuote(server))
 			if self.gen2MqttUser != "": setPage += "&mqtt_user={}&mqtt_pass={}".format(urlQuote(self.gen2MqttUser), urlQuote(self.gen2MqttPassword))
+			waitUntil = time.time() + delay
+			while time.time() < waitUntil and self.quitNow == "": time.sleep(1)
 			waitUntil = time.time() + 15*60
 			lastLog	= 0
 			while time.time() < waitUntil and devId in self.SHELLY and self.quitNow == "":
@@ -1923,7 +1961,7 @@ class Plugin(indigo.PluginBase):
 
 		devIdSelect = int(valuesDict["devId"])
 		out = ""
-		for devId in self.SHELLY:
+		for devId in list(self.SHELLY):
 			if devId == 0: continue
 			if devId == devIdSelect or devIdSelect ==0:
 				props ={}
@@ -2270,6 +2308,34 @@ class Plugin(indigo.PluginBase):
 		return (True, valuesDict, errorDict)
 
 ####-------------------------------------------------------------------------####
+	def sumUsedSlots(self, props):
+		# {cat:[slot numbers with a source device]} of a sum device, only kinds with at least one source
+		used = {}
+		for cat in _sumCategories:
+			try:	count = int(props.get(cat + "Count", "0"))
+			except: count = 0
+			for slot in range(1, min(count, _sumSlots) + 1):
+				if "{}".format(props.get("{}Dev{}".format(cat, slot), "0")) not in ["", "0"]:
+					used.setdefault(cat, []).append(slot)
+		return used
+
+####-------------------------------------------------------------------------####
+	def sumDeviceStateList(self, dev, stateList):
+		# sum device: states only for the kinds (power, current, energy) and slots in use
+		have = set(st.get("Key", "") for st in stateList)
+		def add(sid, number=True):
+			if sid in have: return
+			have.add(sid)
+			stateList.append(self.getDeviceStateDictForNumberType(sid, sid, sid) if number else self.getDeviceStateDictForStringType(sid, sid, sid))
+		for cat, slots in self.sumUsedSlots(dev.pluginProps).items():
+			add(cat + "Sum")
+			for slot in slots: add("{}{}".format(cat, slot))
+			if self.minMaxEnabled(dev, cat):
+				for suf in _minMaxSuffixes: add(cat + "Sum" + suf, number=not suf.endswith("At"))
+			add("source_" + cat.capitalize(), number=False)
+		return stateList
+
+####-------------------------------------------------------------------------####
 	def sumSourceIds(self, props):
 		# dev ids used as sources in the props of a sum device
 		ids = []
@@ -2381,6 +2447,7 @@ class Plugin(indigo.PluginBase):
 	def sumStats(self, sumDev, cat, value, now, dec, unit, chList):
 		# min, max (w time) and time weighted average of the sum for today; at midnight today --> yesterday
 		try:
+			if cat + "SumAveToday" not in sumDev.states: return
 			allStats = self.SUMDEVS[sumDev.id].setdefault("stats", {})
 			nowDT = datetime.datetime.fromtimestamp(now)
 			today = nowDT.strftime("%Y-%m-%d")
@@ -2489,6 +2556,7 @@ class Plugin(indigo.PluginBase):
 						chList.append({"key":key, "value":value, "decimalPlaces":dec})
 				total = round(total, dec)
 				sums[cat] = total
+				if cat + "Sum" not in sumDev.states: continue # kind not used, no states
 				if sumDev.states[cat + "Sum"] != total:
 					chList.append({"key":cat + "Sum", "value":total, "decimalPlaces":dec, "uiValue":"{:.{}f} {}".format(total, dec, unit)})
 				if any(slot.startswith(cat) for slot in sumData["sources"]):
@@ -2595,21 +2663,6 @@ class Plugin(indigo.PluginBase):
 ###############################################################################
 ##############################   DEVICE edit  #################################
 ####-------------------------------------------------------------------------####
-	def filterselectParentDevice(self, filter="", valuesDict=None, typeId="", devId=""):
-		xList=[]
-		for devId in self.SHELLY:
-			if self.SHELLY[devId]["typeId"] != filter: continue
-			props = dev.pluginProps
-			if "isParent" in props and props["isParent"]:
-				if "children" in props:
-					children = json.loads(props["children"])
-					if children == {} or dev.deviceTypeId not in children or children[dev.deviceTypeId] == {}:
-						xList.append([str(devId), dev.name])
-		if xList == []:
-			xList.append(["-1", "no free hosting device available"])
-		return xList
-
-####-------------------------------------------------------------------------####
 	def getDeviceConfigUiValues(self, pluginProps, typeId="", devId=""):
 		try:
 			theDictList =  super(Plugin, self).getDeviceConfigUiValues(pluginProps, typeId, devId)
@@ -2618,7 +2671,8 @@ class Plugin(indigo.PluginBase):
 				self.indiLOG.log(30, "the shelly device is new, recommended to use menu / scan to create new shelly devices !!")
 				theDictList[0]["MSG"] = "use menu/scan to create new shelly devices"
 			try: ##Only if it exists already
-				if "isParent" in pluginProps:
+				if "isParent" in pluginProps and int(devId) in indigo.devices:
+					dev = indigo.devices[int(devId)]
 					if "sensorNo" in pluginProps and "sensorNo" in dev.states:
 							sensorNo = dev.states["sensorNo"]
 							try: 	theDictList[0]["sensorNo"] = str(int(sensorNo)-1)
@@ -2645,6 +2699,8 @@ class Plugin(indigo.PluginBase):
 		errorDict = indigo.Dict()
 		valuesDict["MSG"] = "OK"
 		if typeId == _sumDevType: return self.validateSumDev(valuesDict, devId)
+		if typeId == "shellydw" and "displaySelect" in valuesDict: # either open/closed (on/off only) or a number (lux / tilt) as device value
+			valuesDict["SupportsSensorValue"] = valuesDict["displaySelect"] != "onOff"
 		try:
 			dev = indigo.devices[devId]
 			props = dev.pluginProps
@@ -2802,7 +2858,7 @@ class Plugin(indigo.PluginBase):
 
 
 
-		except Exception:
+		except Exception as e:
 			self.indiLOG.log(40, "", exc_info=True)
 			errorDict["MSG"] = "{}".format(e)
 			valuesDict["MSG"] =  "{}".format(e)
@@ -2861,100 +2917,6 @@ class Plugin(indigo.PluginBase):
 
 
 
-	###########################	   cProfile stuff   ############################ START
-	####-----------------  ---------
-	def getcProfileVariable(self):
-
-		try:
-			if self.timeTrVarName in indigo.variables:
-				xx = (indigo.variables[self.timeTrVarName].value).strip().lower().split("-")
-				if len(xx) ==1:
-					cmd = xx[0]
-					pri = ""
-				elif len(xx) == 2:
-					cmd = xx[0]
-					pri = xx[1]
-				else:
-					cmd = "off"
-					pri  = ""
-				self.timeTrackWaitTime = 20
-				return cmd, pri
-		except Exception:
-			pass
-
-		self.timeTrackWaitTime = 60
-		return "off",""
-
-	####-----------------            ---------
-	def printcProfileStats(self,pri=""):
-		try:
-			if pri !="": pick = pri
-			else:		 pick = 'cumtime'
-			outFile		= self.indigoPreferencesPluginDir+"timeStats"
-			indigo.server.log(" print time track stats to: "+outFile+".dump / txt  with option: "+pick)
-			self.pr.dump_stats(outFile+".dump")
-			sys.stdout 	= openEncoding(outFile+".txt", "w")
-			stats 		= pstats.Stats(outFile+".dump")
-			stats.strip_dirs()
-			stats.sort_stats(pick)
-			stats.print_stats()
-			sys.stdout = sys.__stdout__
-		except: pass
-		"""
-		'calls'			call count
-		'cumtime'		cumulative time
-		'file'			file name
-		'filename'		file name
-		'module'		file name
-		'pcalls'		primitive call count
-		'line'			line number
-		'name'			function name
-		'nfl'			name/file/line
-		'stdname'		standard name
-		'time'			internal time
-		"""
-
-	####-----------------            ---------
-	def checkcProfile(self):
-		try:
-			if time.time() - self.lastTimegetcProfileVariable < self.timeTrackWaitTime:
-				return
-		except:
-			self.cProfileVariableLoaded = 0
-			self.do_cProfile  			= "x"
-			self.timeTrVarName 			= "enableTimeTracking_"+self.pluginShortName
-			indigo.server.log("testing if variable "+self.timeTrVarName+" is == on/off/print-option to enable/end/print time tracking of all functions and methods (option:'',calls,cumtime,pcalls,time)")
-
-		self.lastTimegetcProfileVariable = time.time()
-
-		cmd, pri = self.getcProfileVariable()
-		if self.do_cProfile != cmd:
-			if cmd == "on":
-				if  self.cProfileVariableLoaded ==0:
-					indigo.server.log("======>>>>   loading cProfile & pstats libs for time tracking;  starting w cProfile ")
-					self.pr = cProfile.Profile()
-					self.pr.enable()
-					self.cProfileVariableLoaded = 2
-				elif  self.cProfileVariableLoaded >1:
-					self.quitNow = " restart due to change  ON  requested for print cProfile timers"
-			elif cmd == "off" and self.cProfileVariableLoaded >0:
-					self.pr.disable()
-					self.quitNow = " restart due to  OFF  request for print cProfile timers "
-		if cmd == "print"  and self.cProfileVariableLoaded >0:
-				self.pr.disable()
-				self.printcProfileStats(pri=pri)
-				self.pr.enable()
-				indigo.variable.updateValue(self.timeTrVarName,"done")
-
-		self.do_cProfile = cmd
-		return
-
-	####-----------------            ---------
-	def checkcProfileEND(self):
-		if self.do_cProfile in["on","print"] and self.cProfileVariableLoaded >0:
-			self.printcProfileStats(pri="")
-		return
-	###########################	   cProfile stuff   ############################ END
 
 
 
@@ -2962,7 +2924,6 @@ class Plugin(indigo.PluginBase):
 	def runConcurrentThread(self):
 
 		self.dorunConcurrentThread()
-		self.checkcProfileEND()
 		self.sleep(2)
 		if self.quitNow !="":
 			indigo.server.log("runConcurrentThread stopping plugin due to:  ::::: " + self.quitNow + " :::::")
@@ -3045,7 +3006,6 @@ class Plugin(indigo.PluginBase):
 
 		except Exception:
 			self.indiLOG.log(40, "", exc_info=True)
-			self.indiLOG.log(40, "devId {} ".format(devId))
 
 		return anyChange
 
@@ -3149,7 +3109,7 @@ class Plugin(indigo.PluginBase):
 				return
 			self.checkTimeIfPushToDevicesIsRequired  = time.time() + 30
 			if now.hour != 1 and not pushNow: return
-			for devId in self.SHELLY:
+			for devId in list(self.SHELLY):
 				if devId == 0: continue
 				if self.SHELLY[devId]["isChild"]: continue
 
@@ -3172,7 +3132,7 @@ class Plugin(indigo.PluginBase):
 	def checkForExpiredDevices(self, now):
 		try:
 			delShelly =[]
-			for devId in self.SHELLY:
+			for devId in list(self.SHELLY):
 				if devId >0:
 					try: dev = indigo.devices[devId]
 					except:
@@ -3185,7 +3145,7 @@ class Plugin(indigo.PluginBase):
 							try:
 								if dev.states["expired"].find("no") == 0 or len(dev.states["expired"]) < 10: # either "no ...  datestring" or  (empty or junk, must have datestring if not simply "no" )
 									if type(self.SHELLY[devId]["lastMessageFromDevice"]) == type("") or type(self.SHELLY[devId]["expirationSeconds"]) == type(""): 
-										self.indiLOG.log(20,f"device not properly defined: devId {devid}/{dev.name} info:{self.SHELLY[devId]}")
+										self.indiLOG.log(20,f"device not properly defined: devId {devId}/{dev.name} info:{self.SHELLY[devId]}")
 										continue
 
 									self.indiLOG.log(10, "setting dev:{} to expired; minutes since last contact:{:.0f};  expiration Setting:{:.0f}[Min]".format(dev.name, (time.time() - self.SHELLY[devId]["lastMessageFromDevice"])/60, self.SHELLY[devId]["expirationSeconds"]/60))
@@ -3193,7 +3153,7 @@ class Plugin(indigo.PluginBase):
 									dev.updateStateOnServer("expired", now.strftime(_defaultDateStampFormat))
 							except Exception:
 								self.indiLOG.log(40, "", exc_info=True)
-								self.indiLOG.log(20,f"devId {devid} dev info:{ self.SHELLY[devId]}")
+								self.indiLOG.log(20,f"devId {devId} dev info:{ self.SHELLY[devId]}")
 								continue
 
 					self.SHELLY[devId]["deviceEnabled"]  = dev.enabled
@@ -3218,7 +3178,7 @@ class Plugin(indigo.PluginBase):
 			self.ipNumberRangeToTest = []
 			for ipx in range(rangestart, rangeEnd):
 				self.nextIPSCAN = ip0 + str(ipx)
-				for devId in self.SHELLY:
+				for devId in list(self.SHELLY):
 					if devId == 0: continue
 					if self.nextIPSCAN == self.SHELLY[devId]["ipNumber"]:
 						self.indiLOG.log(10, "SHELLY discovery: skipping ip# {}, alread exists".format(self.nextIPSCAN))
@@ -3293,7 +3253,6 @@ class Plugin(indigo.PluginBase):
 			self.queueList = ""
 		except Exception:
 			self.indiLOG.log(40, "", exc_info=True)
-			self.indiLOG.log(40, "data:{}".format(data))
 		return
 
 
@@ -3346,7 +3305,7 @@ class Plugin(indigo.PluginBase):
 				MAC = MAC.replace(":","").upper()
 
 				# do we have a device with that ip#, do not use child, at this point we need the host/ parent
-				for devId in self.SHELLY:
+				for devId in list(self.SHELLY):
 					if self.SHELLY[devId]["ipNumber"] == ipNumber and not self.SHELLY[devId]["isChild"]:
 						items["shellyIndigoDevNumber"] = devId
 					if MAC != "" and MAC == self.SHELLY[devId]["MAC"].replace(":","").upper():
@@ -3430,7 +3389,7 @@ class Plugin(indigo.PluginBase):
 			data       = items["data"]["path"]
 			found      = False
 			devIdFound = 0
-			for devId in self.SHELLY:
+			for devId in list(self.SHELLY):
 				if self.SHELLY[devId]["isChild"]: continue
 				if self.SHELLY[devId]["ipNumber"] == ipNumber:
 					try:
@@ -3491,7 +3450,7 @@ class Plugin(indigo.PluginBase):
 
 		except Exception:
 			self.indiLOG.log(40, "", exc_info=True)
-			self.indiLOG.log(40, " data:{}".format(items) )
+			self.indiLOG.log(40, " dev:{}, ip# {} --> {}".format(dev.name, oldIP, ipNumber) )
 		return
 
 
@@ -3628,7 +3587,12 @@ class Plugin(indigo.PluginBase):
 					MAC    = data["mac"]
 					# the status tells which parts the device has: number of children, type for device ids we do not know
 					gen2Status, retCode = self.execShellySend(ipNumber, "rpc/Shelly.GetStatus")
-					if retCode != "0" or not isinstance(gen2Status, dict): gen2Status = {}
+					if retCode != "0" or not isinstance(gen2Status, dict) or "sys" not in gen2Status:
+						# error answer ({"code":..,"message":..}, eg right after a reboot): try the component list
+						if isinstance(gen2Status, dict) and "message" in gen2Status:
+							self.indiLOG.log(20, "ip# {} gen2 device {} Shelly.GetStatus answered: {} {}, trying Shelly.GetComponents".format(ipNumber, data["id"], gen2Status.get("code",""), gen2Status.get("message","")))
+						gen2Status, retCode = self.gen2FetchComponents(ipNumber)
+						if retCode != "0" or not isinstance(gen2Status, dict) or "message" in gen2Status: gen2Status = {}
 					if useDevType not in _emptyProps or _emptyProps[useDevType].get("gen", 1) < 2:
 						useDevType = self.gen2TypeFromStatus(gen2Status)
 					if useDevType == "":
@@ -3640,7 +3604,7 @@ class Plugin(indigo.PluginBase):
 			self.indiLOG.log(10, "==> create ShellyDevice for {}, deviceTypeId:{}".format(ipNumber, useDevType) )
 
 
-			for devId in self.SHELLY:
+			for devId in list(self.SHELLY):
 				if devId == 0: continue
 				if self.SHELLY[devId]["ipNumber"] == ipNumber and self.SHELLY[devId]["devTypeId"] == useDevType:
 					self.indiLOG.log(30, "ip# {} already exists devID: {}".format(ipNumber, devId))
@@ -3688,6 +3652,7 @@ class Plugin(indigo.PluginBase):
 				self.addToPushConfigToShellyDeviceQueue(devParent.id)
 				self.indiLOG.log(20, "created new device: {}, type:{}, ip#:{}".format(devParent.name, useDevType, ipNumber))
 				devId = devParent.id
+				self.autoPushMqtt(devId)
 
 			except Exception:
 				self.indiLOG.log(40, "", exc_info=True)
@@ -4123,26 +4088,21 @@ class Plugin(indigo.PluginBase):
 						self.addToStatesUpdateDict(devID, "action_from_device", "valve_"+("open" if trigger[1] == "open" else "close"))
 
 			elif deviceTypeId in ["shellydw","shellydw2"]:
+				# onOffState = open. action urls: close_url -> onOffState=0, open_url -> onOffState=1, dark_url / twilight_url -> action=darkOpen / twilightOpen
+				now = datetime.datetime.now().strftime(_defaultDateStampFormat)
 				for trigger in TRIGGERS:
-					if trigger[0] == "action" and trigger[1] == "close":
-						self.addToStatesUpdateDict(devID, "closedTriggered", datetime.datetime.now().strftime(_defaultDateStampFormat))
-						self.addToStatesUpdateDict(devID, "state", "close")
-						self.fillSwitch( useDev, {"onOffState":False}, "onOffState")
-
-					if trigger[0] == "action" and trigger[1] == "darkOpen":
-						self.addToStatesUpdateDict(devID, "darkOpen", datetime.datetime.now().strftime(_defaultDateStampFormat))
-						self.addToStatesUpdateDict(devID, "state", "open")
-						self.fillSwitch( useDev, {"onOffState":True}, "onOffState")
-
-					if trigger[0] == "action" and trigger[1] == "twilightOpen":
-						self.addToStatesUpdateDict(devID, "state", "open")
-						self.fillSwitch( useDev, {"onOffState":True}, "onOffState")
-						self.addToStatesUpdateDict(devID, "twilightOpen", datetime.datetime.now().strftime(_defaultDateStampFormat))
-
-					if trigger[0].find("onOffState") == 0:
-						self.addToStatesUpdateDict(devID, "state", "open")
-						self.fillSwitch( useDev, {"onOffState":True}, "onOffState")
-						self.addToStatesUpdateDict(devID, "daylightOpen", datetime.datetime.now().strftime(_defaultDateStampFormat))
+					isOpen = None
+					if   trigger[0] == "action" and trigger[1] == "close":			isOpen = False
+					elif trigger[0] == "action" and trigger[1] == "darkOpen":		isOpen = True; self.addToStatesUpdateDict(devID, "darkOpen", now)
+					elif trigger[0] == "action" and trigger[1] == "twilightOpen":	isOpen = True; self.addToStatesUpdateDict(devID, "twilightOpen", now)
+					elif trigger[0] == "action" and trigger[1] == "vibration":		self.addToStatesUpdateDict(devID, "vibration", "YES")
+					elif trigger[0].find("onOffState") == 0:
+						isOpen = trigger[1] is True
+						if isOpen: self.addToStatesUpdateDict(devID, "dayOpen", now)
+					if isOpen is None: continue
+					if not isOpen: self.addToStatesUpdateDict(devID, "closedTriggered", now)
+					self.addToStatesUpdateDict(devID, "state", "open" if isOpen else "close")
+					self.fillSwitch(useDev, {"onOffState":isOpen}, "onOffState", uiValue="open" if isOpen else "closed")
 
 			## cover the rest of the defined devices w actions reporting
 			if deviceTypeId in _definedShellyDeviceswAction:
@@ -4379,7 +4339,8 @@ class Plugin(indigo.PluginBase):
 				self.addToStatesUpdateDict(devID, "vibration", 		"no" if data["accel"]["vibration"]==0 else "YES")
 			if "sensor" in data:
 				self.addToStatesUpdateDict(devID, "state", 			data["sensor"]["state"])
-				self.addToStatesUpdateDict(devID, "onOffState",		data["sensor"]["state"] !="close")
+				isOpen = data["sensor"]["state"] != "close"
+				self.addToStatesUpdateDict(devID, "onOffState",		isOpen, uiValue="open" if isOpen else "closed", force="ui")
 
 		except Exception:
 			self.indiLOG.log(40, "", exc_info=True)
@@ -4912,18 +4873,18 @@ class Plugin(indigo.PluginBase):
 
 
 ###-------------------------------------------------------------------------####
-	def fillSwitch(self, dev, data, token, onOffState=True):
+	def fillSwitch(self, dev, data, token, onOffState=True, uiValue=""):
 		try:
 			if onOffState and "onOffState" in dev.states:
 				if data[token]:
-					self.addToStatesUpdateDict(dev.id, "onOffState",True)
+					self.addToStatesUpdateDict(dev.id, "onOffState",True, uiValue=uiValue, force="ui" if uiValue != "" else "")
 					if not dev.states["onOffState"]:
 						if "lastOnOffChange" in dev.states and "lastStatusChange" in dev.states:
 							self.addToStatesUpdateDict(dev.id, "lastOnOffChange",dev.states["lastStatusChange"])
 						self.addToStatesUpdateDict(dev.id, "lastStatusChange",datetime.datetime.now().strftime(_defaultDateStampFormat))
 					dev.updateStateImageOnServer(indigo.kStateImageSel.PowerOn)
 				else:
-					self.addToStatesUpdateDict(dev.id, "onOffState",False)
+					self.addToStatesUpdateDict(dev.id, "onOffState",False, uiValue=uiValue, force="ui" if uiValue != "" else "")
 					if dev.states["onOffState"]:
 						if "lastOnOffChange" in dev.states and "lastStatusChange" in dev.states:
 							self.addToStatesUpdateDict(dev.id, "lastOnOffChange",dev.states["lastStatusChange"])
@@ -5075,62 +5036,113 @@ class Plugin(indigo.PluginBase):
 
 
 
-####----------------------reset sensor min max at midnight -----------------------------------####
-	def resetMinMaxSensors(self, init=False):
+####----------------------sensor min / max / average, today and yesterday -----------------------------------####
+	def minMaxEnabled(self, dev, key):
+		# device edit checkbox "<state>_EnableMinMax", default on
+		return "{}".format(dev.pluginProps.get(key + "_EnableMinMax", True)).lower() not in ["false", "0", "no"]
+
+####-------------------------------------------------------------------------####
+	def getDeviceStateList(self, dev):
+		# the daily statistics states are not in Devices.xml: added here for each sensor state of the device (temperature, humidity, lux ..)
+		# that has its checkbox "<state>_EnableMinMax" on (default). called by indigo at device start and after edit / save
+		stateList = indigo.PluginBase.getDeviceStateList(self, dev)
 		try:
-			nHour = (datetime.datetime.now()).hour
+			if stateList is None: return stateList
+			if dev.deviceTypeId == _sumDevType: return self.sumDeviceStateList(dev, stateList)
+			have = set(st.get("Key", "") for st in stateList)
+			for key in _GlobalConst_fillMinMaxStates:
+				if key not in have or not self.minMaxEnabled(dev, key): continue
+				for suf in _minMaxSuffixes:
+					sid = key + suf
+					if sid in have: continue
+					if suf.endswith("At"):	stateList.append(self.getDeviceStateDictForStringType(sid, sid, sid))
+					else:					stateList.append(self.getDeviceStateDictForNumberType(sid, sid, sid))
+		except Exception:
+			self.indiLOG.log(40, "", exc_info=True)
+		return stateList
+
+####-------------------------------------------------------------------------####
+	def resetMinMaxSensors(self, init=False):
+		# called every hour (and at start): roll over to yesterday after midnight, refresh today's average, also when the sensor did not send anything
+		try:
+			now = time.time()
 			for dev in indigo.devices.iter(self.pluginId):
-				if	dev.enabled:
-					for ttx in _GlobalConst_fillMinMaxStates:
-						if ttx in dev.states and ttx+"MaxToday" in dev.states:
-							try:	val = float(dev.states[ttx])
-							except: val = 0
-							try:
-								xxx =  "{}".format(dev.states[ttx]).split(".")
-								if len(xxx) ==1:
-									decimalPlaces = 1
-								else:
-									decimalPlaces = len(xxx[1])
-							except:
-								decimalPlaces = 2
-
-							if init: # at start of pgm
-								reset = False
-								try:
-									int(dev.states[ttx+"MinYesterday"])
-								except:
-									reset = True
-								if not reset:
-									try:
-										if (float(dev.states[ttx+"MaxToday"]) == float(dev.states[ttx+"MinToday"]) and float(dev.states[ttx+"MaxToday"]) == 0.) :  reset = True
-									except: pass
-								if reset:
-									self.addToStatesUpdateDict(dev.id,ttx+"MaxYesterday",  val,decimalPlaces=decimalPlaces)
-									self.addToStatesUpdateDict(dev.id,ttx+"MinYesterday",  val,decimalPlaces=decimalPlaces)
-									self.addToStatesUpdateDict(dev.id,ttx+"MaxToday",		val,decimalPlaces=decimalPlaces)
-									self.addToStatesUpdateDict(dev.id,ttx+"MinToday",		val,decimalPlaces=decimalPlaces)
-
-							elif nHour ==0:	 # update at midnight
-									self.addToStatesUpdateDict(dev.id,ttx+"MaxYesterday",  dev.states[ttx+"MaxToday"], decimalPlaces = decimalPlaces)
-									self.addToStatesUpdateDict(dev.id,ttx+"MinYesterday",  dev.states[ttx+"MinToday"], decimalPlaces = decimalPlaces)
-									self.addToStatesUpdateDict(dev.id,ttx+"MaxToday",		dev.states[ttx], decimalPlaces = decimalPlaces)
-									self.addToStatesUpdateDict(dev.id,ttx+"MinToday",		dev.states[ttx], decimalPlaces = decimalPlaces)
-			self.executeUpdateStatesDict()
-
+				if not dev.enabled or dev.deviceTypeId == _sumDevType: continue
+				chList = []
+				self.minMaxStats(dev, chList, now=now, force=True)
+				if chList != []: self.execUpdateStatesList(dev, chList)
 		except Exception:
 			self.indiLOG.log(40, "", exc_info=True)
 		return
-####----------------------reset sensor min max at midnight -----------------------------------####
-	def fillMinMaxSensors(self,dev,stateName,value,decimalPlaces):
+
+####-------------------------------------------------------------------------####
+	def fillMinMaxSensors(self, dev, stateName, value, decimalPlaces):
+		return # done in executeUpdateStatesDict --> minMaxStats for every state in _GlobalConst_fillMinMaxStates
+
+####-------------------------------------------------------------------------####
+	def minMaxStats(self, dev, chList, now=None, force=False):
+		# for each sensor state (temperature, humidity, lux ..) in chList (or all when force): min, max (w time) and time weighted average for today;
+		# after midnight today --> yesterday. appends the stats states that changed to chList
 		try:
-			if value == "": return
-			if stateName not in _GlobalConst_fillMinMaxStates: return
-			if stateName in dev.states and stateName+"MaxToday" in dev.states:
-				val = float(value)
-				if val > float(dev.states[stateName+"MaxToday"]):
-					self.addToStatesUpdateDict(str(dev.id),stateName+"MaxToday",	 val, decimalPlaces=decimalPlaces)
-				if val < float(dev.states[stateName+"MinToday"]):
-					self.addToStatesUpdateDict(str(dev.id),stateName+"MinToday",	 val, decimalPlaces=decimalPlaces)
+			if now is None: now = time.time()
+			nowDT	= datetime.datetime.fromtimestamp(now)
+			today	= nowDT.strftime("%Y-%m-%d")
+			nowStr	= nowDT.strftime(_defaultDateStampFormat)
+			midnight = time.mktime(datetime.datetime.strptime(today, "%Y-%m-%d").timetuple())
+			inList	= {c["key"]:c for c in chList}
+			devStats = self.MINMAX.setdefault(dev.id, {})
+			for key, dec in _GlobalConst_fillMinMaxStates.items():
+				if key not in dev.states or key+"AveToday" not in dev.states or not self.minMaxEnabled(dev, key): continue
+				if key in inList:	raw, uiRaw = inList[key]["value"], inList[key].get("uiValue", "")
+				elif force:			raw, uiRaw = dev.states[key], dev.states.get(key+".ui", "")
+				else:				continue
+				if isinstance(raw, bool) or raw in ["", None]: continue
+				try:	value = float(raw)
+				except:	continue
+				unit = re.sub(r"^\s*[-+0-9.,]*\s*", "", "{}".format(uiRaw)) # "21.5°C" --> "°C", "17[lux]" --> "[lux]"
+				def ui(v): return "{:.{}f}{}{}".format(v, dec, " " if unit[:1].isalpha() else "", unit)
+
+				stats = devStats.get(key)
+				if stats is None: # first value after start: continue today's values from the states
+					stats = {"day":today, "min":value, "minAt":nowStr, "max":value, "maxAt":nowStr, "integral":0., "seconds":0., "lastValue":value, "lastTime":now}
+					try:
+						if "{}".format(dev.states[key+"MinTodayAt"])[:10] == today:
+							seconds = max(0., now - midnight)
+							stats.update({"min":float(dev.states[key+"MinToday"]), "minAt":dev.states[key+"MinTodayAt"],
+										"max":float(dev.states[key+"MaxToday"]), "maxAt":dev.states[key+"MaxTodayAt"],
+										"integral":float(dev.states[key+"AveToday"]) * seconds, "seconds":seconds})
+					except Exception:
+						pass
+					devStats[key] = stats
+
+				if stats["day"] != today:
+					# close the old day at midnight, the last value is valid until then
+					dt = max(0., midnight - stats["lastTime"])
+					stats["integral"] += stats["lastValue"] * dt
+					stats["seconds"]  += dt
+					ave = stats["integral"] / stats["seconds"] if stats["seconds"] > 0 else stats["lastValue"]
+					for suf, val in [("MinYesterday", stats["min"]), ("MaxYesterday", stats["max"]), ("AveYesterday", ave)]:
+						chList.append({"key":key+suf, "value":round(val, dec), "decimalPlaces":dec, "uiValue":ui(val)})
+					chList.append({"key":key+"MinYesterdayAt", "value":stats["minAt"]})
+					chList.append({"key":key+"MaxYesterdayAt", "value":stats["maxAt"]})
+					midnightStr = today + " 00:00:00"
+					stats.update({"day":today, "min":stats["lastValue"], "minAt":midnightStr, "max":stats["lastValue"], "maxAt":midnightStr,
+									"integral":0., "seconds":0., "lastTime":midnight})
+
+				dt = max(0., now - stats["lastTime"])
+				stats["integral"] += stats["lastValue"] * dt
+				stats["seconds"]  += dt
+				stats["lastValue"] = value
+				stats["lastTime"]  = now
+				if value < stats["min"]: stats["min"], stats["minAt"] = value, nowStr
+				if value > stats["max"]: stats["max"], stats["maxAt"] = value, nowStr
+				ave = stats["integral"] / stats["seconds"] if stats["seconds"] > 0 else value
+
+				for suf, val in [("MinToday", stats["min"]), ("MaxToday", stats["max"]), ("AveToday", ave)]:
+					val = round(val, dec)
+					if dev.states[key+suf] != val: chList.append({"key":key+suf, "value":val, "decimalPlaces":dec, "uiValue":ui(val)})
+				for suf, val in [("MinTodayAt", stats["minAt"]), ("MaxTodayAt", stats["maxAt"])]:
+					if dev.states[key+suf] != val: chList.append({"key":key+suf, "value":val})
 		except Exception:
 			self.indiLOG.log(40, "", exc_info=True)
 		return
@@ -5177,13 +5189,13 @@ class Plugin(indigo.PluginBase):
 		try:
 			if state =="start":
 				self.laststartUpdateshellyQueues = time.time()
-				for shellyIndigoDevNumber in self.SHELLY:
+				for shellyIndigoDevNumber in list(self.SHELLY):
 					if self.SHELLY[shellyIndigoDevNumber]["isChild"]: continue
 					try:
 						if not self.SHELLY[shellyIndigoDevNumber]["deviceEnabled"]:
 							continue
 					except Exception:
-						self.indiLOG.log(40, "shellyIndigoDevNumber:{};  SHELLY:{}".format(shellyIndigoDevNumber, self.SHELLY), exc_info=True)
+						self.indiLOG.log(40, "shellyIndigoDevNumber:{};  keys:{}".format(shellyIndigoDevNumber, list(self.SHELLY.get(shellyIndigoDevNumber, {}).keys())), exc_info=True)
 						continue
 
 					if shellySelect == "all" or shellyIndigoDevNumber == shellySelect:
@@ -5194,7 +5206,7 @@ class Plugin(indigo.PluginBase):
 			elif state == "restart":
 				if (shellySelect == "all" and time.time() - self.laststartUpdateshellyQueues > 70) or shellySelect != "all":
 					self.laststartUpdateshellyQueues = time.time()
-					for shellyIndigoDevNumber in self.SHELLY:
+					for shellyIndigoDevNumber in list(self.SHELLY):
 						if self.SHELLY[shellyIndigoDevNumber]["isChild"]: continue
 						if not self.SHELLY[shellyIndigoDevNumber]["deviceEnabled"] : continue
 						if shellySelect == "all" or shellyIndigoDevNumber == shellySelect:
@@ -5207,7 +5219,7 @@ class Plugin(indigo.PluginBase):
 								self.indiLOG.log(10, "re - starting UpdateshellyQueues for devId:{} ".format(shellySelect) )
 								self.startOneShellyDevicePoller(shellyIndigoDevNumber, reason="not running")
 		except Exception:
-			self.indiLOG.log(40, "self.SHELLY:{}".format(self.SHELLY), exc_info=True)
+			self.indiLOG.log(40, "shelly devices:{}".format(list(self.SHELLY.keys())), exc_info=True) # not the full dict: it holds the complete device settings
 		return
 
 ####-------------------------------------------------------------------------####
@@ -5250,7 +5262,7 @@ class Plugin(indigo.PluginBase):
 					self.stopOneShellyDevicePoller(shellySelect, reason="")
 					return
 		else:
-			for shellyIndigoDevNumber in self.SHELLY:
+			for shellyIndigoDevNumber in list(self.SHELLY):
 				self.stopOneShellyDevicePoller(shellyIndigoDevNumber, reason="")
 		return
 ###-------------------------------------------------------------------------####
@@ -5265,15 +5277,6 @@ class Plugin(indigo.PluginBase):
 	def resetUpdateQueue(self, shellyIndigoDevNumber):
 		self.SHELLY[shellyIndigoDevNumber]["reset"]= True
 		return
-####-------------------------------------------------------------------------####
-	def testIfAlreadyInQ(self, page, ipnumber):
-		currentQueue = list(self.SHELLY[shellyIndigoDevNumber]["queue"].queue)
-		for q in currentQueue:
-			if q == page:
-				if self.decideMyLog("Polling"): self.indiLOG.log(10, "NOT adding to update list already presend {}".format(next) )
-				return True
-		return False
-
 ####-------------------------------------------------------------------------####
 	def shellyPollerThread(self, shellyIndigoDevNumber):
 		try:
@@ -5370,7 +5373,9 @@ class Plugin(indigo.PluginBase):
 						continue
 
 					#if self.decideMyLog("Polling"): self.indiLOG.log(10, " send to ipNumber:{}  page:{}".format(ipNumber, page) )
-					jData , retCode = self.execShellySend(ipNumber, self.mapGen2Page(shellyIndigoDevNumber, page))
+					usePage = self.mapGen2Page(shellyIndigoDevNumber, page)
+					if usePage == _gen2ComponentsPage:	jData , retCode = self.gen2FetchComponents(ipNumber)
+					else:								jData , retCode = self.execShellySend(ipNumber, usePage)
 					if retCode != "0" and shellyIndigoDevNumber == 0 and page == "settings" and retCode.find("ping") == -1:
 						# discovery: gen2 devices have no /settings page, /shelly answers on all generations and has "gen":2 for gen2
 						jData2, retCode2 = self.execShellySend(ipNumber, "shelly")
@@ -6313,8 +6318,11 @@ class Plugin(indigo.PluginBase):
 			if not self.isValidIP(ipNumber): return {}, "ipNotValid"
 
 			usePort = str(self.portOfShellyDevices)
+			method  = self.useCurlOrPymethod
+			# python requests (urllib3) always encodes [ ] in the url, gen1 firmware then ignores the parameter (urls[0][url]=, urls[]=): use curl for these pages
+			if method == "requests" and page.find("[") > -1 and page.find("rpc/") != 0: method = "/usr/bin/curl"
 			if port !="": usePort = str(port)
-			if self.useCurlOrPymethod.find("curl") > -1:
+			if method.find("curl") > -1:
 				if len(self.userIDOfShellyDevices) >0:
 					UID = " -u "+self.userIDOfShellyDevices+":"+self.passwordOfShellyDevices
 				else: UID = ""
@@ -6323,7 +6331,7 @@ class Plugin(indigo.PluginBase):
 				gen2Auth = ""
 				if page.find("rpc/") == 0 and len(self.passwordOfShellyDevices) >0: # gen2 devices: digest auth, user is always admin
 					gen2Auth = " --digest -u 'admin:"+self.passwordOfShellyDevices+"'"
-				cmdR  = self.useCurlOrPymethod+" -m "+str(timeoutMax)+gen2Auth+" --globoff 'http://"+ipNumber+":"+usePort+"/"+usepage+"'"
+				cmdR  = method+" -m "+str(timeoutMax)+gen2Auth+" --globoff 'http://"+ipNumber+":"+usePort+"/"+usepage+"'"
 
 				if self.decideMyLog("Polling"): self.indiLOG.log(10, "Connection: "+cmdR )
 				try:
@@ -6347,18 +6355,18 @@ class Plugin(indigo.PluginBase):
 				return {}, "1"
 
 			############# does not work on OSX	el capitan ssl lib too old	##########
-			elif self.useCurlOrPymethod == "requests":
+			elif method == "requests":
 
 				url = "http://"+ipNumber+":"+usePort+"/"+page
 
 				request = requests.Session()
 				try:
 						if page.find("rpc/") == 0 and len(self.passwordOfShellyDevices) >0:
-							resp = request.get(url,auth=requests.auth.HTTPDigestAuth("admin", self.passwordOfShellyDevices))
+							resp = request.get(url, auth=requests.auth.HTTPDigestAuth("admin", self.passwordOfShellyDevices), timeout=timeoutMax)
 						elif len(self.userIDOfShellyDevices) >0:
-							resp = request.get(url,auth=(self.userIDOfShellyDevices, self.passwordOfShellyDevices))
+							resp = request.get(url, auth=(self.userIDOfShellyDevices, self.passwordOfShellyDevices), timeout=timeoutMax)
 						else:
-							resp = request.get(url)
+							resp = request.get(url, timeout=timeoutMax)
 						if testHTTP: return {}, "0"
 
 						try:
@@ -6375,9 +6383,16 @@ class Plugin(indigo.PluginBase):
 
 						return jj, "0"
 
+				except (requests.exceptions.Timeout, requests.exceptions.ConnectionError) as e:
+					# same as curl: device not reachable is not an error, the caller retries
+					if testHTTP: return {}, "0"
+					if self.decideMyLog("Polling"): self.indiLOG.log(10, "Shelly requests to {} url:{} failed: {}".format(ipNumber, url, "{}".format(e)[:100]))
+					return {}, "timeout"
 				except	Exception:
 					if testHTTP: return {}, "0"
 					self.indiLOG.log(40, "url testHTTP:{}, used: {}".format(testHTTP, url), exc_info=True)
+				finally:
+					request.close()
 
 		except Exception:
 			self.indiLOG.log(40, "", exc_info=True)
@@ -6400,7 +6415,7 @@ class Plugin(indigo.PluginBase):
 
 			#self.updateStatesDict = local
 		except Exception as e:
-			if	 "{}".format(e).find("UnexpectedNullErrorxxxx") >-1: return newStates
+			if	 "{}".format(e).find("UnexpectedNullErrorxxxx") >-1: return
 			self.indiLOG.log(40, "", exc_info=True)
 		return
 
@@ -6492,15 +6507,22 @@ class Plugin(indigo.PluginBase):
 						if  "displaySelect" in props and props["displaySelect"] == state:
 							if "SupportsSensorValue" in props and props["SupportsSensorValue"]:
 								#if dev.id == 422345573: self.indiLOG.log(10, "adding status dev:{}; added to sensorValue".format(dev.name ) )
+								# sensorValue is a real in indigo: an int, string or bool from the device is refused ("must be real")
 								xx = copy.copy(dd)
 								xx["key"] = "sensorValue"
-								changedOnly.append(xx)
+								try:
+									if isinstance(xx["value"], bool): raise ValueError
+									xx["value"] = float(xx["value"])
+									changedOnly.append(xx)
+								except Exception:
+									if self.decideMyLog("Special"): self.indiLOG.log(10, "{}: {}={} is not a number, sensorValue not set".format(dev.name, state, dd["value"]))
 							oneNew = True
 					if oneNew and not (props["isRelay"] and onOffStateNotChanged):
 						dd = {"key":"lastStatusChange", "value":dateString}
 						changedOnly.append(dd)
 					#self.indiLOG.log(10, "dev:{} updating states:{} ".format(devId, changedOnly))
 
+					self.minMaxStats(dev, changedOnly) # min / max / average of temperature, humidity, lux ..
 					self.execUpdateStatesList(dev,changedOnly)
 
 		except Exception as e:
@@ -6544,6 +6566,7 @@ class Plugin(indigo.PluginBase):
 				except Exception:
 					self.indiLOG.log(40, "", exc_info=True)
 			valueType = self.stateValueTypes.get(devTypeId, {}).get(state, "")
+			if state == "sensorValue": valueType = "float" # built-in state, not in Devices.xml, indigo wants a real
 			if   valueType == "float":
 				if not isinstance(value, bool) and isinstance(value, (int, str)) and value != "": return float(value)
 			elif valueType == "integer":
@@ -6599,7 +6622,7 @@ class Plugin(indigo.PluginBase):
 
 			try:
 				if fName !="":
-					f=openEncoding(fName,"w")
+					f=self.openEncoding(fName,"w")
 					f.write(out)
 					f.close()
 				return out
@@ -6809,6 +6832,7 @@ class Plugin(indigo.PluginBase):
 	def gen2TypeFromStatus(self, status):
 		# for gen2/gen3 device ids we do not know: pick the type from the parts in Shelly.GetStatus
 		comps = [comp.split(":")[0] for comp in status]
+		if "presence" in comps or "presencezone" in comps:						return "shellygen2presence"
 		if "em" in comps or "em1" in comps:										return "shellypro3em"
 		if "cover" in comps:													return "shellygen2cover"
 		if "rgb" in comps or "rgbw" in comps:									return "shellygen2rgbw"
@@ -6838,7 +6862,35 @@ class Plugin(indigo.PluginBase):
 	def mapGen2Page(self, devId, page):
 		# gen2 devices have no /status /settings pages, use the rpc methods instead
 		if not self.isGen2(devId): return page
+		if page == "status" and self.gen2StatusMethod(devId) == "Shelly.GetComponents": return _gen2ComponentsPage
 		return _gen2Pages.get(page, page)
+
+####-------------------------------------------------------------------------####
+	def gen2StatusMethod(self, devId):
+		# Shelly.GetStatus, or Shelly.GetComponents for devices with dynamic components (presence zones) that GetStatus leaves out
+		try:	return _emptyProps[self.SHELLY[devId]["devTypeId"]].get("gen2StatusMethod", "Shelly.GetStatus")
+		except:	return "Shelly.GetStatus"
+
+####-------------------------------------------------------------------------####
+	def gen2ComponentsToStatus(self, data):
+		# Shelly.GetComponents answer {"components":[{"key":"presencezone:200","status":{..}},..]} --> {"presencezone:200":{..},..} like Shelly.GetStatus
+		if not isinstance(data, dict) or not isinstance(data.get("components"), list): return data
+		return {comp["key"]:comp.get("status", {}) for comp in data["components"] if isinstance(comp, dict) and "key" in comp}
+
+####-------------------------------------------------------------------------####
+	def gen2FetchComponents(self, ipNumber):
+		# all pages of Shelly.GetComponents (status only), returned in Shelly.GetStatus format
+		status = {}
+		offset = 0
+		for ii in range(10):
+			data, retCode = self.execShellySend(ipNumber, _gen2ComponentsPage + ("&offset={}".format(offset) if offset > 0 else ""))
+			if retCode != "0" or not isinstance(data, dict) or not isinstance(data.get("components"), list):
+				if status == {}: return data, retCode if retCode != "0" else "no components"
+				break
+			status.update(self.gen2ComponentsToStatus(data))
+			offset += len(data["components"])
+			if len(data["components"]) == 0 or offset >= data.get("total", 0): break
+		return status, "0"
 
 ####-------------------------------------------------------------------------####
 	def fillGen2Status(self, data, dev, page):
@@ -6964,6 +7016,9 @@ class Plugin(indigo.PluginBase):
 				self.fillGen2Meter(dev, {"power":pm.get("apower"), "voltage":pm.get("voltage"), "current":pm.get("current"), "frequency":pm.get("freq"),
 										"energy":(pm.get("aenergy") or {}).get("total"), "energyReturned":(pm.get("ret_aenergy") or {}).get("total")})
 
+			if dev.deviceTypeId == "shellygen2presence":
+				self.fillGen2Presence(dev, data)
+
 			if dev.deviceTypeId == "shellygen2alarm":
 				for comp in ["smoke:0", "flood:0"]:
 					if not isinstance(data.get(comp), dict): continue
@@ -6977,6 +7032,34 @@ class Plugin(indigo.PluginBase):
 		except Exception:
 			self.indiLOG.log(40, "", exc_info=True)
 			self.indiLOG.log(40, "data {} ".format(data))
+		return
+
+####-------------------------------------------------------------------------####
+	def fillGen2Presence(self, dev, data):
+		# presencezone:200 {"id":200,"value":true/false,"num_objects":n} (200 = main zone, more zones 201..), illuminance:0 {"illumination":"dark|twilight|bright"}
+		try:
+			devID = str(dev.id)
+			zones = sorted([int(comp.split(":")[1]) for comp in data if comp.find("presencezone:") == 0 and isinstance(data[comp], dict) and comp.split(":")[1].isdigit()])
+			if zones != []:
+				main = data["presencezone:{}".format(200 if 200 in zones else zones[0])]
+				if main.get("value") is not None:
+					present = bool(main["value"])
+					self.addToStatesUpdateDict(devID, "onOffState", present, uiValue="present" if present else "absent")
+					dev.updateStateImageOnServer(indigo.kStateImageSel.MotionSensorTripped if present else indigo.kStateImageSel.MotionSensor)
+				if main.get("num_objects") is not None and "numObjects" in dev.states:
+																				self.addToStatesUpdateDict(devID, "numObjects", int(main["num_objects"]))
+				if "zones" in dev.states:
+					text = []
+					for zz in zones:
+						zone = data["presencezone:{}".format(zz)]
+						text.append("{}:{}({})".format(zz, "present" if zone.get("value") else "absent", zone.get("num_objects", "?")))
+					self.addToStatesUpdateDict(devID, "zones", ", ".join(text))
+			if isinstance(data.get("illuminance:0"), dict):
+				ill = data["illuminance:0"]
+				if ill.get("illumination") is not None and "illumination" in dev.states:	self.addToStatesUpdateDict(devID, "illumination", ill["illumination"])
+				if ill.get("lux") is not None and "lux" in dev.states:					self.fillSensor(dev, {"lux":{"value":ill["lux"]}}, "lux", "lux")
+		except Exception:
+			self.indiLOG.log(40, "", exc_info=True)
 		return
 
 ####-------------------------------------------------------------------------####
@@ -7090,6 +7173,7 @@ class Plugin(indigo.PluginBase):
 			if not self.gen2SubscribeWs: 									return
 			if devId == 0 or devId not in self.SHELLY: 						return
 			if self.SHELLY[devId]["isChild"] or not self.isGen2(devId):		return
+			if self.SHELLY[devId].get("mqttConnected", False):				return # device sends over MQTT, no websocket needed; restarted when MQTT drops
 			if self.SHELLY[devId]["wsState"] == "running" and "wsThread" in self.SHELLY[devId] and self.SHELLY[devId]["wsThread"].is_alive(): return
 			self.SHELLY[devId]["wsState"] 			= "running"
 			self.SHELLY[devId]["wsThreadNumber"] 	= time.time()
@@ -7106,6 +7190,7 @@ class Plugin(indigo.PluginBase):
 			if self.quitNow != "" or self.pluginState == "stop" or not self.gen2SubscribeWs:	return False
 			if devId not in self.SHELLY: 														return False
 			if self.SHELLY[devId]["wsThreadNumber"] != threadNumber: 							return False # newer thread started
+			if self.SHELLY[devId].get("mqttConnected", False):									return False # MQTT delivers the same messages
 			return self.SHELLY[devId]["wsState"] == "running" and self.SHELLY[devId]["deviceEnabled"]
 		except:
 			return False
@@ -7115,7 +7200,7 @@ class Plugin(indigo.PluginBase):
 		try:
 			self.SHELLY[devId]["wsConnected"] = connected
 			if devId in indigo.devices and "wsSubscription" in indigo.devices[devId].states:
-				self.addToStatesUpdateDict(str(devId), "wsSubscription", "connected" if connected else "disconnected")
+				self.addToStatesUpdateDict(str(devId), "wsSubscription", "connected" if connected else ("off, using MQTT" if self.SHELLY[devId].get("mqttConnected", False) else "disconnected"))
 				self.executeUpdateStatesDict(onlyDevID=devId, calledFrom="gen2WsSetConnected")
 		except Exception:
 			pass
@@ -7161,7 +7246,8 @@ class Plugin(indigo.PluginBase):
 		lastPing 	= time.time()
 		fragments	= b""
 		authTried	= False
-		request		= {"id":1, "src":self.wsSrc, "method":"Shelly.GetStatus"}
+		request		= {"id":1, "src":self.wsSrc, "method":self.gen2StatusMethod(devId)}
+		if request["method"] == "Shelly.GetComponents": request["params"] = {"include":["status"]}
 		self.wsSendFrame(sock, 0x1, json.dumps(request).encode("utf-8"))
 
 		while self.gen2WsKeepRunning(devId, threadNumber):
@@ -7223,7 +7309,7 @@ class Plugin(indigo.PluginBase):
 		# msg is a json rpc answer (Shelly.GetStatus) or notification (NotifyStatus, NotifyFullStatus, NotifyEvent)
 		if not isinstance(msg, dict): return
 		if "result" in msg and isinstance(msg["result"], dict):
-			self.gen2MergeStatus(devId, msg["result"], full=True)
+			self.gen2MergeStatus(devId, self.gen2ComponentsToStatus(msg["result"]), full=True)
 		elif "method" in msg:
 			params = msg.get("params", {})
 			if   msg["method"] == "NotifyFullStatus":	self.gen2MergeStatus(devId, params, full=True)
@@ -7344,7 +7430,7 @@ class Plugin(indigo.PluginBase):
 				self.mqttBroker.stop()
 				self.mqttBroker = None
 				self.indiLOG.log(20, "MQTT broker stopped")
-			for devId in self.SHELLY:
+			for devId in list(self.SHELLY):
 				if self.SHELLY[devId].get("mqttConnected", False): self.gen2SetMqttConnected(devId, False)
 		except Exception:
 			self.indiLOG.log(40, "", exc_info=True)
@@ -7437,8 +7523,14 @@ class Plugin(indigo.PluginBase):
 
 ####-------------------------------------------------------------------------####
 	def gen2SetMqttConnected(self, devId, connected):
+		# gen2+: while MQTT is connected the websocket is closed (gen2WsKeepRunning), when MQTT drops the websocket starts again
 		try:
+			wasConnected = self.SHELLY[devId].get("mqttConnected", False)
 			self.SHELLY[devId]["mqttConnected"] = connected
+			if self.isGen2(devId) and wasConnected != connected:
+				if self.decideMyLog("MQTT") or self.decideMyLog("WebSocket"):
+					self.indiLOG.log(10, "devId:{} MQTT {}, websocket {}".format(devId, "connected" if connected else "disconnected", "closes" if connected else "starts again"))
+				if not connected: self.startGen2WsListener(devId)
 			if devId in indigo.devices and "mqttConnection" in indigo.devices[devId].states:
 				self.addToStatesUpdateDict(str(devId), "mqttConnection", "connected" if connected else "disconnected")
 				self.executeUpdateStatesDict(onlyDevID=devId, calledFrom="gen2SetMqttConnected")

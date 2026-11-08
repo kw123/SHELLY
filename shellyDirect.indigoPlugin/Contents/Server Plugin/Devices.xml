@@ -1633,6 +1633,9 @@ The device sleeps most of the time: use the built in MQTT broker (plugin config)
 					<Option value="Temperature">Temperature</Option>
 				</List>
 			</Field>
+			<Field id="Temperature_EnableMinMax" type="checkbox" defaultValue="true">
+				<Label>temperature: daily min / max / ave:</Label>
+			</Field>
 			<Field id="sepPrintPropsStates" type="separator"/>
 			<Field id="printPropsStates" type="button">
 				<Label>print properties and states of this device to indigo log:</Label>
@@ -1646,26 +1649,6 @@ The device sleeps most of the time: use the built in MQTT broker (plugin config)
 				<ValueType>Float</ValueType>
 				<TriggerLabel>Temperature</TriggerLabel>
 				<ControlPageLabel>Temperature</ControlPageLabel>
-			</State>
-			<State id="TemperatureMaxToday">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>TemperatureMaxToday</TriggerLabel>
-				<ControlPageLabel>TemperatureMaxToday</ControlPageLabel>
-			</State>
-			<State id="TemperatureMinToday">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>TemperatureMinToday</TriggerLabel>
-				<ControlPageLabel>TemperatureMinToday</ControlPageLabel>
-			</State>
-			<State id="TemperatureMaxYesterday">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>TemperatureMaxYesterday</TriggerLabel>
-				<ControlPageLabel>TemperatureMaxYesterday</ControlPageLabel>
-			</State>
-			<State id="TemperatureMinYesterday">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>TemperatureMinYesterday</TriggerLabel>
-				<ControlPageLabel>TemperatureMinYesterday</ControlPageLabel>
 			</State>
 			<State id="batteryVoltage">
 				<ValueType>Float</ValueType>
@@ -1793,6 +1776,9 @@ The device sleeps most of the time: use the built in MQTT broker (plugin config)
 					<Option value="Humidity">Humidity</Option>
 				</List>
 			</Field>
+			<Field id="Humidity_EnableMinMax" type="checkbox" defaultValue="true">
+				<Label>humidity: daily min / max / ave:</Label>
+			</Field>
 			<Field id="sepPrintPropsStates" type="separator"/>
 			<Field id="printPropsStates" type="button">
 				<Label>print properties and states of this device to indigo log:</Label>
@@ -1806,26 +1792,6 @@ The device sleeps most of the time: use the built in MQTT broker (plugin config)
 				<ValueType>Number</ValueType>
 				<TriggerLabel>Humidity</TriggerLabel>
 				<ControlPageLabel>Humidity</ControlPageLabel>
-			</State>
-			<State id="HumidityMaxToday">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>HumidityMaxToday</TriggerLabel>
-				<ControlPageLabel>HumidityMaxToday</ControlPageLabel>
-			</State>
-			<State id="HumidityMinToday">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>HumidityMinToday</TriggerLabel>
-				<ControlPageLabel>HumidityMinToday</ControlPageLabel>
-			</State>
-			<State id="HumidityMaxYesterday">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>HumidityMaxYesterday</TriggerLabel>
-				<ControlPageLabel>HumidityMaxYesterday</ControlPageLabel>
-			</State>
-			<State id="HumidityMinYesterday">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>HumidityMinYesterday</TriggerLabel>
-				<ControlPageLabel>HumidityMinYesterday</ControlPageLabel>
 			</State>
 			<State id="batteryVoltage">
 				<ValueType>Float</ValueType>
@@ -3593,6 +3559,168 @@ The device sleeps most of the time: use the built in MQTT broker (plugin config)
 	</Device>
 
 
+	<Device type="sensor" id="shellygen2presence">
+		<Name>Shelly presence sensor gen4 (mmWave)</Name>
+		<UiDisplayStateId>onOffState</UiDisplayStateId>
+		<ConfigUI>
+			<Field id="isShellyDevice" type="checkbox" defaultValue="true" hidden="yes" />
+			<Field id="MSG" type="textfield" defaultValue="">
+				<Label>message from plugin:</Label>
+			</Field>
+			<Field id="SupportsOnState" type="checkbox" defaultValue="true" hidden="true" />
+			<Field id="SupportsSensorValue" type="checkbox" defaultValue="false" hidden="true" />
+			<Field id="SupportsStatusRequest" type="checkbox" defaultValue="true" hidden="true" />
+			<Field id="AllowOnStateChange" type="checkbox" defaultValue="false" hidden="true" />
+			<Field id="AllowSensorValueChange" type="checkbox" defaultValue="false" hidden="true" />
+			<Field id="usesInputForOnOff" type="checkbox" defaultValue="false" hidden="true" />
+			<Field id="label1" type="label">
+				<Label>Shelly Presence Gen4 mmWave sensor. ON = someone in the main zone. Zones and illumination (dark / twilight / bright) as extra states</Label>
+			</Field>
+			<Field id="ipNumber" type="textfield" defaultValue="192.168.1.x">
+				<Label>Shelly device IP Number</Label>
+			</Field>
+			<Field id="MAC" type="textfield" defaultValue="" readonly="no">
+				<Label>Shelly device mac number</Label>
+			</Field>
+			<Field id="MAClabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
+				<Label>Only overwrite if you want to replace device, must be unique</Label>
+			</Field>
+			<Field id="devNo" type="textfield" defaultValue="0" hidden="true" />
+			<Field id="pollingFrequency" type="menu" defaultValue="-1">
+				<Label>Polling frequency, how often the plugin requests status from the device:</Label>
+				<List>
+					<Option value="10">every 10 sec</Option>
+					<Option value="30">every 30 sec</Option>
+					<Option value="60">every 60 sec</Option>
+					<Option value="120">every 2 minutes</Option>
+					<Option value="-1">automatic adaptive</Option>
+				</List>
+			</Field>
+			<Field id="pollingFrequencyLabel" type="label" alignWithControl="true" fontSize="small" fontColor="darkgrey">
+				<Label>when the websocket or MQTT is connected the device sends its changes, polling is then at most every 5 minutes</Label>
+			</Field>
+			<Field id="expirationSeconds" type="menu" defaultValue="180">
+				<Label>Device goes to EXPIRED w no message or answer after:</Label>
+				<List>
+					<Option value="180">after 3 minutes</Option>
+					<Option value="600">after 10 minutes</Option>
+					<Option value="1800">after 30 minutes</Option>
+					<Option value="3600">after 1 hour</Option>
+					<Option value="50400">after 14 hours</Option>
+				</List>
+			</Field>
+			<Field id="sepPrintPropsStates" type="separator"/>
+			<Field id="printPropsStates" type="button">
+				<Label>print properties and states of this device to indigo log:</Label>
+				<Title>PRINT</Title>
+				<CallbackMethod>buttonPrintDevPropsStatesCALLBACK</CallbackMethod>
+			</Field>
+		</ConfigUI>
+		<States>
+			<!--   this is dev specific -->
+			<State id="numObjects">
+				<ValueType>Integer</ValueType>
+				<TriggerLabel>numObjects (persons in main zone)</TriggerLabel>
+				<ControlPageLabel>numObjects</ControlPageLabel>
+			</State>
+			<State id="zones">
+				<ValueType>String</ValueType>
+				<TriggerLabel>zones</TriggerLabel>
+				<ControlPageLabel>zones</ControlPageLabel>
+			</State>
+			<State id="illumination">
+				<ValueType>
+					<List>
+						<Option value="dark">dark</Option>
+						<Option value="twilight">twilight</Option>
+						<Option value="bright">bright</Option>
+					</List>
+				</ValueType>
+				<TriggerLabel>illumination</TriggerLabel>
+				<TriggerLabelPrefix>illumination is</TriggerLabelPrefix>
+				<ControlPageLabel>illumination</ControlPageLabel>
+				<ControlPageLabelPrefix>illumination is</ControlPageLabelPrefix>
+			</State>
+			<State id="model">
+				<ValueType>String</ValueType>
+				<TriggerLabel>model</TriggerLabel>
+				<ControlPageLabel>model</ControlPageLabel>
+			</State>
+			<State id="firmware">
+				<ValueType>String</ValueType>
+				<TriggerLabel>firmware</TriggerLabel>
+				<ControlPageLabel>firmware</ControlPageLabel>
+			</State>
+			<State id="wsSubscription">
+				<ValueType>String</ValueType>
+				<TriggerLabel>wsSubscription</TriggerLabel>
+				<ControlPageLabel>wsSubscription</ControlPageLabel>
+			</State>
+			<State id="mqttConnection">
+				<ValueType>String</ValueType>
+				<TriggerLabel>mqttConnection</TriggerLabel>
+				<ControlPageLabel>mqttConnection</ControlPageLabel>
+			</State>
+			<State id="WiFi_rssi">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>WiFi_rssi</TriggerLabel>
+				<ControlPageLabel>WiFi_rssi</ControlPageLabel>
+			</State>
+			<State id="cloud">
+				<ValueType>String</ValueType>
+				<TriggerLabel>cloud</TriggerLabel>
+				<ControlPageLabel>cloud</ControlPageLabel>
+			</State>
+			<State id="software_update_available">
+				<ValueType>String</ValueType>
+				<TriggerLabel>software_update_available</TriggerLabel>
+				<ControlPageLabel>software_update_available</ControlPageLabel>
+			</State>
+			<!--   this is same for all: -->
+			<State id="lastSuccessfullConfigPush">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastSuccessfullConfigPush</TriggerLabel>
+				<ControlPageLabel>lastSuccessfullConfigPush</ControlPageLabel>
+			</State>
+			<State id="action_from_device">
+				<ValueType>String</ValueType>
+				<TriggerLabel>action_from_device</TriggerLabel>
+				<ControlPageLabel>action_from_device</ControlPageLabel>
+			</State>
+			<State id="MAC">
+				<ValueType>String</ValueType>
+				<TriggerLabel>MAC</TriggerLabel>
+				<ControlPageLabel>MAC</ControlPageLabel>
+			</State>
+			<State id="lastMessageFromDevice">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastMessageFromDevice</TriggerLabel>
+				<ControlPageLabel>lastMessageFromDevice</ControlPageLabel>
+			</State>
+			<State id="created">
+				<ValueType>String</ValueType>
+				<TriggerLabel>created</TriggerLabel>
+				<ControlPageLabel>created</ControlPageLabel>
+			</State>
+			<State id="lastStatusChange">
+				<ValueType>String</ValueType>
+				<TriggerLabel>lastStatusChange</TriggerLabel>
+				<ControlPageLabel>lastStatusChange</ControlPageLabel>
+			</State>
+			<State id="expired">
+				<ValueType>String</ValueType>
+				<TriggerLabel>expired</TriggerLabel>
+				<ControlPageLabel>expired</ControlPageLabel>
+			</State>
+			<State id="upFor">
+				<ValueType>String</ValueType>
+				<TriggerLabel>upFor</TriggerLabel>
+				<ControlPageLabel>upFor</ControlPageLabel>
+			</State>
+		</States>
+	</Device>
+
+
 	<Device type="sensor" id="shellybutton1">
 		<Name>Shelly-Button (SHBTN-1)</Name>
 		<UiDisplayStateId>status</UiDisplayStateId>
@@ -4343,6 +4471,9 @@ The device sleeps most of the time: use the built in MQTT broker (plugin config)
 			</Field>
 			<Field id="SENDTOSHELLYDEVICE-relay_0_name" type="textfield" defaultValue="none">
 				<Label>Set name of relay:</Label>
+			</Field>
+			<Field id="Temperature_EnableMinMax" type="checkbox" defaultValue="true">
+				<Label>temperature: daily min / max / ave:</Label>
 			</Field>
 			<Field id="sepPrintPropsStates" type="separator"/>
 			<Field id="printPropsStates" type="button">
@@ -6558,6 +6689,9 @@ Parent and child share the same connection, the plugin creates two devices to be
 				</List>
 			</Field>
 
+			<Field id="Temperature_EnableMinMax" type="checkbox" defaultValue="true">
+				<Label>temperature: daily min / max / ave:</Label>
+			</Field>
 			<Field id="sepPrintPropsStates" type="separator"/>
 			<Field id="printPropsStates" type="button">
 				<Label>print properties and states of this device to indigo log:</Label>
@@ -7983,6 +8117,9 @@ Parent and child share the same connection, the plugin creates two devices to be
 					<Option value="4">4</Option>
 				</List>
 			</Field>
+			<Field id="Temperature_EnableMinMax" type="checkbox" defaultValue="true">
+				<Label>temperature: daily min / max / ave:</Label>
+			</Field>
 			<Field id="sepPrintPropsStates" type="separator"/>
 			<Field id="printPropsStates" type="button">
 				<Label>print properties and states of this device to indigo log:</Label>
@@ -7996,26 +8133,6 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<ValueType>Float</ValueType>
 				<TriggerLabel>Temperature</TriggerLabel>
 				<ControlPageLabel>Temperature</ControlPageLabel>
-			</State>
-			<State id="TemperatureMaxToday">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>TemperatureMaxToday</TriggerLabel>
-				<ControlPageLabel>TemperatureMaxToday</ControlPageLabel>
-			</State>
-			<State id="TemperatureMinToday">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>TemperatureMinToday</TriggerLabel>
-				<ControlPageLabel>TemperatureMinToday</ControlPageLabel>
-			</State>
-			<State id="TemperatureMaxYesterday">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>TemperatureMaxYesterday</TriggerLabel>
-				<ControlPageLabel>TemperatureMaxYesterday</ControlPageLabel>
-			</State>
-			<State id="TemperatureMinYesterday">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>TemperatureMinYesterday</TriggerLabel>
-				<ControlPageLabel>TemperatureMinYesterday</ControlPageLabel>
 			</State>
 			<State id="sleepMode">
 				<ValueType>String</ValueType>
@@ -8186,6 +8303,9 @@ Parent and child share the same connection, the plugin creates two devices to be
 					<Option value="10">10</Option>
 				</List>
 			</Field>
+			<Field id="Humidity_EnableMinMax" type="checkbox" defaultValue="true">
+				<Label>humidity: daily min / max / ave:</Label>
+			</Field>
 			<Field id="sepPrintPropsStates" type="separator"/>
 			<Field id="printPropsStates" type="button">
 				<Label>print properties and states of this device to indigo log:</Label>
@@ -8199,26 +8319,6 @@ Parent and child share the same connection, the plugin creates two devices to be
 				<ValueType>Number</ValueType>
 				<TriggerLabel>Humidity</TriggerLabel>
 				<ControlPageLabel>Humidity</ControlPageLabel>
-			</State>
-			<State id="HumidityMaxToday">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>HumidityMaxToday</TriggerLabel>
-				<ControlPageLabel>HumidityMaxToday</ControlPageLabel>
-			</State>
-			<State id="HumidityMinToday">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>HumidityMinToday</TriggerLabel>
-				<ControlPageLabel>HumidityMinToday</ControlPageLabel>
-			</State>
-			<State id="HumidityMaxYesterday">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>HumidityMaxYesterday</TriggerLabel>
-				<ControlPageLabel>HumidityMaxYesterday</ControlPageLabel>
-			</State>
-			<State id="HumidityMinYesterday">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>HumidityMinYesterday</TriggerLabel>
-				<ControlPageLabel>HumidityMinYesterday</ControlPageLabel>
 			</State>
 			<State id="sleepMode">
 				<ValueType>String</ValueType>
@@ -8344,6 +8444,9 @@ for connection parameters check the parent (SHELLY host device)</Label>
 					<Option value="C">C</Option>
 				</List>
 			</Field>
+			<Field id="Temperature_EnableMinMax" type="checkbox" defaultValue="true">
+				<Label>temperature: daily min / max / ave:</Label>
+			</Field>
 			<Field id="sepPrintPropsStates" type="separator"/>
 			<Field id="printPropsStates" type="button">
 				<Label>print properties and states of this device to indigo log:</Label>
@@ -8357,26 +8460,6 @@ for connection parameters check the parent (SHELLY host device)</Label>
 				<ValueType>Float</ValueType>
 				<TriggerLabel>Temperature</TriggerLabel>
 				<ControlPageLabel>Temperature</ControlPageLabel>
-			</State>
-			<State id="TemperatureMaxToday">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>TemperatureMaxToday</TriggerLabel>
-				<ControlPageLabel>TemperatureMaxToday</ControlPageLabel>
-			</State>
-			<State id="TemperatureMinToday">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>TemperatureMinToday</TriggerLabel>
-				<ControlPageLabel>TemperatureMinToday</ControlPageLabel>
-			</State>
-			<State id="TemperatureMaxYesterday">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>TemperatureMaxYesterday</TriggerLabel>
-				<ControlPageLabel>TemperatureMaxYesterday</ControlPageLabel>
-			</State>
-			<State id="TemperatureMinYesterday">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>TemperatureMinYesterday</TriggerLabel>
-				<ControlPageLabel>TemperatureMinYesterday</ControlPageLabel>
 			</State>
 			<State id="sensorNo">
 				<ValueType>String</ValueType>
@@ -8464,6 +8547,9 @@ for connection parameters check the parent (SHELLY host device)</Label>
 					<Option value="Humidity">Humidity</Option>
 				</List>
 			</Field>
+			<Field id="Humidity_EnableMinMax" type="checkbox" defaultValue="true">
+				<Label>humidity: daily min / max / ave:</Label>
+			</Field>
 			<Field id="sepPrintPropsStates" type="separator"/>
 			<Field id="printPropsStates" type="button">
 				<Label>print properties and states of this device to indigo log:</Label>
@@ -8477,26 +8563,6 @@ for connection parameters check the parent (SHELLY host device)</Label>
 				<ValueType>Number</ValueType>
 				<TriggerLabel>Humidity</TriggerLabel>
 				<ControlPageLabel>Humidity</ControlPageLabel>
-			</State>
-			<State id="HumidityMaxToday">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>HumidityMaxToday</TriggerLabel>
-				<ControlPageLabel>HumidityMaxToday</ControlPageLabel>
-			</State>
-			<State id="HumidityMinToday">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>HumidityMinToday</TriggerLabel>
-				<ControlPageLabel>HumidityMinToday</ControlPageLabel>
-			</State>
-			<State id="HumidityMaxYesterday">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>HumidityMaxYesterday</TriggerLabel>
-				<ControlPageLabel>HumidityMaxYesterday</ControlPageLabel>
-			</State>
-			<State id="HumidityMinYesterday">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>HumidityMinYesterday</TriggerLabel>
-				<ControlPageLabel>HumidityMinYesterday</ControlPageLabel>
 			</State>
 			<State id="sensorNo">
 				<ValueType>String</ValueType>
@@ -8675,6 +8741,9 @@ for connection parameters check the parent (SHELLY host device)</Label>
 					<Option value="C">C</Option>
 				</List>
 			</Field>
+			<Field id="Temperature_EnableMinMax" type="checkbox" defaultValue="true">
+				<Label>temperature: daily min / max / ave:</Label>
+			</Field>
 			<Field id="sepPrintPropsStates" type="separator"/>
 			<Field id="printPropsStates" type="button">
 				<Label>print properties and states of this device to indigo log:</Label>
@@ -8688,26 +8757,6 @@ for connection parameters check the parent (SHELLY host device)</Label>
 				<ValueType>Float</ValueType>
 				<TriggerLabel>Temperature</TriggerLabel>
 				<ControlPageLabel>Temperature</ControlPageLabel>
-			</State>
-			<State id="TemperatureMaxToday">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>TemperatureMaxToday</TriggerLabel>
-				<ControlPageLabel>TemperatureMaxToday</ControlPageLabel>
-			</State>
-			<State id="TemperatureMinToday">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>TemperatureMinToday</TriggerLabel>
-				<ControlPageLabel>TemperatureMinToday</ControlPageLabel>
-			</State>
-			<State id="TemperatureMaxYesterday">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>TemperatureMaxYesterday</TriggerLabel>
-				<ControlPageLabel>TemperatureMaxYesterday</ControlPageLabel>
-			</State>
-			<State id="TemperatureMinYesterday">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>TemperatureMinYesterday</TriggerLabel>
-				<ControlPageLabel>TemperatureMinYesterday</ControlPageLabel>
 			</State>
 			<State id="Flood">
 				<ValueType>String</ValueType>
@@ -8914,6 +8963,9 @@ for connection parameters check the parent (SHELLY host device)</Label>
 					<Option value="C">C</Option>
 				</List>
 			</Field>
+			<Field id="Temperature_EnableMinMax" type="checkbox" defaultValue="true">
+				<Label>temperature: daily min / max / ave:</Label>
+			</Field>
 			<Field id="sepPrintPropsStates" type="separator"/>
 			<Field id="printPropsStates" type="button">
 				<Label>print properties and states of this device to indigo log:</Label>
@@ -8927,26 +8979,6 @@ for connection parameters check the parent (SHELLY host device)</Label>
 				<ValueType>Float</ValueType>
 				<TriggerLabel>Temperature</TriggerLabel>
 				<ControlPageLabel>Temperature</ControlPageLabel>
-			</State>
-			<State id="TemperatureMaxToday">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>TemperatureMaxToday</TriggerLabel>
-				<ControlPageLabel>TemperatureMaxToday</ControlPageLabel>
-			</State>
-			<State id="TemperatureMinToday">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>TemperatureMinToday</TriggerLabel>
-				<ControlPageLabel>TemperatureMinToday</ControlPageLabel>
-			</State>
-			<State id="TemperatureMaxYesterday">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>TemperatureMaxYesterday</TriggerLabel>
-				<ControlPageLabel>TemperatureMaxYesterday</ControlPageLabel>
-			</State>
-			<State id="TemperatureMinYesterday">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>TemperatureMinYesterday</TriggerLabel>
-				<ControlPageLabel>TemperatureMinYesterday</ControlPageLabel>
 			</State>
 			<State id="Smoke">
 				<ValueType>String</ValueType>
@@ -9150,6 +9182,9 @@ for connection parameters check the parent (SHELLY host device)</Label>
 			</Field>
 
 
+			<Field id="Gas_concentration_EnableMinMax" type="checkbox" defaultValue="true">
+				<Label>gas concentration: daily min / max / ave:</Label>
+			</Field>
 			<Field id="sepPrintPropsStates" type="separator"/>
 			<Field id="printPropsStates" type="button">
 				<Label>print properties and states of this device to indigo log:</Label>
@@ -9163,26 +9198,6 @@ for connection parameters check the parent (SHELLY host device)</Label>
 				<ValueType>Number</ValueType>
 				<TriggerLabel>Gas_concentration</TriggerLabel>
 				<ControlPageLabel>Gas_concentration</ControlPageLabel>
-			</State>
-			<State id="Gas_concentrationMaxToday">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>Gas_concentrationMaxToday</TriggerLabel>
-				<ControlPageLabel>Gas_concentrationMaxToday</ControlPageLabel>
-			</State>
-			<State id="Gas_concentrationMinToday">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>Gas_concentrationMinToday</TriggerLabel>
-				<ControlPageLabel>Gas_concentrationMinToday</ControlPageLabel>
-			</State>
-			<State id="Gas_concentrationMaxYesterday">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>Gas_concentrationMaxYesterday</TriggerLabel>
-				<ControlPageLabel>Gas_concentrationMaxYesterday</ControlPageLabel>
-			</State>
-			<State id="Gas_concentrationMinYesterday">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>Gas_concentrationMinYesterday</TriggerLabel>
-				<ControlPageLabel>Gas_concentrationMinYesterday</ControlPageLabel>
 			</State>
 			<State id="Alarm">
 				<ValueType>String</ValueType>
@@ -9354,6 +9369,9 @@ for connection parameters check the parent (SHELLY host device)</Label>
 			</Field>
 
 
+			<Field id="lux_EnableMinMax" type="checkbox" defaultValue="true">
+				<Label>light (lux): daily min / max / ave:</Label>
+			</Field>
 			<Field id="sepPrintPropsStates" type="separator"/>
 			<Field id="printPropsStates" type="button">
 				<Label>print properties and states of this device to indigo log:</Label>
@@ -9560,7 +9578,7 @@ for connection parameters check the parent (SHELLY host device)</Label>
 			<Field id="SupportsOnState" type="checkbox" defaultValue="true" hidden="true">
 				<Label>SupportsOnState</Label>
 			</Field>
-			<Field id="SupportsSensorValue" type="checkbox" defaultValue="true" hidden="true">
+			<Field id="SupportsSensorValue" type="checkbox" defaultValue="false" hidden="true">
 				<Label>SupportsSensorValue</Label>
 			</Field>
 			<Field id="SupportsStatusRequest" type="checkbox" defaultValue="true" hidden="true">
@@ -9616,9 +9634,10 @@ for connection parameters check the parent (SHELLY host device)</Label>
 					<Option value="57600">after 16 hour</Option>
 				</List>
 			</Field>
-			<Field id="displaySelect" type="menu" defaultValue="lux">
-				<Label>Property to display as Sensor Value:</Label>
+			<Field id="displaySelect" type="menu" defaultValue="onOff">
+				<Label>Show as device value:</Label>
 				<List>
+					<Option value="onOff">open / closed (on/off only)</Option>
 					<Option value="lux">lux value</Option>
 					<Option value="tilt">tilt degrees</Option>
 				</List>
@@ -9670,6 +9689,9 @@ for connection parameters check the parent (SHELLY host device)</Label>
 			</Field>
 			<Field id="SENDTOSHELLYDEVICE-twilight_threshold" type="textfield" defaultValue="none">
 				<Label>light threshold trigger(do not set=none), set to 70000 to be always on:</Label>
+			</Field>
+			<Field id="lux_EnableMinMax" type="checkbox" defaultValue="true">
+				<Label>light (lux): daily min / max / ave:</Label>
 			</Field>
 			<Field id="sepPrintPropsStates" type="separator"/>
 			<Field id="printPropsStates" type="button">
@@ -9844,6 +9866,10 @@ for connection parameters check the parent (SHELLY host device)</Label>
 					<Option value="kW">kW</Option>
 				</List>
 			</Field>
+			<Field id="power_EnableMinMax" type="checkbox" defaultValue="true">
+				<Label>power sum: daily min / max / ave:</Label>
+				<Description>states powerSumMinToday .. powerSumAveYesterday</Description>
+			</Field>
 			<Field id="powerDev1" type="menu" defaultValue="0" visibleBindingId="powerCount" visibleBindingValue="1,2,3,4,5,6,7,8">
 				<Label>power 1 device:</Label>
 				<List class="self" filter="power" method="filterSumSourceDevices"/>
@@ -10002,6 +10028,10 @@ for connection parameters check the parent (SHELLY host device)</Label>
 					<Option value="A">A</Option>
 				</List>
 			</Field>
+			<Field id="current_EnableMinMax" type="checkbox" defaultValue="true">
+				<Label>current sum: daily min / max / ave:</Label>
+				<Description>states currentSumMinToday .. currentSumAveYesterday</Description>
+			</Field>
 			<Field id="currentDev1" type="menu" defaultValue="0" visibleBindingId="currentCount" visibleBindingValue="1,2,3,4,5,6,7,8">
 				<Label>current 1 device:</Label>
 				<List class="self" filter="current" method="filterSumSourceDevices"/>
@@ -10153,6 +10183,10 @@ for connection parameters check the parent (SHELLY host device)</Label>
 					<Option value="MWh">MWh</Option>
 					<Option value="Ws">Ws (J)</Option>
 				</List>
+			</Field>
+			<Field id="energy_EnableMinMax" type="checkbox" defaultValue="true">
+				<Label>energy sum: daily min / max / ave:</Label>
+				<Description>states energySumMinToday .. energySumAveYesterday</Description>
 			</Field>
 			<Field id="energyDev1" type="menu" defaultValue="0" visibleBindingId="energyCount" visibleBindingValue="1,2,3,4,5,6,7,8">
 				<Label>energy 1 device:</Label>
@@ -10306,310 +10340,11 @@ for connection parameters check the parent (SHELLY host device)</Label>
 			</Field>
 		</ConfigUI>
 		<States>
-			<State id="powerSum">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>powerSum</TriggerLabel>
-				<ControlPageLabel>powerSum</ControlPageLabel>
-			</State>
-			<State id="currentSum">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>currentSum</TriggerLabel>
-				<ControlPageLabel>currentSum</ControlPageLabel>
-			</State>
-			<State id="energySum">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>energySum</TriggerLabel>
-				<ControlPageLabel>energySum</ControlPageLabel>
-			</State>
-			<State id="powerSumMinToday">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>powerSumMinToday</TriggerLabel>
-				<ControlPageLabel>powerSumMinToday</ControlPageLabel>
-			</State>
-			<State id="powerSumMinTodayAt">
-				<ValueType>String</ValueType>
-				<TriggerLabel>powerSumMinTodayAt</TriggerLabel>
-				<ControlPageLabel>powerSumMinTodayAt</ControlPageLabel>
-			</State>
-			<State id="powerSumMaxToday">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>powerSumMaxToday</TriggerLabel>
-				<ControlPageLabel>powerSumMaxToday</ControlPageLabel>
-			</State>
-			<State id="powerSumMaxTodayAt">
-				<ValueType>String</ValueType>
-				<TriggerLabel>powerSumMaxTodayAt</TriggerLabel>
-				<ControlPageLabel>powerSumMaxTodayAt</ControlPageLabel>
-			</State>
-			<State id="powerSumAveToday">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>powerSumAveToday</TriggerLabel>
-				<ControlPageLabel>powerSumAveToday</ControlPageLabel>
-			</State>
-			<State id="powerSumMinYesterday">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>powerSumMinYesterday</TriggerLabel>
-				<ControlPageLabel>powerSumMinYesterday</ControlPageLabel>
-			</State>
-			<State id="powerSumMinYesterdayAt">
-				<ValueType>String</ValueType>
-				<TriggerLabel>powerSumMinYesterdayAt</TriggerLabel>
-				<ControlPageLabel>powerSumMinYesterdayAt</ControlPageLabel>
-			</State>
-			<State id="powerSumMaxYesterday">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>powerSumMaxYesterday</TriggerLabel>
-				<ControlPageLabel>powerSumMaxYesterday</ControlPageLabel>
-			</State>
-			<State id="powerSumMaxYesterdayAt">
-				<ValueType>String</ValueType>
-				<TriggerLabel>powerSumMaxYesterdayAt</TriggerLabel>
-				<ControlPageLabel>powerSumMaxYesterdayAt</ControlPageLabel>
-			</State>
-			<State id="powerSumAveYesterday">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>powerSumAveYesterday</TriggerLabel>
-				<ControlPageLabel>powerSumAveYesterday</ControlPageLabel>
-			</State>
-			<State id="currentSumMinToday">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>currentSumMinToday</TriggerLabel>
-				<ControlPageLabel>currentSumMinToday</ControlPageLabel>
-			</State>
-			<State id="currentSumMinTodayAt">
-				<ValueType>String</ValueType>
-				<TriggerLabel>currentSumMinTodayAt</TriggerLabel>
-				<ControlPageLabel>currentSumMinTodayAt</ControlPageLabel>
-			</State>
-			<State id="currentSumMaxToday">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>currentSumMaxToday</TriggerLabel>
-				<ControlPageLabel>currentSumMaxToday</ControlPageLabel>
-			</State>
-			<State id="currentSumMaxTodayAt">
-				<ValueType>String</ValueType>
-				<TriggerLabel>currentSumMaxTodayAt</TriggerLabel>
-				<ControlPageLabel>currentSumMaxTodayAt</ControlPageLabel>
-			</State>
-			<State id="currentSumAveToday">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>currentSumAveToday</TriggerLabel>
-				<ControlPageLabel>currentSumAveToday</ControlPageLabel>
-			</State>
-			<State id="currentSumMinYesterday">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>currentSumMinYesterday</TriggerLabel>
-				<ControlPageLabel>currentSumMinYesterday</ControlPageLabel>
-			</State>
-			<State id="currentSumMinYesterdayAt">
-				<ValueType>String</ValueType>
-				<TriggerLabel>currentSumMinYesterdayAt</TriggerLabel>
-				<ControlPageLabel>currentSumMinYesterdayAt</ControlPageLabel>
-			</State>
-			<State id="currentSumMaxYesterday">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>currentSumMaxYesterday</TriggerLabel>
-				<ControlPageLabel>currentSumMaxYesterday</ControlPageLabel>
-			</State>
-			<State id="currentSumMaxYesterdayAt">
-				<ValueType>String</ValueType>
-				<TriggerLabel>currentSumMaxYesterdayAt</TriggerLabel>
-				<ControlPageLabel>currentSumMaxYesterdayAt</ControlPageLabel>
-			</State>
-			<State id="currentSumAveYesterday">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>currentSumAveYesterday</TriggerLabel>
-				<ControlPageLabel>currentSumAveYesterday</ControlPageLabel>
-			</State>
-			<State id="energySumMinToday">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>energySumMinToday</TriggerLabel>
-				<ControlPageLabel>energySumMinToday</ControlPageLabel>
-			</State>
-			<State id="energySumMinTodayAt">
-				<ValueType>String</ValueType>
-				<TriggerLabel>energySumMinTodayAt</TriggerLabel>
-				<ControlPageLabel>energySumMinTodayAt</ControlPageLabel>
-			</State>
-			<State id="energySumMaxToday">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>energySumMaxToday</TriggerLabel>
-				<ControlPageLabel>energySumMaxToday</ControlPageLabel>
-			</State>
-			<State id="energySumMaxTodayAt">
-				<ValueType>String</ValueType>
-				<TriggerLabel>energySumMaxTodayAt</TriggerLabel>
-				<ControlPageLabel>energySumMaxTodayAt</ControlPageLabel>
-			</State>
-			<State id="energySumAveToday">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>energySumAveToday</TriggerLabel>
-				<ControlPageLabel>energySumAveToday</ControlPageLabel>
-			</State>
-			<State id="energySumMinYesterday">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>energySumMinYesterday</TriggerLabel>
-				<ControlPageLabel>energySumMinYesterday</ControlPageLabel>
-			</State>
-			<State id="energySumMinYesterdayAt">
-				<ValueType>String</ValueType>
-				<TriggerLabel>energySumMinYesterdayAt</TriggerLabel>
-				<ControlPageLabel>energySumMinYesterdayAt</ControlPageLabel>
-			</State>
-			<State id="energySumMaxYesterday">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>energySumMaxYesterday</TriggerLabel>
-				<ControlPageLabel>energySumMaxYesterday</ControlPageLabel>
-			</State>
-			<State id="energySumMaxYesterdayAt">
-				<ValueType>String</ValueType>
-				<TriggerLabel>energySumMaxYesterdayAt</TriggerLabel>
-				<ControlPageLabel>energySumMaxYesterdayAt</ControlPageLabel>
-			</State>
-			<State id="energySumAveYesterday">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>energySumAveYesterday</TriggerLabel>
-				<ControlPageLabel>energySumAveYesterday</ControlPageLabel>
-			</State>
-			<State id="power1">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>power1</TriggerLabel>
-				<ControlPageLabel>power1</ControlPageLabel>
-			</State>
-			<State id="power2">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>power2</TriggerLabel>
-				<ControlPageLabel>power2</ControlPageLabel>
-			</State>
-			<State id="power3">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>power3</TriggerLabel>
-				<ControlPageLabel>power3</ControlPageLabel>
-			</State>
-			<State id="power4">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>power4</TriggerLabel>
-				<ControlPageLabel>power4</ControlPageLabel>
-			</State>
-			<State id="power5">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>power5</TriggerLabel>
-				<ControlPageLabel>power5</ControlPageLabel>
-			</State>
-			<State id="power6">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>power6</TriggerLabel>
-				<ControlPageLabel>power6</ControlPageLabel>
-			</State>
-			<State id="power7">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>power7</TriggerLabel>
-				<ControlPageLabel>power7</ControlPageLabel>
-			</State>
-			<State id="power8">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>power8</TriggerLabel>
-				<ControlPageLabel>power8</ControlPageLabel>
-			</State>
-			<State id="current1">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>current1</TriggerLabel>
-				<ControlPageLabel>current1</ControlPageLabel>
-			</State>
-			<State id="current2">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>current2</TriggerLabel>
-				<ControlPageLabel>current2</ControlPageLabel>
-			</State>
-			<State id="current3">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>current3</TriggerLabel>
-				<ControlPageLabel>current3</ControlPageLabel>
-			</State>
-			<State id="current4">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>current4</TriggerLabel>
-				<ControlPageLabel>current4</ControlPageLabel>
-			</State>
-			<State id="current5">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>current5</TriggerLabel>
-				<ControlPageLabel>current5</ControlPageLabel>
-			</State>
-			<State id="current6">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>current6</TriggerLabel>
-				<ControlPageLabel>current6</ControlPageLabel>
-			</State>
-			<State id="current7">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>current7</TriggerLabel>
-				<ControlPageLabel>current7</ControlPageLabel>
-			</State>
-			<State id="current8">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>current8</TriggerLabel>
-				<ControlPageLabel>current8</ControlPageLabel>
-			</State>
-			<State id="energy1">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>energy1</TriggerLabel>
-				<ControlPageLabel>energy1</ControlPageLabel>
-			</State>
-			<State id="energy2">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>energy2</TriggerLabel>
-				<ControlPageLabel>energy2</ControlPageLabel>
-			</State>
-			<State id="energy3">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>energy3</TriggerLabel>
-				<ControlPageLabel>energy3</ControlPageLabel>
-			</State>
-			<State id="energy4">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>energy4</TriggerLabel>
-				<ControlPageLabel>energy4</ControlPageLabel>
-			</State>
-			<State id="energy5">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>energy5</TriggerLabel>
-				<ControlPageLabel>energy5</ControlPageLabel>
-			</State>
-			<State id="energy6">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>energy6</TriggerLabel>
-				<ControlPageLabel>energy6</ControlPageLabel>
-			</State>
-			<State id="energy7">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>energy7</TriggerLabel>
-				<ControlPageLabel>energy7</ControlPageLabel>
-			</State>
-			<State id="energy8">
-				<ValueType>Float</ValueType>
-				<TriggerLabel>energy8</TriggerLabel>
-				<ControlPageLabel>energy8</ControlPageLabel>
-			</State>
+			<!-- power / current / energy sums, slots, statistics and source_ states are created by the plugin (getDeviceStateList), only for the kinds and slots in use -->
 			<State id="lastSumUpdate">
 				<ValueType>String</ValueType>
 				<TriggerLabel>lastSumUpdate</TriggerLabel>
 				<ControlPageLabel>lastSumUpdate</ControlPageLabel>
-			</State>
-			<State id="source_Power">
-				<ValueType>String</ValueType>
-				<TriggerLabel>source_Power</TriggerLabel>
-				<ControlPageLabel>source_Power</ControlPageLabel>
-			</State>
-			<State id="source_Current">
-				<ValueType>String</ValueType>
-				<TriggerLabel>source_Current</TriggerLabel>
-				<ControlPageLabel>source_Current</ControlPageLabel>
-			</State>
-			<State id="source_Energy">
-				<ValueType>String</ValueType>
-				<TriggerLabel>source_Energy</TriggerLabel>
-				<ControlPageLabel>source_Energy</ControlPageLabel>
 			</State>
 		</States>
 	</Device>
