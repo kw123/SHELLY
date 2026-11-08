@@ -1,4 +1,4 @@
-Added features / changes in v2026.1.1 @ 2026-11-07
+Added features / changes in v2026.1.2 @ 2026-11-07
 ===================================================
 1. subscribe to messages sent from gen2 shelly devices:
    plugin opens a websocket to ws://ip/rpc and sends one rpc request, the device then pushes
